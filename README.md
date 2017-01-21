@@ -1,1 +1,0 @@
-# amaas-core-sdk-python
