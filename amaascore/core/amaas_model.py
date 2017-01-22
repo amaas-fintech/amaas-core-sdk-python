@@ -26,6 +26,7 @@ class AMaaSModel(object):
         self.created_time = kwargs.get('created_time')  # Comes from database
         self.updated_time = kwargs.get('updated_time')  # Comes from database
         self.internal_id = kwargs.get('internal_id')  # The internal ID of the transaction from the database
+        super(AMaaSModel, self).__init__(*args, **kwargs)
 
     def to_json(self):
         return to_json(self.__dict__)
