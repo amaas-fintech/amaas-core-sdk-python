@@ -4,13 +4,14 @@ import uuid
 
 from amaascore.core.amaas_model import AMaaSModel
 from amaascore.exceptions import TransactionNeedsSaving
-from amaascore.transactions.transaction_children import Reference
+from amaascore.core.reference import Reference
 
 
 class Transaction(AMaaSModel):
 
     @staticmethod
     def children():
+        """ TODO - IS THIS NEEDED?"""
         return ['charges', 'codes', 'references']
 
     def __init__(self, asset_manager_id, asset_book_id, counterparty_book_id, transaction_action, asset_id, quantity,

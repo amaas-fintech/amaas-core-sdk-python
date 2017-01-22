@@ -1,18 +1,15 @@
 import datetime
 from decimal import Decimal
 import random
-import string
 
+from amaascore.core.reference import Reference
 from amaascore.transactions.transaction import Transaction
-from amaascore.transactions.transaction_children import Charge, Code, Reference
+from amaascore.transactions.transaction_children import Charge, Code
+from amaascore.utils.helpers import random_string
 
 CHARGE_TYPES = ['Tax', 'Commission']
 CODE_TYPES = ['Settle Code', 'Client Classifier']
 REFERENCE_TYPES = ['External']
-
-
-def random_string(length):
-    return ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(length))
 
 
 def generate_common(asset_manager_id=None, asset_book_id=None, counterparty_book_id=None, asset_id=None, quantity=None,
