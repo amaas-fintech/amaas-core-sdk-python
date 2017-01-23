@@ -15,12 +15,15 @@ REFERENCE_TYPES = ['External']
 def generate_common(asset_manager_id=None, asset_book_id=None, counterparty_book_id=None, asset_id=None, quantity=None,
                     price=None, transaction_date=None, transaction_id=None):
 
+    # Explicitly handle price is None (in case price is 0)
+    price = Decimal(random.uniform(1.0, 1000.0)).quantize(Decimal('0.01')) if price is None else price
+
     common = {'asset_manager_id': asset_manager_id or random.randint(1, 1000),
               'asset_book_id': asset_book_id or random.randint(1, 1000),
               'counterparty_book_id': counterparty_book_id or random.randint(1, 1000),
               'asset_id': asset_id or str(random.randint(1, 1000)),
               'quantity': quantity or Decimal(random.randint(-5000, 5000)),
-              'price': price or Decimal(random.uniform(1.0, 1000.0)).quantize(Decimal('0.01')),
+              'price': price,
               'transaction_date': transaction_date or datetime.date.today(),
               'transaction_currency': random.choice(['SGD', 'USD']),
               'settlement_currency': random.choice(['SGD', 'USD']),

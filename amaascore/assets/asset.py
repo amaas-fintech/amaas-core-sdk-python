@@ -11,14 +11,14 @@ class Asset(AMaaSModel):
     def children():
         return ['charges', 'codes', 'references']
 
-    def __init__(self, asset_manager_id, asset_class, fungible, asset_issuer_id, asset_id=None, asset_type=None,
-                 asset_status='Active', version=1, country_id=None, venue_id=None, maturity_date=None,
+    def __init__(self, asset_manager_id, asset_class, fungible, asset_issuer_id, asset_id=None, asset_status='Active',
+                 version=1, country_id=None, venue_id=None, maturity_date=None,
                  description='', references={}, *args, **kwargs):
         self.additional_dict = {}
         self.asset_manager_id = asset_manager_id
         self.asset_id = asset_id or uuid.uuid4().hex
         self.asset_class = asset_class
-        self.asset_type = asset_type or self.__class__.__name__
+        self.asset_type =  self.__class__.__name__
         self.fungible = fungible
         self.asset_issuer_id = asset_issuer_id
         self.asset_status = asset_status
@@ -38,13 +38,6 @@ class Asset(AMaaSModel):
         :return:
         """
         return self.references.keys()
-
-    # def __dict__(self):
-    #     # Potentially move this into the base class?
-    #     transaction_dict = super(Transaction, self).__dict__
-    #     for child in self.children():
-    #         transaction_dict[child] = getattr(self, child)
-    #     return transaction_dict
 
     def __str__(self):
         return "Asset object - ID: %s" % self.asset_id
