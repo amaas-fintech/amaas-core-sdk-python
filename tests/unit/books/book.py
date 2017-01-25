@@ -20,6 +20,7 @@ class BookTest(unittest.TestCase):
         self.assertEqual(type(self.book), Book)
 
     def test_BookToDict(self):
+        # TODO - add a to_dict function?
         book_dict = self.book.__dict__
         self.assertEqual(type(book_dict), dict)
         self.assertEqual(book_dict.get('book_id'), self.book_id)
