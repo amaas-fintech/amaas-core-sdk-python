@@ -4,6 +4,7 @@ import random
 
 from amaascore.assets.asset import Asset
 from amaascore.assets.bond_option import BondOption
+from amaascore.assets.foreign_exchange import ForeignExchange
 from amaascore.core.reference import Reference
 from amaascore.tools.helpers import random_string
 
@@ -22,11 +23,17 @@ def generate_common(asset_manager_id=None, asset_id=None):
 def generate_asset(asset_manager_id=None, asset_id=None):
 
     common = generate_common(asset_manager_id=asset_manager_id, asset_id=asset_id)
+    common['fungible'] = random.choice([True, False])
 
     asset = Asset(**common)
     references = {ref_type: Reference(reference_value=random_string(10)) for ref_type in REFERENCE_TYPES}
 
     asset.references.update(references)
+    return asset
+
+
+def generate_foreignexchange(asset_id=None):
+    asset = ForeignExchange(asset_id=asset_id)
     return asset
 
 

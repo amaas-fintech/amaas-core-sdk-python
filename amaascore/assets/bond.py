@@ -11,17 +11,16 @@ class BondBase(Asset):
     def mandatory_attributes():
         return ['coupon', 'issue_date', 'par']
 
-    def __init__(self, asset_manager_id, asset_id, maturity_date=None, coupon=None, par=None,
-                 asset_issuer_id=None, asset_status='Active', description='', country_id=None, venue_id=None,
-                 client_id=None, issue_date=None, references={}, *args, **kwargs):
+    def __init__(self, asset_manager_id, asset_id, maturity_date, coupon, par, asset_issuer_id,
+                 asset_status, description, country_id, venue_id, client_id, issue_date, references={}, *args, **kwargs):
         self.asset_class = 'Bond'
         self.issue_date = issue_date
         self.coupon = coupon
         self.par = par
         super(BondBase, self).__init__(asset_manager_id=asset_manager_id, asset_id=asset_id, fungible=True,
-                                       asset_class=self.asset_class, asset_issuer_id=asset_issuer_id,
-                                       asset_status=asset_status, description=description, country_id=country_id,
-                                       venue_id=venue_id, maturity_date=maturity_date, references=references,
+                                       asset_issuer_id=asset_issuer_id, asset_status=asset_status,
+                                       description=description, country_id=country_id, venue_id=venue_id,
+                                       maturity_date=maturity_date, references=references,
                                        client_id=client_id, *args, **kwargs)
 
     @property
@@ -92,7 +91,7 @@ class BondGovernment(BondBase):
 
     def __init__(self, asset_manager_id, asset_id, maturity_date=None, coupon=None, par=None,
                  asset_issuer_id=None, asset_status='Active', description='', country_id=None, venue_id=None,
-                 client_id=None, issue_date=None, additional=None, references={}, *args, **kwargs):
+                 client_id=None, issue_date=None, references={}, *args, **kwargs):
         self.asset_manager_id = asset_manager_id
         super(BondGovernment, self).__init__(asset_manager_id=self.asset_manager_id, asset_id=asset_id,
                                              asset_issuer_id=asset_issuer_id, asset_status=asset_status,
@@ -105,7 +104,7 @@ class BondCorporate(BondBase):
 
     def __init__(self, asset_manager_id, asset_id, maturity_date=None, coupon=None, par=None,
                  asset_issuer_id=None, asset_status='Active', description='', country_id=None, venue_id=None,
-                 client_id=None, issue_date=None, additional=None, references={}, *args, **kwargs):
+                 client_id=None, issue_date=None, references={}, *args, **kwargs):
         self.asset_manager_id = asset_manager_id
         super(BondCorporate, self).__init__(asset_manager_id=self.asset_manager_id, asset_id=asset_id,
                                             asset_issuer_id=asset_issuer_id, asset_status=asset_status,
@@ -118,7 +117,7 @@ class BondMortgage(BondBase):
 
     def __init__(self, asset_manager_id, asset_id, maturity_date=None, coupon=None, par=None,
                  asset_issuer_id=None, asset_status='Active', description='', country_id=None, venue_id=None,
-                 client_id=None, issue_date=None, additional=None, references={}, *args, **kwargs):
+                 client_id=None, issue_date=None, references={}, *args, **kwargs):
         self.asset_manager_id = asset_manager_id
         super(BondMortgage, self).__init__(asset_manager_id=self.asset_manager_id, asset_id=asset_id,
                                            asset_issuer_id=asset_issuer_id, asset_status=asset_status,

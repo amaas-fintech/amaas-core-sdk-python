@@ -27,6 +27,10 @@ class AMaaSModel(object):
         """ Potentially convert this to attribute annotations """
         return []
 
+    @staticmethod
+    def amaas_model_attributes():
+        return ['created_by', 'updated_by', 'created_time', 'updated_time', 'version']
+
     def __init__(self, *args, **kwargs):
         self.version = kwargs.get('version') or 1
         self.created_by = kwargs.get('created_by') or 'TEMP'  # Should come from logged in user
