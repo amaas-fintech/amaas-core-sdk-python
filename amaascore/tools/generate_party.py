@@ -1,15 +1,15 @@
 import random
 
 from amaascore.core.reference import Reference
+from amaascore.parties.broker import Broker
 from amaascore.parties.party import Party
 from amaascore.parties.party_children import Address, Email
 from amaascore.tools.helpers import random_string
 
 
-def generate_common(asset_manager_id=None, party_id=None, party_class=None):
+def generate_common(asset_manager_id=None, party_id=None):
     common = {'asset_manager_id': asset_manager_id or random.randint(1, 1000),
-              'party_id': party_id or str(random.randint(1, 1000)),
-              'party_class': party_class or 'Party'
+              'party_id': party_id or str(random.randint(1, 1000))
               }
 
     return common
@@ -24,6 +24,17 @@ def generate_party(asset_manager_id=None, party_id=None):
     party.upsert_address('Registered', generate_address(address_primary=True))
     party.upsert_email('Office', generate_email(email_primary=True))
     return party
+
+
+def generate_broker(asset_manager_id=None, party_id=None):
+    references = {'LEI': Reference(random_string(10))}
+    attributes = generate_common(asset_manager_id=asset_manager_id, party_id=party_id)
+    broker = Broker(**attributes)
+    # Does this screw up the party due to mutability concerns?  Do some testing.
+    broker.references.update(references)
+    broker.upsert_address('Registered', generate_address(address_primary=True))
+    broker.upsert_email('Office', generate_email(email_primary=True))
+    return broker
 
 
 def generate_address(country_id=None, address_primary=False):

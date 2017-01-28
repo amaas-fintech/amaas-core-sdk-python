@@ -54,7 +54,7 @@ class BooksInterface(Interface):
         # Potentially roll this into a loop through args rather than explicitly named - depends on additional validation
         if asset_manager_ids:
             search_params['asset_manager_ids'] = asset_manager_ids
-        if asset_manager_ids:
+        if book_ids:
             search_params['book_ids'] = book_ids
         url = self.endpoint + '/books'
         response = requests.get(url, params=search_params)

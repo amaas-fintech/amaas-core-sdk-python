@@ -25,7 +25,7 @@ class AMaaSModel(object):
     @staticmethod
     def non_interface_attributes():
         """ Potentially convert this to attribute annotations """
-        return ['']
+        return []
 
     def __init__(self, *args, **kwargs):
         self.version = kwargs.get('version') or 1
