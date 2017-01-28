@@ -6,6 +6,8 @@ import json
 def json_handler(value):
     if isinstance(value, (datetime.datetime, datetime.date)):
         return value.isoformat()
+    if isinstance(value, datetime.timedelta):
+        return (datetime.datetime.min + value).time().isoformat()
     if isinstance(value, Decimal):
         return str(value)
     if isinstance(value, AMaaSModel):
@@ -20,16 +22,31 @@ def to_json(dict_to_convert):
 
 class AMaaSModel(object):
 
+    @staticmethod
+    def non_interface_attributes():
+        """ Potentially convert this to attribute annotations """
+        return ['']
+
     def __init__(self, *args, **kwargs):
+        self.version = kwargs.get('version') or 1
         self.created_by = kwargs.get('created_by') or 'TEMP'  # Should come from logged in user
         self.updated_by = kwargs.get('updated_by') or 'TEMP'  # Should come from logged in user
         self.created_time = kwargs.get('created_time')  # Comes from database
         self.updated_time = kwargs.get('updated_time')  # Comes from database
-        self.internal_id = kwargs.get('internal_id')  # The internal ID of the transaction from the database
-        super(AMaaSModel, self).__init__(*args, **kwargs)
 
-    def to_json(self):
-        return to_json(self.__dict__)
+    def to_interface(self):
+        """
+        Returns only the JSON attributes required when interfacing with the AMaaS Core services.
+        Non-interface attributes are popped out.
+        :return:
+        """
+        dict_to_convert = self.__dict__
+        [dict_to_convert.pop(attr) for attr in self.non_interface_attributes()]
+        return self.to_json()
+
+    def to_json(self, dict_to_convert=None):
+        dict_to_convert = dict_to_convert or self.__dict__
+        return to_json(dict_to_convert)
 
     def __repr__(self):
         """

@@ -5,7 +5,7 @@ import unittest
 from amaascore.core.reference import Reference
 from amaascore.parties.party import Party
 from amaascore.parties.party_children import Address, Email
-from amaascore.utils.generate_party import generate_party, generate_address, generate_email
+from amaascore.tools.generate_party import generate_party, generate_address, generate_email
 
 
 class PartyTest(unittest.TestCase):

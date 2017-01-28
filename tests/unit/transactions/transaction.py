@@ -4,7 +4,7 @@ import unittest
 
 from amaascore.exceptions import TransactionNeedsSaving
 from amaascore.transactions.transaction import Transaction
-from amaascore.utils.generate_transaction import generate_transaction, REFERENCE_TYPES
+from amaascore.tools.generate_transaction import generate_transaction, REFERENCE_TYPES
 
 
 class TransactionTest(unittest.TestCase):

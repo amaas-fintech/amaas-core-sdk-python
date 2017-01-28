@@ -3,7 +3,7 @@ import json
 import unittest
 
 from amaascore.books.book import Book
-from amaascore.utils.generate_book import generate_book
+from amaascore.tools.generate_book import generate_book
 
 
 class BookTest(unittest.TestCase):
