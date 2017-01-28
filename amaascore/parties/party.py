@@ -7,12 +7,15 @@ from amaascore.core.amaas_model import AMaaSModel
 
 class Party(AMaaSModel):
 
-    def __init__(self, asset_manager_id, party_id, party_class, addresses={}, emails={}, references={},
-                 *args, **kwargs):
+    def __init__(self, asset_manager_id, party_id, party_status='Active', description='', addresses={}, emails={},
+                 references={}, *args, **kwargs):
         self.asset_manager_id = asset_manager_id
         self.party_id = party_id
-        self.party_class = party_class
+        self.party_status = party_status
+        if not hasattr(self, 'party_class'):  # A more specific child class may have already set this
+            self.party_class = 'Party'
         self.party_type = self.__class__.__name__
+        self.description = description
         self.addresses = addresses
         self.emails = emails
         self.references = references
