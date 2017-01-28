@@ -2,7 +2,7 @@ from decimal import Decimal
 import unittest
 
 from amaascore.assets.bond_option import BondOption
-from amaascore.utils.generate_asset import generate_bond_option
+from amaascore.tools.generate_asset import generate_bond_option
 
 
 class BondOptionTest(unittest.TestCase):

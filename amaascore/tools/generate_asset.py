@@ -5,7 +5,7 @@ import random
 from amaascore.assets.asset import Asset
 from amaascore.assets.bond_option import BondOption
 from amaascore.core.reference import Reference
-from amaascore.utils.helpers import random_string
+from amaascore.tools.helpers import random_string
 
 REFERENCE_TYPES = ['External']
 

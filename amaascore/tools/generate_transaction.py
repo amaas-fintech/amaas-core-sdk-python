@@ -5,7 +5,7 @@ import random
 from amaascore.core.reference import Reference
 from amaascore.transactions.transaction import Transaction
 from amaascore.transactions.transaction_children import Charge, Code
-from amaascore.utils.helpers import random_string
+from amaascore.tools.helpers import random_string
 
 CHARGE_TYPES = ['Tax', 'Commission']
 CODE_TYPES = ['Settle Code', 'Client Classifier']
@@ -19,8 +19,8 @@ def generate_common(asset_manager_id=None, asset_book_id=None, counterparty_book
     price = Decimal(random.uniform(1.0, 1000.0)).quantize(Decimal('0.01')) if price is None else price
 
     common = {'asset_manager_id': asset_manager_id or random.randint(1, 1000),
-              'asset_book_id': asset_book_id or random.randint(1, 1000),
-              'counterparty_book_id': counterparty_book_id or random.randint(1, 1000),
+              'asset_book_id': asset_book_id or random_string(8),
+              'counterparty_book_id': counterparty_book_id or random_string(8),
               'asset_id': asset_id or str(random.randint(1, 1000)),
               'quantity': quantity or Decimal(random.randint(-5000, 5000)),
               'price': price,
