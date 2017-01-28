@@ -8,8 +8,8 @@ from amaascore.assets.derivative import Derivative
 class BondOption(Derivative):
 
     def __init__(self, asset_manager_id, put_call, strike, asset_id=None, asset_issuer_id=None, asset_status='Active',
-                 description='', country_id=None, venue_id=None, client_id=None, issue_date=None, references={},
-                 *args, **kwargs):
+                 description='', country_id=None, venue_id=None, client_id=None, issue_date=None,
+                 maturity_date=None, references={}, *args, **kwargs):
         self.asset_manager_id = asset_manager_id
         self.put_call = put_call
         self.strike = strike

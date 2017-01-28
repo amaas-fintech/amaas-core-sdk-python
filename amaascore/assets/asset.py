@@ -11,18 +11,18 @@ class Asset(AMaaSModel):
     def children():
         return ['charges', 'codes', 'references']
 
-    def __init__(self, asset_manager_id, asset_class, fungible, asset_issuer_id, asset_id=None, asset_status='Active',
-                 version=1, country_id=None, venue_id=None, maturity_date=None,
-                 description='', references={}, *args, **kwargs):
+    def __init__(self, asset_manager_id, fungible, asset_issuer_id=None, asset_id=None, asset_status='Active',
+                 country_id=None, venue_id=None, maturity_date=None, description='', references={},
+                 *args, **kwargs):
         self.additional_dict = {}
         self.asset_manager_id = asset_manager_id
         self.asset_id = asset_id or uuid.uuid4().hex
-        self.asset_class = asset_class
-        self.asset_type =  self.__class__.__name__
+        if not hasattr(self, 'asset_class'):  # A more specific child class may have already set this
+            self.asset_class = 'Asset'
+        self.asset_type = self.__class__.__name__
         self.fungible = fungible
         self.asset_issuer_id = asset_issuer_id
         self.asset_status = asset_status
-        self.version = version
         self.country_id = country_id
         self.venue_id = venue_id
         self.maturity_date = maturity_date or datetime.date.max  # Has to be here to prevent arg binding
