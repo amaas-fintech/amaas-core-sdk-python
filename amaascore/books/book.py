@@ -5,9 +5,6 @@ from amaascore.core.amaas_model import AMaaSModel
 
 
 class Book(AMaaSModel):
-    """
-    TODO - does this derive from anything?  Sort of depends on whether or not we are planning on storing it.
-    """
 
     @staticmethod
     def non_interface_attributes():
