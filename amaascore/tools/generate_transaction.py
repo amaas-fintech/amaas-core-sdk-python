@@ -3,8 +3,9 @@ from decimal import Decimal
 import random
 
 from amaascore.core.reference import Reference
+from amaascore.transactions.position import Position
 from amaascore.transactions.transaction import Transaction
-from amaascore.transactions.transaction_children import Charge, Code
+from amaascore.transactions.children import Charge, Code
 from amaascore.tools.helpers import random_string
 
 CHARGE_TYPES = ['Tax', 'Commission']
@@ -60,3 +61,10 @@ def generate_transaction(asset_manager_id=None, asset_book_id=None, counterparty
     transaction.codes.update(codes)
     transaction.references.update(references)
     return transaction
+
+
+def generate_position(asset_manager_id=None, asset_id=None, quantity=None):
+    position = Position(asset_manager_id=asset_manager_id or random.randint(1, 1000),
+                        asset_id=asset_id or str(random.randint(1, 1000)),
+                        quantity=quantity or Decimal(random.randint(1, 50000)))
+    return position

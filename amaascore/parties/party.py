@@ -3,9 +3,16 @@ import re
 
 from amaascore.error_messages import ERROR_LOOKUP
 from amaascore.core.amaas_model import AMaaSModel
+from amaascore.core.reference import Reference
+from amaascore.parties.children import Address, Email
 
 
 class Party(AMaaSModel):
+
+    @staticmethod
+    def children():
+        """ A dict of which of the attributes are collections of other objects, and what type """
+        return {'addresses': Address, 'emails': Email, 'references': Reference}
 
     def __init__(self, asset_manager_id, party_id, party_status='Active', description='', addresses={}, emails={},
                  references={}, *args, **kwargs):

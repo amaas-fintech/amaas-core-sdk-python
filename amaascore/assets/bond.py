@@ -1,5 +1,5 @@
 from datetime import date, datetime
-from dateutil import parser
+from dateutil.parser import parse
 from decimal import Decimal
 
 from amaascore.assets.asset import Asset
@@ -36,9 +36,7 @@ class BondBase(Asset):
         :return:
         """
         if issue_date:
-            if isinstance(issue_date, str):
-                issue_date = parser.parse(issue_date).date()
-            self._issue_date = issue_date
+            self._issue_date = parse(issue_date).date() if isinstance(issue_date, (str, unicode)) else issue_date
 
     @property
     def coupon(self):

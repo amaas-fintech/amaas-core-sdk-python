@@ -1,23 +1,25 @@
 import datetime
+from dateutil.parser import parse
 from decimal import Decimal
 import uuid
 
 from amaascore.core.amaas_model import AMaaSModel
 from amaascore.exceptions import TransactionNeedsSaving
 from amaascore.core.reference import Reference
+from amaascore.transactions.children import Charge, Code
 
 
 class Transaction(AMaaSModel):
 
     @staticmethod
     def children():
-        """ TODO - IS THIS NEEDED?"""
-        return ['charges', 'codes', 'references']
+        """ A dict of which of the attributes are collections of other objects, and what type """
+        return {'charges': Charge, 'codes': Code, 'references': Reference}
 
     def __init__(self, asset_manager_id, asset_book_id, counterparty_book_id, transaction_action, asset_id, quantity,
                  transaction_date, settlement_date, price, transaction_currency, settlement_currency,
                  asset=None, execution_time=None, transaction_type='Trade', transaction_id=None,
-                 transaction_status='New', version=1, charges={}, codes={}, references={}, *args, **kwargs):
+                 transaction_status='New', charges={}, codes={}, references={}, *args, **kwargs):
 
         self.asset_manager_id = asset_manager_id
         self.asset_book_id = asset_book_id
@@ -32,7 +34,6 @@ class Transaction(AMaaSModel):
         self.settlement_currency = settlement_currency
         self.transaction_type = transaction_type
         self.transaction_status = transaction_status
-        self.version = version
 
         # Cannot be in method signature or the value gets bound to the constructor call
         self.execution_time = execution_time or datetime.datetime.utcnow()
@@ -72,6 +73,48 @@ class Transaction(AMaaSModel):
         :return:
         """
         self._price = Decimal(value)
+
+    @property
+    def transaction_date(self):
+        return self._transaction_date
+
+    @transaction_date.setter
+    def transaction_date(self, value):
+        """
+        Force the transaction_date to always be a date
+        :param value:
+        :return:
+        """
+        if value:
+            self._transaction_date = parse(value).date() if isinstance(value, (str, unicode)) else value
+
+    @property
+    def settlement_date(self):
+        return self._settlement_date
+
+    @settlement_date.setter
+    def settlement_date(self, value):
+        """
+        Force the settlement_date to always be a date
+        :param value:
+        :return:
+        """
+        if value:
+            self._settlement_date = parse(value).date() if isinstance(value, (str, unicode)) else value
+
+    @property
+    def execution_time(self):
+        return self._execution_time
+
+    @execution_time.setter
+    def execution_time(self, value):
+        """
+        Force the execution_time to always be a datetime
+        :param value:
+        :return:
+        """
+        if value:
+            self._execution_time = parse(value) if isinstance(value, (str, unicode)) else value
 
     @property
     def gross_settlement(self):
