@@ -72,5 +72,46 @@ class TransactionsInterfaceTest(unittest.TestCase):
         transactions = self.transactions_interface.search(asset_manager_ids=[asset_manager_id])
         self.assertEqual(len(transactions), len(asset_manager_transactions))
 
+    def test_TransactionsByAssetManager(self):
+        all_transactions = self.transactions_interface.search()
+        random_transaction_index = random.randint(0, len(all_transactions)-1)
+        asset_manager_id = all_transactions[random_transaction_index].asset_manager_id
+        asset_manager_transactions = [transaction for transaction in all_transactions
+                                      if transaction.asset_manager_id == asset_manager_id]
+        transactions = self.transactions_interface.transactions_by_asset_manager(asset_manager_id=asset_manager_id)
+        self.assertEqual(len(transactions), len(asset_manager_transactions))
+
+    def test_PositionSearch(self):
+        all_positions = self.transactions_interface.position_search()
+        random_position_index = random.randint(0, len(all_positions)-1)
+        asset_manager_id = all_positions[random_position_index].asset_manager_id
+        asset_manager_positions = [position for position in all_positions
+                                   if position.asset_manager_id == asset_manager_id]
+        positions = self.transactions_interface.position_search(asset_manager_ids=[asset_manager_id])
+        self.assertEqual(len(positions), len(asset_manager_positions))
+
+    def test_PositionsByBook(self):
+        all_positions = self.transactions_interface.position_search(accounting_types=['Transaction Date'],
+                                                                    position_date=datetime.date.today())
+        random_position_index = random.randint(0, len(all_positions)-1)
+        asset_manager_id = all_positions[random_position_index].asset_manager_id
+        asset_book_id = all_positions[random_position_index].asset_book_id
+        asset_manager_positions = [position for position in all_positions
+                                   if position.asset_manager_id == asset_manager_id
+                                   and position.asset_book_id == asset_book_id]
+        positions = self.transactions_interface.positions_by_asset_manager_book(asset_manager_id=asset_manager_id,
+                                                                                asset_book_id=asset_book_id)
+        self.assertEqual(len(positions), len(asset_manager_positions))
+
+    def test_PositionsByAssetManager(self):
+        all_positions = self.transactions_interface.position_search(accounting_types=['Transaction Date'],
+                                                                    position_date=datetime.date.today())
+        random_position_index = random.randint(0, len(all_positions)-1)
+        asset_manager_id = all_positions[random_position_index].asset_manager_id
+        asset_manager_positions = [position for position in all_positions
+                                   if position.asset_manager_id == asset_manager_id]
+        positions = self.transactions_interface.positions_by_asset_manager(asset_manager_id=asset_manager_id)
+        self.assertEqual(len(positions), len(asset_manager_positions))
+
 if __name__ == '__main__':
     unittest.main()

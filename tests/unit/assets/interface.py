@@ -58,5 +58,13 @@ class AssetsInterfaceTest(unittest.TestCase):
         assets = self.assets_interface.search(asset_manager_ids=[asset_manager_id])
         self.assertEqual(len(assets), len(asset_manager_assets))
 
+    def test_AssetsByAssetManager(self):
+        all_assets = self.assets_interface.search()
+        random_asset_index = random.randint(0, len(all_assets)-1)
+        asset_manager_id = all_assets[random_asset_index].asset_manager_id
+        asset_manager_assets = [asset for asset in all_assets if asset.asset_manager_id == asset_manager_id]
+        assets = self.assets_interface.assets_by_asset_manager(asset_manager_id=asset_manager_id)
+        self.assertEqual(len(assets), len(asset_manager_assets))
+
 if __name__ == '__main__':
     unittest.main()

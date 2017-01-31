@@ -59,10 +59,17 @@ class MonitorInterface(Interface):
         url = self.endpoint + '/items'
         response = requests.get(url, params=search_params)
         if response.ok:
-            items = []
-            for json_item in response.json():
-                item = json_to_item(json_item)
-                items.append(item)
+            items = [json_to_item(json_item) for json_item in response.json()]
+            return items
+        else:
+            print "HANDLE THIS PROPERLY"
+            print response.content
+
+    def items_by_asset_manager(self, asset_manager_id):
+        url = '%s/items/%s' % (self.endpoint, asset_manager_id)
+        response = requests.get(url)
+        if response.ok:
+            items = [json_to_item(json_item) for json_item in response.json()]
             return items
         else:
             print "HANDLE THIS PROPERLY"

@@ -1,6 +1,6 @@
 import requests
 
-from amaascore.transactions.utils import json_to_transaction
+from amaascore.transactions.utils import json_to_transaction, json_to_position
 from amaascore.core.interface import Interface
 from config import ENDPOINTS
 
@@ -40,6 +40,16 @@ class TransactionsInterface(Interface):
             print "HANDLE THIS PROPERLY"
             print response.content
 
+    def transactions_by_asset_manager(self, asset_manager_id):
+        url = '%s/transactions/%s' % (self.endpoint, asset_manager_id)
+        response = requests.get(url)
+        if response.ok:
+            transactions = [json_to_transaction(json_transaction) for json_transaction in response.json()]
+            return transactions
+        else:
+            print "HANDLE THIS PROPERLY"
+            print response.content
+
     def cancel(self, asset_manager_id, transaction_id):
         url = '%s/transactions/%s/%s' % (self.endpoint, asset_manager_id, transaction_id)
         response = requests.delete(url)
@@ -59,11 +69,53 @@ class TransactionsInterface(Interface):
         url = self.endpoint + '/transactions'
         response = requests.get(url, params=search_params)
         if response.ok:
-            transactions = []
-            for json_transaction in response.json():
-                transaction = json_to_transaction(json_transaction)
-                transactions.append(transaction)
+            transactions = [json_to_transaction(json_transaction) for json_transaction in response.json()]
             return transactions
+        else:
+            print "HANDLE THIS PROPERLY"
+            print response.content
+
+    def position_search(self, asset_manager_ids=None, asset_book_ids=None, account_ids=None, accounting_types=None,
+                        asset_ids=None, position_date=None):
+        url = self.endpoint + '/positions'
+        search_params = {}
+        # Potentially roll into a loop
+        if asset_manager_ids:
+            search_params['asset_manager_ids'] = asset_manager_ids
+        if asset_book_ids:
+            search_params['asset_book_ids'] = asset_book_ids
+        if account_ids:
+            search_params['account_ids'] = account_ids
+        if accounting_types:
+            search_params['accounting_types'] = accounting_types
+        if asset_ids:
+            search_params['asset_ids'] = asset_ids
+        if position_date:
+            search_params['position_date'] = position_date
+        response = requests.get(url, params=search_params)
+        if response.ok:
+            positions = [json_to_position(json_position) for json_position in response.json()]
+            return positions
+        else:
+            print "HANDLE THIS PROPERLY"
+            print response.content
+
+    def positions_by_asset_manager_book(self, asset_manager_id, asset_book_id):
+        url = '%s/positions/%s/%s' % (self.endpoint, asset_manager_id, asset_book_id)
+        response = requests.get(url)
+        if response.ok:
+            positions = [json_to_position(json_position) for json_position in response.json()]
+            return positions
+        else:
+            print "HANDLE THIS PROPERLY"
+            print response.content
+
+    def positions_by_asset_manager(self, asset_manager_id):
+        url = '%s/positions/%s' % (self.endpoint, asset_manager_id)
+        response = requests.get(url)
+        if response.ok:
+            positions = [json_to_position(json_position) for json_position in response.json()]
+            return positions
         else:
             print "HANDLE THIS PROPERLY"
             print response.content
