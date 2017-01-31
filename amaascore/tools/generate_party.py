@@ -3,7 +3,7 @@ import random
 from amaascore.core.reference import Reference
 from amaascore.parties.broker import Broker
 from amaascore.parties.party import Party
-from amaascore.parties.party_children import Address, Email
+from amaascore.parties.children import Address, Email
 from amaascore.tools.helpers import random_string
 
 

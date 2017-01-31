@@ -50,7 +50,13 @@ class AMaaSModel(object):
 
     def to_json(self, dict_to_convert=None):
         dict_to_convert = dict_to_convert or self.__dict__
-        return to_json(dict_to_convert)
+        # Convert internal property values (_XYZ) to the correctly named one (XYZ)
+        # Is there a better way of doing this instead of relying on the first character?
+        mapped_dict = {}
+        for key, value in dict_to_convert.items():
+            key = key[1:] if key[0] == '_' else key
+            mapped_dict[key] = value
+        return to_json(mapped_dict)
 
     def __repr__(self):
         """
