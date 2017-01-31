@@ -51,5 +51,13 @@ class BooksInterfaceTest(unittest.TestCase):
         books = self.books_interface.search(asset_manager_ids=[asset_manager_id])
         self.assertEqual(len(books), len(asset_manager_books))
 
+    def test_BooksByAssetManager(self):
+        all_books = self.books_interface.search()
+        random_book_index = random.randint(0, len(all_books)-1)
+        asset_manager_id = all_books[random_book_index].asset_manager_id
+        asset_manager_books = [book for book in all_books if book.asset_manager_id == asset_manager_id]
+        books = self.books_interface.books_by_asset_manager(asset_manager_id=asset_manager_id)
+        self.assertEqual(len(books), len(asset_manager_books))
+
 if __name__ == '__main__':
     unittest.main()

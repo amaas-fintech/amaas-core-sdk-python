@@ -50,5 +50,14 @@ class MonitorInterfaceTest(unittest.TestCase):
         items = self.monitor_interface.search_items(asset_manager_ids=[asset_manager_id])
         self.assertEqual(len(items), len(asset_manager_items))
 
+    def test_ItemsByAssetManager(self):
+        all_items = self.monitor_interface.search_items()
+        random_item_index = random.randint(0, len(all_items)-1)
+        asset_manager_id = all_items[random_item_index].asset_manager_id
+        asset_manager_items = [item for item in all_items if item.asset_manager_id == asset_manager_id]
+        items = self.monitor_interface.items_by_asset_manager(asset_manager_id=asset_manager_id)
+        self.assertEqual(len(items), len(asset_manager_items))
+
+
 if __name__ == '__main__':
     unittest.main()

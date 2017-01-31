@@ -59,10 +59,17 @@ class BooksInterface(Interface):
         url = self.endpoint + '/books'
         response = requests.get(url, params=search_params)
         if response.ok:
-            books = []
-            for json_book in response.json():
-                book = json_to_book(json_book)
-                books.append(book)
+            books = [json_to_book(json_book) for json_book in response.json()]
+            return books
+        else:
+            print "HANDLE THIS PROPERLY"
+            print response.content
+
+    def books_by_asset_manager(self, asset_manager_id):
+        url = '%s/books/%s' % (self.endpoint, asset_manager_id)
+        response = requests.get(url)
+        if response.ok:
+            books = [json_to_book(json_book) for json_book in response.json()]
             return books
         else:
             print "HANDLE THIS PROPERLY"

@@ -63,8 +63,9 @@ def generate_transaction(asset_manager_id=None, asset_book_id=None, counterparty
     return transaction
 
 
-def generate_position(asset_manager_id=None, asset_id=None, quantity=None):
+def generate_position(asset_manager_id=None, asset_book_id=None, asset_id=None, quantity=None):
     position = Position(asset_manager_id=asset_manager_id or random.randint(1, 1000),
+                        asset_book_id=asset_book_id or random_string(8),
                         asset_id=asset_id or str(random.randint(1, 1000)),
                         quantity=quantity or Decimal(random.randint(1, 50000)))
     return position

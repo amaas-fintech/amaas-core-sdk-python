@@ -59,10 +59,17 @@ class AssetsInterface(Interface):
         url = self.endpoint + '/assets'
         response = requests.get(url, params=search_params)
         if response.ok:
-            assets = []
-            for json_asset in response.json():
-                asset = json_to_asset(json_asset)
-                assets.append(asset)
+            assets = [json_to_asset(json_asset) for json_asset in response.json()]
+            return assets
+        else:
+            print "HANDLE THIS PROPERLY"
+            print response.content
+
+    def assets_by_asset_manager(self, asset_manager_id):
+        url = '%s/assets/%s' % (self.endpoint, asset_manager_id)
+        response = requests.get(url)
+        if response.ok:
+            assets = [json_to_asset(json_asset) for json_asset in response.json()]
             return assets
         else:
             print "HANDLE THIS PROPERLY"

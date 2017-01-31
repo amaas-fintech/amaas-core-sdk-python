@@ -59,10 +59,17 @@ class PartiesInterface(Interface):
         url = self.endpoint + '/parties'
         response = requests.get(url, params=search_params)
         if response.ok:
-            parties = []
-            for json_party in response.json():
-                party = json_to_party(json_party)
-                parties.append(party)
+            parties = [json_to_party(json_party) for json_party in response.json()]
+            return parties
+        else:
+            print "HANDLE THIS PROPERLY"
+            print response.content
+
+    def parties_by_asset_manager(self, asset_manager_id):
+        url = '%s/parties/%s' % (self.endpoint, asset_manager_id)
+        response = requests.get(url)
+        if response.ok:
+            parties = [json_to_party(json_party) for json_party in response.json()]
             return parties
         else:
             print "HANDLE THIS PROPERLY"

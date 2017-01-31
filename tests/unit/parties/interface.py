@@ -57,5 +57,13 @@ class PartiesInterfaceTest(unittest.TestCase):
         parties = self.parties_interface.search(asset_manager_ids=[asset_manager_id])
         self.assertEqual(len(parties), len(asset_manager_parties))
 
+    def test_PartiesByAssetManager(self):
+        all_parties = self.parties_interface.search()
+        random_party_index = random.randint(0, len(all_parties)-1)
+        asset_manager_id = all_parties[random_party_index].asset_manager_id
+        asset_manager_parties = [party for party in all_parties if party.asset_manager_id == asset_manager_id]
+        parties = self.parties_interface.parties_by_asset_manager(asset_manager_id=asset_manager_id)
+        self.assertEqual(len(parties), len(asset_manager_parties))
+
 if __name__ == '__main__':
     unittest.main()
