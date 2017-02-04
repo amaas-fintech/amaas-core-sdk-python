@@ -13,4 +13,5 @@ ERROR_LOOKUP = {'address_invalid': 'Invalid addresses attribute: %s. Party ID %s
                 'party_status_invalid': 'Invalid party status %s. Party ID: %s for Asset Manager: %s',
                 'party_type_invalid': 'Invalid party type %s for class %s. Party ID: %s for Asset Manager: %s',
                 'party_additional_invalid': 'Error with parameter \'additional\': %s. Party ID: %s for Asset Manager:'
-                                            ' %s'}
+                                            ' %s',
+                'transaction_link_not_found': 'Cannot remove link - not found'}

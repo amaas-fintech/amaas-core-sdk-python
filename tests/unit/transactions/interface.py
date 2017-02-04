@@ -4,6 +4,7 @@ import unittest
 
 from amaascore.transactions.transaction import Transaction
 from amaascore.transactions.interface import TransactionsInterface
+from amaascore.tools.helpers import random_string
 from amaascore.tools.generate_asset import generate_asset
 from amaascore.tools.generate_transaction import generate_transaction
 
@@ -112,6 +113,37 @@ class TransactionsInterfaceTest(unittest.TestCase):
                                    if position.asset_manager_id == asset_manager_id]
         positions = self.transactions_interface.positions_by_asset_manager(asset_manager_id=asset_manager_id)
         self.assertEqual(len(positions), len(asset_manager_positions))
+
+    def test_MultipleLink(self):
+        self.create_transaction_asset()
+        transaction = self.transactions_interface.new(self.transaction)
+        links = transaction.links.get('Multiple')
+        self.assertEqual(len(links), 3)  # The test script inserts 3 links
+        # Add a link
+        random_id = random_string(8)
+        transaction.add_link('Multiple', linked_transaction_id=random_id)
+        transaction = self.transactions_interface.amend(transaction)
+        self.assertEqual(len(transaction.links.get('Multiple')), 4)
+        transaction.remove_link('Multiple', linked_transaction_id=random_id)
+        transaction = self.transactions_interface.amend(transaction)
+        self.assertEqual(len(transaction.links.get('Multiple')), 3)
+
+    def test_ChildrenPopulated(self):
+        self.create_transaction_asset()
+        transaction = self.transactions_interface.new(self.transaction)
+        retreieved_transaction = self.transactions_interface.retrieve(asset_manager_id=self.asset_manager_id,
+                                                                      transaction_id=self.transaction_id)
+        self.assertGreater(len(transaction.charges), 0)
+        self.assertGreater(len(transaction.codes), 0)
+        self.assertGreater(len(transaction.comments), 0)
+        self.assertGreater(len(transaction.links), 0)
+        self.assertGreater(len(transaction.parties), 0)
+        self.assertEqual(transaction.charges, retreieved_transaction.charges)
+        self.assertEqual(transaction.codes, retreieved_transaction.codes)
+        self.assertEqual(transaction.comments, retreieved_transaction.comments)
+        self.assertEqual(transaction.links, retreieved_transaction.links)
+        self.assertEqual(transaction.parties, retreieved_transaction.parties)
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -5,11 +5,13 @@ import random
 from amaascore.core.reference import Reference
 from amaascore.transactions.position import Position
 from amaascore.transactions.transaction import Transaction
-from amaascore.transactions.children import Charge, Code
+from amaascore.transactions.children import Charge, Code, Comment, Link, Party
 from amaascore.tools.helpers import random_string
 
 CHARGE_TYPES = ['Tax', 'Commission']
 CODE_TYPES = ['Settle Code', 'Client Classifier']
+COMMENT_TYPES = ['Trader']
+PARTY_TYPES = ['Prime Broker']
 REFERENCE_TYPES = ['External']
 
 
@@ -54,11 +56,19 @@ def generate_transaction(asset_manager_id=None, asset_book_id=None, counterparty
                                    net_affecting=net_affecting_charges or random.choice([True, False]))
                for charge_type in CHARGE_TYPES}
 
+    links = {'Single': Link(linked_transaction_id=random_string(8)),
+             'Multiple': [Link(linked_transaction_id=random_string(8)) for x in range(3)]}
+
     codes = {code_type: Code(code_value=random_string(8)) for code_type in CODE_TYPES}
+    comments = {comment_type: Comment(comment_value=random_string(8)) for comment_type in COMMENT_TYPES}
+    parties = {party_type: Party(party_id=random_string(8)) for party_type in PARTY_TYPES}
     references = {ref_type: Reference(reference_value=random_string(10)) for ref_type in REFERENCE_TYPES}
 
     transaction.charges.update(charges)
     transaction.codes.update(codes)
+    transaction.comments.update(comments)
+    transaction.links.update(links)
+    transaction.parties.update(parties)
     transaction.references.update(references)
     return transaction
 

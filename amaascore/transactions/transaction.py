@@ -1,12 +1,14 @@
+import copy
 import datetime
 from dateutil.parser import parse
 from decimal import Decimal
 import uuid
 
-from amaascore.core.amaas_model import AMaaSModel
+from amaascore.error_messages import ERROR_LOOKUP
 from amaascore.exceptions import TransactionNeedsSaving
+from amaascore.core.amaas_model import AMaaSModel
 from amaascore.core.reference import Reference
-from amaascore.transactions.children import Charge, Code
+from amaascore.transactions.children import Charge, Code, Comment, Link, Party
 
 
 class Transaction(AMaaSModel):
@@ -14,12 +16,14 @@ class Transaction(AMaaSModel):
     @staticmethod
     def children():
         """ A dict of which of the attributes are collections of other objects, and what type """
-        return {'charges': Charge, 'codes': Code, 'references': Reference}
+        return {'charges': Charge, 'codes': Code, 'comments': Comment, 'links': Link, 'parties': Party,
+                'references': Reference}
 
     def __init__(self, asset_manager_id, asset_book_id, counterparty_book_id, transaction_action, asset_id, quantity,
                  transaction_date, settlement_date, price, transaction_currency, settlement_currency,
                  asset=None, execution_time=None, transaction_type='Trade', transaction_id=None,
-                 transaction_status='New', charges={}, codes={}, references={}, *args, **kwargs):
+                 transaction_status='New', charges={}, codes={}, comments={}, links={}, parties={}, references={},
+                 *args, **kwargs):
 
         self.asset_manager_id = asset_manager_id
         self.asset_book_id = asset_book_id
@@ -41,6 +45,9 @@ class Transaction(AMaaSModel):
 
         self.charges = charges
         self.codes = codes
+        self.comments = comments
+        self.links = links
+        self.parties = parties
         self.references = references
         self.references['AMaaS'] = Reference(reference_value=self.transaction_id)  # Upserts the AMaaS Reference
 
@@ -182,13 +189,6 @@ class Transaction(AMaaSModel):
         """
         return self.references.keys()
 
-    # def __dict__(self):
-    #     # Potentially move this into the base class?
-    #     transaction_dict = super(Transaction, self).__dict__
-    #     for child in self.children():
-    #         transaction_dict[child] = getattr(self, child)
-    #     return transaction_dict
-
     def __str__(self):
         return "Transaction object - ID: %s" % self.transaction_id
 
@@ -208,3 +208,56 @@ class Transaction(AMaaSModel):
         """
         if postings:
             self._postings = postings
+
+    # Upsert methods for safely adding children - this is more important for cases where we trigger action when there
+    # is a change, e.g. for the case of a @property on the collection.  Since we don't have that case yet for
+    # transactions, I have not yet filled out all of these.
+    def upsert_code(self, code_type, code):
+        codes = copy.deepcopy(self.codes)
+        codes.update({code_type: code})
+        self.codes = codes
+
+    def upsert_link_list(self, link_type, link_list):
+        """
+        Remove an item altogether by setting link_list to None.
+        Currently, only links can contain multiple children of the same type.
+        :param link_type:
+        :param link_list:
+        :return:
+        """
+        if link_list is None:
+            self.links.pop(link_type, None)
+            return
+        links = copy.deepcopy(self.links)
+        links.update({link_type: link_list})
+        self.links = links
+
+    def add_link(self, link_type, linked_transaction_id):
+        new_link = Link(linked_transaction_id=linked_transaction_id)
+        link_list = self.links.get(link_type)
+        if link_list:
+            if not isinstance(link_list, list):
+                link_list = [link_list]
+            link_list.append(new_link)
+            # Remove duplicates - perhaps log or raise a warning?
+            link_list = list(set(link_list))
+        else:
+            link_list = new_link
+        self.upsert_link_list(link_type=link_type, link_list=link_list)
+
+    def remove_link(self, link_type, linked_transaction_id):
+        link_list = self.links.get(link_type)
+        if not link_list:
+            raise ValueError(ERROR_LOOKUP.get('transaction_link_not_found'))
+        if isinstance(link_list, Link):
+            if link_list.linked_transaction_id == linked_transaction_id:
+                link_list = None
+            else:
+                raise ValueError(ERROR_LOOKUP.get('transaction_link_not_found'))
+        else:
+            output = [i for i, link in enumerate(link_list) if link.linked_transaction_id == linked_transaction_id]
+            if output:
+                link_list.pop(output[0])
+            else:
+                raise ValueError(ERROR_LOOKUP.get('transaction_link_not_found'))
+        self.upsert_link_list(link_type=link_type, link_list=link_list)
