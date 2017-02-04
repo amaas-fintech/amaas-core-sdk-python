@@ -12,17 +12,14 @@ def json_to_transaction(json_transaction):
         children = json_transaction.pop(collection_name, {})
         collection = {}
         for (child_type, child_json) in children.items():
-            child = clazz(**child_json)
+            # Handle the case where there are multiple children for a given type - e.g. links
+            if isinstance(child_json, list):
+                child = []
+                for child_json_in_list in child_json:
+                    child.append(clazz(**child_json_in_list))
+            else:
+                child = clazz(**child_json)
             collection[child_type] = child
         json_transaction[collection_name] = collection
     transaction = Transaction(**json_transaction)
     return transaction
-
-
-def json_to_party(json_to_convert):
-    # Iterate through the party children, converting the various JSON attributes into the relevant class type
-
-    clazz = globals().get(json_to_convert.get('party_type'))
-    party = clazz(**json_to_convert)
-    return party
-

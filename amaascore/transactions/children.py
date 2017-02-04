@@ -34,3 +34,30 @@ class Code(AMaaSModel):
         self.active = active
         self.version = version
         super(Code, self).__init__(*args, **kwargs)
+
+
+class Comment(AMaaSModel):
+
+    def __init__(self, comment_value, active=True, version=1, *args, **kwargs):
+        self.comment_value = comment_value
+        self.active = active
+        self.version = version
+        super(Comment, self).__init__(*args, **kwargs)
+
+
+class Link(AMaaSModel):
+
+    def __init__(self, linked_transaction_id, active=True, version=1, *args, **kwargs):
+        self.linked_transaction_id = linked_transaction_id
+        self.active = active
+        self.version = version
+        super(Link, self).__init__(*args, **kwargs)
+
+
+class Party(AMaaSModel):
+
+    def __init__(self, party_id, active=True, version=1, *args, **kwargs):
+        self.party_id = party_id
+        self.active = active
+        self.version = version
+        super(Party, self).__init__(*args, **kwargs)
