@@ -13,7 +13,8 @@ class AssetsInterfaceTest(unittest.TestCase):
     def setUp(self):
         self.longMessage = True  # Print complete error message on failure
         self.assets_interface = AssetsInterface()
-        self.asset = generate_asset()
+        self.asset_manager_id = random.randint(1, 2**31-1)
+        self.asset = generate_asset(asset_manager_id=self.asset_manager_id)
         self.asset_id = self.asset.asset_id
 
     def tearDown(self):
@@ -65,6 +66,13 @@ class AssetsInterfaceTest(unittest.TestCase):
         asset_manager_assets = [asset for asset in all_assets if asset.asset_manager_id == asset_manager_id]
         assets = self.assets_interface.assets_by_asset_manager(asset_manager_id=asset_manager_id)
         self.assertEqual(len(assets), len(asset_manager_assets))
+
+    def test_ChildrenPopulated(self):
+        asset = self.assets_interface.new(self.asset)
+        retrieved_asset = self.assets_interface.retrieve(asset_manager_id=self.asset_manager_id,
+                                                         asset_id=self.asset_id)
+        self.assertGreater(len(asset.references), 0)
+        self.assertEqual(asset.references, retrieved_asset.references)
 
 if __name__ == '__main__':
     unittest.main()

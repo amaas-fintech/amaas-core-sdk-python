@@ -131,18 +131,20 @@ class TransactionsInterfaceTest(unittest.TestCase):
     def test_ChildrenPopulated(self):
         self.create_transaction_asset()
         transaction = self.transactions_interface.new(self.transaction)
-        retreieved_transaction = self.transactions_interface.retrieve(asset_manager_id=self.asset_manager_id,
-                                                                      transaction_id=self.transaction_id)
+        retrieved_transaction = self.transactions_interface.retrieve(asset_manager_id=self.asset_manager_id,
+                                                                     transaction_id=self.transaction_id)
         self.assertGreater(len(transaction.charges), 0)
         self.assertGreater(len(transaction.codes), 0)
         self.assertGreater(len(transaction.comments), 0)
         self.assertGreater(len(transaction.links), 0)
         self.assertGreater(len(transaction.parties), 0)
-        self.assertEqual(transaction.charges, retreieved_transaction.charges)
-        self.assertEqual(transaction.codes, retreieved_transaction.codes)
-        self.assertEqual(transaction.comments, retreieved_transaction.comments)
-        self.assertEqual(transaction.links, retreieved_transaction.links)
-        self.assertEqual(transaction.parties, retreieved_transaction.parties)
+        self.assertGreater(len(transaction.references), 0)
+        self.assertEqual(transaction.charges, retrieved_transaction.charges)
+        self.assertEqual(transaction.codes, retrieved_transaction.codes)
+        self.assertEqual(transaction.comments, retrieved_transaction.comments)
+        self.assertEqual(transaction.links, retrieved_transaction.links)
+        self.assertEqual(transaction.parties, retrieved_transaction.parties)
+        self.assertEqual(transaction.references, retrieved_transaction.references)
 
 
 if __name__ == '__main__':

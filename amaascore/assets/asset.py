@@ -10,7 +10,7 @@ class Asset(AMaaSModel):
 
     @staticmethod
     def children():
-        return ['charges', 'codes', 'references']
+        return {'references': Reference}
 
     def __init__(self, asset_manager_id, fungible, asset_issuer_id=None, asset_id=None, asset_status='Active',
                  country_id=None, venue_id=None, maturity_date=None, description='', references={},

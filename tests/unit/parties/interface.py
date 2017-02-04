@@ -12,7 +12,8 @@ class PartiesInterfaceTest(unittest.TestCase):
     def setUp(self):
         self.longMessage = True  # Print complete error message on failure
         self.parties_interface = PartiesInterface()
-        self.party = generate_party()
+        self.asset_manager_id = random.randint(1, 2**31-1)
+        self.party = generate_party(asset_manager_id=self.asset_manager_id)
         self.party_id = self.party.party_id
 
     def tearDown(self):
@@ -64,6 +65,19 @@ class PartiesInterfaceTest(unittest.TestCase):
         asset_manager_parties = [party for party in all_parties if party.asset_manager_id == asset_manager_id]
         parties = self.parties_interface.parties_by_asset_manager(asset_manager_id=asset_manager_id)
         self.assertEqual(len(parties), len(asset_manager_parties))
+
+    def test_ChildrenPopulated(self):
+        party = self.parties_interface.new(self.party)
+        retrieved_party = self.parties_interface.retrieve(asset_manager_id=self.asset_manager_id,
+                                                          party_id=self.party_id)
+
+        self.assertGreater(len(party.addresses), 0)
+        self.assertGreater(len(party.emails), 0)
+        self.assertGreater(len(party.references), 0)
+        self.assertEqual(party.addresses, retrieved_party.addresses)
+        self.assertEqual(party.emails, retrieved_party.emails)
+        self.assertEqual(party.references, retrieved_party.references)
+
 
 if __name__ == '__main__':
     unittest.main()
