@@ -8,16 +8,16 @@ from amaascore.assets.derivative import Derivative
 from amaascore.assets.equity import Equity
 from amaascore.assets.foreign_exchange import ForeignExchange, NonDeliverableForward
 
-import inspect
-
 
 def json_to_asset(json_asset):
+    # Iterate through the asset children, converting the various JSON attributes into the relevant class type
+    for (collection_name, clazz) in Asset.children().items():
+        children = json_asset.pop(collection_name, {})
+        collection = {}
+        for (child_type, child_json) in children.items():
+            child = clazz(**child_json)
+            collection[child_type] = child
+        json_asset[collection_name] = collection
     clazz = globals().get(json_asset.get('asset_type'))
-    args = inspect.getargspec(clazz.__init__)
-    # is not None is important so it includes zeros and False
-    constructor_dict = {arg: json_asset.get(arg) for arg in args.args
-                        if json_asset.get(arg) is not None and arg != 'self'}
-    # Some fields are always added in, even though they're not explicitly part of the constructor
-    constructor_dict.update({attr: json_asset.get(attr) for attr in clazz.amaas_model_attributes()})
-    return clazz(**constructor_dict)
-
+    asset = clazz(**json_asset)
+    return asset
