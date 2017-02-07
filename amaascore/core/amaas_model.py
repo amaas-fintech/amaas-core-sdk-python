@@ -68,9 +68,11 @@ class AMaaSModel(object):
     def __eq__(self, other):
         """Override the default Equals behavior"""
         if isinstance(other, self.__class__):
-            # Strip out the database generated fields:
             my_dict = self.__dict__
             other_dict = other.__dict__
+            # Strip out the database generated fields:
+            [my_dict.pop(attr, None) for attr in self.amaas_model_attributes()]
+            [other_dict.pop(attr, None) for attr in self.amaas_model_attributes()]
             return my_dict == other_dict
         return NotImplemented
 

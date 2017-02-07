@@ -1,3 +1,5 @@
+import inspect
+
 #  All possible class names must be inserted into the globals collection.
 #  If there is a better way of doing this, please suggest!
 from amaascore.assets.asset import Asset
@@ -19,5 +21,11 @@ def json_to_asset(json_asset):
             collection[child_type] = child
         json_asset[collection_name] = collection
     clazz = globals().get(json_asset.get('asset_type'))
-    asset = clazz(**json_asset)
+    args = inspect.getargspec(clazz.__init__)
+    # Some fields are always added in, even though they're not explicitly part of the constructor
+    clazz_args = args.args + clazz.amaas_model_attributes()
+    # is not None is important so it includes zeros and False
+    constructor_dict = {arg: json_asset.get(arg) for arg in clazz_args
+                        if json_asset.get(arg) is not None and arg != 'self'}
+    asset = clazz(**constructor_dict)
     return asset

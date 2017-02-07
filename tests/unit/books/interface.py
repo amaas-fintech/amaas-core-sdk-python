@@ -1,3 +1,5 @@
+# coding=utf-8
+
 import random
 import unittest
 
@@ -58,6 +60,12 @@ class BooksInterfaceTest(unittest.TestCase):
         asset_manager_books = [book for book in all_books if book.asset_manager_id == asset_manager_id]
         books = self.books_interface.books_by_asset_manager(asset_manager_id=asset_manager_id)
         self.assertEqual(len(books), len(asset_manager_books))
+
+    def test_Unicode(self):
+        unicode_description = u'日本語入力'
+        self.book.description = unicode_description
+        book = self.books_interface.new(self.book)
+        self.assertEqual(book.description, unicode_description)
 
 if __name__ == '__main__':
     unittest.main()

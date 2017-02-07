@@ -18,8 +18,8 @@ class AssetsInterface(Interface):
             asset = json_to_asset(response.json())
             return asset
         else:
-            print "HANDLE THIS PROPERLY"
-            print response.content
+            print("HANDLE THIS PROPERLY")
+            print(response.content)
 
     def amend(self, asset):
         url = '%s/assets/%s/%s' % (self.endpoint, asset.asset_manager_id, asset.asset_id)
@@ -28,8 +28,8 @@ class AssetsInterface(Interface):
             asset = json_to_asset(response.json())
             return asset
         else:
-            print "HANDLE THIS PROPERLY"
-            print response.content
+            print("HANDLE THIS PROPERLY")
+            print(response.content)
 
     def retrieve(self, asset_manager_id, asset_id):
         url = '%s/assets/%s/%s' % (self.endpoint, asset_manager_id, asset_id)
@@ -37,17 +37,17 @@ class AssetsInterface(Interface):
         if response.ok:
             return json_to_asset(response.json())
         else:
-            print "HANDLE THIS PROPERLY"
-            print response.content
+            print("HANDLE THIS PROPERLY")
+            print(response.content)
 
     def deactivate(self, asset_manager_id, asset_id):
         url = '%s/assets/%s/%s' % (self.endpoint, asset_manager_id, asset_id)
         response = requests.delete(url)
         if response.ok:
-            print "DO SOMETHING?"
+            print("DO SOMETHING?")
         else:
-            print "HANDLE THIS PROPERLY"
-            print response.content
+            print("HANDLE THIS PROPERLY")
+            print(response.content)
 
     def search(self, asset_manager_ids=None, asset_ids=None):
         search_params = {}
@@ -62,8 +62,8 @@ class AssetsInterface(Interface):
             assets = [json_to_asset(json_asset) for json_asset in response.json()]
             return assets
         else:
-            print "HANDLE THIS PROPERLY"
-            print response.content
+            print("HANDLE THIS PROPERLY")
+            print(response.content)
 
     def assets_by_asset_manager(self, asset_manager_id):
         url = '%s/assets/%s' % (self.endpoint, asset_manager_id)
@@ -72,5 +72,5 @@ class AssetsInterface(Interface):
             assets = [json_to_asset(json_asset) for json_asset in response.json()]
             return assets
         else:
-            print "HANDLE THIS PROPERLY"
-            print response.content
+            print("HANDLE THIS PROPERLY")
+            print(response.content)

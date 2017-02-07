@@ -20,8 +20,8 @@ class AssetManagersInterface(Interface):
         if response.ok:
             return json_to_asset_manager(response.json())
         else:
-            print "HANDLE THIS PROPERLY"
-            print response.content
+            print("HANDLE THIS PROPERLY")
+            print(response.content)
 
     def retrieve(self, asset_manager_id):
         url = '%s/asset_managers/%s' % (self.endpoint, asset_manager_id)
@@ -29,8 +29,8 @@ class AssetManagersInterface(Interface):
         if response.ok:
             return json_to_asset_manager(response.json())
         else:
-            print "HANDLE THIS PROPERLY"
-            print response.content
+            print("HANDLE THIS PROPERLY")
+            print(response.content)
 
     def deactivate(self, asset_manager_id):
         """
@@ -43,10 +43,10 @@ class AssetManagersInterface(Interface):
         url = '%s/asset_managers/%s' % (self.endpoint, asset_manager_id)
         response = requests.delete(url)
         if response.ok:
-            print "DO SOMETHING?"
+            print("DO SOMETHING?")
         else:
-            print "HANDLE THIS PROPERLY"
-            print response.content
+            print("HANDLE THIS PROPERLY")
+            print(response.content)
 
     def search(self, asset_manager_ids=None, client_ids=None):
         search_params = {}
@@ -61,7 +61,7 @@ class AssetManagersInterface(Interface):
             assets = [json_to_asset_manager(json_asset_manager) for json_asset_manager in response.json()]
             return assets
         else:
-            print "HANDLE THIS PROPERLY"
-            print response.content
+            print("HANDLE THIS PROPERLY")
+            print(response.content)
 
 

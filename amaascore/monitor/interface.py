@@ -18,8 +18,8 @@ class MonitorInterface(Interface):
             item = json_to_item(response.json())
             return item
         else:
-            print "HANDLE THIS PROPERLY"
-            print response.content
+            print("HANDLE THIS PROPERLY")
+            print(response.content)
 
     def resubmit_item(self, asset_manager_id, item_id):
         url = '%s/items/%s/%s' % (self.endpoint, asset_manager_id, item_id)
@@ -28,8 +28,8 @@ class MonitorInterface(Interface):
             item = json_to_item(response.json())
             return item
         else:
-            print "HANDLE THIS PROPERLY"
-            print response.content
+            print("HANDLE THIS PROPERLY")
+            print(response.content)
 
     def retrieve_item(self, asset_manager_id, item_id):
         url = '%s/items/%s/%s' % (self.endpoint, asset_manager_id, item_id)
@@ -37,17 +37,17 @@ class MonitorInterface(Interface):
         if response.ok:
             return json_to_item(response.json())
         else:
-            print "HANDLE THIS PROPERLY"
-            print response.content
+            print("HANDLE THIS PROPERLY")
+            print(response.content)
 
     def close_item(self, asset_manager_id, item_id):
         url = '%s/items/%s/%s' % (self.endpoint, asset_manager_id, item_id)
         response = requests.delete(url)
         if response.ok:
-            print "DO SOMETHING?"
+            print("DO SOMETHING?")
         else:
-            print "HANDLE THIS PROPERLY"
-            print response.content
+            print("HANDLE THIS PROPERLY")
+            print(response.content)
 
     def search_items(self, asset_manager_ids=None, item_ids=None):
         search_params = {}
@@ -62,8 +62,8 @@ class MonitorInterface(Interface):
             items = [json_to_item(json_item) for json_item in response.json()]
             return items
         else:
-            print "HANDLE THIS PROPERLY"
-            print response.content
+            print("HANDLE THIS PROPERLY")
+            print(response.content)
 
     def items_by_asset_manager(self, asset_manager_id):
         url = '%s/items/%s' % (self.endpoint, asset_manager_id)
@@ -72,5 +72,5 @@ class MonitorInterface(Interface):
             items = [json_to_item(json_item) for json_item in response.json()]
             return items
         else:
-            print "HANDLE THIS PROPERLY"
-            print response.content
+            print("HANDLE THIS PROPERLY")
+            print(response.content)

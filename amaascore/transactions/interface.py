@@ -18,8 +18,8 @@ class TransactionsInterface(Interface):
             transaction = json_to_transaction(response.json())
             return transaction
         else:
-            print "HANDLE THIS PROPERLY"
-            print response.content
+            print("HANDLE THIS PROPERLY")
+            print(response.content)
 
     def amend(self, transaction):
         url = '%s/transactions/%s/%s' % (self.endpoint, transaction.asset_manager_id, transaction.transaction_id)
@@ -28,8 +28,8 @@ class TransactionsInterface(Interface):
             transaction = json_to_transaction(response.json())
             return transaction
         else:
-            print "HANDLE THIS PROPERLY"
-            print response.content
+            print("HANDLE THIS PROPERLY")
+            print(response.content)
 
     def retrieve(self, asset_manager_id, transaction_id):
         url = '%s/transactions/%s/%s' % (self.endpoint, asset_manager_id, transaction_id)
@@ -37,8 +37,8 @@ class TransactionsInterface(Interface):
         if response.ok:
             return json_to_transaction(response.json())
         else:
-            print "HANDLE THIS PROPERLY"
-            print response.content
+            print("HANDLE THIS PROPERLY")
+            print(response.content)
 
     def transactions_by_asset_manager(self, asset_manager_id):
         url = '%s/transactions/%s' % (self.endpoint, asset_manager_id)
@@ -47,17 +47,17 @@ class TransactionsInterface(Interface):
             transactions = [json_to_transaction(json_transaction) for json_transaction in response.json()]
             return transactions
         else:
-            print "HANDLE THIS PROPERLY"
-            print response.content
+            print("HANDLE THIS PROPERLY")
+            print(response.content)
 
     def cancel(self, asset_manager_id, transaction_id):
         url = '%s/transactions/%s/%s' % (self.endpoint, asset_manager_id, transaction_id)
         response = requests.delete(url)
         if response.ok:
-            print "DO SOMETHING?"
+            print("DO SOMETHING?")
         else:
-            print "HANDLE THIS PROPERLY"
-            print response.content
+            print("HANDLE THIS PROPERLY")
+            print(response.content)
 
     def search(self, asset_manager_ids=None, transaction_ids=None):
         search_params = {}
@@ -72,8 +72,8 @@ class TransactionsInterface(Interface):
             transactions = [json_to_transaction(json_transaction) for json_transaction in response.json()]
             return transactions
         else:
-            print "HANDLE THIS PROPERLY"
-            print response.content
+            print("HANDLE THIS PROPERLY")
+            print(response.content)
 
     def position_search(self, asset_manager_ids=None, asset_book_ids=None, account_ids=None, accounting_types=None,
                         asset_ids=None, position_date=None):
@@ -97,8 +97,8 @@ class TransactionsInterface(Interface):
             positions = [json_to_position(json_position) for json_position in response.json()]
             return positions
         else:
-            print "HANDLE THIS PROPERLY"
-            print response.content
+            print("HANDLE THIS PROPERLY")
+            print(response.content)
 
     def positions_by_asset_manager_book(self, asset_manager_id, asset_book_id):
         url = '%s/positions/%s/%s' % (self.endpoint, asset_manager_id, asset_book_id)
@@ -107,8 +107,8 @@ class TransactionsInterface(Interface):
             positions = [json_to_position(json_position) for json_position in response.json()]
             return positions
         else:
-            print "HANDLE THIS PROPERLY"
-            print response.content
+            print("HANDLE THIS PROPERLY")
+            print(response.content)
 
     def positions_by_asset_manager(self, asset_manager_id):
         url = '%s/positions/%s' % (self.endpoint, asset_manager_id)
@@ -117,8 +117,8 @@ class TransactionsInterface(Interface):
             positions = [json_to_position(json_position) for json_position in response.json()]
             return positions
         else:
-            print "HANDLE THIS PROPERLY"
-            print response.content
+            print("HANDLE THIS PROPERLY")
+            print(response.content)
 
     def upsert_transaction_asset(self, transaction_asset_json):
         """
@@ -130,7 +130,22 @@ class TransactionsInterface(Interface):
         url = self.endpoint + '/assets'
         response = requests.post(url, json=transaction_asset_json)
         if response.ok:
-            print "DO SOMETHING?"
+            print("DO SOMETHING?")
         else:
-            print "HANDLE THIS PROPERLY"
-            print response.content
+            print("HANDLE THIS PROPERLY")
+            print(response.content)
+
+    def upsert_transaction_book(self, transaction_book_json):
+        """
+        This API should not be called in normal circumstances as the book cache will populate itself from the book
+        which are created via the Books API.  However, it can be useful for certain testing scenarios.
+        :param transaction_book_json:
+        :return:
+        """
+        url = self.endpoint + '/books'
+        response = requests.post(url, json=transaction_book_json)
+        if response.ok:
+            print("DO SOMETHING?")
+        else:
+            print("HANDLE THIS PROPERLY")
+            print(response.content)

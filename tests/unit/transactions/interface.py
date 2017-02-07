@@ -1,11 +1,15 @@
+# coding=utf-8
+
 import datetime
 import random
 import unittest
 
+from amaascore.transactions.children import Comment
 from amaascore.transactions.transaction import Transaction
 from amaascore.transactions.interface import TransactionsInterface
 from amaascore.tools.helpers import random_string
 from amaascore.tools.generate_asset import generate_asset
+from amaascore.tools.generate_book import generate_book
 from amaascore.tools.generate_transaction import generate_transaction
 
 
@@ -13,10 +17,13 @@ class TransactionsInterfaceTest(unittest.TestCase):
 
     def setUp(self):
         self.longMessage = True  # Print complete error message on failure
+        self.maxDiff = None  # View the complete diff when there is a mismatch in a test
         self.transactions_interface = TransactionsInterface()
         self.asset_manager_id = 1
         self.asset = generate_asset(asset_manager_id=self.asset_manager_id)
-        self.transaction = generate_transaction(asset_manager_id=self.asset_manager_id, asset_id=self.asset.asset_id)
+        self.asset_book = generate_book(asset_manager_id=self.asset_manager_id)
+        self.transaction = generate_transaction(asset_manager_id=self.asset_manager_id, asset_id=self.asset.asset_id,
+                                                asset_book_id=self.asset_book.book_id)
         self.transaction_id = self.transaction.transaction_id
 
     def tearDown(self):
@@ -30,8 +37,15 @@ class TransactionsInterfaceTest(unittest.TestCase):
         transaction_asset_json['primary_identifier'] = 'TEST'  # This is temporary, we need to handle this better
         self.transactions_interface.upsert_transaction_asset(transaction_asset_json=transaction_asset_json)
 
+    def create_transaction_book(self):
+        transaction_book_fields = ['asset_manager_id', 'book_id', 'book_status', 'description']
+        book_json = self.asset_book.to_json()
+        transaction_book_json = {attr: book_json.get(attr) for attr in transaction_book_fields}
+        self.transactions_interface.upsert_transaction_book(transaction_book_json=transaction_book_json)
+
     def test_New(self):
         self.create_transaction_asset()
+        self.create_transaction_book()
         self.assertIsNone(self.transaction.created_time)
         transaction = self.transactions_interface.new(self.transaction)
         # TODO - this should be populated by the New call.
@@ -40,6 +54,7 @@ class TransactionsInterfaceTest(unittest.TestCase):
 
     def test_Amend(self):
         self.create_transaction_asset()
+        self.create_transaction_book()
         transaction = self.transactions_interface.new(self.transaction)
         self.assertEqual(transaction.version, 1)
         new_settlement_date = transaction.settlement_date + datetime.timedelta(days=1)
@@ -50,6 +65,7 @@ class TransactionsInterfaceTest(unittest.TestCase):
 
     def test_Retrieve(self):
         self.create_transaction_asset()
+        self.create_transaction_book()
         self.transactions_interface.new(self.transaction)
         transaction = self.transactions_interface.retrieve(self.transaction.asset_manager_id,
                                                            self.transaction.transaction_id)
@@ -57,6 +73,7 @@ class TransactionsInterfaceTest(unittest.TestCase):
 
     def test_Cancel(self):
         self.create_transaction_asset()
+        self.create_transaction_book()
         self.transactions_interface.new(self.transaction)
         self.transactions_interface.cancel(self.transaction.asset_manager_id, self.transaction.transaction_id)
         transaction = self.transactions_interface.retrieve(self.transaction.asset_manager_id,
@@ -116,6 +133,7 @@ class TransactionsInterfaceTest(unittest.TestCase):
 
     def test_MultipleLink(self):
         self.create_transaction_asset()
+        self.create_transaction_book()
         transaction = self.transactions_interface.new(self.transaction)
         links = transaction.links.get('Multiple')
         self.assertEqual(len(links), 3)  # The test script inserts 3 links
@@ -130,6 +148,7 @@ class TransactionsInterfaceTest(unittest.TestCase):
 
     def test_ChildrenPopulated(self):
         self.create_transaction_asset()
+        self.create_transaction_book()
         transaction = self.transactions_interface.new(self.transaction)
         retrieved_transaction = self.transactions_interface.retrieve(asset_manager_id=self.asset_manager_id,
                                                                      transaction_id=self.transaction_id)
@@ -146,6 +165,13 @@ class TransactionsInterfaceTest(unittest.TestCase):
         self.assertEqual(transaction.parties, retrieved_transaction.parties)
         self.assertEqual(transaction.references, retrieved_transaction.references)
 
+    def test_Unicode(self):
+        self.create_transaction_asset()
+        self.create_transaction_book()
+        unicode_comment = u'日本語入力'
+        self.transaction.comments['Unicode'] = Comment(comment_value=unicode_comment)
+        transaction = self.transactions_interface.new(self.transaction)
+        self.assertEqual(transaction.comments.get('Unicode').comment_value, unicode_comment)
 
 if __name__ == '__main__':
     unittest.main()

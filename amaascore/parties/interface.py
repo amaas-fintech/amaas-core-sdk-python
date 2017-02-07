@@ -18,8 +18,8 @@ class PartiesInterface(Interface):
             party = json_to_party(response.json())
             return party
         else:
-            print "HANDLE THIS PROPERLY"
-            print response.content
+            print("HANDLE THIS PROPERLY")
+            print(response.content)
 
     def amend(self, party):
         url = '%s/parties/%s/%s' % (self.endpoint, party.asset_manager_id, party.party_id)
@@ -28,8 +28,8 @@ class PartiesInterface(Interface):
             party = json_to_party(response.json())
             return party
         else:
-            print "HANDLE THIS PROPERLY"
-            print response.content
+            print("HANDLE THIS PROPERLY")
+            print(response.content)
 
     def retrieve(self, asset_manager_id, party_id):
         url = '%s/parties/%s/%s' % (self.endpoint, asset_manager_id, party_id)
@@ -37,17 +37,17 @@ class PartiesInterface(Interface):
         if response.ok:
             return json_to_party(response.json())
         else:
-            print "HANDLE THIS PROPERLY"
-            print response.content
+            print("HANDLE THIS PROPERLY")
+            print(response.content)
 
     def deactivate(self, asset_manager_id, party_id):
         url = '%s/parties/%s/%s' % (self.endpoint, asset_manager_id, party_id)
         response = requests.delete(url)
         if response.ok:
-            print "DO SOMETHING?"
+            print("DO SOMETHING?")
         else:
-            print "HANDLE THIS PROPERLY"
-            print response.content
+            print("HANDLE THIS PROPERLY")
+            print(response.content)
 
     def search(self, asset_manager_ids=None, party_ids=None):
         search_params = {}
@@ -62,8 +62,8 @@ class PartiesInterface(Interface):
             parties = [json_to_party(json_party) for json_party in response.json()]
             return parties
         else:
-            print "HANDLE THIS PROPERLY"
-            print response.content
+            print("HANDLE THIS PROPERLY")
+            print(response.content)
 
     def parties_by_asset_manager(self, asset_manager_id):
         url = '%s/parties/%s' % (self.endpoint, asset_manager_id)
@@ -72,5 +72,5 @@ class PartiesInterface(Interface):
             parties = [json_to_party(json_party) for json_party in response.json()]
             return parties
         else:
-            print "HANDLE THIS PROPERLY"
-            print response.content
+            print("HANDLE THIS PROPERLY")
+            print(response.content)
