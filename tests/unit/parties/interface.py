@@ -1,3 +1,5 @@
+# coding=utf-8
+
 import random
 import unittest
 
@@ -78,6 +80,11 @@ class PartiesInterfaceTest(unittest.TestCase):
         self.assertEqual(party.emails, retrieved_party.emails)
         self.assertEqual(party.references, retrieved_party.references)
 
+    def test_Unicode(self):
+        unicode_description = u'日本語入力'
+        self.party.description = unicode_description
+        party = self.parties_interface.new(self.party)
+        self.assertEqual(party.description, unicode_description)
 
 if __name__ == '__main__':
     unittest.main()

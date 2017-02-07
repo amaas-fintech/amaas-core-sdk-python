@@ -18,8 +18,8 @@ class BooksInterface(Interface):
             book = json_to_book(response.json())
             return book
         else:
-            print "HANDLE THIS PROPERLY"
-            print response.content
+            print("HANDLE THIS PROPERLY")
+            print(response.content)
 
     def amend(self, book):
         url = '%s/books/%s/%s' % (self.endpoint, book.asset_manager_id, book.book_id)
@@ -28,8 +28,8 @@ class BooksInterface(Interface):
             book = json_to_book(response.json())
             return book
         else:
-            print "HANDLE THIS PROPERLY"
-            print response.content
+            print("HANDLE THIS PROPERLY")
+            print(response.content)
 
     def retrieve(self, asset_manager_id, book_id):
         url = '%s/books/%s/%s' % (self.endpoint, asset_manager_id, book_id)
@@ -37,17 +37,17 @@ class BooksInterface(Interface):
         if response.ok:
             return json_to_book(response.json())
         else:
-            print "HANDLE THIS PROPERLY"
-            print response.content
+            print("HANDLE THIS PROPERLY")
+            print(response.content)
 
     def retire(self, asset_manager_id, book_id):
         url = '%s/books/%s/%s' % (self.endpoint, asset_manager_id, book_id)
         response = requests.delete(url)
         if response.ok:
-            print "DO SOMETHING?"
+            print("DO SOMETHING?")
         else:
-            print "HANDLE THIS PROPERLY"
-            print response.content
+            print("HANDLE THIS PROPERLY")
+            print(response.content)
 
     def search(self, asset_manager_ids=None, book_ids=None):
         search_params = {}
@@ -62,8 +62,8 @@ class BooksInterface(Interface):
             books = [json_to_book(json_book) for json_book in response.json()]
             return books
         else:
-            print "HANDLE THIS PROPERLY"
-            print response.content
+            print("HANDLE THIS PROPERLY")
+            print(response.content)
 
     def books_by_asset_manager(self, asset_manager_id):
         url = '%s/books/%s' % (self.endpoint, asset_manager_id)
@@ -72,5 +72,5 @@ class BooksInterface(Interface):
             books = [json_to_book(json_book) for json_book in response.json()]
             return books
         else:
-            print "HANDLE THIS PROPERLY"
-            print response.content
+            print("HANDLE THIS PROPERLY")
+            print(response.content)

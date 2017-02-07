@@ -1,3 +1,5 @@
+# coding=utf-8
+
 import random
 import unittest
 
@@ -73,6 +75,12 @@ class AssetsInterfaceTest(unittest.TestCase):
                                                          asset_id=self.asset_id)
         self.assertGreater(len(asset.references), 0)
         self.assertEqual(asset.references, retrieved_asset.references)
+
+    def test_Unicode(self):
+        unicode_description = u'日本語入力'
+        self.asset.description = unicode_description
+        asset = self.assets_interface.new(self.asset)
+        self.assertEqual(asset.description, unicode_description)
 
 if __name__ == '__main__':
     unittest.main()
