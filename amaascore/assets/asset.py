@@ -13,7 +13,7 @@ class Asset(AMaaSModel):
         return {'references': Reference}
 
     def __init__(self, asset_manager_id, fungible, asset_issuer_id=None, asset_id=None, asset_status='Active',
-                 country_id=None, venue_id=None, maturity_date=None, description='', references={},
+                 country_id=None, venue_id=None, maturity_date=None, description='', references=None,
                  *args, **kwargs):
         self.additional_dict = {}
         self.asset_manager_id = asset_manager_id
@@ -28,7 +28,7 @@ class Asset(AMaaSModel):
         self.venue_id = venue_id
         self.maturity_date = maturity_date or datetime.date.max  # Has to be here to prevent arg binding
         self.description = description
-        self.references = references
+        self.references = references or {}
         self.references['AMaaS'] = Reference(reference_value=self.asset_id)  # Upserts the AMaaS Reference
 
         super(Asset, self).__init__(*args, **kwargs)
