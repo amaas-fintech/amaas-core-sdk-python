@@ -22,8 +22,8 @@ class Transaction(AMaaSModel):
     def __init__(self, asset_manager_id, asset_book_id, counterparty_book_id, transaction_action, asset_id, quantity,
                  transaction_date, settlement_date, price, transaction_currency, settlement_currency,
                  asset=None, execution_time=None, transaction_type='Trade', transaction_id=None,
-                 transaction_status='New', charges={}, codes={}, comments={}, links={}, parties={}, references={},
-                 *args, **kwargs):
+                 transaction_status='New', charges=None, codes=None, comments=None, links=None, parties=None,
+                 references=None, *args, **kwargs):
 
         self.asset_manager_id = asset_manager_id
         self.asset_book_id = asset_book_id
@@ -43,12 +43,12 @@ class Transaction(AMaaSModel):
         self.execution_time = execution_time or datetime.datetime.utcnow()
         self.transaction_id = transaction_id or uuid.uuid4().hex
 
-        self.charges = charges
-        self.codes = codes
-        self.comments = comments
-        self.links = links
-        self.parties = parties
-        self.references = references
+        self.charges = charges or {}
+        self.codes = codes or {}
+        self.comments = comments or {}
+        self.links = links or {}
+        self.parties = parties or {}
+        self.references = references or {}
         self.references['AMaaS'] = Reference(reference_value=self.transaction_id)  # Upserts the AMaaS Reference
 
         self.postings = []

@@ -14,8 +14,8 @@ class Party(AMaaSModel):
         """ A dict of which of the attributes are collections of other objects, and what type """
         return {'addresses': Address, 'emails': Email, 'references': Reference}
 
-    def __init__(self, asset_manager_id, party_id, party_status='Active', description='', addresses={}, emails={},
-                 references={}, *args, **kwargs):
+    def __init__(self, asset_manager_id, party_id, party_status='Active', description='', addresses=None, emails=None,
+                 references=None, *args, **kwargs):
         self.asset_manager_id = asset_manager_id
         self.party_id = party_id
         self.party_status = party_status
@@ -23,9 +23,9 @@ class Party(AMaaSModel):
             self.party_class = 'Party'
         self.party_type = self.__class__.__name__
         self.description = description
-        self.addresses = addresses
-        self.emails = emails
-        self.references = references
+        self.addresses = addresses or {}
+        self.emails = emails or {}
+        self.references = references or {}
         super(Party, self).__init__(*args, **kwargs)
 
     def upsert_address(self, address_type, address):
