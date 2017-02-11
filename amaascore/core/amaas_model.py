@@ -16,8 +16,11 @@ def json_handler(value):
 
 
 def to_json(dict_to_convert):
-    return json.loads(json.dumps(dict_to_convert, ensure_ascii=False, default=json_handler, indent=4,
-                                 separators=(',', ': ')))
+    return json.loads(to_json_string(dict_to_convert))
+
+
+def to_json_string(dict_to_convert):
+    return json.dumps(dict_to_convert, ensure_ascii=False, default=json_handler, indent=4, separators=(',', ': '))
 
 
 class AMaaSModel(object):
@@ -46,7 +49,7 @@ class AMaaSModel(object):
         """
         dict_to_convert = self.__dict__
         [dict_to_convert.pop(attr) for attr in self.non_interface_attributes()]
-        return self.to_json()
+        return self.to_json(dict_to_convert)
 
     def to_json(self, dict_to_convert=None):
         dict_to_convert = dict_to_convert or self.__dict__
