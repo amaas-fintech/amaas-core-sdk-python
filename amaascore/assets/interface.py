@@ -1,8 +1,8 @@
 import requests
 
 from amaascore.assets.utils import json_to_asset
+from amaascore.config import ENDPOINTS
 from amaascore.core.interface import Interface
-from config import ENDPOINTS
 
 
 class AssetsInterface(Interface):

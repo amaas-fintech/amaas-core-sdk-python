@@ -1,8 +1,8 @@
 import requests
 
-from amaascore.transactions.utils import json_to_transaction, json_to_position
+from amaascore.config import ENDPOINTS
 from amaascore.core.interface import Interface
-from config import ENDPOINTS
+from amaascore.transactions.utils import json_to_transaction, json_to_position
 
 
 class TransactionsInterface(Interface):
@@ -129,6 +129,21 @@ class TransactionsInterface(Interface):
         """
         url = self.endpoint + '/assets'
         response = requests.post(url, json=transaction_asset_json)
+        if response.ok:
+            print("DO SOMETHING?")
+        else:
+            print("HANDLE THIS PROPERLY")
+            print(response.content)
+
+    def upsert_transaction_book(self, transaction_book_json):
+        """
+        This API should not be called in normal circumstances as the book cache will populate itself from the book
+        which are created via the Books API.  However, it can be useful for certain testing scenarios.
+        :param transaction_book_json:
+        :return:
+        """
+        url = self.endpoint + '/books'
+        response = requests.post(url, json=transaction_book_json)
         if response.ok:
             print("DO SOMETHING?")
         else:

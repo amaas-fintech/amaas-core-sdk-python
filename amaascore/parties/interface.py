@@ -1,8 +1,8 @@
 import requests
 
-from amaascore.parties.utils import json_to_party
+from amaascore.config import ENDPOINTS
 from amaascore.core.interface import Interface
-from config import ENDPOINTS
+from amaascore.parties.utils import json_to_party
 
 
 class PartiesInterface(Interface):

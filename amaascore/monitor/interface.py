@@ -1,8 +1,8 @@
 import requests
 
-from amaascore.monitor.utils import json_to_item
+from amaascore.config import ENDPOINTS
 from amaascore.core.interface import Interface
-from config import ENDPOINTS
+from amaascore.monitor.utils import json_to_item
 
 
 class MonitorInterface(Interface):

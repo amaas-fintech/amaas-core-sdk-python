@@ -14,7 +14,8 @@ REFERENCE_TYPES = ['External']
 def generate_common(asset_manager_id=None, asset_id=None):
 
     common = {'asset_manager_id': asset_manager_id or random.randint(1, 1000),
-              'asset_id': asset_id or str(random.randint(1, 1000))
+              'asset_id': asset_id or str(random.randint(1, 1000)),
+              'currency': random.choice(['SGD', 'USD'])
               }
 
     return common
