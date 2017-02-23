@@ -13,9 +13,8 @@ class Asset(AMaaSModel):
         return {'references': Reference}
 
     def __init__(self, asset_manager_id, fungible, asset_issuer_id=None, asset_id=None, asset_status='Active',
-                 country_id=None, venue_id=None, maturity_date=None, description='', references=None,
+                 country_id=None, venue_id=None, currency=None, maturity_date=None, description='', references=None,
                  *args, **kwargs):
-        self.additional_dict = {}
         self.asset_manager_id = asset_manager_id
         self.asset_id = asset_id or uuid.uuid4().hex
         if not hasattr(self, 'asset_class'):  # A more specific child class may have already set this
@@ -26,6 +25,7 @@ class Asset(AMaaSModel):
         self.asset_status = asset_status
         self.country_id = country_id
         self.venue_id = venue_id
+        self.currency = currency
         self.maturity_date = maturity_date or datetime.date.max  # Has to be here to prevent arg binding
         self.description = description
         self.references = references or {}

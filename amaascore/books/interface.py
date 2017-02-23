@@ -1,8 +1,8 @@
 import requests
 
 from amaascore.books.utils import json_to_book
+from amaascore.config import ENDPOINTS
 from amaascore.core.interface import Interface
-from config import ENDPOINTS
 
 
 class BooksInterface(Interface):

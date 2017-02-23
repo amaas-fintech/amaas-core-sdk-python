@@ -3,7 +3,7 @@ import unittest
 
 from amaascore.asset_managers.asset_manager import AssetManager
 from amaascore.asset_managers.interface import AssetManagersInterface
-from amaascore.tools.generate_asset_managers import generate_asset_manager
+from amaascore.tools.generate_asset_manager import generate_asset_manager
 
 
 class AssetManagersInterfaceTest(unittest.TestCase):
