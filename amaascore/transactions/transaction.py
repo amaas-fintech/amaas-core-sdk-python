@@ -20,10 +20,38 @@ class Transaction(AMaaSModel):
                 'references': Reference}
 
     def __init__(self, asset_manager_id, asset_book_id, counterparty_book_id, transaction_action, asset_id, quantity,
-                 transaction_date, settlement_date, price, transaction_currency, settlement_currency,
+                 transaction_date, settlement_date, price, transaction_currency, settlement_currency=None,
                  asset=None, execution_time=None, transaction_type='Trade', transaction_id=None,
                  transaction_status='New', charges=None, codes=None, comments=None, links=None, parties=None,
                  references=None, *args, **kwargs):
+        """
+
+        :param asset_manager_id:
+        :param asset_book_id:
+        :param counterparty_book_id:
+        :param transaction_action:
+        :param asset_id:
+        :param quantity:
+        :param transaction_date:
+        :param settlement_date:
+        :param price:
+        :param transaction_currency:
+        :param settlement_currency: The currency in which the transaction will be settled.  Defaults to the
+        transaction_currency if not specified.
+        :param asset:
+        :param execution_time:
+        :param transaction_type:
+        :param transaction_id:
+        :param transaction_status:
+        :param charges:
+        :param codes:
+        :param comments:
+        :param links:
+        :param parties:
+        :param references:
+        :param args:
+        :param kwargs:
+        """
 
         self.asset_manager_id = asset_manager_id
         self.asset_book_id = asset_book_id
@@ -35,7 +63,7 @@ class Transaction(AMaaSModel):
         self.settlement_date = settlement_date
         self.price = price
         self.transaction_currency = transaction_currency
-        self.settlement_currency = settlement_currency
+        self.settlement_currency = settlement_currency or transaction_currency
         self.transaction_type = transaction_type
         self.transaction_status = transaction_status
 

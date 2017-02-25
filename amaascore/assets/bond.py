@@ -6,21 +6,19 @@ from amaascore.assets.asset import Asset
 
 class BondBase(Asset):
 
-    @staticmethod
-    def mandatory_attributes():
-        return ['coupon', 'issue_date', 'par']
-
-    def __init__(self, asset_manager_id, asset_id, maturity_date, coupon, par, asset_issuer_id,
-                 asset_status, description, country_id, venue_id, client_id, issue_date, references={}, *args, **kwargs):
+    def __init__(self, asset_manager_id, asset_id, maturity_date, coupon, par, pay_frequency, asset_issuer_id,
+                 asset_status, description, country_id, venue_id, issue_date, defaulted, references={},
+                 *args, **kwargs):
         self.asset_class = 'Bond'
-        self.issue_date = issue_date
         self.coupon = coupon
         self.par = par
+        self.pay_frequency = pay_frequency
+        self.defaulted = defaulted
         super(BondBase, self).__init__(asset_manager_id=asset_manager_id, asset_id=asset_id, fungible=True,
                                        asset_issuer_id=asset_issuer_id, asset_status=asset_status,
                                        description=description, country_id=country_id, venue_id=venue_id,
-                                       maturity_date=maturity_date, references=references,
-                                       client_id=client_id, *args, **kwargs)
+                                       issue_date=issue_date, maturity_date=maturity_date, references=references,
+                                       *args, **kwargs)
 
     @property
     def issue_date(self):
@@ -68,56 +66,41 @@ class BondBase(Asset):
         if par is not None:
             self._par = Decimal(par)
 
-    @property
-    def defaulted(self):
-        if hasattr(self, '_defaulted'):
-            return self._defaulted
-
-    @defaulted.setter
-    def defaulted(self, defaulted):
-        """
-        Indicator of whether or not this bond has defaulted
-        :param par:
-        :return:
-        """
-        if defaulted is not None:
-            self._defaulted = defaulted
-
 
 class BondGovernment(BondBase):
 
-    def __init__(self, asset_manager_id, asset_id, maturity_date=None, coupon=None, par=None,
-                 asset_issuer_id=None, asset_status='Active', description='', country_id=None, venue_id=None,
-                 client_id=None, issue_date=None, references={}, *args, **kwargs):
-        self.asset_manager_id = asset_manager_id
-        super(BondGovernment, self).__init__(asset_manager_id=self.asset_manager_id, asset_id=asset_id,
+    def __init__(self, asset_manager_id, asset_id, coupon, par, pay_frequency, defaulted=False, asset_issuer_id=None,
+                 maturity_date=None, asset_status='Active', description='', country_id=None, venue_id=None,
+                 issue_date=None, references={}, *args, **kwargs):
+        super(BondGovernment, self).__init__(asset_manager_id=asset_manager_id, asset_id=asset_id,
                                              asset_issuer_id=asset_issuer_id, asset_status=asset_status,
                                              description=description, country_id=country_id, venue_id=venue_id,
-                                             maturity_date=maturity_date, references=references, client_id=client_id,
-                                             coupon=coupon, par=par, issue_date=issue_date, *args, **kwargs)
+                                             maturity_date=maturity_date, references=references,
+                                             coupon=coupon, par=par, issue_date=issue_date, pay_frequency=pay_frequency,
+                                             defaulted=defaulted, *args, **kwargs)
 
 
 class BondCorporate(BondBase):
 
-    def __init__(self, asset_manager_id, asset_id, maturity_date=None, coupon=None, par=None,
-                 asset_issuer_id=None, asset_status='Active', description='', country_id=None, venue_id=None,
-                 client_id=None, issue_date=None, references={}, *args, **kwargs):
-        self.asset_manager_id = asset_manager_id
-        super(BondCorporate, self).__init__(asset_manager_id=self.asset_manager_id, asset_id=asset_id,
+    def __init__(self, asset_manager_id, asset_id, coupon, par, pay_frequency, defaulted=False, asset_issuer_id=None,
+                 maturity_date=None, asset_status='Active', description='', country_id=None, venue_id=None,
+                 issue_date=None, references={}, *args, **kwargs):
+        super(BondCorporate, self).__init__(asset_manager_id=asset_manager_id, asset_id=asset_id,
                                             asset_issuer_id=asset_issuer_id, asset_status=asset_status,
                                             description=description, country_id=country_id, venue_id=venue_id,
-                                            maturity_date=maturity_date, references=references, client_id=client_id,
-                                            coupon=coupon, par=par, issue_date=issue_date, *args, **kwargs)
+                                            maturity_date=maturity_date, references=references,
+                                            coupon=coupon, par=par, issue_date=issue_date, pay_frequency=pay_frequency,
+                                            defaulted=defaulted, *args, **kwargs)
 
 
 class BondMortgage(BondBase):
 
-    def __init__(self, asset_manager_id, asset_id, maturity_date=None, coupon=None, par=None,
-                 asset_issuer_id=None, asset_status='Active', description='', country_id=None, venue_id=None,
-                 client_id=None, issue_date=None, references={}, *args, **kwargs):
-        self.asset_manager_id = asset_manager_id
-        super(BondMortgage, self).__init__(asset_manager_id=self.asset_manager_id, asset_id=asset_id,
+    def __init__(self, asset_manager_id, asset_id, coupon, par, pay_frequency, defaulted=False, asset_issuer_id=None,
+                 maturity_date=None, asset_status='Active', description='', country_id=None, venue_id=None,
+                 issue_date=None, references={}, *args, **kwargs):
+        super(BondMortgage, self).__init__(asset_manager_id=asset_manager_id, asset_id=asset_id,
                                            asset_issuer_id=asset_issuer_id, asset_status=asset_status,
                                            description=description, country_id=country_id, venue_id=venue_id,
-                                           maturity_date=maturity_date, references=references, client_id=client_id,
-                                           coupon=coupon, par=par, issue_date=issue_date, *args, **kwargs)
+                                           maturity_date=maturity_date, references=references,
+                                           coupon=coupon, par=par, issue_date=issue_date, pay_frequency=pay_frequency,
+                                           defaulted=defaulted, *args, **kwargs)
