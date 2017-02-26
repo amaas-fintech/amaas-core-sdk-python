@@ -1,4 +1,4 @@
-import datetime
+from datetime import date
 from dateutil.parser import parse
 import uuid
 
@@ -13,7 +13,8 @@ class Asset(AMaaSModel):
         return {'references': Reference}
 
     def __init__(self, asset_manager_id, fungible, asset_issuer_id=None, asset_id=None, asset_status='Active',
-                 country_id=None, venue_id=None, currency=None, maturity_date=None, description='', references=None,
+                 country_id=None, venue_id=None, currency=None, issue_date=date.min, maturity_date=date.max,
+                 description='', references=None,
                  *args, **kwargs):
         self.asset_manager_id = asset_manager_id
         self.asset_id = asset_id or uuid.uuid4().hex
@@ -26,7 +27,8 @@ class Asset(AMaaSModel):
         self.country_id = country_id
         self.venue_id = venue_id
         self.currency = currency
-        self.maturity_date = maturity_date or datetime.date.max  # Has to be here to prevent arg binding
+        self.issue_date = issue_date
+        self.maturity_date = maturity_date
         self.description = description
         self.references = references or {}
         self.references['AMaaS'] = Reference(reference_value=self.asset_id)  # Upserts the AMaaS Reference
@@ -39,6 +41,21 @@ class Asset(AMaaSModel):
         :return:
         """
         return self.references.keys()
+
+    @property
+    def issue_date(self):
+        if hasattr(self, '_issue_date'):
+            return self._issue_date
+
+    @issue_date.setter
+    def issue_date(self, value):
+        """
+        The date on which the asset is issued
+        :param value:
+        :return:
+        """
+        if value:
+            self._issue_date = parse(value).date() if isinstance(value, (str, unicode)) else value
 
     @property
     def maturity_date(self):

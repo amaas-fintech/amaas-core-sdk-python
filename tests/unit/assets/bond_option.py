@@ -18,7 +18,7 @@ class BondOptionTest(unittest.TestCase):
     def test_BondOption(self):
         self.assertEqual(type(self.bond_option), BondOption)
 
-    def test_Mixin(self):
+    def test_Optionality(self):
         self.assertEqual(type(self.bond_option.strike), Decimal)
         self.assertIn(self.bond_option.put_call, ['Put', 'Call'])
 

@@ -120,6 +120,41 @@ class TransactionsInterface(Interface):
             print("HANDLE THIS PROPERLY")
             print(response.content)
 
+    def allocate_transaction(self, asset_manager_id, transaction_id, allocation_type, allocation_dicts):
+        """
+
+        :param asset_manager_id:
+        :param transaction_id:
+        :param allocation_type:
+        :param allocation_dicts:
+        :return:
+        """
+        url = '%s/allocations/%s/%s' % (self.endpoint, asset_manager_id, transaction_id)
+        params = {'allocation_type': allocation_type}
+        response = requests.post(url, params=params, json=allocation_dicts)
+        if response.ok:
+            allocations = [json_to_transaction(json_allocation) for json_allocation in response.json()]
+            return allocations
+        else:
+            print("HANDLE THIS PROPERLY")
+            print(response.content)
+
+    def get_transaction_allocations(self, asset_manager_id, transaction_id):
+        """
+
+        :param asset_manager_id:
+        :param transaction_id:
+        :return:
+        """
+        url = '%s/allocations/%s/%s' % (self.endpoint, asset_manager_id, transaction_id)
+        response = requests.get(url)
+        if response.ok:
+            allocations = [json_to_transaction(json_allocation) for json_allocation in response.json()]
+            return allocations
+        else:
+            print("HANDLE THIS PROPERLY")
+            print(response.content)
+
     def upsert_transaction_asset(self, transaction_asset_json):
         """
         This API should not be called in normal circumstances as the asset cache will populate itself from the assets
@@ -129,21 +164,6 @@ class TransactionsInterface(Interface):
         """
         url = self.endpoint + '/assets'
         response = requests.post(url, json=transaction_asset_json)
-        if response.ok:
-            print("DO SOMETHING?")
-        else:
-            print("HANDLE THIS PROPERLY")
-            print(response.content)
-
-    def upsert_transaction_book(self, transaction_book_json):
-        """
-        This API should not be called in normal circumstances as the book cache will populate itself from the book
-        which are created via the Books API.  However, it can be useful for certain testing scenarios.
-        :param transaction_book_json:
-        :return:
-        """
-        url = self.endpoint + '/books'
-        response = requests.post(url, json=transaction_book_json)
         if response.ok:
             print("DO SOMETHING?")
         else:
