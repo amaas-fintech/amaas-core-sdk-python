@@ -1,6 +1,7 @@
 # coding=utf-8
 
 import datetime
+from decimal import Decimal
 import random
 import unittest
 
@@ -166,6 +167,54 @@ class TransactionsInterfaceTest(unittest.TestCase):
         self.transaction.comments['Unicode'] = Comment(comment_value=unicode_comment)
         transaction = self.transactions_interface.new(self.transaction)
         self.assertEqual(transaction.comments.get('Unicode').comment_value, unicode_comment)
+
+    def test_Allocations(self):
+        transaction = generate_transaction(asset_manager_id=self.asset_manager_id, asset_id=self.asset.asset_id,
+                                           asset_book_id=self.asset_book.book_id,
+                                           counterparty_book_id=self.counterparty_book.book_id,
+                                           quantity=Decimal('100'))
+        self.transactions_interface.new(transaction)
+        allocation_dicts = [{'book_id': 'ABC', 'quantity': Decimal('50')},
+                            {'book_id': 'XYZ', 'quantity': Decimal('50')}]
+        abc_book = generate_book(asset_manager_id=self.asset_manager_id, book_id='ABC')
+        xyz_book = generate_book(asset_manager_id=self.asset_manager_id, book_id='XYZ')
+        self.create_transaction_book(abc_book)
+        self.create_transaction_book(xyz_book)
+        allocations = self.transactions_interface.allocate_transaction(asset_manager_id=self.asset_manager_id,
+                                                                       transaction_id=transaction.transaction_id,
+                                                                       allocation_type='asset_manager',
+                                                                       allocation_dicts=allocation_dicts)
+        self.assertEqual(len(allocations), 2)
+        book_ids = sorted([allocation.asset_book_id for allocation in allocations])
+        self.assertEqual(book_ids, ['ABC', 'XYZ'])
+        quantities = [allocation.quantity for allocation in allocations]
+        self.assertEqual(quantities, [Decimal('50'), Decimal('50')])
+
+    def test_AllocationWithExplictID(self):
+        transaction = generate_transaction(asset_manager_id=self.asset_manager_id, asset_id=self.asset.asset_id,
+                                           asset_book_id=self.asset_book.book_id,
+                                           counterparty_book_id=self.counterparty_book.book_id,
+                                           quantity=Decimal('100'))
+        self.transactions_interface.new(transaction)
+        transaction_id = transaction.transaction_id
+        allocation_dicts = [{'book_id': 'ABC', 'quantity': Decimal('60'), 'transaction_id': transaction_id + '_ABC'},
+                            {'book_id': 'XYZ', 'quantity': Decimal('40'), 'transaction_id': transaction_id + '_XYZ'}]
+        abc_book = generate_book(asset_manager_id=self.asset_manager_id, book_id='ABC')
+        xyz_book = generate_book(asset_manager_id=self.asset_manager_id, book_id='XYZ')
+        self.create_transaction_book(abc_book)
+        self.create_transaction_book(xyz_book)
+        allocations = self.transactions_interface.allocate_transaction(asset_manager_id=self.asset_manager_id,
+                                                                       transaction_id=transaction.transaction_id,
+                                                                       allocation_type='counterparty',
+                                                                       allocation_dicts=allocation_dicts)
+        self.assertEqual(len(allocations), 2)
+        book_ids = sorted([allocation.counterparty_book_id for allocation in allocations])
+        self.assertEqual(book_ids, ['ABC', 'XYZ'])
+        quantities = sorted([allocation.quantity for allocation in allocations])
+        self.assertEqual(quantities, [Decimal('40'), Decimal('60')])
+        transaction_ids = sorted([allocation.transaction_id for allocation in allocations])
+        self.assertEqual(transaction_ids, [transaction_id + '_ABC', transaction_id + '_XYZ'])
+
 
 if __name__ == '__main__':
     unittest.main()
