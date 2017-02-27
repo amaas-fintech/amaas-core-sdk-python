@@ -5,7 +5,7 @@ from decimal import Decimal
 import random
 import unittest
 
-from amaascore.transactions.children import Comment
+from amaascore.transactions.children import Charge, Comment
 from amaascore.transactions.transaction import Transaction
 from amaascore.transactions.interface import TransactionsInterface
 from amaascore.tools.helpers import random_string
@@ -173,9 +173,10 @@ class TransactionsInterfaceTest(unittest.TestCase):
                                            asset_book_id=self.asset_book.book_id,
                                            counterparty_book_id=self.counterparty_book.book_id,
                                            quantity=Decimal('100'))
+        transaction.charges['TEST'] = Charge(charge_value=Decimal('10'), currency='SGD')
         self.transactions_interface.new(transaction)
-        allocation_dicts = [{'book_id': 'ABC', 'quantity': Decimal('50')},
-                            {'book_id': 'XYZ', 'quantity': Decimal('50')}]
+        allocation_dicts = [{'book_id': 'ABC', 'quantity': Decimal('40')},
+                            {'book_id': 'XYZ', 'quantity': Decimal('60')}]
         abc_book = generate_book(asset_manager_id=self.asset_manager_id, book_id='ABC')
         xyz_book = generate_book(asset_manager_id=self.asset_manager_id, book_id='XYZ')
         self.create_transaction_book(abc_book)
@@ -187,8 +188,10 @@ class TransactionsInterfaceTest(unittest.TestCase):
         self.assertEqual(len(allocations), 2)
         book_ids = sorted([allocation.asset_book_id for allocation in allocations])
         self.assertEqual(book_ids, ['ABC', 'XYZ'])
-        quantities = [allocation.quantity for allocation in allocations]
-        self.assertEqual(quantities, [Decimal('50'), Decimal('50')])
+        quantities = sorted([allocation.quantity for allocation in allocations])
+        self.assertEqual(quantities, [Decimal('40'), Decimal('60')])
+        charges = sorted([allocation.charges.get('TEST').charge_value for allocation in allocations])
+        self.assertEqual(charges, [Decimal('4'), Decimal('6')])
 
     def test_AllocationWithExplictID(self):
         transaction = generate_transaction(asset_manager_id=self.asset_manager_id, asset_id=self.asset.asset_id,
@@ -196,9 +199,9 @@ class TransactionsInterfaceTest(unittest.TestCase):
                                            counterparty_book_id=self.counterparty_book.book_id,
                                            quantity=Decimal('100'))
         self.transactions_interface.new(transaction)
-        transaction_id = transaction.transaction_id
-        allocation_dicts = [{'book_id': 'ABC', 'quantity': Decimal('60'), 'transaction_id': transaction_id + '_ABC'},
-                            {'book_id': 'XYZ', 'quantity': Decimal('40'), 'transaction_id': transaction_id + '_XYZ'}]
+        partial_tran_id = transaction.transaction_id[:10]
+        allocation_dicts = [{'book_id': 'ABC', 'quantity': Decimal('60'), 'transaction_id': partial_tran_id + '_ABC'},
+                            {'book_id': 'XYZ', 'quantity': Decimal('40'), 'transaction_id': partial_tran_id + '_XYZ'}]
         abc_book = generate_book(asset_manager_id=self.asset_manager_id, book_id='ABC')
         xyz_book = generate_book(asset_manager_id=self.asset_manager_id, book_id='XYZ')
         self.create_transaction_book(abc_book)
@@ -213,8 +216,7 @@ class TransactionsInterfaceTest(unittest.TestCase):
         quantities = sorted([allocation.quantity for allocation in allocations])
         self.assertEqual(quantities, [Decimal('40'), Decimal('60')])
         transaction_ids = sorted([allocation.transaction_id for allocation in allocations])
-        self.assertEqual(transaction_ids, [transaction_id + '_ABC', transaction_id + '_XYZ'])
-
+        self.assertEqual(transaction_ids, [partial_tran_id + '_ABC', partial_tran_id + '_XYZ'])
 
 if __name__ == '__main__':
     unittest.main()
