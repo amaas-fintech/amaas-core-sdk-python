@@ -22,21 +22,6 @@ class BondBase(Asset):
                                        *args, **kwargs)
 
     @property
-    def issue_date(self):
-        if hasattr(self, '_issue_date'):
-            return self._issue_date
-
-    @issue_date.setter
-    def issue_date(self, issue_date):
-        """
-        The date on which the bond was issued.
-        :param issue_date:
-        :return:
-        """
-        if issue_date:
-            self._issue_date = parse(issue_date).date() if isinstance(issue_date, (str, unicode)) else issue_date
-
-    @property
     def coupon(self):
         if hasattr(self, '_coupon'):
             return self._coupon

@@ -43,10 +43,12 @@ def generate_bond(asset_manager_id=None, asset_id=None):
     return bond
 
 
-def generate_bond_option(asset_manager_id=None, asset_id=None, put_call=None, strike=None):
+def generate_bond_option(asset_manager_id=None, asset_id=None, option_type=None, strike=None, option_style=None):
     props = generate_common(asset_manager_id=asset_manager_id, asset_id=asset_id)
-    asset = BondOption(put_call=put_call or random.choice(['Put', 'Call']),
-                       strike=strike or Decimal(random.uniform(99.0, 102.0)).quantize(Decimal('0.01')),
+    asset = BondOption(underlying_asset_id=random_string(10),
+                       option_style=option_style or random.choice(['European', 'American']),
+                       option_type=option_type or random.choice(['Put', 'Call']),
+                       strike=strike or Decimal(random.uniform(99.0, 102.0)).quantize(Decimal('0.05')),
                        **props)
     return asset
 

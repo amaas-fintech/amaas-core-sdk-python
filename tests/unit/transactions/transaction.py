@@ -66,9 +66,6 @@ class TransactionTest(unittest.TestCase):
         json_transaction_id = json.loads(json.dumps(transaction_json, ensure_ascii=False)).get('transaction_id')
         self.assertEqual(json_transaction_id, self.transaction_id)
 
-    # def test_TransactionAsset(self):
-    #     self.assertEqual(type(self.transaction.asset), TransactionAsset)
-
     def test_TransactionPostings(self):
         with self.assertRaises(TransactionNeedsSaving):
             self.transaction.postings
@@ -146,6 +143,18 @@ class TransactionTest(unittest.TestCase):
         # Remove a link that doesn't exist
         with self.assertRaisesRegexp(ValueError, 'Cannot remove link'):
             self.transaction.remove_link('Multiple', '1234')
+
+    def test_InvalidTransactionType(self):
+        with self.assertRaisesRegexp(ValueError, 'Invalid transaction type Invalid'):
+            transaction = generate_transaction(transaction_type='Invalid')
+
+    def test_InvalidTransactionAction(self):
+        with self.assertRaisesRegexp(ValueError, 'Invalid transaction action Invalid'):
+            transaction = generate_transaction(transaction_action='Invalid')
+
+    def test_InvalidTransactionStatus(self):
+        with self.assertRaisesRegexp(ValueError, 'Invalid transaction status Invalid'):
+            transaction = generate_transaction(transaction_status='Invalid')
 
 if __name__ == '__main__':
     unittest.main()

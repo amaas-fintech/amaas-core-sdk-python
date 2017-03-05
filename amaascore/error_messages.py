@@ -8,10 +8,8 @@ ERROR_LOOKUP = {'address_invalid': 'Invalid addresses attribute: %s. Party ID %s
                 'amend_missing_attribute': 'Partial amend failed for Asset Manager: %s on party: %s - '
                                            'Attribute: %s does not exist',
                 'deactivate_missing_previous': 'Cannot Deactivate Party - Cannot Find ID: %s for Asset Manager: %s',
-                'party_missing_mandatory': 'Missing mandatory attributes: %s. Party ID: %s for Asset Manager: %s',
-                'party_class_invalid': 'Invalid party class %s. Party ID: %s for Asset Manager: %s',
                 'party_status_invalid': 'Invalid party status %s. Party ID: %s for Asset Manager: %s',
-                'party_type_invalid': 'Invalid party type %s for class %s. Party ID: %s for Asset Manager: %s',
-                'party_additional_invalid': 'Error with parameter \'additional\': %s. Party ID: %s for Asset Manager:'
-                                            ' %s',
+                'transaction_action_invalid': 'Invalid transaction action %s. Transaction ID: %s for Asset Manager: %s',
+                'transaction_status_invalid': 'Invalid transaction status %s. Transaction ID: %s for Asset Manager: %s',
+                'transaction_type_invalid': 'Invalid transaction type %s. Transaction ID: %s for Asset Manager: %s',
                 'transaction_link_not_found': 'Cannot remove link - not found'}

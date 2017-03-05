@@ -1,13 +1,14 @@
 from datetime import date
+from decimal import Decimal
 
 from amaascore.assets.future import Future
 
 
 class BondFuture(Future):
 
-    def __init__(self, asset_manager_id, asset_id, expiry_date, underlying_bond_tenor, cheapest_to_deliver_id=None,
-                 asset_issuer_id=None, asset_status='Active', issue_date=date.min, description='', country_id=None,
-                 venue_id=None, references={}, *args, **kwargs):
+    def __init__(self, asset_manager_id, asset_id, expiry_date, underlying_bond_tenor, underlying_bond_coupon,
+                 cheapest_to_deliver_id=None, asset_issuer_id=None, asset_status='Active', issue_date=date.min,
+                 description='', country_id=None, venue_id=None, references={}, *args, **kwargs):
         """
 
         :param asset_manager_id: The asset manager who owns the data for this BondFuture
@@ -28,8 +29,25 @@ class BondFuture(Future):
         self.cheapest_to_deliver_id = cheapest_to_deliver_id
         self.expiry_date = expiry_date
         self.underlying_bond_tenor = underlying_bond_tenor
+        self.underlying_bond_coupon = underlying_bond_coupon
         super(BondFuture, self).__init__(asset_manager_id=asset_manager_id, asset_id=asset_id,
                                          asset_issuer_id=asset_issuer_id, asset_status=asset_status,
                                          description=description, country_id=country_id, venue_id=venue_id,
                                          references=references, issue_date=issue_date,
                                          *args, **kwargs)
+
+    @property
+    def underlying_bond_coupon(self):
+        if hasattr(self, '_underlying_bond_coupon'):
+            return self._underlying_bond_coupon
+
+    @underlying_bond_coupon.setter
+    def underlying_bond_coupon(self, underlying_bond_coupon):
+        """
+        The coupon paid out by the underlying bond.  Represented as a fraction of 1 (e.g. 0.05 is 5%).
+        :param underlying_bond_coupon:
+        :return:
+        """
+        if underlying_bond_coupon is not None:
+            self._underlying_bond_coupon = Decimal(underlying_bond_coupon)
+

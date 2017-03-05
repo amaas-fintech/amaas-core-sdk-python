@@ -5,7 +5,7 @@ from amaascore.error_messages import ERROR_LOOKUP
 from amaascore.core.amaas_model import AMaaSModel
 from amaascore.core.reference import Reference
 from amaascore.parties.children import Address, Email
-
+from amaascore.parties.enums import PARTY_STATUSES
 
 class Party(AMaaSModel):
 
@@ -73,3 +73,21 @@ class Party(AMaaSModel):
             raise ValueError(ERROR_LOOKUP.get('email_address_invalid') % (str(invalid), self.party_id,
                                                                           self.asset_manager_id))
         self._emails = emails
+
+    @property
+    def party_status(self):
+        if hasattr(self, '_party_status'):
+            return self._party_status
+
+    @party_status.setter
+    def party_status(self, party_status):
+        """
+
+        :param transaction_status: The status of the transaction - e.g. Active, Inactive
+        :return:
+        """
+        if party_status not in PARTY_STATUSES:
+            raise ValueError(ERROR_LOOKUP.get('party_status_invalid') % (party_status, self.party_id,
+                                                                         self.asset_manager_id))
+        else:
+            self._party_status = party_status

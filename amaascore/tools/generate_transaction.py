@@ -15,8 +15,8 @@ PARTY_TYPES = ['Prime Broker']
 REFERENCE_TYPES = ['External']
 
 
-def generate_common(asset_manager_id=None, asset_book_id=None, counterparty_book_id=None, asset_id=None, quantity=None,
-                    price=None, transaction_date=None, transaction_id=None):
+def generate_common(asset_manager_id, asset_book_id, counterparty_book_id, asset_id, quantity, price, transaction_date,
+                    transaction_id, transaction_action, transaction_type, transaction_status):
 
     # Explicitly handle price is None (in case price is 0)
     price = Decimal(random.uniform(1.0, 1000.0)).quantize(Decimal('0.01')) if price is None else price
@@ -30,25 +30,32 @@ def generate_common(asset_manager_id=None, asset_book_id=None, counterparty_book
               'transaction_date': transaction_date or datetime.date.today(),
               'transaction_currency': random.choice(['SGD', 'USD']),
               'settlement_currency': random.choice(['SGD', 'USD']),
-              'transaction_id': transaction_id
+              'transaction_id': transaction_id,
+              'transaction_status': transaction_status or 'New',
+              'transaction_type': transaction_type or 'Trade'
               }
 
     common['settlement_date'] = (datetime.timedelta(days=2) + common['transaction_date'])
 
-    if quantity >= 0:
+    if transaction_action:
+        common['transaction_action'] = transaction_action
+    elif quantity >= 0:
         common['transaction_action'] = random.choice(['Buy', 'Receive'])
     else:
-        common['transaction_action'] = random.choice(['Sell', 'Short Sell', 'Transfer'])
+        common['transaction_action'] = random.choice(['Sell', 'Short Sell', 'Deliver'])
     return common
 
 
 def generate_transaction(asset_manager_id=None, asset_book_id=None, counterparty_book_id=None,
                          asset_id=None, quantity=None, transaction_date=None, transaction_id=None,
-                         price=None, net_affecting_charges=None):
+                         price=None, net_affecting_charges=None, transaction_action=None, transaction_type=None,
+                         transaction_status=None,):
 
     common = generate_common(asset_manager_id=asset_manager_id, asset_book_id=asset_book_id,
                              counterparty_book_id=counterparty_book_id, asset_id=asset_id, quantity=quantity,
-                             price=price, transaction_date=transaction_date, transaction_id=transaction_id)
+                             price=price, transaction_date=transaction_date, transaction_id=transaction_id,
+                             transaction_action=transaction_action, transaction_status=transaction_status,
+                             transaction_type=transaction_type)
 
     transaction = Transaction(**common)
     charges = {charge_type: Charge(charge_value=Decimal(random.uniform(1.0, 100.0)).quantize(Decimal('0.01')),
