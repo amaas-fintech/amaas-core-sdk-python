@@ -1,4 +1,5 @@
 # coding=utf-8
+from __future__ import absolute_import, division, print_function, unicode_literals
 
 import datetime
 from decimal import Decimal
@@ -163,60 +164,10 @@ class TransactionsInterfaceTest(unittest.TestCase):
         self.assertEqual(transaction.references, retrieved_transaction.references)
 
     def test_Unicode(self):
-        unicode_comment = u'日本語入力'
+        unicode_comment = '日本語入力'
         self.transaction.comments['Unicode'] = Comment(comment_value=unicode_comment)
         transaction = self.transactions_interface.new(self.transaction)
         self.assertEqual(transaction.comments.get('Unicode').comment_value, unicode_comment)
-
-    def test_Allocations(self):
-        transaction = generate_transaction(asset_manager_id=self.asset_manager_id, asset_id=self.asset.asset_id,
-                                           asset_book_id=self.asset_book.book_id,
-                                           counterparty_book_id=self.counterparty_book.book_id,
-                                           quantity=Decimal('100'))
-        transaction.charges['TEST'] = Charge(charge_value=Decimal('10'), currency='SGD')
-        self.transactions_interface.new(transaction)
-        allocation_dicts = [{'book_id': 'ABC', 'quantity': Decimal('40')},
-                            {'book_id': 'XYZ', 'quantity': Decimal('60')}]
-        abc_book = generate_book(asset_manager_id=self.asset_manager_id, book_id='ABC')
-        xyz_book = generate_book(asset_manager_id=self.asset_manager_id, book_id='XYZ')
-        self.create_transaction_book(abc_book)
-        self.create_transaction_book(xyz_book)
-        allocations = self.transactions_interface.allocate_transaction(asset_manager_id=self.asset_manager_id,
-                                                                       transaction_id=transaction.transaction_id,
-                                                                       allocation_type='asset_manager',
-                                                                       allocation_dicts=allocation_dicts)
-        self.assertEqual(len(allocations), 2)
-        book_ids = sorted([allocation.asset_book_id for allocation in allocations])
-        self.assertEqual(book_ids, ['ABC', 'XYZ'])
-        quantities = sorted([allocation.quantity for allocation in allocations])
-        self.assertEqual(quantities, [Decimal('40'), Decimal('60')])
-        charges = sorted([allocation.charges.get('TEST').charge_value for allocation in allocations])
-        self.assertEqual(charges, [Decimal('4'), Decimal('6')])
-
-    def test_AllocationWithExplictID(self):
-        transaction = generate_transaction(asset_manager_id=self.asset_manager_id, asset_id=self.asset.asset_id,
-                                           asset_book_id=self.asset_book.book_id,
-                                           counterparty_book_id=self.counterparty_book.book_id,
-                                           quantity=Decimal('100'))
-        self.transactions_interface.new(transaction)
-        partial_tran_id = transaction.transaction_id[:10]
-        allocation_dicts = [{'book_id': 'ABC', 'quantity': Decimal('60'), 'transaction_id': partial_tran_id + '_ABC'},
-                            {'book_id': 'XYZ', 'quantity': Decimal('40'), 'transaction_id': partial_tran_id + '_XYZ'}]
-        abc_book = generate_book(asset_manager_id=self.asset_manager_id, book_id='ABC')
-        xyz_book = generate_book(asset_manager_id=self.asset_manager_id, book_id='XYZ')
-        self.create_transaction_book(abc_book)
-        self.create_transaction_book(xyz_book)
-        allocations = self.transactions_interface.allocate_transaction(asset_manager_id=self.asset_manager_id,
-                                                                       transaction_id=transaction.transaction_id,
-                                                                       allocation_type='counterparty',
-                                                                       allocation_dicts=allocation_dicts)
-        self.assertEqual(len(allocations), 2)
-        book_ids = sorted([allocation.counterparty_book_id for allocation in allocations])
-        self.assertEqual(book_ids, ['ABC', 'XYZ'])
-        quantities = sorted([allocation.quantity for allocation in allocations])
-        self.assertEqual(quantities, [Decimal('40'), Decimal('60')])
-        transaction_ids = sorted([allocation.transaction_id for allocation in allocations])
-        self.assertEqual(transaction_ids, [partial_tran_id + '_ABC', partial_tran_id + '_XYZ'])
 
 if __name__ == '__main__':
     unittest.main()

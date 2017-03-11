@@ -72,5 +72,9 @@ class PartyTest(unittest.TestCase):
         with self.assertRaisesRegexp(ValueError, 'Must set exactly one address as primary'):
             self.party.upsert_address(address_type=address_type, address=address_value)
 
+    def test_InvalidPartyStatus(self):
+        with self.assertRaisesRegexp(ValueError, 'Invalid party status Invalid'):
+            party = generate_party(party_status='Invalid')
+
 if __name__ == '__main__':
     unittest.main()

@@ -1,4 +1,5 @@
 # coding=utf-8
+from __future__ import absolute_import, division, print_function, unicode_literals
 
 import random
 import unittest
@@ -61,7 +62,7 @@ class MonitorInterfaceTest(unittest.TestCase):
         self.assertEqual(len(items), len(asset_manager_items))
 
     def test_Unicode(self):
-        unicode_message = u'日本語入力'
+        unicode_message = '日本語入力'
         self.item.message = unicode_message
         item = self.monitor_interface.new_item(self.item)
         self.assertEqual(item.message, unicode_message)

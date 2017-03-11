@@ -1,4 +1,5 @@
 # coding=utf-8
+from __future__ import absolute_import, division, print_function, unicode_literals
 
 import random
 import unittest
@@ -62,7 +63,7 @@ class BooksInterfaceTest(unittest.TestCase):
         self.assertEqual(len(books), len(asset_manager_books))
 
     def test_Unicode(self):
-        unicode_description = u'日本語入力'
+        unicode_description = '日本語入力'
         self.book.description = unicode_description
         book = self.books_interface.new(self.book)
         self.assertEqual(book.description, unicode_description)

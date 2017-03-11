@@ -1,9 +1,15 @@
+from __future__ import absolute_import, division, print_function, unicode_literals
+
 import datetime
 from dateutil.parser import parse
+import sys
 import uuid
 
 from amaascore.core.amaas_model import AMaaSModel
 from amaascore.core.reference import Reference
+
+# This extremely ugly hack is due to the whole Python 2 vs 3 debacle.
+type_check = str if sys.version_info >= (3, 0, 0) else (str, unicode)
 
 
 class CorporateAction(AMaaSModel):
@@ -45,7 +51,7 @@ class CorporateAction(AMaaSModel):
         :return:
         """
         if value:
-            self._record_date = parse(value).date() if isinstance(value, (str, unicode)) else value
+            self._record_date = parse(value).date() if isinstance(value, type_check) else value
 
     @property
     def declared_date(self):
@@ -60,7 +66,7 @@ class CorporateAction(AMaaSModel):
         :return:
         """
         if value:
-            self._declared_date = parse(value).date() if isinstance(value, (str, unicode)) else value
+            self._declared_date = parse(value).date() if isinstance(value, type_check) else value
 
     @property
     def settlement_date(self):
@@ -75,4 +81,4 @@ class CorporateAction(AMaaSModel):
         :return:
         """
         if value:
-            self._settlement_date = parse(value).date() if isinstance(value, (str, unicode)) else value
+            self._settlement_date = parse(value).date() if isinstance(value, type_check) else value

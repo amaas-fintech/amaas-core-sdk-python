@@ -20,7 +20,7 @@ class BondOptionTest(unittest.TestCase):
 
     def test_Optionality(self):
         self.assertEqual(type(self.bond_option.strike), Decimal)
-        self.assertIn(self.bond_option.put_call, ['Put', 'Call'])
+        self.assertIn(self.bond_option.option_type, ['Put', 'Call'])
 
 if __name__ == '__main__':
     unittest.main()

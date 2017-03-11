@@ -1,3 +1,5 @@
+from __future__ import absolute_import, division, print_function, unicode_literals
+
 import copy
 import re
 
@@ -5,6 +7,7 @@ from amaascore.error_messages import ERROR_LOOKUP
 from amaascore.core.amaas_model import AMaaSModel
 from amaascore.core.reference import Reference
 from amaascore.parties.children import Address, Email
+from amaascore.parties.enums import PARTY_STATUSES
 
 
 class Party(AMaaSModel):
@@ -14,18 +17,20 @@ class Party(AMaaSModel):
         """ A dict of which of the attributes are collections of other objects, and what type """
         return {'addresses': Address, 'emails': Email, 'references': Reference}
 
-    def __init__(self, asset_manager_id, party_id, party_status='Active', description='', addresses=None, emails=None,
-                 references=None, *args, **kwargs):
+    def __init__(self, asset_manager_id, party_id, party_status='Active', base_currency=None, description='',
+                 addresses={}, emails={}, links={}, references=None, *args, **kwargs):
         self.asset_manager_id = asset_manager_id
         self.party_id = party_id
         self.party_status = party_status
         if not hasattr(self, 'party_class'):  # A more specific child class may have already set this
             self.party_class = 'Party'
         self.party_type = self.__class__.__name__
+        self.base_currency = base_currency
         self.description = description
-        self.addresses = addresses or {}
-        self.emails = emails or {}
-        self.references = references or {}
+        self.addresses = addresses
+        self.emails = emails
+        self.links = links
+        self.references = references
         super(Party, self).__init__(*args, **kwargs)
 
     def upsert_address(self, address_type, address):
@@ -73,3 +78,21 @@ class Party(AMaaSModel):
             raise ValueError(ERROR_LOOKUP.get('email_address_invalid') % (str(invalid), self.party_id,
                                                                           self.asset_manager_id))
         self._emails = emails
+
+    @property
+    def party_status(self):
+        if hasattr(self, '_party_status'):
+            return self._party_status
+
+    @party_status.setter
+    def party_status(self, party_status):
+        """
+
+        :param transaction_status: The status of the transaction - e.g. Active, Inactive
+        :return:
+        """
+        if party_status not in PARTY_STATUSES:
+            raise ValueError(ERROR_LOOKUP.get('party_status_invalid') % (party_status, self.party_id,
+                                                                         self.asset_manager_id))
+        else:
+            self._party_status = party_status

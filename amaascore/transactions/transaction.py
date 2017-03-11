@@ -1,7 +1,10 @@
+from __future__ import absolute_import, division, print_function, unicode_literals
+
 import copy
 import datetime
 from dateutil.parser import parse
 from decimal import Decimal
+import sys
 import uuid
 
 from amaascore.error_messages import ERROR_LOOKUP
@@ -9,6 +12,10 @@ from amaascore.exceptions import TransactionNeedsSaving
 from amaascore.core.amaas_model import AMaaSModel
 from amaascore.core.reference import Reference
 from amaascore.transactions.children import Charge, Code, Comment, Link, Party
+from amaascore.transactions.enums import TRANSACTION_ACTIONS, TRANSACTION_STATUSES, TRANSACTION_TYPES
+
+# This extremely ugly hack is due to the whole Python 2 vs 3 debacle.
+type_check = str if sys.version_info >= (3, 0, 0) else (str, unicode)
 
 
 class Transaction(AMaaSModel):
@@ -53,6 +60,7 @@ class Transaction(AMaaSModel):
         :param kwargs:
         """
 
+        self.transaction_id = transaction_id or uuid.uuid4().hex
         self.asset_manager_id = asset_manager_id
         self.asset_book_id = asset_book_id
         self.counterparty_book_id = counterparty_book_id
@@ -69,7 +77,6 @@ class Transaction(AMaaSModel):
 
         # Cannot be in method signature or the value gets bound to the constructor call
         self.execution_time = execution_time or datetime.datetime.utcnow()
-        self.transaction_id = transaction_id or uuid.uuid4().hex
 
         self.charges = charges or {}
         self.codes = codes or {}
@@ -121,7 +128,7 @@ class Transaction(AMaaSModel):
         :return:
         """
         if value:
-            self._transaction_date = parse(value).date() if isinstance(value, (str, unicode)) else value
+            self._transaction_date = parse(value).date() if isinstance(value, type_check) else value
 
     @property
     def settlement_date(self):
@@ -135,7 +142,7 @@ class Transaction(AMaaSModel):
         :return:
         """
         if value:
-            self._settlement_date = parse(value).date() if isinstance(value, (str, unicode)) else value
+            self._settlement_date = parse(value).date() if isinstance(value, type_check) else value
 
     @property
     def execution_time(self):
@@ -149,7 +156,7 @@ class Transaction(AMaaSModel):
         :return:
         """
         if value:
-            self._execution_time = parse(value) if isinstance(value, (str, unicode)) else value
+            self._execution_time = parse(value) if isinstance(value, type_check) else value
 
     @property
     def gross_settlement(self):
@@ -182,6 +189,60 @@ class Transaction(AMaaSModel):
         """
         if net_settlement:
             self._net_settlement = Decimal(net_settlement)
+
+    @property
+    def transaction_action(self):
+        if hasattr(self, '_transaction_action'):
+            return self._transaction_action
+
+    @transaction_action.setter
+    def transaction_action(self, transaction_action):
+        """
+
+        :param transaction_action: The action that this transaction is recording - e.g. Buy, Deliver
+        :return:
+        """
+        if transaction_action not in TRANSACTION_ACTIONS:
+            raise ValueError(ERROR_LOOKUP.get('transaction_action_invalid') % (transaction_action, self.transaction_id,
+                                                                               self.asset_manager_id))
+        else:
+            self._transaction_action = transaction_action
+
+    @property
+    def transaction_status(self):
+        if hasattr(self, '_transaction_status'):
+            return self._transaction_status
+
+    @transaction_status.setter
+    def transaction_status(self, transaction_status):
+        """
+
+        :param transaction_status: The status of the transaction - e.g. New, Netted
+        :return:
+        """
+        if transaction_status not in TRANSACTION_STATUSES:
+            raise ValueError(ERROR_LOOKUP.get('transaction_status_invalid') % (transaction_status, self.transaction_id,
+                                                                               self.asset_manager_id))
+        else:
+            self._transaction_status = transaction_status
+
+    @property
+    def transaction_type(self):
+        if hasattr(self, '_transaction_type'):
+            return self._transaction_type
+
+    @transaction_type.setter
+    def transaction_type(self, transaction_type):
+        """
+
+        :param transaction_type: The type of transaction that we are recording - e.g. Trade, Payment, Coupon
+        :return:
+        """
+        if transaction_type not in TRANSACTION_TYPES:
+            raise ValueError(ERROR_LOOKUP.get('transaction_type_invalid') % (transaction_type, self.transaction_id,
+                                                                             self.asset_manager_id))
+        else:
+            self._transaction_type = transaction_type
 
     def charges_net_effect(self):
         """
