@@ -1,6 +1,10 @@
 import datetime
 from dateutil.parser import parse
 from decimal import Decimal
+import sys
+
+# This extremely ugly hack is due to the whole Python 2 vs 3 debacle.
+type_check = str if sys.version_info >= (3, 0, 0) else (str, unicode)
 
 
 class Quote(object):
@@ -24,7 +28,7 @@ class Quote(object):
         :return:
         """
         if value:
-            if isinstance(value, (str, unicode)):
+            if isinstance(value, type_check):
                 self._quote_datetime = parse(value)
             elif isinstance(value, datetime.datetime):
                 self._quote_datetime = value

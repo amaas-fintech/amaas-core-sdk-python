@@ -1,3 +1,5 @@
+from __future__ import absolute_import, division, print_function, unicode_literals
+
 import datetime
 from decimal import Decimal
 import random
@@ -22,10 +24,10 @@ def generate_common(asset_manager_id=None, asset_id=None):
     return common
 
 
-def generate_asset(asset_manager_id=None, asset_id=None):
+def generate_asset(asset_manager_id=None, asset_id=None, fungible=None):
 
     common = generate_common(asset_manager_id=asset_manager_id, asset_id=asset_id)
-    common['fungible'] = random.choice([True, False])
+    common['fungible'] = random.choice([True, False]) if fungible is None else fungible
 
     asset = Asset(**common)
     references = {ref_type: Reference(reference_value=random_string(10)) for ref_type in REFERENCE_TYPES}

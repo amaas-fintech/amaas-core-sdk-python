@@ -1,4 +1,5 @@
 # coding=utf-8
+from __future__ import absolute_import, division, print_function, unicode_literals
 
 import random
 import unittest
@@ -67,7 +68,7 @@ class CorporateActionsInterfaceTest(unittest.TestCase):
         self.assertEqual(len(corporate_actions), len(asset_manager_corporate_actions))
 
     def test_Unicode(self):
-        unicode_description = u'日本語入力'
+        unicode_description = '日本語入力'
         self.corporate_action.description = unicode_description
         corporate_action = self.corporate_actions_interface.new(self.corporate_action)
         self.assertEqual(corporate_action.description, unicode_description)

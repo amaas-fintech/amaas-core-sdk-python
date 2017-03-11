@@ -4,12 +4,10 @@ from amaascore.assets.asset import Asset
 class ForeignExchangeBase(Asset):
     """ This class should never be instantiated """
 
-    def __init__(self, asset_id, asset_status='Active', description='', country_id=None, references={},
-                 *args, **kwargs):
+    def __init__(self, asset_id, asset_status, description, *args, **kwargs):
         self.asset_class = 'ForeignExchange'
         super(ForeignExchangeBase, self).__init__(asset_manager_id=0, asset_id=asset_id, fungible=True,
                                                   asset_status=asset_status, description=description,
-                                                  country_id=country_id, references=references,
                                                   *args, **kwargs)
 
     def base_currency(self):

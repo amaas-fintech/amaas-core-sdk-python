@@ -1,7 +1,10 @@
+from __future__ import absolute_import, division, print_function, unicode_literals
+
 import copy
 import datetime
 from dateutil.parser import parse
 from decimal import Decimal
+import sys
 import uuid
 
 from amaascore.error_messages import ERROR_LOOKUP
@@ -10,6 +13,9 @@ from amaascore.core.amaas_model import AMaaSModel
 from amaascore.core.reference import Reference
 from amaascore.transactions.children import Charge, Code, Comment, Link, Party
 from amaascore.transactions.enums import TRANSACTION_ACTIONS, TRANSACTION_STATUSES, TRANSACTION_TYPES
+
+# This extremely ugly hack is due to the whole Python 2 vs 3 debacle.
+type_check = str if sys.version_info >= (3, 0, 0) else (str, unicode)
 
 
 class Transaction(AMaaSModel):
@@ -122,7 +128,7 @@ class Transaction(AMaaSModel):
         :return:
         """
         if value:
-            self._transaction_date = parse(value).date() if isinstance(value, (str, unicode)) else value
+            self._transaction_date = parse(value).date() if isinstance(value, type_check) else value
 
     @property
     def settlement_date(self):
@@ -136,7 +142,7 @@ class Transaction(AMaaSModel):
         :return:
         """
         if value:
-            self._settlement_date = parse(value).date() if isinstance(value, (str, unicode)) else value
+            self._settlement_date = parse(value).date() if isinstance(value, type_check) else value
 
     @property
     def execution_time(self):
@@ -150,7 +156,7 @@ class Transaction(AMaaSModel):
         :return:
         """
         if value:
-            self._execution_time = parse(value) if isinstance(value, (str, unicode)) else value
+            self._execution_time = parse(value) if isinstance(value, type_check) else value
 
     @property
     def gross_settlement(self):

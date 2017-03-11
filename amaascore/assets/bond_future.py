@@ -8,7 +8,7 @@ class BondFuture(Future):
 
     def __init__(self, asset_manager_id, asset_id, expiry_date, underlying_bond_tenor, underlying_bond_coupon,
                  cheapest_to_deliver_id=None, asset_issuer_id=None, asset_status='Active', issue_date=date.min,
-                 description='', country_id=None, venue_id=None, references={}, *args, **kwargs):
+                 description='', country_id=None, venue_id=None, links={}, references={}, *args, **kwargs):
         """
 
         :param asset_manager_id: The asset manager who owns the data for this BondFuture
@@ -33,7 +33,7 @@ class BondFuture(Future):
         super(BondFuture, self).__init__(asset_manager_id=asset_manager_id, asset_id=asset_id,
                                          asset_issuer_id=asset_issuer_id, asset_status=asset_status,
                                          description=description, country_id=country_id, venue_id=venue_id,
-                                         references=references, issue_date=issue_date,
+                                         links=links, references=references, issue_date=issue_date,
                                          *args, **kwargs)
 
     @property

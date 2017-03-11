@@ -1,3 +1,5 @@
+from __future__ import absolute_import, division, print_function, unicode_literals
+
 import csv
 
 from amaascore.transactions.position import Position
@@ -16,9 +18,9 @@ def json_to_transaction(json_transaction):
         for (child_type, child_json) in children.items():
             # Handle the case where there are multiple children for a given type - e.g. links
             if isinstance(child_json, list):
-                child = []
+                child = set()
                 for child_json_in_list in child_json:
-                    child.append(clazz(**child_json_in_list))
+                    child.add(clazz(**child_json_in_list))
             else:
                 child = clazz(**child_json)
             collection[child_type] = child

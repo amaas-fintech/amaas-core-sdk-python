@@ -139,7 +139,7 @@ class TransactionsInterface(Interface):
             print("HANDLE THIS PROPERLY")
             print(response.content)
 
-    def get_transaction_allocations(self, asset_manager_id, transaction_id):
+    def retrieve_transaction_allocations(self, asset_manager_id, transaction_id):
         """
 
         :param asset_manager_id:
@@ -181,6 +181,41 @@ class TransactionsInterface(Interface):
         response = requests.post(url, json=transaction_book_json)
         if response.ok:
             print("DO SOMETHING?")
+        else:
+            print("HANDLE THIS PROPERLY")
+            print(response.content)
+
+    def net_transactions(self, asset_manager_id, transaction_ids, netting_type='Net'):
+        """
+
+        :param asset_manager_id: The asset_manager_id of the netting set owner
+        :param transaction_ids:  A list of transaction_ids to net
+        :param netting_type:
+        :return:
+        """
+        url = '%s/netting/%s' % (self.endpoint, asset_manager_id)
+        params = {'netting_type': netting_type}
+        response = requests.post(url, params=params, json=transaction_ids)
+        if response.ok:
+            net_transaction = json_to_transaction(response.json())
+            return net_transaction
+        else:
+            print("HANDLE THIS PROPERLY")
+            print(response.content)
+
+    def retrieve_netting_set(self, asset_manager_id, transaction_id):
+        """
+        Returns all the transaction_ids associated with a single netting set.  Pass in the ID for any transaction in
+        the set.
+        :param asset_manager_id:  The asset_manager_id for the netting set owner.
+        :param transaction_id: A transaction_id of an entry within the netting set.
+        :return:
+        """
+        url = '%s/netting/%s/%s' % (self.endpoint, asset_manager_id, transaction_id)
+        response = requests.get(url)
+        if response.ok:
+            net_transaction_id, netting_set_json = response.json().items()[0]
+            return net_transaction_id, [json_to_transaction(net_transaction) for net_transaction in netting_set_json]
         else:
             print("HANDLE THIS PROPERLY")
             print(response.content)

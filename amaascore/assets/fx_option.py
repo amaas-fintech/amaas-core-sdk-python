@@ -12,7 +12,7 @@ class ForeignExchangeOption(Asset, OptionMixin):
 
     def __init__(self, asset_manager_id, asset_id, option_type, strike, premium, underlying_asset_id, option_style,
                  issue_date=date.min, maturity_date=date.max, asset_status='Active', asset_issuer_id=None,
-                 description='', references={},
+                 description='', links={}, references={},
                  *args, **kwargs):
         self.asset_class = 'ForeignExchange'
         self.option_type = option_type
@@ -24,5 +24,5 @@ class ForeignExchangeOption(Asset, OptionMixin):
                                                     fungible=False, asset_issuer_id=asset_issuer_id,
                                                     issue_date=issue_date, maturity_date=maturity_date,
                                                     asset_status=asset_status, description=description,
-                                                    references=references, *args, **kwargs)
+                                                    links=links, references=references, *args, **kwargs)
 

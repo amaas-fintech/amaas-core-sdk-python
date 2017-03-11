@@ -1,3 +1,5 @@
+from __future__ import absolute_import, division, print_function, unicode_literals
+
 import csv
 import inspect
 
@@ -18,7 +20,13 @@ def json_to_asset(json_asset):
         children = json_asset.pop(collection_name, {})
         collection = {}
         for (child_type, child_json) in children.items():
-            child = clazz(**child_json)
+            # Handle the case where there are multiple children for a given type - e.g. links
+            if isinstance(child_json, list):
+                child = set()
+                for child_json_in_list in child_json:
+                    child.add(clazz(**child_json_in_list))
+            else:
+                child = clazz(**child_json)
             collection[child_type] = child
         json_asset[collection_name] = collection
     clazz = globals().get(json_asset.get('asset_type'))

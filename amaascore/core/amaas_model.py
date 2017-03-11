@@ -8,6 +8,8 @@ def json_handler(value):
         return value.isoformat()
     if isinstance(value, datetime.timedelta):
         return (datetime.datetime.min + value).time().isoformat()
+    if isinstance(value, set):
+        return list(value)
     if isinstance(value, Decimal):
         return str(value)
     if isinstance(value, AMaaSModel):
