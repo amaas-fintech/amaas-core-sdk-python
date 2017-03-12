@@ -13,7 +13,7 @@ type_check = str if sys.version_info >= (3, 0, 0) else (str, unicode)
 
 class EODPrice(AMaaSModel):
 
-    def __init__(self, asset_manager_id, asset_id, business_date, price, active=True):
+    def __init__(self, asset_manager_id, asset_id, business_date, price, active=True, *args, **kwargs):
         """
 
         :param asset_manager_id: The asset_manager_id who owns this price
@@ -27,7 +27,7 @@ class EODPrice(AMaaSModel):
         self.price = price
         self.business_date = business_date
         self.active = active
-        super(EODPrice, self).__init__()
+        super(EODPrice, self).__init__(*args, **kwargs)
 
     @property
     def price(self):
