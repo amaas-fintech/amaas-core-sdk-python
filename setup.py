@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='amaascore',
-    version='0.1.4',
+    version='0.1.6',
     description='Asset Management as a Service - Core SDK',
     license='Apache License 2.0',
     url='https://github.com/amaas-fintech/amaas-core-sdk-python',
