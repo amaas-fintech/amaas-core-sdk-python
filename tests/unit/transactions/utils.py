@@ -1,3 +1,5 @@
+from __future__ import absolute_import, division, print_function, unicode_literals
+
 import os
 import tempfile
 import unittest
@@ -34,7 +36,7 @@ class TransactionUtilsTest(unittest.TestCase):
         transactions = [generate_transaction() for i in range(5)]
         transactions_to_csv(transactions=transactions, filename=filename)
         # Read the file back out again
-        with open(filename, 'rb') as temp_file:
+        with open(filename, 'r') as temp_file:
             data = temp_file.readlines()
         self.assertEqual(len(data), 6)  # 5 transactions + header
         os.remove(filename)
@@ -45,7 +47,7 @@ class TransactionUtilsTest(unittest.TestCase):
         with open(temp_filepath, 'w') as temp_file:
             transactions_to_csv_stream(transactions=transactions, stream=temp_file)
         # Read the file back out again
-        with open(temp_filepath, 'rb') as temp_file:
+        with open(temp_filepath, 'r') as temp_file:
             data = temp_file.readlines()
         self.assertEqual(len(data), 6)  # 5 transactions + header
         os.close(file_desc)
@@ -66,7 +68,7 @@ class TransactionUtilsTest(unittest.TestCase):
         filename = tempfile.gettempdir() + '/test.csv'
         transactions = [generate_transaction() for i in range(5)]
         transactions_to_csv(transactions=transactions, filename=filename)
-        with open(filename, 'rb') as stream:
+        with open(filename, 'r') as stream:
             transactions = csv_stream_to_transactions(stream)
         self.assertEqual(len(transactions), 5)
         self.assertEqual(type(transactions[0]), Transaction)

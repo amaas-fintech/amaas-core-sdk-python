@@ -46,8 +46,9 @@ def generate_common(asset_manager_id, asset_book_id, counterparty_book_id, asset
 
 def generate_transaction(asset_manager_id=None, asset_book_id=None, counterparty_book_id=None,
                          asset_id=None, quantity=None, transaction_date=None, transaction_id=None,
-                         price=None, net_affecting_charges=None, transaction_action=None, transaction_type=None,
-                         transaction_status=None, transaction_currency=None, settlement_currency=None):
+                         price=None, transaction_action=None, transaction_type=None,
+                         transaction_status=None, transaction_currency=None, settlement_currency=None,
+                         net_affecting_charges=None, charge_currency=None):
 
     common = generate_common(asset_manager_id=asset_manager_id, asset_book_id=asset_book_id,
                              counterparty_book_id=counterparty_book_id, asset_id=asset_id, quantity=quantity,
@@ -58,7 +59,7 @@ def generate_transaction(asset_manager_id=None, asset_book_id=None, counterparty
 
     transaction = Transaction(**common)
     charges = {charge_type: Charge(charge_value=Decimal(random.uniform(1.0, 100.0)).quantize(Decimal('0.01')),
-                                   currency=random.choice(['USD', 'SGD']),
+                                   currency=charge_currency or random.choice(['USD', 'SGD']),
                                    net_affecting=net_affecting_charges or random.choice([True, False]))
                for charge_type in CHARGE_TYPES}
 
@@ -79,9 +80,9 @@ def generate_transaction(asset_manager_id=None, asset_book_id=None, counterparty
     return transaction
 
 
-def generate_position(asset_manager_id=None, asset_book_id=None, asset_id=None, quantity=None):
+def generate_position(asset_manager_id=None, book_id=None, asset_id=None, quantity=None):
     position = Position(asset_manager_id=asset_manager_id or random.randint(1, 1000),
-                        asset_book_id=asset_book_id or random_string(8),
+                        book_id=book_id or random_string(8),
                         asset_id=asset_id or str(random.randint(1, 1000)),
                         quantity=quantity or Decimal(random.randint(1, 50000)))
     return position

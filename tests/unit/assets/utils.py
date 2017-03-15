@@ -1,3 +1,5 @@
+from __future__ import absolute_import, division, print_function, unicode_literals
+
 import os
 import tempfile
 import unittest
@@ -28,7 +30,7 @@ class AssetUtilsTest(unittest.TestCase):
         assets = [generate_asset() for i in range(5)]
         assets_to_csv(assets=assets, filename=filename)
         # Read the file back out again
-        with open(filename, 'rb') as temp_file:
+        with open(filename, 'r') as temp_file:
             data = temp_file.readlines()
         self.assertEqual(len(data), 6)  # 5 assets + header
         os.remove(filename)
@@ -39,7 +41,7 @@ class AssetUtilsTest(unittest.TestCase):
         with open(temp_filepath, 'w') as temp_file:
             assets_to_csv_stream(assets=assets, stream=temp_file)
         # Read the file back out again
-        with open(temp_filepath, 'rb') as temp_file:
+        with open(temp_filepath, 'r') as temp_file:
             data = temp_file.readlines()
         self.assertEqual(len(data), 6)  # 5 assets + header
         os.close(file_desc)
@@ -60,7 +62,7 @@ class AssetUtilsTest(unittest.TestCase):
         filename = tempfile.gettempdir() + '/test.csv'
         assets = [generate_asset() for i in range(5)]
         assets_to_csv(assets=assets, filename=filename)
-        with open(filename, 'rb') as stream:
+        with open(filename, 'r') as stream:
             assets = csv_stream_to_assets(stream)
         self.assertEqual(len(assets), 5)
         self.assertEqual(type(assets[0]), Asset)

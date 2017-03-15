@@ -30,7 +30,7 @@ def json_to_transaction(json_transaction):
 
 
 def csv_filename_to_transactions(filename):
-    with open(filename, 'rb') as f:
+    with open(filename, 'r') as f:
         transactions = csv_stream_to_transactions(f)
     return transactions
 

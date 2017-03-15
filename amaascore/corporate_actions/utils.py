@@ -23,7 +23,7 @@ def json_to_corporate_action(json_corporate_action):
 
 
 def csv_filename_to_corporate_actions(filename):
-    with open(filename, 'rb') as f:
+    with open(filename, 'r') as f:
         corporate_actions = csv_stream_to_corporate_actions(f)
     return corporate_actions
 

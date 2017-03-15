@@ -1,3 +1,5 @@
+from __future__ import absolute_import, division, print_function, unicode_literals
+
 import os
 import tempfile
 import unittest
@@ -27,7 +29,7 @@ class PartyUtilsTest(unittest.TestCase):
         parties = [generate_party() for i in range(5)]
         parties_to_csv(parties=parties, filename=filename)
         # Read the file back out again
-        with open(filename, 'rb') as temp_file:
+        with open(filename, 'r') as temp_file:
             data = temp_file.readlines()
         self.assertEqual(len(data), 6)  # 5 parties + header
         os.remove(filename)
@@ -38,7 +40,7 @@ class PartyUtilsTest(unittest.TestCase):
         with open(temp_filepath, 'w') as temp_file:
             parties_to_csv_stream(parties=parties, stream=temp_file)
         # Read the file back out again
-        with open(temp_filepath, 'rb') as temp_file:
+        with open(temp_filepath, 'r') as temp_file:
             data = temp_file.readlines()
         self.assertEqual(len(data), 6)  # 5 parties + header
         os.close(file_desc)
@@ -59,7 +61,7 @@ class PartyUtilsTest(unittest.TestCase):
         filename = tempfile.gettempdir() + '/test.csv'
         parties = [generate_party() for i in range(5)]
         parties_to_csv(parties=parties, filename=filename)
-        with open(filename, 'rb') as stream:
+        with open(filename, 'r') as stream:
             parties = csv_stream_to_parties(stream)
         self.assertEqual(len(parties), 5)
         self.assertEqual(type(parties[0]), Party)

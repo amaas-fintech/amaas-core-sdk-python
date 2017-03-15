@@ -1,3 +1,6 @@
+from __future__ import absolute_import, division, print_function, unicode_literals
+
+import logging
 import requests
 
 from amaascore.assets.utils import json_to_asset
@@ -7,8 +10,9 @@ from amaascore.core.interface import Interface
 
 class AssetsInterface(Interface):
 
-    def __init__(self):
+    def __init__(self, logger=None):
         endpoint = ENDPOINTS.get('assets')
+        self.logger = logger or logging.getLogger(__name__)
         super(AssetsInterface, self).__init__(endpoint=endpoint)
 
     def new(self, asset):
@@ -18,8 +22,8 @@ class AssetsInterface(Interface):
             asset = json_to_asset(response.json())
             return asset
         else:
-            print("HANDLE THIS PROPERLY")
-            print(response.content)
+            self.logger.error(response.text)
+            response.raise_for_status()
 
     def amend(self, asset):
         url = '%s/assets/%s/%s' % (self.endpoint, asset.asset_manager_id, asset.asset_id)
@@ -28,8 +32,8 @@ class AssetsInterface(Interface):
             asset = json_to_asset(response.json())
             return asset
         else:
-            print("HANDLE THIS PROPERLY")
-            print(response.content)
+            self.logger.error(response.text)
+            response.raise_for_status()
 
     def retrieve(self, asset_manager_id, asset_id):
         url = '%s/assets/%s/%s' % (self.endpoint, asset_manager_id, asset_id)
@@ -37,17 +41,18 @@ class AssetsInterface(Interface):
         if response.ok:
             return json_to_asset(response.json())
         else:
-            print("HANDLE THIS PROPERLY")
-            print(response.content)
+            self.logger.error(response.text)
+            response.raise_for_status()
 
     def deactivate(self, asset_manager_id, asset_id):
         url = '%s/assets/%s/%s' % (self.endpoint, asset_manager_id, asset_id)
-        response = requests.delete(url)
+        json = {'asset_status': 'Inactive'}
+        response = requests.patch(url, json=json)
         if response.ok:
-            print("DO SOMETHING?")
+            return json_to_asset(response.json())
         else:
-            print("HANDLE THIS PROPERLY")
-            print(response.content)
+            self.logger.error(response.text)
+            response.raise_for_status()
 
     def search(self, asset_manager_ids=None, asset_ids=None):
         search_params = {}
@@ -62,8 +67,8 @@ class AssetsInterface(Interface):
             assets = [json_to_asset(json_asset) for json_asset in response.json()]
             return assets
         else:
-            print("HANDLE THIS PROPERLY")
-            print(response.content)
+            self.logger.error(response.text)
+            response.raise_for_status()
 
     def assets_by_asset_manager(self, asset_manager_id):
         url = '%s/assets/%s' % (self.endpoint, asset_manager_id)
@@ -72,5 +77,5 @@ class AssetsInterface(Interface):
             assets = [json_to_asset(json_asset) for json_asset in response.json()]
             return assets
         else:
-            print("HANDLE THIS PROPERLY")
-            print(response.content)
+            self.logger.error(response.text)
+            response.raise_for_status()

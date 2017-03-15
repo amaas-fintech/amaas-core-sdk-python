@@ -26,7 +26,13 @@ class Individual(Party):
 
     @property
     def description(self):
-        return '%s, %s' % (self.surname, self.given_names)
+        return self._description if hasattr(self, '_description') else '%s, %s' % (self.surname, self.given_names)
+
+    @description.setter
+    def description(self, description):
+        if description:
+            self._description = description
+
 
     @property
     def date_of_birth(self):

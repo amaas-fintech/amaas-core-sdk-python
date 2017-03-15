@@ -78,7 +78,7 @@ class FXRate(AMaaSModel):
         :return:
         """
         if rate_timestamp is not None:
-            if isinstance(rate_timestamp, (str, unicode)):
+            if isinstance(rate_timestamp, (str, type_check)):
                 rate_timestamp = parse(rate_timestamp).replace(tzinfo=pytz.utc)
             if type(rate_timestamp) == date:
                 rate_timestamp = datetime.combine(rate_timestamp, datetime.min.time()).replace(tzinfo=pytz.utc)

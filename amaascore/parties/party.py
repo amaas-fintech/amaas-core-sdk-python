@@ -18,7 +18,7 @@ class Party(AMaaSModel):
         return {'addresses': Address, 'emails': Email, 'references': Reference}
 
     def __init__(self, asset_manager_id, party_id, party_status='Active', base_currency=None, description='',
-                 addresses={}, emails={}, links={}, references=None, *args, **kwargs):
+                 addresses={}, emails={}, links={}, references={}, *args, **kwargs):
         self.asset_manager_id = asset_manager_id
         self.party_id = party_id
         self.party_status = party_status

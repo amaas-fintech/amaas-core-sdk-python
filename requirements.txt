@@ -2,3 +2,4 @@ coverage
 python-dateutil
 pytz
 requests
+simplejson
