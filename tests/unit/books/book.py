@@ -1,3 +1,5 @@
+from __future__ import absolute_import, division, print_function, unicode_literals
+
 import copy
 import json
 import unittest
@@ -40,6 +42,10 @@ class BookTest(unittest.TestCase):
         self.assertEqual(len({self.book, book2}), 1)
         self.assertEqual(len({self.book, book3}), 2)
         self.assertNotEqual(self.book, book3)
+
+    def test_InvalidBookType(self):
+        with self.assertRaisesRegexp(ValueError, 'Invalid book type Invalid'):
+            book = generate_book(book_type='Invalid')
 
 if __name__ == '__main__':
     unittest.main()

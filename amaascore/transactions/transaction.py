@@ -306,47 +306,45 @@ class Transaction(AMaaSModel):
         codes.update({code_type: code})
         self.codes = codes
 
-    def upsert_link_list(self, link_type, link_list):
+    def upsert_link_set(self, link_type, link_set):
         """
         Remove an item altogether by setting link_list to None.
         Currently, only links can contain multiple children of the same type.
         :param link_type:
-        :param link_list:
+        :param link_set:
         :return:
         """
-        if link_list is None:
+        if link_set is None:
             self.links.pop(link_type, None)
             return
         links = copy.deepcopy(self.links)
-        links.update({link_type: link_list})
+        links.update({link_type: link_set})
         self.links = links
 
     def add_link(self, link_type, linked_transaction_id):
         new_link = Link(linked_transaction_id=linked_transaction_id)
-        link_list = self.links.get(link_type)
-        if link_list:
-            if not isinstance(link_list, list):
-                link_list = [link_list]
-            link_list.append(new_link)
-            # Remove duplicates - perhaps log or raise a warning?
-            link_list = list(set(link_list))
+        link_set = self.links.get(link_type)
+        if link_set:
+            if not isinstance(link_set, set):
+                link_set = {link_set}
+            link_set.add(new_link)
         else:
-            link_list = new_link
-        self.upsert_link_list(link_type=link_type, link_list=link_list)
+            link_set = new_link
+        self.upsert_link_set(link_type=link_type, link_set=link_set)
 
     def remove_link(self, link_type, linked_transaction_id):
-        link_list = self.links.get(link_type)
-        if not link_list:
-            raise ValueError(ERROR_LOOKUP.get('transaction_link_not_found'))
-        if isinstance(link_list, Link):
-            if link_list.linked_transaction_id == linked_transaction_id:
-                link_list = None
+        link_set = self.links.get(link_type)
+        if not link_set:
+            raise KeyError(ERROR_LOOKUP.get('transaction_link_not_found'))
+        if isinstance(link_set, Link):
+            if link_set.linked_transaction_id == linked_transaction_id:
+                link_set = None
             else:
-                raise ValueError(ERROR_LOOKUP.get('transaction_link_not_found'))
+                raise KeyError(ERROR_LOOKUP.get('transaction_link_not_found'))
         else:
-            output = [i for i, link in enumerate(link_list) if link.linked_transaction_id == linked_transaction_id]
+            output = [link for link in link_set if link.linked_transaction_id == linked_transaction_id]
             if output:
-                link_list.pop(output[0])
+                link_set.remove(output[0])
             else:
-                raise ValueError(ERROR_LOOKUP.get('transaction_link_not_found'))
-        self.upsert_link_list(link_type=link_type, link_list=link_list)
+                raise KeyError(ERROR_LOOKUP.get('transaction_link_not_found'))
+        self.upsert_link_set(link_type=link_type, link_set=link_set)

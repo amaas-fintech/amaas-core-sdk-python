@@ -24,11 +24,15 @@ class NettingTest(unittest.TestCase):
         self.transaction1 = generate_transaction(asset_manager_id=self.asset_manager_id, asset_id=self.asset.asset_id,
                                                  asset_book_id=self.asset_book.book_id,
                                                  counterparty_book_id=self.counterparty_book.book_id,
-                                                 transaction_currency='USD')
+                                                 transaction_currency='USD',
+                                                 net_affecting_charges=True,
+                                                 charge_currency='USD')
         self.transaction2 = generate_transaction(asset_manager_id=self.asset_manager_id, asset_id=self.asset.asset_id,
                                                  asset_book_id=self.asset_book.book_id,
                                                  counterparty_book_id=self.counterparty_book.book_id,
-                                                 transaction_currency='USD')
+                                                 transaction_currency='USD',
+                                                 net_affecting_charges=True,
+                                                 charge_currency='USD')
         self.setup_cache()
         self.interface.new(self.transaction1)
         self.interface.new(self.transaction2)

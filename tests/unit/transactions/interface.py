@@ -115,12 +115,12 @@ class TransactionsInterfaceTest(unittest.TestCase):
                                                                     position_date=datetime.date.today())
         random_position_index = random.randint(0, len(all_positions)-1)
         asset_manager_id = all_positions[random_position_index].asset_manager_id
-        asset_book_id = all_positions[random_position_index].asset_book_id
+        asset_book_id = all_positions[random_position_index].book_id
         asset_manager_positions = [position for position in all_positions
                                    if position.asset_manager_id == asset_manager_id
-                                   and position.asset_book_id == asset_book_id]
+                                   and position.book_id == asset_book_id]
         positions = self.transactions_interface.positions_by_asset_manager_book(asset_manager_id=asset_manager_id,
-                                                                                asset_book_id=asset_book_id)
+                                                                                book_id=asset_book_id)
         self.assertEqual(len(positions), len(asset_manager_positions))
 
     def test_PositionsByAssetManager(self):

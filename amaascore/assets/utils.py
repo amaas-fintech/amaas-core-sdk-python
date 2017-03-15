@@ -41,7 +41,7 @@ def json_to_asset(json_asset):
 
 
 def csv_filename_to_assets(filename):
-    with open(filename, 'rb') as f:
+    with open(filename, 'r') as f:
         assets = csv_stream_to_assets(f)
     return assets
 
