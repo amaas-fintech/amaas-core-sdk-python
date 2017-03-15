@@ -33,7 +33,6 @@ class Individual(Party):
         if description:
             self._description = description
 
-
     @property
     def date_of_birth(self):
         if hasattr(self, '_date_of_birth'):

@@ -81,15 +81,15 @@ class TransactionsInterface(Interface):
             self.logger.error(response.text)
             response.raise_for_status()
 
-    def position_search(self, asset_manager_ids=None, asset_book_ids=None, account_ids=None, accounting_types=None,
+    def position_search(self, asset_manager_ids=None, book_ids=None, account_ids=None, accounting_types=None,
                         asset_ids=None, position_date=None):
         url = self.endpoint + '/positions'
         search_params = {}
         # Potentially roll into a loop
         if asset_manager_ids:
             search_params['asset_manager_ids'] = asset_manager_ids
-        if asset_book_ids:
-            search_params['asset_book_ids'] = asset_book_ids
+        if book_ids:
+            search_params['book_ids'] = book_ids
         if account_ids:
             search_params['account_ids'] = account_ids
         if accounting_types:
