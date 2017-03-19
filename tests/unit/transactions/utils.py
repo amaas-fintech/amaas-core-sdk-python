@@ -1,6 +1,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import os
+import os.path
 import tempfile
 import unittest
 
@@ -32,7 +33,7 @@ class TransactionUtilsTest(unittest.TestCase):
         self.assertEqual(gen_position, position)
 
     def test_TransactionsToCSV(self):
-        filename = tempfile.gettempdir() + '/test.csv'
+        filename = os.path.join(tempfile.gettempdir(), 'test.csv')
         transactions = [generate_transaction() for i in range(5)]
         transactions_to_csv(transactions=transactions, filename=filename)
         # Read the file back out again
@@ -55,7 +56,7 @@ class TransactionUtilsTest(unittest.TestCase):
 
     def test_FilenameToTransactions(self):
         # Generate file
-        filename = tempfile.gettempdir() + '/test.csv'
+        filename = os.path.join(tempfile.gettempdir(), 'test.csv')
         transactions = [generate_transaction() for i in range(5)]
         transactions_to_csv(transactions=transactions, filename=filename)
         transactions = csv_filename_to_transactions(filename)
@@ -65,7 +66,7 @@ class TransactionUtilsTest(unittest.TestCase):
 
     def test_StreamToTransactions(self):
         # Generate file
-        filename = tempfile.gettempdir() + '/test.csv'
+        filename = os.path.join(tempfile.gettempdir(), 'test.csv')
         transactions = [generate_transaction() for i in range(5)]
         transactions_to_csv(transactions=transactions, filename=filename)
         with open(filename, 'r') as stream:
