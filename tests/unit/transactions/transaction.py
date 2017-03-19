@@ -1,3 +1,5 @@
+from __future__ import absolute_import, division, print_function, unicode_literals
+
 import copy
 import json
 import unittest
@@ -92,18 +94,18 @@ class TransactionTest(unittest.TestCase):
     def test_UpsertLinkList(self):
         links = self.transaction.links.get('Multiple')
         random_id = random_string(8)
-        links.append(Link(linked_transaction_id=random_id))
-        self.transaction.upsert_link_list('Multiple', links)
+        links.add(Link(linked_transaction_id=random_id))
+        self.transaction.upsert_link_set('Multiple', links)
         links = self.transaction.links.get('Multiple')
         self.assertEqual(len(links), 4)  # The test script inserts 3 links
         random_id_link = [link for link in links if link.linked_transaction_id == random_id]
         self.assertEqual(len(random_id_link), 1)
 
     def test_UpsertLinkListEmptyValue(self):
-        self.transaction.upsert_link_list('Single', None)
+        self.transaction.upsert_link_set('Single', None)
         self.assertEqual(self.transaction.links.get('Single', 'DUMMY'), 'DUMMY')
         # Try to upsert a link_list which isn't present
-        self.transaction.upsert_link_list('TEST', None)
+        self.transaction.upsert_link_set('TEST', None)
 
     def test_AddLink(self):
         # Add to a Single item
@@ -131,17 +133,17 @@ class TransactionTest(unittest.TestCase):
         self.transaction.remove_link(link_type='Single', linked_transaction_id=single_id)
         self.assertEqual(self.transaction.links.get('Single', 'DUMMY'), 'DUMMY')
         # Remove a multiple link
-        multiple_id = self.transaction.links.get('Multiple')[0].linked_transaction_id
+        multiple_id = next(iter(self.transaction.links.get('Multiple'))).linked_transaction_id
         self.transaction.remove_link(link_type='Multiple', linked_transaction_id=multiple_id)
         multiple = self.transaction.links.get('Multiple')
         self.assertEqual(len(multiple), 2)  # Test originally added 3
         multiple_id_link = [link for link in multiple if link.linked_transaction_id == multiple_id]
         self.assertEqual(len(multiple_id_link), 0)
         # Remove a link_type that doesn't exist
-        with self.assertRaisesRegexp(ValueError, 'Cannot remove link'):
+        with self.assertRaisesRegexp(KeyError, 'Cannot remove link'):
             self.transaction.remove_link('TEST', '1234')
         # Remove a link that doesn't exist
-        with self.assertRaisesRegexp(ValueError, 'Cannot remove link'):
+        with self.assertRaisesRegexp(KeyError, 'Cannot remove link'):
             self.transaction.remove_link('Multiple', '1234')
 
     def test_InvalidTransactionType(self):

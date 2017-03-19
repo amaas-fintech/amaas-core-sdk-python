@@ -1,6 +1,9 @@
+from __future__ import absolute_import, division, print_function, unicode_literals
+
 # TODO - Support multi-language errors
 ERROR_LOOKUP = {'address_invalid': 'Invalid addresses attribute: %s. Party ID %s for Asset Manager %s',
                 'address_primary': 'Must set exactly one address as primary. Party ID %s for Asset Manager %s',
+                'book_type_invalid': 'Invalid book type %s. Book ID: %s for Asset Manager: %s',
                 'email_invalid': 'Invalid emails attribute: %s. Party ID %s for Asset Manager %s',
                 'email_primary': 'Must set exactly one email as primary. Party ID %s for Asset Manager %s',
                 'email_address_invalid': 'Invalid email(s): %s. Party ID %s for Asset Manager %s',

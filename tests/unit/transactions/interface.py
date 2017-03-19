@@ -36,10 +36,9 @@ class TransactionsInterfaceTest(unittest.TestCase):
 
     def create_transaction_asset(self):
         transaction_asset_fields = ['asset_manager_id', 'asset_id', 'asset_status', 'asset_class', 'asset_type',
-                                    'primary_identifier', 'fungible', 'description']
+                                    'fungible']
         asset_json = self.asset.to_json()
         transaction_asset_json = {attr: asset_json.get(attr) for attr in transaction_asset_fields}
-        transaction_asset_json['primary_identifier'] = 'TEST'  # This is temporary, we need to handle this better
         self.transactions_interface.upsert_transaction_asset(transaction_asset_json=transaction_asset_json)
 
     def setup_cache(self):
@@ -115,12 +114,12 @@ class TransactionsInterfaceTest(unittest.TestCase):
                                                                     position_date=datetime.date.today())
         random_position_index = random.randint(0, len(all_positions)-1)
         asset_manager_id = all_positions[random_position_index].asset_manager_id
-        asset_book_id = all_positions[random_position_index].asset_book_id
+        asset_book_id = all_positions[random_position_index].book_id
         asset_manager_positions = [position for position in all_positions
                                    if position.asset_manager_id == asset_manager_id
-                                   and position.asset_book_id == asset_book_id]
+                                   and position.book_id == asset_book_id]
         positions = self.transactions_interface.positions_by_asset_manager_book(asset_manager_id=asset_manager_id,
-                                                                                asset_book_id=asset_book_id)
+                                                                                book_id=asset_book_id)
         self.assertEqual(len(positions), len(asset_manager_positions))
 
     def test_PositionsByAssetManager(self):

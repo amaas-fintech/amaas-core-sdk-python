@@ -1,3 +1,5 @@
+from __future__ import absolute_import, division, print_function, unicode_literals
+
 import datetime
 from decimal import Decimal
 import json
@@ -90,7 +92,9 @@ class AMaaSModel(object):
         """Override the default hash behavior (that returns the id or the object)"""
         output = []
         for (key, value) in self.__dict__.items():
-            output_value = hash(tuple(sorted(value))) if isinstance(value, dict) else value
-            output.append((key, output_value))
+            # Remove the internal attributes since they shouldn't be used for ordering etc
+            if key not in self.amaas_model_attributes():
+                output_value = hash(tuple(sorted(value))) if isinstance(value, dict) else value
+                output.append((key, output_value))
         return hash(tuple(sorted(output)))
 

@@ -42,7 +42,7 @@ def json_to_party(json_to_convert):
 
 
 def csv_filename_to_parties(filename):
-    with open(filename, 'rb') as f:
+    with open(filename, 'r') as f:
         parties = csv_stream_to_parties(f)
     return parties
 

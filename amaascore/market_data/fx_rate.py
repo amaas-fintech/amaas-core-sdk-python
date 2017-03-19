@@ -14,7 +14,8 @@ type_check = str if sys.version_info >= (3, 0, 0) else (str, unicode)
 
 class FXRate(AMaaSModel):
 
-    def __init__(self, asset_manager_id, asset_id, business_date, rate_timestamp, rate, rate_type, active=True):
+    def __init__(self, asset_manager_id, asset_id, business_date, rate_timestamp, rate, rate_type, active=True,
+                 *args, **kwargs):
         """
 
         :param asset_manager_id: The asset_manager_id who owns this price
@@ -32,7 +33,7 @@ class FXRate(AMaaSModel):
         self.rate_type = rate_type
         self.rate = rate
         self.active = active
-        super(FXRate, self).__init__()
+        super(FXRate, self).__init__(*args, **kwargs)
 
     @property
     def rate(self):
@@ -77,7 +78,7 @@ class FXRate(AMaaSModel):
         :return:
         """
         if rate_timestamp is not None:
-            if isinstance(rate_timestamp, (str, unicode)):
+            if isinstance(rate_timestamp, (str, type_check)):
                 rate_timestamp = parse(rate_timestamp).replace(tzinfo=pytz.utc)
             if type(rate_timestamp) == date:
                 rate_timestamp = datetime.combine(rate_timestamp, datetime.min.time()).replace(tzinfo=pytz.utc)

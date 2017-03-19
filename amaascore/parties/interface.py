@@ -1,4 +1,6 @@
-import requests
+from __future__ import absolute_import, division, print_function, unicode_literals
+
+import logging
 
 from amaascore.config import ENDPOINTS
 from amaascore.core.interface import Interface
@@ -7,47 +9,49 @@ from amaascore.parties.utils import json_to_party
 
 class PartiesInterface(Interface):
 
-    def __init__(self):
+    def __init__(self, logger=None):
         endpoint = ENDPOINTS.get('parties')
+        self.logger = logger or logging.getLogger(__name__)
         super(PartiesInterface, self).__init__(endpoint=endpoint)
 
     def new(self, party):
         url = self.endpoint + '/parties'
-        response = requests.post(url, json=party.to_interface())
+        response = self.session.post(url, json=party.to_interface())
         if response.ok:
             party = json_to_party(response.json())
             return party
         else:
-            print("HANDLE THIS PROPERLY")
-            print(response.content)
+            self.logger.error(response.text)
+            response.raise_for_status()
 
     def amend(self, party):
         url = '%s/parties/%s/%s' % (self.endpoint, party.asset_manager_id, party.party_id)
-        response = requests.put(url, json=party.to_interface())
+        response = self.session.put(url, json=party.to_interface())
         if response.ok:
             party = json_to_party(response.json())
             return party
         else:
-            print("HANDLE THIS PROPERLY")
-            print(response.content)
+            self.logger.error(response.text)
+            response.raise_for_status()
 
     def retrieve(self, asset_manager_id, party_id):
         url = '%s/parties/%s/%s' % (self.endpoint, asset_manager_id, party_id)
-        response = requests.get(url)
+        response = self.session.get(url)
         if response.ok:
             return json_to_party(response.json())
         else:
-            print("HANDLE THIS PROPERLY")
-            print(response.content)
+            self.logger.error(response.text)
+            response.raise_for_status()
 
     def deactivate(self, asset_manager_id, party_id):
         url = '%s/parties/%s/%s' % (self.endpoint, asset_manager_id, party_id)
-        response = requests.delete(url)
+        json = {'party_status': 'Inactive'}
+        response = self.session.patch(url, json=json)
         if response.ok:
-            print("DO SOMETHING?")
+            self.logger.info(response.text)
         else:
-            print("HANDLE THIS PROPERLY")
-            print(response.content)
+            self.logger.error(response.text)
+            response.raise_for_status()
 
     def search(self, asset_manager_ids=None, party_ids=None):
         search_params = {}
@@ -57,20 +61,20 @@ class PartiesInterface(Interface):
         if party_ids:
             search_params['party_ids'] = party_ids
         url = self.endpoint + '/parties'
-        response = requests.get(url, params=search_params)
+        response = self.session.get(url, params=search_params)
         if response.ok:
             parties = [json_to_party(json_party) for json_party in response.json()]
             return parties
         else:
-            print("HANDLE THIS PROPERLY")
-            print(response.content)
+            self.logger.error(response.text)
+            response.raise_for_status()
 
     def parties_by_asset_manager(self, asset_manager_id):
         url = '%s/parties/%s' % (self.endpoint, asset_manager_id)
-        response = requests.get(url)
+        response = self.session.get(url)
         if response.ok:
             parties = [json_to_party(json_party) for json_party in response.json()]
             return parties
         else:
-            print("HANDLE THIS PROPERLY")
-            print(response.content)
+            self.logger.error(response.text)
+            response.raise_for_status()
