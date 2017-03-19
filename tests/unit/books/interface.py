@@ -4,15 +4,23 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import random
 import unittest
 
+from amaascore.config import DEFAULT_LOGGING
 from amaascore.books.interface import BooksInterface
 from amaascore.tools.generate_book import generate_book
+
+import logging.config
+logging.config.dictConfig(DEFAULT_LOGGING)
 
 
 class BooksInterfaceTest(unittest.TestCase):
 
+    @classmethod
+    def setUpClass(cls):
+        pass
+        cls.books_interface = BooksInterface()
+
     def setUp(self):
         self.longMessage = True  # Print complete error message on failure
-        self.books_interface = BooksInterface()
         self.book = generate_book()
         self.book_id = self.book.book_id
 

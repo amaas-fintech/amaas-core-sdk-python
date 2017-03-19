@@ -4,15 +4,23 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import random
 import unittest
 
+from amaascore.config import DEFAULT_LOGGING
 from amaascore.corporate_actions.interface import CorporateActionsInterface
 from amaascore.tools.generate_corporate_action import generate_corporate_action
+
+import logging.config
+logging.config.dictConfig(DEFAULT_LOGGING)
 
 
 class CorporateActionsInterfaceTest(unittest.TestCase):
 
+    @classmethod
+    def setUpClass(cls):
+        pass
+        cls.corporate_actions_interface = CorporateActionsInterface()
+
     def setUp(self):
         self.longMessage = True  # Print complete error message on failure
-        self.corporate_actions_interface = CorporateActionsInterface()
         self.corporate_action = generate_corporate_action()
         self.corporate_action_id = self.corporate_action.corporate_action_id
 

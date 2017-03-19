@@ -4,15 +4,23 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import random
 import unittest
 
+from amaascore.config import DEFAULT_LOGGING
 from amaascore.monitor.interface import MonitorInterface
 from amaascore.tools.generate_monitor_item import generate_item
+
+import logging.config
+logging.config.dictConfig(DEFAULT_LOGGING)
 
 
 class MonitorInterfaceTest(unittest.TestCase):
 
+    @classmethod
+    def setUpClass(cls):
+        pass
+        cls.monitor_interface = MonitorInterface()
+
     def setUp(self):
         self.longMessage = True  # Print complete error message on failure
-        self.monitor_interface = MonitorInterface()
         self.item = generate_item()
         self.item_id = self.item.item_id
 

@@ -5,17 +5,25 @@ from datetime import date
 import random
 import unittest
 
+from amaascore.config import DEFAULT_LOGGING
 from amaascore.market_data.interface import MarketDataInterface
 from amaascore.tools.generate_market_data import generate_eod_price, generate_fx_rate
 
+import logging.config
+logging.config.dictConfig(DEFAULT_LOGGING)
+
 
 class MarketDataInterfaceTest(unittest.TestCase):
+
+    @classmethod
+    def setUpClass(cls):
+        pass
+        cls.interface = MarketDataInterface()
 
     def setUp(self):
         self.longMessage = True  # Print complete error message on failure
         self.maxDiff = None  # Print the complete diff message
         self.asset_manager_id = random.randint(1, 2**31-1)
-        self.interface = MarketDataInterface()
         self.eod_price1 = generate_eod_price(asset_manager_id=self.asset_manager_id)
         self.eod_price2 = generate_eod_price(asset_manager_id=self.asset_manager_id)
         self.fx_rate1 = generate_fx_rate(asset_manager_id=self.asset_manager_id, asset_id='USDJPY')

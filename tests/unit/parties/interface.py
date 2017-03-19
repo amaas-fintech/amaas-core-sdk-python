@@ -4,17 +4,25 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import random
 import unittest
 
+from amaascore.config import DEFAULT_LOGGING
 from amaascore.parties.broker import Broker
 from amaascore.parties.party import Party
 from amaascore.parties.interface import PartiesInterface
 from amaascore.tools.generate_party import generate_party, generate_broker
 
+import logging.config
+logging.config.dictConfig(DEFAULT_LOGGING)
+
 
 class PartiesInterfaceTest(unittest.TestCase):
 
+    @classmethod
+    def setUpClass(cls):
+        pass
+        cls.parties_interface = PartiesInterface()
+
     def setUp(self):
         self.longMessage = True  # Print complete error message on failure
-        self.parties_interface = PartiesInterface()
         self.asset_manager_id = random.randint(1, 2**31-1)
         self.party = generate_party(asset_manager_id=self.asset_manager_id)
         self.party_id = self.party.party_id
