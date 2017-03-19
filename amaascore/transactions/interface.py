@@ -1,7 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import logging
-import requests
 import simplejson
 
 from amaascore.config import ENDPOINTS
@@ -19,7 +18,7 @@ class TransactionsInterface(Interface):
 
     def new(self, transaction):
         url = self.endpoint + '/transactions'
-        response = requests.post(url, json=transaction.to_interface())
+        response = self.session.post(url, json=transaction.to_interface())
         if response.ok:
             transaction = json_to_transaction(response.json())
             return transaction
@@ -29,7 +28,7 @@ class TransactionsInterface(Interface):
 
     def amend(self, transaction):
         url = '%s/transactions/%s/%s' % (self.endpoint, transaction.asset_manager_id, transaction.transaction_id)
-        response = requests.put(url, json=transaction.to_interface())
+        response = self.session.put(url, json=transaction.to_interface())
         if response.ok:
             transaction = json_to_transaction(response.json())
             return transaction
@@ -39,7 +38,7 @@ class TransactionsInterface(Interface):
 
     def retrieve(self, asset_manager_id, transaction_id):
         url = '%s/transactions/%s/%s' % (self.endpoint, asset_manager_id, transaction_id)
-        response = requests.get(url)
+        response = self.session.get(url)
         if response.ok:
             return json_to_transaction(response.json())
         else:
@@ -48,7 +47,7 @@ class TransactionsInterface(Interface):
 
     def transactions_by_asset_manager(self, asset_manager_id):
         url = '%s/transactions/%s' % (self.endpoint, asset_manager_id)
-        response = requests.get(url)
+        response = self.session.get(url)
         if response.ok:
             transactions = [json_to_transaction(json_transaction) for json_transaction in response.json()]
             return transactions
@@ -58,7 +57,7 @@ class TransactionsInterface(Interface):
 
     def cancel(self, asset_manager_id, transaction_id):
         url = '%s/transactions/%s/%s' % (self.endpoint, asset_manager_id, transaction_id)
-        response = requests.delete(url)
+        response = self.session.delete(url)
         if response.ok:
             print("DO SOMETHING?")
         else:
@@ -73,7 +72,7 @@ class TransactionsInterface(Interface):
         if transaction_ids:
             search_params['transaction_ids'] = transaction_ids
         url = self.endpoint + '/transactions'
-        response = requests.get(url, params=search_params)
+        response = self.session.get(url, params=search_params)
         if response.ok:
             transactions = [json_to_transaction(json_transaction) for json_transaction in response.json()]
             return transactions
@@ -98,7 +97,7 @@ class TransactionsInterface(Interface):
             search_params['asset_ids'] = asset_ids
         if position_date:
             search_params['position_date'] = position_date
-        response = requests.get(url, params=search_params)
+        response = self.session.get(url, params=search_params)
         if response.ok:
             positions = [json_to_position(json_position) for json_position in response.json()]
             return positions
@@ -108,7 +107,7 @@ class TransactionsInterface(Interface):
 
     def positions_by_asset_manager_book(self, asset_manager_id, book_id):
         url = '%s/positions/%s/%s' % (self.endpoint, asset_manager_id, book_id)
-        response = requests.get(url)
+        response = self.session.get(url)
         if response.ok:
             positions = [json_to_position(json_position) for json_position in response.json()]
             return positions
@@ -118,7 +117,7 @@ class TransactionsInterface(Interface):
 
     def positions_by_asset_manager(self, asset_manager_id):
         url = '%s/positions/%s' % (self.endpoint, asset_manager_id)
-        response = requests.get(url)
+        response = self.session.get(url)
         if response.ok:
             positions = [json_to_position(json_position) for json_position in response.json()]
             return positions
@@ -139,7 +138,8 @@ class TransactionsInterface(Interface):
         params = {'allocation_type': allocation_type}
         # As per https://github.com/kennethreitz/requests/issues/2755 - requests doesn't support custom Encoders, and
         # the default encoding fails on Decimals in Python 3 (but not in Python 2?)
-        response = requests.post(url, params=params, data=simplejson.dumps(allocation_dicts), headers=self.json_header)
+        response = self.session.post(url, params=params, data=simplejson.dumps(allocation_dicts),
+                                     headers=self.json_header)
         if response.ok:
             allocations = [json_to_transaction(json_allocation) for json_allocation in response.json()]
             return allocations
@@ -155,7 +155,7 @@ class TransactionsInterface(Interface):
         :return:
         """
         url = '%s/allocations/%s/%s' % (self.endpoint, asset_manager_id, transaction_id)
-        response = requests.get(url)
+        response = self.session.get(url)
         if response.ok:
             allocations = [json_to_transaction(json_allocation) for json_allocation in response.json()]
             return allocations
@@ -171,7 +171,7 @@ class TransactionsInterface(Interface):
         :return:
         """
         url = self.endpoint + '/assets'
-        response = requests.post(url, json=transaction_asset_json)
+        response = self.session.post(url, json=transaction_asset_json)
         if response.ok:
             return response.json()
         else:
@@ -186,7 +186,7 @@ class TransactionsInterface(Interface):
         :return:
         """
         url = self.endpoint + '/books'
-        response = requests.post(url, json=transaction_book_json)
+        response = self.session.post(url, json=transaction_book_json)
         if response.ok:
             return response.json()
         else:
@@ -203,7 +203,7 @@ class TransactionsInterface(Interface):
         """
         url = '%s/netting/%s' % (self.endpoint, asset_manager_id)
         params = {'netting_type': netting_type}
-        response = requests.post(url, params=params, json=transaction_ids)
+        response = self.session.post(url, params=params, json=transaction_ids)
         if response.ok:
             net_transaction = json_to_transaction(response.json())
             return net_transaction
@@ -220,7 +220,7 @@ class TransactionsInterface(Interface):
         :return:
         """
         url = '%s/netting/%s/%s' % (self.endpoint, asset_manager_id, transaction_id)
-        response = requests.get(url)
+        response = self.session.get(url)
         if response.ok:
             net_transaction_id, netting_set_json = next(iter(response.json().items()))
             return net_transaction_id, [json_to_transaction(net_transaction) for net_transaction in netting_set_json]

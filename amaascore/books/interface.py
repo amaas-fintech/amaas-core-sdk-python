@@ -1,7 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import logging
-import requests
 
 from amaascore.books.utils import json_to_book
 from amaascore.config import ENDPOINTS
@@ -17,7 +16,7 @@ class BooksInterface(Interface):
 
     def new(self, book):
         url = self.endpoint + '/books'
-        response = requests.post(url, json=book.to_interface())
+        response = self.session.post(url, json=book.to_interface())
         if response.ok:
             book = json_to_book(response.json())
             return book
@@ -27,7 +26,7 @@ class BooksInterface(Interface):
 
     def amend(self, book):
         url = '%s/books/%s/%s' % (self.endpoint, book.asset_manager_id, book.book_id)
-        response = requests.put(url, json=book.to_interface())
+        response = self.session.put(url, json=book.to_interface())
         if response.ok:
             book = json_to_book(response.json())
             return book
@@ -37,7 +36,7 @@ class BooksInterface(Interface):
 
     def retrieve(self, asset_manager_id, book_id):
         url = '%s/books/%s/%s' % (self.endpoint, asset_manager_id, book_id)
-        response = requests.get(url)
+        response = self.session.get(url)
         if response.ok:
             return json_to_book(response.json())
         else:
@@ -47,7 +46,7 @@ class BooksInterface(Interface):
     def retire(self, asset_manager_id, book_id):
         url = '%s/books/%s/%s' % (self.endpoint, asset_manager_id, book_id)
         json = {'book_status': 'Retired'}
-        response = requests.patch(url, json=json)
+        response = self.session.patch(url, json=json)
         if response.ok:
             return json_to_book(response.json())
         else:
@@ -62,7 +61,7 @@ class BooksInterface(Interface):
         if book_ids:
             search_params['book_ids'] = book_ids
         url = self.endpoint + '/books'
-        response = requests.get(url, params=search_params)
+        response = self.session.get(url, params=search_params)
         if response.ok:
             books = [json_to_book(json_book) for json_book in response.json()]
             return books
@@ -72,7 +71,7 @@ class BooksInterface(Interface):
 
     def books_by_asset_manager(self, asset_manager_id):
         url = '%s/books/%s' % (self.endpoint, asset_manager_id)
-        response = requests.get(url)
+        response = self.session.get(url)
         if response.ok:
             books = [json_to_book(json_book) for json_book in response.json()]
             return books

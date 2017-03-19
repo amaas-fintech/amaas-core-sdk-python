@@ -1,7 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import logging
-import requests
 
 from amaascore.assets.utils import json_to_asset
 from amaascore.config import ENDPOINTS
@@ -17,7 +16,7 @@ class AssetsInterface(Interface):
 
     def new(self, asset):
         url = self.endpoint + '/assets'
-        response = requests.post(url, json=asset.to_interface())
+        response = self.session.post(url, json=asset.to_interface())
         if response.ok:
             asset = json_to_asset(response.json())
             return asset
@@ -27,7 +26,7 @@ class AssetsInterface(Interface):
 
     def amend(self, asset):
         url = '%s/assets/%s/%s' % (self.endpoint, asset.asset_manager_id, asset.asset_id)
-        response = requests.put(url, json=asset.to_interface())
+        response = self.session.put(url, json=asset.to_interface())
         if response.ok:
             asset = json_to_asset(response.json())
             return asset
@@ -37,7 +36,7 @@ class AssetsInterface(Interface):
 
     def retrieve(self, asset_manager_id, asset_id):
         url = '%s/assets/%s/%s' % (self.endpoint, asset_manager_id, asset_id)
-        response = requests.get(url)
+        response = self.session.get(url)
         if response.ok:
             return json_to_asset(response.json())
         else:
@@ -47,7 +46,7 @@ class AssetsInterface(Interface):
     def deactivate(self, asset_manager_id, asset_id):
         url = '%s/assets/%s/%s' % (self.endpoint, asset_manager_id, asset_id)
         json = {'asset_status': 'Inactive'}
-        response = requests.patch(url, json=json)
+        response = self.session.patch(url, json=json)
         if response.ok:
             return json_to_asset(response.json())
         else:
@@ -62,7 +61,7 @@ class AssetsInterface(Interface):
         if asset_ids:
             search_params['asset_ids'] = asset_ids
         url = self.endpoint + '/assets'
-        response = requests.get(url, params=search_params)
+        response = self.session.get(url, params=search_params)
         if response.ok:
             assets = [json_to_asset(json_asset) for json_asset in response.json()]
             return assets
@@ -72,7 +71,7 @@ class AssetsInterface(Interface):
 
     def assets_by_asset_manager(self, asset_manager_id):
         url = '%s/assets/%s' % (self.endpoint, asset_manager_id)
-        response = requests.get(url)
+        response = self.session.get(url)
         if response.ok:
             assets = [json_to_asset(json_asset) for json_asset in response.json()]
             return assets

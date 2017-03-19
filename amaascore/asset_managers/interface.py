@@ -1,7 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import logging
-import requests
 
 from amaascore.asset_managers.utils import json_to_asset_manager
 from amaascore.config import ENDPOINTS
@@ -20,7 +19,7 @@ class AssetManagersInterface(Interface):
 
     def new(self, asset_manager):
         url = '%s/asset_managers' % self.endpoint
-        response = requests.post(url, json=asset_manager.to_interface())
+        response = self.session.post(url, json=asset_manager.to_interface())
         if response.ok:
             return json_to_asset_manager(response.json())
         else:
@@ -29,7 +28,7 @@ class AssetManagersInterface(Interface):
 
     def retrieve(self, asset_manager_id):
         url = '%s/asset_managers/%s' % (self.endpoint, asset_manager_id)
-        response = requests.get(url)
+        response = self.session.get(url)
         if response.ok:
             return json_to_asset_manager(response.json())
         else:
@@ -45,7 +44,7 @@ class AssetManagersInterface(Interface):
         :return:
         """
         url = '%s/asset_managers/%s' % (self.endpoint, asset_manager_id)
-        response = requests.delete(url)
+        response = self.session.delete(url)
         if response.ok:
             return json_to_asset_manager(response.json())
         else:
@@ -60,7 +59,7 @@ class AssetManagersInterface(Interface):
         if client_ids:
             search_params['client_ids'] = client_ids
         url = self.endpoint + '/asset_managers'
-        response = requests.get(url, params=search_params)
+        response = self.session.get(url, params=search_params)
         if response.ok:
             assets = [json_to_asset_manager(json_asset_manager) for json_asset_manager in response.json()]
             return assets

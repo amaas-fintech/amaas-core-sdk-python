@@ -1,3 +1,5 @@
+#  This isn't needed in Python 3, but is provided for backwards compatibility with Python 2
+configparser
 coverage
 python-dateutil
 pytz

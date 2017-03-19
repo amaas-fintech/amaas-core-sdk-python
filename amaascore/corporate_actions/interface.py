@@ -1,7 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import logging
-import requests
 
 from amaascore.config import ENDPOINTS
 from amaascore.core.interface import Interface
@@ -17,7 +16,7 @@ class CorporateActionsInterface(Interface):
 
     def new(self, corporate_action):
         url = self.endpoint + '/corporate_actions'
-        response = requests.post(url, json=corporate_action.to_interface())
+        response = self.session.post(url, json=corporate_action.to_interface())
         if response.ok:
             corporate_action = json_to_corporate_action(response.json())
             return corporate_action
@@ -28,7 +27,7 @@ class CorporateActionsInterface(Interface):
     def amend(self, corporate_action):
         url = '%s/corporate_actions/%s/%s' % (self.endpoint, corporate_action.asset_manager_id,
                                               corporate_action.corporate_action_id)
-        response = requests.put(url, json=corporate_action.to_interface())
+        response = self.session.put(url, json=corporate_action.to_interface())
         if response.ok:
             corporate_action = json_to_corporate_action(response.json())
             return corporate_action
@@ -38,7 +37,7 @@ class CorporateActionsInterface(Interface):
 
     def retrieve(self, asset_manager_id, corporate_action_id):
         url = '%s/corporate_actions/%s/%s' % (self.endpoint, asset_manager_id, corporate_action_id)
-        response = requests.get(url)
+        response = self.session.get(url)
         if response.ok:
             return json_to_corporate_action(response.json())
         else:
@@ -48,7 +47,7 @@ class CorporateActionsInterface(Interface):
     def cancel(self, asset_manager_id, corporate_action_id):
         url = '%s/corporate_actions/%s/%s' % (self.endpoint, asset_manager_id, corporate_action_id)
         json = {'corporate_action_status': 'Cancelled'}
-        response = requests.patch(url, json=json)
+        response = self.session.patch(url, json=json)
         if response.ok:
             return json_to_corporate_action(response.json())
         else:
@@ -63,7 +62,7 @@ class CorporateActionsInterface(Interface):
         if corporate_action_ids:
             search_params['asset_ids'] = corporate_action_ids
         url = self.endpoint + '/corporate_actions'
-        response = requests.get(url, params=search_params)
+        response = self.session.get(url, params=search_params)
         if response.ok:
             json_corp_actions = [json_to_corporate_action(json_corp_action) for json_corp_action in response.json()]
             return json_corp_actions
@@ -73,7 +72,7 @@ class CorporateActionsInterface(Interface):
 
     def corporate_actions_by_asset_manager(self, asset_manager_id):
         url = '%s/corporate_actions/%s' % (self.endpoint, asset_manager_id)
-        response = requests.get(url)
+        response = self.session.get(url)
         if response.ok:
             json_corp_actions = [json_to_corporate_action(json_corp_action) for json_corp_action in response.json()]
             return json_corp_actions

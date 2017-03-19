@@ -1,7 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import logging
-import requests
 
 from amaascore.config import ENDPOINTS
 from amaascore.core.interface import Interface
@@ -17,7 +16,7 @@ class MonitorInterface(Interface):
 
     def new_item(self, item):
         url = self.endpoint + '/items'
-        response = requests.post(url, json=item.to_interface())
+        response = self.session.post(url, json=item.to_interface())
         if response.ok:
             item = json_to_item(response.json())
             return item
@@ -27,7 +26,7 @@ class MonitorInterface(Interface):
 
     def resubmit_item(self, asset_manager_id, item_id):
         url = '%s/items/%s/%s' % (self.endpoint, asset_manager_id, item_id)
-        response = requests.patch(url)
+        response = self.session.patch(url)
         if response.ok:
             item = json_to_item(response.json())
             return item
@@ -37,7 +36,7 @@ class MonitorInterface(Interface):
 
     def retrieve_item(self, asset_manager_id, item_id):
         url = '%s/items/%s/%s' % (self.endpoint, asset_manager_id, item_id)
-        response = requests.get(url)
+        response = self.session.get(url)
         if response.ok:
             return json_to_item(response.json())
         else:
@@ -46,7 +45,7 @@ class MonitorInterface(Interface):
 
     def close_item(self, asset_manager_id, item_id):
         url = '%s/items/%s/%s' % (self.endpoint, asset_manager_id, item_id)
-        response = requests.delete(url)
+        response = self.session.delete(url)
         if response.ok:
             print("DO SOMETHING?")
         else:
@@ -61,7 +60,7 @@ class MonitorInterface(Interface):
         if item_ids:
             search_params['item_ids'] = item_ids
         url = self.endpoint + '/items'
-        response = requests.get(url, params=search_params)
+        response = self.session.get(url, params=search_params)
         if response.ok:
             items = [json_to_item(json_item) for json_item in response.json()]
             return items
@@ -71,7 +70,7 @@ class MonitorInterface(Interface):
 
     def items_by_asset_manager(self, asset_manager_id):
         url = '%s/items/%s' % (self.endpoint, asset_manager_id)
-        response = requests.get(url)
+        response = self.session.get(url)
         if response.ok:
             items = [json_to_item(json_item) for json_item in response.json()]
             return items

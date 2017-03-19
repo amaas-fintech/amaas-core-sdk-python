@@ -1,7 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import logging
-import requests
 
 from amaascore.config import ENDPOINTS
 from amaascore.core.interface import Interface
@@ -17,7 +16,7 @@ class PartiesInterface(Interface):
 
     def new(self, party):
         url = self.endpoint + '/parties'
-        response = requests.post(url, json=party.to_interface())
+        response = self.session.post(url, json=party.to_interface())
         if response.ok:
             party = json_to_party(response.json())
             return party
@@ -27,7 +26,7 @@ class PartiesInterface(Interface):
 
     def amend(self, party):
         url = '%s/parties/%s/%s' % (self.endpoint, party.asset_manager_id, party.party_id)
-        response = requests.put(url, json=party.to_interface())
+        response = self.session.put(url, json=party.to_interface())
         if response.ok:
             party = json_to_party(response.json())
             return party
@@ -37,7 +36,7 @@ class PartiesInterface(Interface):
 
     def retrieve(self, asset_manager_id, party_id):
         url = '%s/parties/%s/%s' % (self.endpoint, asset_manager_id, party_id)
-        response = requests.get(url)
+        response = self.session.get(url)
         if response.ok:
             return json_to_party(response.json())
         else:
@@ -47,7 +46,7 @@ class PartiesInterface(Interface):
     def deactivate(self, asset_manager_id, party_id):
         url = '%s/parties/%s/%s' % (self.endpoint, asset_manager_id, party_id)
         json = {'party_status': 'Inactive'}
-        response = requests.patch(url, json=json)
+        response = self.session.patch(url, json=json)
         if response.ok:
             self.logger.info(response.text)
         else:
@@ -62,7 +61,7 @@ class PartiesInterface(Interface):
         if party_ids:
             search_params['party_ids'] = party_ids
         url = self.endpoint + '/parties'
-        response = requests.get(url, params=search_params)
+        response = self.session.get(url, params=search_params)
         if response.ok:
             parties = [json_to_party(json_party) for json_party in response.json()]
             return parties
@@ -72,7 +71,7 @@ class PartiesInterface(Interface):
 
     def parties_by_asset_manager(self, asset_manager_id):
         url = '%s/parties/%s' % (self.endpoint, asset_manager_id)
-        response = requests.get(url)
+        response = self.session.get(url)
         if response.ok:
             parties = [json_to_party(json_party) for json_party in response.json()]
             return parties

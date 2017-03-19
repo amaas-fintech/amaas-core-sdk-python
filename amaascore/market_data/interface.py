@@ -1,7 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import logging
-import requests
 
 from amaascore.config import ENDPOINTS
 from amaascore.core.interface import Interface
@@ -27,7 +26,7 @@ class MarketDataInterface(Interface):
         url = '%s/eod_prices/%s/%s' % (self.endpoint, asset_manager_id, business_date.isoformat())
         params = {'update_existing_prices': update_existing_prices}
         eod_prices_json = [eod_price.to_interface() for eod_price in eod_prices]
-        response = requests.post(url, params=params, json=eod_prices_json)
+        response = self.session.post(url, params=params, json=eod_prices_json)
         if response.ok:
             eod_prices = [json_to_eod_price(eod_price) for eod_price in response.json()]
             return eod_prices
@@ -37,7 +36,7 @@ class MarketDataInterface(Interface):
 
     def retrieve_eod_prices(self, asset_manager_id, business_date):
         url = '%s/eod_prices/%s/%s' % (self.endpoint, asset_manager_id, business_date.isoformat())
-        response = requests.get(url=url)
+        response = self.session.get(url=url)
         if response.ok:
             eod_prices = [json_to_eod_price(eod_price) for eod_price in response.json()]
             return eod_prices
@@ -57,7 +56,7 @@ class MarketDataInterface(Interface):
         url = '%s/fx_rates/%s/%s' % (self.endpoint, asset_manager_id, business_date.isoformat())
         params = {'update_existing_rates': update_existing_rates}
         fx_rates_json = [fx_rate.to_interface() for fx_rate in fx_rates]
-        response = requests.post(url, params=params, json=fx_rates_json)
+        response = self.session.post(url, params=params, json=fx_rates_json)
         if response.ok:
             fx_rates = [json_to_fx_rate(fx_rate) for fx_rate in response.json()]
             return fx_rates
@@ -67,7 +66,7 @@ class MarketDataInterface(Interface):
 
     def retrieve_fx_rates(self, asset_manager_id, business_date):
         url = '%s/fx_rates/%s/%s' % (self.endpoint, asset_manager_id, business_date.isoformat())
-        response = requests.get(url=url)
+        response = self.session.get(url=url)
         if response.ok:
             fx_rates = [json_to_fx_rate(fx_rate) for fx_rate in response.json()]
             return fx_rates
