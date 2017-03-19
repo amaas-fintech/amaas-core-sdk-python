@@ -1,5 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import requests
 
 class Interface(object):
     """
@@ -7,4 +8,8 @@ class Interface(object):
     """
 
     def __init__(self, endpoint):
+        # Add authentication routine here
+        self.auth_token = ''
         self.endpoint = endpoint
+        self.session = requests.Session()
+        self.session.headers.update({'Authorization': self.auth_token})
