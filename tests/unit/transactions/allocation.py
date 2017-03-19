@@ -4,11 +4,15 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 from decimal import Decimal
 import unittest
 
+from amaascore.config import DEFAULT_LOGGING
 from amaascore.transactions.children import Charge
 from amaascore.transactions.interface import TransactionsInterface
 from amaascore.tools.generate_asset import generate_asset
 from amaascore.tools.generate_book import generate_book
 from amaascore.tools.generate_transaction import generate_transaction
+
+import logging.config
+logging.config.dictConfig(DEFAULT_LOGGING)
 
 
 class AllocationTest(unittest.TestCase):

@@ -4,18 +4,26 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import random
 import unittest
 
+from amaascore.config import DEFAULT_LOGGING
 from amaascore.assets.asset import Asset
 from amaascore.assets.bond_option import BondOption
 from amaascore.assets.foreign_exchange import ForeignExchange
 from amaascore.assets.interface import AssetsInterface
 from amaascore.tools.generate_asset import generate_asset, generate_foreignexchange
 
+import logging.config
+logging.config.dictConfig(DEFAULT_LOGGING)
+
 
 class AssetsInterfaceTest(unittest.TestCase):
 
+    @classmethod
+    def setUpClass(cls):
+        pass
+        cls.assets_interface = AssetsInterface()
+
     def setUp(self):
         self.longMessage = True  # Print complete error message on failure
-        self.assets_interface = AssetsInterface()
         self.asset_manager_id = random.randint(1, 2**31-1)
         self.asset = generate_asset(asset_manager_id=self.asset_manager_id)
         self.asset_id = self.asset.asset_id
