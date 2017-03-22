@@ -6,6 +6,7 @@ from decimal import Decimal
 import random
 import unittest
 
+from amaascore.config import DEFAULT_LOGGING
 from amaascore.transactions.children import Charge, Comment
 from amaascore.transactions.transaction import Transaction
 from amaascore.transactions.interface import TransactionsInterface
@@ -15,12 +16,20 @@ from amaascore.tools.generate_book import generate_book
 from amaascore.tools.generate_transaction import generate_transaction
 
 
+import logging.config
+logging.config.dictConfig(DEFAULT_LOGGING)
+
+
 class TransactionsInterfaceTest(unittest.TestCase):
+
+    @classmethod
+    def setUpClass(cls):
+        pass
+        cls.transactions_interface = TransactionsInterface()
 
     def setUp(self):
         self.longMessage = True  # Print complete error message on failure
         self.maxDiff = None  # View the complete diff when there is a mismatch in a test
-        self.transactions_interface = TransactionsInterface()
         self.asset_manager_id = 1
         self.asset = generate_asset(asset_manager_id=self.asset_manager_id)
         self.asset_book = generate_book(asset_manager_id=self.asset_manager_id)

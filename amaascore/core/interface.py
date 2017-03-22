@@ -12,7 +12,7 @@ class Interface(object):
     Currently this class doesn't do anything - but I anticipate it will be needed in the future.
     """
 
-    def __init__(self, endpoint, use_auth=False, config_filename=None):
+    def __init__(self, endpoint, use_auth=True, config_filename=None):
         # Add authentication routine here
         self.config_filename = config_filename
         self.auth_token = self.read_token() if use_auth is True else ''
