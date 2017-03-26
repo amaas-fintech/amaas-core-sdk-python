@@ -5,7 +5,7 @@ import json
 import unittest
 
 from amaascore.exceptions import TransactionNeedsSaving
-from amaascore.transactions.children import Link
+from amaascore.transactions.children import Link, Party
 from amaascore.transactions.transaction import Transaction
 from amaascore.tools.generate_transaction import generate_transaction, REFERENCE_TYPES
 from amaascore.tools.helpers import random_string
@@ -157,6 +157,15 @@ class TransactionTest(unittest.TestCase):
     def test_InvalidTransactionStatus(self):
         with self.assertRaisesRegexp(ValueError, 'Invalid transaction status Invalid'):
             transaction = generate_transaction(transaction_status='Invalid')
+
+    def test_ImmutableDicts(self):
+        attr = self.transaction.to_dict()
+        attr.pop('parties')  # Remove parties so that the default constructor is used
+        transaction = Transaction(**attr)
+        transaction.parties.update({'TEST': Party(party_id=random_string(8))})
+        self.assertEqual(len(transaction.parties), 1)
+        transaction2 = Transaction(**attr)
+        self.assertEqual(len(transaction2.parties), 0)
 
 if __name__ == '__main__':
     unittest.main()

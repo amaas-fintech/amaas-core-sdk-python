@@ -33,6 +33,7 @@ class CorporateAction(AMaaSModel):
         self.elective = elective
         self.message = message
         self.description = description
+        # Defaults are here not in constructor for mutability reasons.
         self.references = references or {}
         self.references['AMaaS'] = Reference(reference_value=self.corporate_action_id)  # Upserts the AMaaS Reference
 

@@ -78,7 +78,7 @@ class Transaction(AMaaSModel):
         # Cannot be in method signature or the value gets bound to the constructor call
         self.execution_time = execution_time or datetime.datetime.utcnow()
 
-        # I don't put {} in the constructor due to mutability concerns... Need to test some scenarios.
+        # Defaults are here not in constructor for mutability reasons.
         self.charges = charges or {}
         self.codes = codes or {}
         self.comments = comments or {}

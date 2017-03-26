@@ -10,7 +10,7 @@ from amaascore.assets.asset import Asset
 class ListedDerivative(Asset):
 
     def __init__(self, asset_manager_id, asset_id, maturity_date=date.max, asset_issuer_id=None, asset_status='Active',
-                 description='', country_id=None, venue_id=None, issue_date=date.min, links={}, references={},
+                 description='', country_id=None, venue_id=None, issue_date=date.min, links=None, references=None,
                  *args, **kwargs):
         if not hasattr(self, 'asset_class'):  # A more specific child class may have already set this
             self.asset_class = 'ListedDerivative'
