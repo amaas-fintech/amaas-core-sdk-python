@@ -6,7 +6,7 @@ from amaascore.parties.organisation import Organisation
 class Company(Organisation):
 
     def __init__(self, asset_manager_id, party_id, base_currency=None, description='', party_status='Active',
-                 addresses={}, emails={}, links={}, references={},
+                 addresses=None, emails=None, links=None, references=None,
                  *args, **kwargs):
         if not hasattr(self, 'party_class'):  # A more specific child class may have already set this
             self.party_class = 'Company'

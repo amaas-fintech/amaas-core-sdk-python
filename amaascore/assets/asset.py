@@ -20,7 +20,7 @@ class Asset(AMaaSModel):
 
     def __init__(self, asset_manager_id, fungible, asset_issuer_id=None, asset_id=None, asset_status='Active',
                  country_id=None, venue_id=None, currency=None, issue_date=date.min, maturity_date=date.max,
-                 description='', links={}, references={},
+                 description='', links=None, references=None,
                  *args, **kwargs):
         self.asset_manager_id = asset_manager_id
         self.asset_id = asset_id or uuid.uuid4().hex
@@ -36,8 +36,9 @@ class Asset(AMaaSModel):
         self.issue_date = issue_date
         self.maturity_date = maturity_date
         self.description = description
-        self.links = links
-        self.references = references
+        # Defaults are here not in constructor for mutability reasons.
+        self.links = links or {}
+        self.references = references or {}
         self.references['AMaaS'] = Reference(reference_value=self.asset_id)  # Upserts the AMaaS Reference
 
         super(Asset, self).__init__(*args, **kwargs)

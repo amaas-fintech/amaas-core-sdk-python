@@ -57,6 +57,7 @@ class TransactionsInterface(Interface):
         response = self.session.get(url)
         if response.ok:
             transactions = [json_to_transaction(json_transaction) for json_transaction in response.json()]
+            self.logger.info('Returned %s Transactions.', len(transactions))
             return transactions
         else:
             self.logger.error(response.text)
@@ -68,7 +69,8 @@ class TransactionsInterface(Interface):
         url = '%s/transactions/%s/%s' % (self.endpoint, asset_manager_id, transaction_id)
         response = self.session.delete(url)
         if response.ok:
-            print("DO SOMETHING?")
+            self.logger.info('Successfully Cancelled - Asset Manager: %s - Transaction ID: %s.', asset_manager_id,
+                             transaction_id)
         else:
             self.logger.error(response.text)
             response.raise_for_status()
@@ -118,6 +120,7 @@ class TransactionsInterface(Interface):
         response = self.session.get(url, params=search_params)
         if response.ok:
             transactions = [json_to_transaction(json_transaction) for json_transaction in response.json()]
+            self.logger.info('Returned %s Transactions.', len(transactions))
             return transactions
         else:
             self.logger.error(response.text)
@@ -144,28 +147,31 @@ class TransactionsInterface(Interface):
         response = self.session.get(url, params=search_params)
         if response.ok:
             positions = [json_to_position(json_position) for json_position in response.json()]
+            self.logger.info('Returned %s Positions.', len(positions))
             return positions
         else:
             self.logger.error(response.text)
             response.raise_for_status()
 
     def positions_by_asset_manager_book(self, asset_manager_id, book_id):
-        self.logger.info('Positions By Asset Manager: %s and Book: %s', asset_manager_id, book_id)
+        self.logger.info('Retrieve Positions by Asset Manager: %s and Book: %s', asset_manager_id, book_id)
         url = '%s/positions/%s/%s' % (self.endpoint, asset_manager_id, book_id)
         response = self.session.get(url)
         if response.ok:
             positions = [json_to_position(json_position) for json_position in response.json()]
+            self.logger.info('Returned %s Positions.', len(positions))
             return positions
         else:
             self.logger.error(response.text)
             response.raise_for_status()
 
     def positions_by_asset_manager(self, asset_manager_id):
-        self.logger.info('Positions By Asset Manager: %s', asset_manager_id)
+        self.logger.info('Retrieve Positions by Asset Manager: %s', asset_manager_id)
         url = '%s/positions/%s' % (self.endpoint, asset_manager_id)
         response = self.session.get(url)
         if response.ok:
             positions = [json_to_position(json_position) for json_position in response.json()]
+            self.logger.info('Returned %s Positions.', len(positions))
             return positions
         else:
             self.logger.error(response.text)
@@ -180,7 +186,8 @@ class TransactionsInterface(Interface):
         :param allocation_dicts:
         :return:
         """
-        self.logger.info('Allocate Transaction - Asset Manager: %s - Transaction: %s', asset_manager_id, transaction_id)
+        self.logger.info('Allocate Transaction - Asset Manager: %s - Transaction ID: %s', asset_manager_id,
+                         transaction_id)
         url = '%s/allocations/%s/%s' % (self.endpoint, asset_manager_id, transaction_id)
         params = {'allocation_type': allocation_type}
         # As per https://github.com/kennethreitz/requests/issues/2755 - requests doesn't support custom Encoders, and
@@ -203,11 +210,13 @@ class TransactionsInterface(Interface):
         :param transaction_id:
         :return:
         """
-        self.logger.info('Retrieve Allocations - Asset Manager: %s - Transaction: %s', asset_manager_id, transaction_id)
+        self.logger.info('Retrieve Allocations - Asset Manager: %s - Transaction ID: %s', asset_manager_id,
+                         transaction_id)
         url = '%s/allocations/%s/%s' % (self.endpoint, asset_manager_id, transaction_id)
         response = self.session.get(url)
         if response.ok:
             allocations = [json_to_transaction(json_allocation) for json_allocation in response.json()]
+            self.logger.info('Returned %s Allocations.', len(allocations))
             return allocations
         else:
             self.logger.error(response.text)
@@ -221,7 +230,8 @@ class TransactionsInterface(Interface):
         :param netting_type:
         :return:
         """
-        self.logger.info('Net Transactions - Asset Manager: %s - Transactions: %s', asset_manager_id, transaction_ids)
+        self.logger.info('Net Transactions - Asset Manager: %s - Transaction IDs: %s', asset_manager_id,
+                         transaction_ids)
         url = '%s/netting/%s' % (self.endpoint, asset_manager_id)
         params = {'netting_type': netting_type}
         response = self.session.post(url, params=params, json=transaction_ids)
@@ -241,12 +251,15 @@ class TransactionsInterface(Interface):
         :param transaction_id: A transaction_id of an entry within the netting set.
         :return:
         """
-        self.logger.info('Retrieve Netting Set - Asset Manager: %s - Transaction: %s', asset_manager_id, transaction_id)
+        self.logger.info('Retrieve Netting Set - Asset Manager: %s - Transaction ID: %s', asset_manager_id,
+                         transaction_id)
         url = '%s/netting/%s/%s' % (self.endpoint, asset_manager_id, transaction_id)
         response = self.session.get(url)
         if response.ok:
             net_transaction_id, netting_set_json = next(iter(response.json().items()))
-            return net_transaction_id, [json_to_transaction(net_transaction) for net_transaction in netting_set_json]
+            netting_set = [json_to_transaction(net_transaction) for net_transaction in netting_set_json]
+            self.logger.info('Returned %s Transactions in Netting Set.', len(netting_set))
+            return net_transaction_id, netting_set
         else:
             self.logger.error(response.text)
             response.raise_for_status()

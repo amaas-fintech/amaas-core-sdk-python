@@ -14,7 +14,7 @@ class ForeignExchangeOption(Asset, OptionMixin):
 
     def __init__(self, asset_manager_id, asset_id, option_type, strike, premium, underlying_asset_id, option_style,
                  issue_date=date.min, maturity_date=date.max, asset_status='Active', asset_issuer_id=None,
-                 description='', links={}, references={},
+                 description='', links=None, references=None,
                  *args, **kwargs):
         self.asset_class = 'ForeignExchange'
         self.option_type = option_type

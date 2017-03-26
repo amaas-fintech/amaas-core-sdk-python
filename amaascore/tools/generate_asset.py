@@ -8,6 +8,7 @@ from amaascore.assets.asset import Asset
 from amaascore.assets.bond import BondGovernment
 from amaascore.assets.bond_option import BondOption
 from amaascore.assets.foreign_exchange import ForeignExchange
+from amaascore.assets.future import Future
 from amaascore.core.reference import Reference
 from amaascore.tools.helpers import random_string
 
@@ -57,5 +58,15 @@ def generate_bond_option(asset_manager_id=None, asset_id=None, option_type=None,
 
 def generate_foreignexchange(asset_id=None):
     asset = ForeignExchange(asset_id=asset_id)
+    return asset
+
+
+def generate_future(asset_manager_id=None, asset_id=None):
+    props = generate_common(asset_manager_id=asset_manager_id, asset_id=asset_id)
+    asset = Future(settlement_type=random.choice(['Cash', 'Physical']),
+                   contract_size=10000,
+                   point_value=Decimal('50'),
+                   tick_size=Decimal('0.01'),
+                   **props)
     return asset
 

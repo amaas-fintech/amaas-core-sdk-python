@@ -47,12 +47,13 @@ class MonitorInterface(Interface):
         url = '%s/items/%s/%s' % (self.endpoint, asset_manager_id, item_id)
         response = self.session.delete(url)
         if response.ok:
-            print("DO SOMETHING?")
+            self.logger.info('Successfully Closed Item - Asset Manager: %s - Item ID: %s', asset_manager_id, item_id)
         else:
             self.logger.error(response.text)
             response.raise_for_status()
 
     def search_items(self, asset_manager_ids=None, item_ids=None):
+        self.logger.info('Search Items - Asset Manager(s): %s', asset_manager_ids)
         search_params = {}
         # Potentially roll this into a loop through args rather than explicitly named - depends on additional validation
         if asset_manager_ids:
@@ -63,16 +64,19 @@ class MonitorInterface(Interface):
         response = self.session.get(url, params=search_params)
         if response.ok:
             items = [json_to_item(json_item) for json_item in response.json()]
+            self.logger.info('Returned %s Items.', len(items))
             return items
         else:
             self.logger.error(response.text)
             response.raise_for_status()
 
     def items_by_asset_manager(self, asset_manager_id):
+        self.logger.info('Retrieve Items by Asset Manager: %s', asset_manager_id)
         url = '%s/items/%s' % (self.endpoint, asset_manager_id)
         response = self.session.get(url)
         if response.ok:
             items = [json_to_item(json_item) for json_item in response.json()]
+            self.logger.info('Returned %s Items.', len(items))
             return items
         else:
             self.logger.error(response.text)

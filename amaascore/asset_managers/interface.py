@@ -18,18 +18,22 @@ class AssetManagersInterface(Interface):
         super(AssetManagersInterface, self).__init__(endpoint=endpoint)
 
     def new(self, asset_manager):
+        self.logger.info('New Asset Manager: %s', asset_manager.asset_manager_id)
         url = '%s/asset_managers' % self.endpoint
         response = self.session.post(url, json=asset_manager.to_interface())
         if response.ok:
+            self.logger.info('Successfully Created Asset Manager: %s', asset_manager.asset_manager_id)
             return json_to_asset_manager(response.json())
         else:
             self.logger.error(response.text)
             response.raise_for_status()
 
     def retrieve(self, asset_manager_id):
+        self.logger.info('Retrieve Asset Manager: %s', asset_manager_id)
         url = '%s/asset_managers/%s' % (self.endpoint, asset_manager_id)
         response = self.session.get(url)
         if response.ok:
+            self.logger.info('Successfully Retrieved Asset Manager: %s', asset_manager_id)
             return json_to_asset_manager(response.json())
         else:
             self.logger.error(response.text)
@@ -43,15 +47,18 @@ class AssetManagersInterface(Interface):
         :param asset_manager_id:
         :return:
         """
+        self.logger.info('Deactivate Asset Manager: %s', asset_manager_id)
         url = '%s/asset_managers/%s' % (self.endpoint, asset_manager_id)
         response = self.session.delete(url)
         if response.ok:
+            self.logger.info('Successfully deactivated Asset Manager: %s', asset_manager_id)
             return json_to_asset_manager(response.json())
         else:
             self.logger.error(response.text)
             response.raise_for_status()
 
     def search(self, asset_manager_ids=None, client_ids=None):
+        self.logger.info('Search for Asset Managers: %s', asset_manager_ids)
         search_params = {}
         # Potentially roll this into a loop through args rather than explicitly named - depends on additional validation
         if asset_manager_ids:
@@ -61,8 +68,9 @@ class AssetManagersInterface(Interface):
         url = self.endpoint + '/asset_managers'
         response = self.session.get(url, params=search_params)
         if response.ok:
-            assets = [json_to_asset_manager(json_asset_manager) for json_asset_manager in response.json()]
-            return assets
+            asset_managers = [json_to_asset_manager(json_asset_manager) for json_asset_manager in response.json()]
+            self.logger.info('Returned %s Asset Managers.', len(asset_managers))
+            return asset_managers
         else:
             self.logger.error(response.text)
             response.raise_for_status()

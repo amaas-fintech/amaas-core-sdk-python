@@ -23,6 +23,7 @@ class MarketDataInterface(Interface):
         :param update_existing_prices:
         :return:
         """
+        self.logger.info('Persist EOD Prices - Asset Manager: %s - Business Date: %s', asset_manager_id, business_date)
         url = '%s/eod_prices/%s/%s' % (self.endpoint, asset_manager_id, business_date.isoformat())
         params = {'update_existing_prices': update_existing_prices}
         eod_prices_json = [eod_price.to_interface() for eod_price in eod_prices]
@@ -39,6 +40,7 @@ class MarketDataInterface(Interface):
         response = self.session.get(url=url)
         if response.ok:
             eod_prices = [json_to_eod_price(eod_price) for eod_price in response.json()]
+            self.logger.info('Returned %s EOD Prices.', len(eod_prices))
             return eod_prices
         else:
             self.logger.error(response.text)
@@ -69,6 +71,7 @@ class MarketDataInterface(Interface):
         response = self.session.get(url=url)
         if response.ok:
             fx_rates = [json_to_fx_rate(fx_rate) for fx_rate in response.json()]
+            self.logger.info('Returned %s FX Rates.', len(fx_rates))
             return fx_rates
         else:
             self.logger.error(response.text)
