@@ -18,7 +18,7 @@ class Party(AMaaSModel):
         return {'addresses': Address, 'emails': Email, 'references': Reference}
 
     def __init__(self, asset_manager_id, party_id, party_status='Active', base_currency=None, description='',
-                 addresses={}, emails={}, links={}, references={}, *args, **kwargs):
+                 addresses=None, emails=None, links=None, references=None, *args, **kwargs):
         self.asset_manager_id = asset_manager_id
         self.party_id = party_id
         self.party_status = party_status
@@ -27,10 +27,11 @@ class Party(AMaaSModel):
         self.party_type = self.__class__.__name__
         self.base_currency = base_currency
         self.description = description
-        self.addresses = addresses
-        self.emails = emails
-        self.links = links
-        self.references = references
+        # Defaults are here not in constructor for mutability reasons.
+        self.addresses = addresses or {}
+        self.emails = emails or {}
+        self.links = links or {}
+        self.references = references or {}
         super(Party, self).__init__(*args, **kwargs)
 
     def upsert_address(self, address_type, address):

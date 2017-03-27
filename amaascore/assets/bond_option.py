@@ -12,7 +12,7 @@ class BondOption(Derivative, OptionMixin):
 
     def __init__(self, asset_manager_id, option_type, strike, underlying_asset_id, option_style, asset_id=None,
                  asset_issuer_id=None, asset_status='Active', description='', country_id=None, venue_id=None,
-                 issue_date=date.min, expiry_date=date.max, links={}, references={}, *args, **kwargs):
+                 issue_date=date.min, expiry_date=date.max, links=None, references=None, *args, **kwargs):
         self.option_type = option_type
         self.strike = strike
         self.underlying_asset_id = underlying_asset_id
