@@ -7,7 +7,7 @@ from amaascore.assets.bond import BondGovernment
 from amaascore.tools.generate_asset import generate_bond
 
 
-class BondOptionTest(unittest.TestCase):
+class BondTest(unittest.TestCase):
 
     def setUp(self):
         self.longMessage = True  # Print complete error message on failure

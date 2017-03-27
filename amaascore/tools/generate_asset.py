@@ -9,6 +9,7 @@ from amaascore.assets.bond import BondGovernment
 from amaascore.assets.bond_option import BondOption
 from amaascore.assets.foreign_exchange import ForeignExchange
 from amaascore.assets.future import Future
+from amaascore.assets.synthetic import Synthetic
 from amaascore.core.reference import Reference
 from amaascore.tools.helpers import random_string
 
@@ -70,3 +71,8 @@ def generate_future(asset_manager_id=None, asset_id=None):
                    **props)
     return asset
 
+
+def generate_synthetic(asset_manager_id=None, asset_id=None):
+    props = generate_common(asset_manager_id=asset_manager_id, asset_id=asset_id)
+    synthetic = Synthetic(**props)
+    return synthetic
