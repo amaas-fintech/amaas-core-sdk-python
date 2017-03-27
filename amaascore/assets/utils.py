@@ -7,11 +7,30 @@ import inspect
 #  If there is a better way of doing this, please suggest!
 from amaascore.assets.asset import Asset
 from amaascore.assets.bond import BondCorporate, BondGovernment, BondMortgage
+from amaascore.assets.bond_future import BondFuture
+from amaascore.assets.bond_future_option import BondFutureOption
 from amaascore.assets.bond_option import BondOption
+from amaascore.assets.cfd import ContractForDifference
 from amaascore.assets.currency import Currency
 from amaascore.assets.derivative import Derivative
+from amaascore.assets.energy_future import EnergyFuture
 from amaascore.assets.equity import Equity
+from amaascore.assets.etf import ExchangeTradedFund
 from amaascore.assets.foreign_exchange import ForeignExchange, NonDeliverableForward
+from amaascore.assets.fund import Fund
+from amaascore.assets.future import Future
+from amaascore.assets.future_option import FutureOption
+from amaascore.assets.fx_option import ForeignExchangeOption
+from amaascore.assets.index import Index
+from amaascore.assets.index_future import IndexFuture
+from amaascore.assets.interest_rate_future import InterestRateFuture
+from amaascore.assets.listed_cfd import ListedContractForDifference
+from amaascore.assets.listed_derivative import ListedDerivative
+from amaascore.assets.real_asset import RealAsset
+from amaascore.assets.real_estate import RealEstate
+from amaascore.assets.synthetic import Synthetic
+from amaascore.assets.synthetic_from_book import SyntheticFromBook
+from amaascore.assets.synthetic_multi_leg import SyntheticMultiLeg
 
 
 def json_to_asset(json_asset):
