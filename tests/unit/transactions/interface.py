@@ -2,12 +2,12 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import datetime
-from decimal import Decimal
+import logging.config
 import random
 import unittest
 
 from amaascore.config import DEFAULT_LOGGING
-from amaascore.transactions.children import Charge, Comment
+from amaascore.transactions.children import Comment
 from amaascore.transactions.transaction import Transaction
 from amaascore.transactions.interface import TransactionsInterface
 from amaascore.tools.helpers import random_string
@@ -16,7 +16,6 @@ from amaascore.tools.generate_book import generate_book
 from amaascore.tools.generate_transaction import generate_transaction
 
 
-import logging.config
 logging.config.dictConfig(DEFAULT_LOGGING)
 
 
