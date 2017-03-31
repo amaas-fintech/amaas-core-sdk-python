@@ -36,10 +36,9 @@ class AllocationTest(unittest.TestCase):
 
     def create_transaction_asset(self):
         transaction_asset_fields = ['asset_manager_id', 'asset_id', 'asset_status', 'asset_class', 'asset_type',
-                                    'primary_identifier', 'fungible', 'description']
+                                    'fungible']
         asset_json = self.asset.to_json()
         transaction_asset_json = {attr: asset_json.get(attr) for attr in transaction_asset_fields}
-        transaction_asset_json['primary_identifier'] = 'TEST'  # This is temporary, we need to handle this better
         self.transactions_interface.upsert_transaction_asset(transaction_asset_json=transaction_asset_json)
 
     def setup_cache(self):
@@ -48,7 +47,7 @@ class AllocationTest(unittest.TestCase):
         self.create_transaction_book(self.counterparty_book)
 
     def create_transaction_book(self, book):
-        transaction_book_fields = ['asset_manager_id', 'book_id', 'party_id', 'book_status', 'description']
+        transaction_book_fields = ['asset_manager_id', 'book_id', 'party_id', 'book_status']
         book_json = book.to_json()
         transaction_book_json = {attr: book_json.get(attr) for attr in transaction_book_fields}
         self.transactions_interface.upsert_transaction_book(transaction_book_json=transaction_book_json)
