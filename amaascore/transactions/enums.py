@@ -1,7 +1,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 TRANSACTION_TYPES = {'Allocation', 'Block', 'Cashflow', 'Coupon', 'Dividend', 'Exercise', 'Expiry', 'Payment',
-                     'Journal', 'Maturity', 'Net', 'Novation', 'Split', 'Trade'}
+                     'Journal', 'Maturity', 'Net', 'Novation', 'Split', 'Trade', 'Transfer'}
 TRANSACTION_INVESTOR_ACTIONS = {'Subscription', 'Redemption'}
 TRANSACTION_LIFECYCLE_ACTIONS = {'Acquire', 'Remove'}
 TRANSACTION_ACTIONS = {'Buy', 'Sell', 'Short Sell', 'Deliver', 'Receive'} | TRANSACTION_LIFECYCLE_ACTIONS | \

@@ -55,7 +55,7 @@ class TransactionsInterfaceTest(unittest.TestCase):
         self.create_transaction_book(self.counterparty_book)
 
     def create_transaction_book(self, book):
-        transaction_book_fields = ['asset_manager_id', 'book_id', 'party_id', 'book_status', 'description']
+        transaction_book_fields = ['asset_manager_id', 'book_id', 'party_id', 'book_status']
         book_json = book.to_json()
         transaction_book_json = {attr: book_json.get(attr) for attr in transaction_book_fields}
         self.transactions_interface.upsert_transaction_book(transaction_book_json=transaction_book_json)

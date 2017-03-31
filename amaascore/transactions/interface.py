@@ -293,3 +293,38 @@ class TransactionsInterface(Interface):
         else:
             self.logger.error(response.text)
             response.raise_for_status()
+
+    def book_transfer(self, asset_manager_id, asset_id, source_book_id, target_book_id, wash_book_id, quantity, price,
+                      currency):
+        """
+        A method for moving between books.  The convention is always *from* the source, *to* the target.
+
+        Two transactions are booked -  one against each
+
+        :param asset_manager_id: The owning asset manager id.
+        :param asset_id: The asset being transferred.
+        :param source_book_id: The book id of the source.
+        :param target_book_id:  The book id of the target.
+        :param wash_book_id:  The book id of the wash book which will be the counterparty for the two sides.
+        :param quantity: The quantity to transfer.
+        :param price:  The price at which to make the transfer.  Typically T-1 EOD price or current market price.
+        :return:
+        """
+        url = '%s/book_transfer/%s' % (self.endpoint, asset_manager_id)
+        body = {'asset_id': asset_id, 'source_book_id': source_book_id, 'target_book_id': target_book_id,
+                'wash_book_id': wash_book_id, 'quantity': quantity, 'price': price, 'currency': currency}
+        # As per https://github.com/kennethreitz/requests/issues/2755 - requests doesn't support custom Encoders, and
+        # the default encoding fails on Decimals in Python 3 (but not in Python 2?)
+        response = self.session.post(url, data=simplejson.dumps(body), headers=self.json_header)
+        if response.ok:
+            deliver_json, receive_json = response.json()
+            return json_to_transaction(deliver_json), json_to_transaction(receive_json),
+        else:
+            self.logger.error(response.text)
+            response.raise_for_status()
+
+    def depot_transfer(self, asset_manager_id, asset_id, source_account_id, target_account_id, quantity):
+        raise NotImplementedError("""This is not yet supported.  The concept is similar to a
+                                  book transfer, except it requires an external message to a
+                                  custodian to instruct them to move the stock to a
+                                   different depot account.""")
