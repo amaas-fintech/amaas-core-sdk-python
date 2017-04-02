@@ -8,6 +8,7 @@ from amaascore.assets.asset import Asset
 from amaascore.assets.bond import BondGovernment
 from amaascore.assets.bond_option import BondOption
 from amaascore.assets.foreign_exchange import ForeignExchange
+from amaascore.assets.fund import Fund
 from amaascore.assets.future import Future
 from amaascore.assets.synthetic import Synthetic
 from amaascore.core.reference import Reference
@@ -59,6 +60,16 @@ def generate_bond_option(asset_manager_id=None, asset_id=None, option_type=None,
 
 def generate_foreignexchange(asset_id=None):
     asset = ForeignExchange(asset_id=asset_id)
+    return asset
+
+
+def generate_fund(asset_manager_id=None, asset_id=None):
+    props = generate_common(asset_manager_id=asset_manager_id, asset_id=asset_id)
+    asset = Fund(fund_type=random.choice(['Open', 'Closed']),
+                 nav=Decimal(100 * random.random()).quantize(Decimal('0.01')),
+                 expense_ratio=Decimal(random.random()).quantize(Decimal('0.01')),
+                 net_assets=1e06*random.randint(1, 10000),
+                 **props)
     return asset
 
 
