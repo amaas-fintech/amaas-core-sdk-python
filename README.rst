@@ -27,15 +27,25 @@ structure.  In order to fully utilise the power of the AMaaS platform, sign-up f
 
 Once you have your credentials, generate your API key by following these instructions:
 
-TBD.
+* Currently this can only be done with help from support@amaas.com
+
+Create a file called .amaas.cfg in your homedir, with the following:
+
+.. code-block:: none
+
+    [auth]
+    token=YOUR_KEY
+
 
 Example code and demonstrations
 -------------------------------
-For examples of how the Python SDK can be used, clone the "AMaaS Core SDK for Python Examples" repository from: $TBD.
+For examples of how the Python SDK can be used, clone the "AMaaS Core SDK for Python Examples" repository from:
+https://github.com/amaas-fintech/amaas-core-sdk-python-examples.
 
-The following demos are available:
+A variety of demos are available such as:
 
   * Book a set of transactions and then view the cumulative position
+  * Back-dated transaction handling
   * Signup clients and then book ETFs on their behalf, while managing their cash
   * A simulation of a simplified robo-advisor
 
@@ -53,7 +63,7 @@ Individual test modules can be run using unittest in the usual fashion.
 
 API Documentation
 -----------------
-The complete API documentation can be found at XYZ.
+The complete API documentation can be found at: TBD.
 
 Support
 -------

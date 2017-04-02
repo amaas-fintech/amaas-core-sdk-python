@@ -1,8 +1,10 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import json
 import logging
 
 from amaascore.config import ENDPOINTS
+from amaascore.core.amaas_model import json_handler
 from amaascore.core.interface import Interface
 from amaascore.parties.utils import json_to_party
 
@@ -27,6 +29,19 @@ class PartiesInterface(Interface):
     def amend(self, party):
         url = '%s/parties/%s/%s' % (self.endpoint, party.asset_manager_id, party.party_id)
         response = self.session.put(url, json=party.to_interface())
+        if response.ok:
+            party = json_to_party(response.json())
+            return party
+        else:
+            self.logger.error(response.text)
+            response.raise_for_status()
+
+    def partial(self, asset_manager_id, party_id, updates):
+        self.logger.info('Partial Amend Asset - Asset Manager: %s - Party ID: %s', asset_manager_id,
+                         party_id)
+        url = '%s/parties/%s/%s' % (self.endpoint, asset_manager_id, party_id)
+        # Setting handler ourselves so we can be sure Decimals work
+        response = self.session.patch(url, data=json.dumps(updates, default=json_handler), headers=self.json_header)
         if response.ok:
             party = json_to_party(response.json())
             return party

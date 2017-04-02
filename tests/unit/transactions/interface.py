@@ -2,6 +2,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import datetime
+from decimal import Decimal
 import logging.config
 import random
 import unittest
@@ -75,6 +76,16 @@ class TransactionsInterfaceTest(unittest.TestCase):
         transaction = self.transactions_interface.amend(transaction)
         self.assertEqual(transaction.settlement_date, new_settlement_date)
         self.assertEqual(transaction.version, 2)
+
+    def test_Partial(self):
+        self.transactions_interface.new(self.transaction)
+        price = Decimal('3.14')
+        updates = {'price': price}
+        transaction = self.transactions_interface.partial(asset_manager_id=self.asset_manager_id,
+                                                          transaction_id=self.transaction_id,
+                                                          updates=updates)
+        self.assertEqual(transaction.version, 2)
+        self.assertEqual(transaction.price, price)
 
     def test_Retrieve(self):
         self.transactions_interface.new(self.transaction)

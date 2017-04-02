@@ -46,6 +46,15 @@ class AssetsInterfaceTest(unittest.TestCase):
         self.assertEqual(asset.description, 'TEST')
         self.assertEqual(asset.version, 2)
 
+    def test_Partial(self):
+        self.assets_interface.new(self.asset)
+        description = 'XXX'
+        updates = {'description': description}
+        asset = self.assets_interface.partial(asset_manager_id=self.asset_manager_id,
+                                              asset_id=self.asset_id, updates=updates)
+        self.assertEqual(asset.version, 2)
+        self.assertEqual(asset.description, description)
+
     def test_Retrieve(self):
         self.assets_interface.new(self.asset)
         fx = generate_foreignexchange()

@@ -17,6 +17,7 @@ class Interface(object):
         self.config_filename = config_filename
         self.auth_token = self.read_token() if use_auth is True else ''
         self.endpoint = endpoint
+        self.json_header = {'Content-Type': 'application/json'}
         self.session = requests.Session()
         self.session.headers.update({'Authorization': self.auth_token})
 

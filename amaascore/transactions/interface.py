@@ -1,9 +1,10 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import logging
-import simplejson
+import json
 
 from amaascore.config import ENDPOINTS
+from amaascore.core.amaas_model import json_handler
 from amaascore.core.interface import Interface
 from amaascore.transactions.utils import json_to_transaction, json_to_position
 
@@ -13,7 +14,6 @@ class TransactionsInterface(Interface):
     def __init__(self, logger=None):
         endpoint = ENDPOINTS.get('transactions')
         self.logger = logger or logging.getLogger(__name__)
-        self.json_header = {'Content-Type': 'application/json'}
         super(TransactionsInterface, self).__init__(endpoint=endpoint)
 
     def new(self, transaction):
@@ -33,6 +33,18 @@ class TransactionsInterface(Interface):
                          transaction.transaction_id)
         url = '%s/transactions/%s/%s' % (self.endpoint, transaction.asset_manager_id, transaction.transaction_id)
         response = self.session.put(url, json=transaction.to_interface())
+        if response.ok:
+            transaction = json_to_transaction(response.json())
+            return transaction
+        else:
+            self.logger.error(response.text)
+            response.raise_for_status()
+
+    def partial(self, asset_manager_id, transaction_id, updates):
+        self.logger.info('Partial Amend Transaction - Asset Manager: %s - Transaction ID: %s', asset_manager_id,
+                         transaction_id)
+        url = '%s/transactions/%s/%s' % (self.endpoint, asset_manager_id, transaction_id)
+        response = self.session.patch(url, data=json.dumps(updates, default=json_handler), headers=self.json_header)
         if response.ok:
             transaction = json_to_transaction(response.json())
             return transaction
@@ -190,9 +202,7 @@ class TransactionsInterface(Interface):
                          transaction_id)
         url = '%s/allocations/%s/%s' % (self.endpoint, asset_manager_id, transaction_id)
         params = {'allocation_type': allocation_type}
-        # As per https://github.com/kennethreitz/requests/issues/2755 - requests doesn't support custom Encoders, and
-        # the default encoding fails on Decimals in Python 3 (but not in Python 2?)
-        response = self.session.post(url, params=params, data=simplejson.dumps(allocation_dicts),
+        response = self.session.post(url, params=params, data=json.dumps(allocation_dicts, default=json_handler),
                                      headers=self.json_header)
         if response.ok:
             allocations = [json_to_transaction(json_allocation) for json_allocation in response.json()]
@@ -308,14 +318,13 @@ class TransactionsInterface(Interface):
         :param wash_book_id:  The book id of the wash book which will be the counterparty for the two sides.
         :param quantity: The quantity to transfer.
         :param price:  The price at which to make the transfer.  Typically T-1 EOD price or current market price.
+        :param currency: The currency for the transfer price.
         :return:
         """
         url = '%s/book_transfer/%s' % (self.endpoint, asset_manager_id)
         body = {'asset_id': asset_id, 'source_book_id': source_book_id, 'target_book_id': target_book_id,
                 'wash_book_id': wash_book_id, 'quantity': quantity, 'price': price, 'currency': currency}
-        # As per https://github.com/kennethreitz/requests/issues/2755 - requests doesn't support custom Encoders, and
-        # the default encoding fails on Decimals in Python 3 (but not in Python 2?)
-        response = self.session.post(url, data=simplejson.dumps(body), headers=self.json_header)
+        response = self.session.post(url, data=json.dumps(body, default=json_handler), headers=self.json_header)
         if response.ok:
             deliver_json, receive_json = response.json()
             return json_to_transaction(deliver_json), json_to_transaction(receive_json),
