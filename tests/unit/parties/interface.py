@@ -45,6 +45,15 @@ class PartiesInterfaceTest(unittest.TestCase):
         self.assertEqual(party.description, 'TEST')
         self.assertEqual(party.version, 2)
 
+    def test_Partial(self):
+        self.parties_interface.new(self.party)
+        base_currency = 'XXX'
+        updates = {'base_currency': base_currency}
+        party = self.parties_interface.partial(asset_manager_id=self.asset_manager_id,
+                                               party_id=self.party_id, updates=updates)
+        self.assertEqual(party.version, 2)
+        self.assertEqual(party.base_currency, base_currency)
+
     def test_Retrieve(self):
         self.parties_interface.new(self.party)
         broker = generate_broker()
