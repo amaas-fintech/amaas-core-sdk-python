@@ -1,5 +1,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+
+from amaasutils.random_utils import random_string, random_decimal
 import datetime
 from decimal import Decimal
 import random
@@ -12,7 +14,6 @@ from amaascore.assets.fund import Fund
 from amaascore.assets.future import Future
 from amaascore.assets.synthetic import Synthetic
 from amaascore.core.reference import Reference
-from amaascore.tools.helpers import random_string
 
 REFERENCE_TYPES = ['External']
 
@@ -66,8 +67,8 @@ def generate_foreignexchange(asset_id=None):
 def generate_fund(asset_manager_id=None, asset_id=None):
     props = generate_common(asset_manager_id=asset_manager_id, asset_id=asset_id)
     asset = Fund(fund_type=random.choice(['Open', 'Closed']),
-                 nav=Decimal(100 * random.random()).quantize(Decimal('0.01')),
-                 expense_ratio=Decimal(random.random()).quantize(Decimal('0.01')),
+                 nav=random_decimal(),
+                 expense_ratio=random_decimal(),
                  net_assets=1e06*random.randint(1, 10000),
                  **props)
     return asset

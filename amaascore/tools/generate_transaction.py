@@ -1,5 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+from amaasutils.random_utils import random_string
 import datetime
 from decimal import Decimal
 import random
@@ -9,7 +10,6 @@ from amaascore.transactions.children import Charge, Code, Comment, Link, Party
 from amaascore.transactions.enums import TRANSACTION_ACTIONS
 from amaascore.transactions.position import Position
 from amaascore.transactions.transaction import Transaction
-from amaascore.tools.helpers import random_string
 
 CHARGE_TYPES = ['Tax', 'Commission']
 CODE_TYPES = ['Settle Code', 'Client Classifier']
@@ -86,3 +86,20 @@ def generate_position(asset_manager_id=None, book_id=None, asset_id=None, quanti
                         asset_id=asset_id or str(random.randint(1, 1000)),
                         quantity=quantity or Decimal(random.randint(1, 50000)))
     return position
+
+
+def generate_transactions(asset_manager_ids=[], number=5):
+    transactions = []
+    for i in range(number):
+        transaction = generate_transaction(asset_manager_id=random.choice(asset_manager_ids))
+        transactions.append(transaction)
+    return transactions
+
+
+def generate_positions(asset_manager_ids=[], book_ids=[], number=5):
+    positions = []
+    for i in range(number):
+        position = generate_position(asset_manager_id=random.choice(asset_manager_ids),
+                                     book_id=random.choice(book_ids) if book_ids else None)
+        positions.append(position)
+    return positions

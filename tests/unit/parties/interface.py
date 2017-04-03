@@ -2,13 +2,14 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import random
+import requests_mock
 import unittest
 
 from amaascore.config import DEFAULT_LOGGING
 from amaascore.parties.broker import Broker
 from amaascore.parties.party import Party
 from amaascore.parties.interface import PartiesInterface
-from amaascore.tools.generate_party import generate_party, generate_broker
+from amaascore.tools.generate_party import generate_party, generate_broker, generate_parties
 
 import logging.config
 logging.config.dictConfig(DEFAULT_LOGGING)
@@ -70,21 +71,23 @@ class PartiesInterfaceTest(unittest.TestCase):
         self.assertEqual(party.party_id, self.party_id)
         self.assertEqual(party.party_status, 'Inactive')
 
-    def test_Search(self):
+    @requests_mock.Mocker()
+    def test_Search(self, mocker):
+        # This test is somewhat fake - but the integration tests are for the bigger picture
+        endpoint = '%s/parties' % self.parties_interface.endpoint
+        parties = generate_parties(asset_manager_ids=[self.asset_manager_id, self.asset_manager_id+1])
+        mocker.get(endpoint, json=[party.to_json() for party in parties])
         all_parties = self.parties_interface.search()
-        random_party_index = random.randint(0, len(all_parties)-1)
-        asset_manager_id = all_parties[random_party_index].asset_manager_id
-        asset_manager_parties = [party for party in all_parties if party.asset_manager_id == asset_manager_id]
-        parties = self.parties_interface.search(asset_manager_ids=[asset_manager_id])
-        self.assertEqual(len(parties), len(asset_manager_parties))
+        self.assertEqual(parties, all_parties)
 
-    def test_PartiesByAssetManager(self):
-        all_parties = self.parties_interface.search()
-        random_party_index = random.randint(0, len(all_parties)-1)
-        asset_manager_id = all_parties[random_party_index].asset_manager_id
-        asset_manager_parties = [party for party in all_parties if party.asset_manager_id == asset_manager_id]
-        parties = self.parties_interface.parties_by_asset_manager(asset_manager_id=asset_manager_id)
-        self.assertEqual(len(parties), len(asset_manager_parties))
+    @requests_mock.Mocker()
+    def test_PartiesByAssetManager(self, mocker):
+        # This test is somewhat fake - but the integration tests are for the bigger picture
+        endpoint = '%s/parties/%s' % (self.parties_interface.endpoint, self.asset_manager_id)
+        parties = generate_parties(asset_manager_ids=[self.asset_manager_id])
+        mocker.get(endpoint, json=[party.to_json() for party in parties])
+        asset_manager_parties = self.parties_interface.parties_by_asset_manager(asset_manager_id=self.asset_manager_id)
+        self.assertEqual(parties, asset_manager_parties)
 
     def test_ChildrenPopulated(self):
         party = self.parties_interface.new(self.party)

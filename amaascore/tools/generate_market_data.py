@@ -1,5 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+from amaasutils.random_utils import random_string, random_decimal
 from datetime import datetime, date
 import pytz
 import random
@@ -7,7 +8,6 @@ import random
 from amaascore.market_data.eod_price import EODPrice
 from amaascore.market_data.fx_rate import FXRate
 from amaascore.market_data.quote import Quote
-from amaascore.tools.helpers import random_decimal, random_string
 
 
 def generate_eod_price(asset_manager_id=0, asset_id=None, business_date=date.today(), price=None):

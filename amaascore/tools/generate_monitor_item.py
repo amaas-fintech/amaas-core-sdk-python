@@ -1,10 +1,10 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+from amaasutils.random_utils import random_string
 import datetime
 import random
 
 from amaascore.monitor.item import Item
-from amaascore.tools.helpers import random_string
 
 
 def generate_item(client_id=None, asset_manager_id=None, item_id=None, item_class=None, item_type=None,
