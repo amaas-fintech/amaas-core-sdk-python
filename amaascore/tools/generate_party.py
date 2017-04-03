@@ -1,5 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+from amaasutils.random_utils import random_string, random_decimal
 import random
 
 from amaascore.core.reference import Reference
@@ -8,7 +9,6 @@ from amaascore.parties.broker import Broker
 from amaascore.parties.children import Address, Email
 from amaascore.parties.individual import Individual
 from amaascore.parties.party import Party
-from amaascore.tools.helpers import random_string
 
 
 def generate_common(asset_manager_id, party_id, party_status):
@@ -70,3 +70,11 @@ def generate_address(country_id=None, address_primary=False):
 
 def generate_email(email=None, email_primary=False):
     return Email(email=email or (random_string(10) + '@amaas.com'), email_primary=email_primary)
+
+
+def generate_parties(asset_manager_ids=[], number=5):
+    parties = []
+    for i in range(number):
+        party = generate_party(asset_manager_id=random.choice(asset_manager_ids))
+        parties.append(party)
+    return parties

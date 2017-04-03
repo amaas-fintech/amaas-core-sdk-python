@@ -12,7 +12,7 @@ from amaascore.exceptions import AMaaSException
 class InterfaceTest(unittest.TestCase):
 
     def test_NoAuth(self):
-        interface = Interface(endpoint='DUMMY')
+        interface = Interface(endpoint='DUMMY', use_auth=False)
         self.assertEqual(interface.auth_token, '')
 
     def test_GenerateConfigFilename(self):

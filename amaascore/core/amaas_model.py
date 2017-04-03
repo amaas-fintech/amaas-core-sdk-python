@@ -68,6 +68,9 @@ class AMaaSModel(object):
     def to_json(self, dict_to_convert=None):
         return to_json(self.to_dict(dict_to_convert=dict_to_convert))
 
+    def to_json_string(self, dict_to_convert=None):
+        return to_json_string(self.to_dict(dict_to_convert=dict_to_convert))
+
     def __repr__(self):
         """
         # TODO - check the nested dictionaries

@@ -1,9 +1,9 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+from amaasutils.random_utils import random_string
 import random
 
 from amaascore.books.book import Book
-from amaascore.tools.helpers import random_string
 
 
 def generate_book(asset_manager_id=None, book_id=None, owner_id=None, party_id=None, book_type='Trading'):

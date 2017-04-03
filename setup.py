@@ -1,11 +1,11 @@
 from setuptools import setup, find_packages
 
 requires = [
+    'amaasutils'
     'configparser',
     'python-dateutil',
     'pytz',
-    'requests',
-    'simplejson'
+    'requests'
 ]
 
 setup(

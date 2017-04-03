@@ -1,6 +1,5 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-import csv
 import inspect
 
 #  All possible class names must be inserted into the globals collection.
@@ -39,37 +38,3 @@ def json_to_party(json_to_convert):
                         if json_to_convert.get(arg) is not None and arg != 'self'}
     party = clazz(**constructor_dict)
     return party
-
-
-# def csv_filename_to_parties(filename):
-#     with open(filename, 'r') as f:
-#         parties = csv_stream_to_parties(f)
-#     return parties
-#
-#
-# def csv_stream_to_parties(stream):
-#     reader = csv.DictReader(stream)
-#     parties = []
-#     for row in reader:
-#         parties.append(json_to_party(row))
-#     return parties
-#
-#
-# def parties_to_csv(parties, filename):
-#     with open(filename, 'w') as csvfile:
-#         parties_to_csv_stream(parties=parties, stream=csvfile)
-#
-#
-# def parties_to_csv_stream(parties, stream):
-#     if not parties:
-#         return
-#     party_dicts = []
-#     for party in parties:
-#         party_dict = party.to_json()
-#         # FOR NOW - remove all children
-#         [party_dict.pop(child, None) for child in Party.children().keys()]
-#         party_dicts.append(party_dict)
-#     fieldnames = party_dicts[0].keys()
-#     writer = csv.DictWriter(stream, fieldnames=fieldnames)
-#     writer.writeheader()
-#     writer.writerows(party_dicts)

@@ -1,21 +1,21 @@
 # coding=utf-8
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+from amaasutils.random_utils import random_string
 import datetime
 from decimal import Decimal
 import logging.config
 import random
+import requests_mock
 import unittest
 
 from amaascore.config import DEFAULT_LOGGING
 from amaascore.transactions.children import Comment
 from amaascore.transactions.transaction import Transaction
 from amaascore.transactions.interface import TransactionsInterface
-from amaascore.tools.helpers import random_string
 from amaascore.tools.generate_asset import generate_asset
 from amaascore.tools.generate_book import generate_book
-from amaascore.tools.generate_transaction import generate_transaction
-
+from amaascore.tools.generate_transaction import generate_transaction, generate_transactions, generate_positions
 
 logging.config.dictConfig(DEFAULT_LOGGING)
 
@@ -30,7 +30,7 @@ class TransactionsInterfaceTest(unittest.TestCase):
     def setUp(self):
         self.longMessage = True  # Print complete error message on failure
         self.maxDiff = None  # View the complete diff when there is a mismatch in a test
-        self.asset_manager_id = 1
+        self.asset_manager_id = random.randint(1, 2**31-1)
         self.asset = generate_asset(asset_manager_id=self.asset_manager_id)
         self.asset_book = generate_book(asset_manager_id=self.asset_manager_id)
         self.counterparty_book = generate_book(asset_manager_id=self.asset_manager_id)
@@ -101,55 +101,55 @@ class TransactionsInterfaceTest(unittest.TestCase):
         self.assertEqual(transaction.transaction_id, self.transaction_id)
         self.assertEqual(transaction.transaction_status, 'Cancelled')
 
-    def test_Search(self):
+    @requests_mock.Mocker()
+    def test_Search(self, mocker):
+        # This test is somewhat fake - but the integration tests are for the bigger picture
+        endpoint = self.transactions_interface.endpoint + '/transactions'
+        asset_manager_ids = [self.asset_manager_id, self.asset_manager_id+1]
+        transactions = generate_transactions(asset_manager_ids=asset_manager_ids)
+        mocker.get(endpoint, json=[transaction.to_json() for transaction in transactions])
         all_transactions = self.transactions_interface.search()
-        random_transaction_index = random.randint(0, len(all_transactions)-1)
-        asset_manager_id = all_transactions[random_transaction_index].asset_manager_id
-        asset_manager_transactions = [transaction for transaction in all_transactions
-                                      if transaction.asset_manager_id == asset_manager_id]
-        transactions = self.transactions_interface.search(asset_manager_ids=[asset_manager_id])
-        self.assertEqual(len(transactions), len(asset_manager_transactions))
+        self.assertEqual(all_transactions, transactions)
 
-    def test_TransactionsByAssetManager(self):
-        all_transactions = self.transactions_interface.search()
-        random_transaction_index = random.randint(0, len(all_transactions)-1)
-        asset_manager_id = all_transactions[random_transaction_index].asset_manager_id
-        asset_manager_transactions = [transaction for transaction in all_transactions
-                                      if transaction.asset_manager_id == asset_manager_id]
-        transactions = self.transactions_interface.transactions_by_asset_manager(asset_manager_id=asset_manager_id)
-        self.assertEqual(len(transactions), len(asset_manager_transactions))
+    @requests_mock.Mocker()
+    def test_TransactionsByAssetManager(self, mocker):
+        # This test is somewhat fake - but the integration tests are for the bigger picture
+        endpoint = '%s/transactions/%s' % (self.transactions_interface.endpoint, self.asset_manager_id)
+        asset_manager_ids = [self.asset_manager_id]
+        transactions = generate_transactions(asset_manager_ids=asset_manager_ids)
+        mocker.get(endpoint, json=[transaction.to_json() for transaction in transactions])
+        results = self.transactions_interface.transactions_by_asset_manager(asset_manager_id=self.asset_manager_id)
+        self.assertEqual(results, transactions)
 
-    def test_PositionSearch(self):
+    @requests_mock.Mocker()
+    def test_PositionSearch(self, mocker):
+        # This test is somewhat fake - but the integration tests are for the bigger picture
+        endpoint = '%s/positions' % self.transactions_interface.endpoint
+        asset_manager_ids = [self.asset_manager_id, self.asset_manager_id+1]
+        positions = generate_positions(asset_manager_ids=asset_manager_ids)
+        mocker.get(endpoint, json=[position.to_json() for position in positions])
         all_positions = self.transactions_interface.position_search()
-        random_position_index = random.randint(0, len(all_positions)-1)
-        asset_manager_id = all_positions[random_position_index].asset_manager_id
-        asset_manager_positions = [position for position in all_positions
-                                   if position.asset_manager_id == asset_manager_id]
-        positions = self.transactions_interface.position_search(asset_manager_ids=[asset_manager_id])
-        self.assertEqual(len(positions), len(asset_manager_positions))
+        self.assertEqual(all_positions, positions)
 
-    def test_PositionsByBook(self):
-        all_positions = self.transactions_interface.position_search(accounting_types=['Transaction Date'],
-                                                                    position_date=datetime.date.today())
-        random_position_index = random.randint(0, len(all_positions)-1)
-        asset_manager_id = all_positions[random_position_index].asset_manager_id
-        asset_book_id = all_positions[random_position_index].book_id
-        asset_manager_positions = [position for position in all_positions
-                                   if position.asset_manager_id == asset_manager_id
-                                   and position.book_id == asset_book_id]
-        positions = self.transactions_interface.positions_by_asset_manager_book(asset_manager_id=asset_manager_id,
-                                                                                book_id=asset_book_id)
-        self.assertEqual(len(positions), len(asset_manager_positions))
+    @requests_mock.Mocker()
+    def test_PositionsByBook(self, mocker):
+        # This test is somewhat fake - but the integration tests are for the bigger picture
+        book_id = self.asset_book.book_id
+        endpoint = '%s/positions/%s/%s' % (self.transactions_interface.endpoint, self.asset_manager_id, book_id)
+        positions = generate_positions(asset_manager_ids=[self.asset_manager_id], book_ids=[book_id])
+        mocker.get(endpoint, json=[position.to_json() for position in positions])
+        results = self.transactions_interface.positions_by_asset_manager_book(asset_manager_id=self.asset_manager_id,
+                                                                              book_id=book_id)
+        self.assertEqual(positions, results)
 
-    def test_PositionsByAssetManager(self):
-        all_positions = self.transactions_interface.position_search(accounting_types=['Transaction Date'],
-                                                                    position_date=datetime.date.today())
-        random_position_index = random.randint(0, len(all_positions)-1)
-        asset_manager_id = all_positions[random_position_index].asset_manager_id
-        asset_manager_positions = [position for position in all_positions
-                                   if position.asset_manager_id == asset_manager_id]
-        positions = self.transactions_interface.positions_by_asset_manager(asset_manager_id=asset_manager_id)
-        self.assertEqual(len(positions), len(asset_manager_positions))
+    @requests_mock.Mocker()
+    def test_PositionsByAssetManager(self, mocker):
+        # This test is somewhat fake - but the integration tests are for the bigger picture
+        endpoint = '%s/positions/%s' % (self.transactions_interface.endpoint, self.asset_manager_id)
+        positions = generate_positions(asset_manager_ids=[self.asset_manager_id])
+        mocker.get(endpoint, json=[position.to_json() for position in positions])
+        results = self.transactions_interface.positions_by_asset_manager(asset_manager_id=self.asset_manager_id)
+        self.assertEqual(positions, results)
 
     def test_MultipleLink(self):
         transaction = self.transactions_interface.new(self.transaction)

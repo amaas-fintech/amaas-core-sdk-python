@@ -1,5 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+from amaasutils.random_utils import random_string
 import copy
 import json
 import unittest
@@ -8,7 +9,7 @@ from amaascore.exceptions import TransactionNeedsSaving
 from amaascore.transactions.children import Link, Party
 from amaascore.transactions.transaction import Transaction
 from amaascore.tools.generate_transaction import generate_transaction, REFERENCE_TYPES
-from amaascore.tools.helpers import random_string
+
 
 class TransactionTest(unittest.TestCase):
 

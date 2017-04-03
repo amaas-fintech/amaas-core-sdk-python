@@ -45,9 +45,9 @@ class PartyTest(unittest.TestCase):
         self.assertNotEqual(self.party, party3)
 
     def test_Children(self):
-        address = self.party.addresses.values()[0]
-        email = self.party.emails.values()[0]
-        ref = self.party.references.values()[0]
+        address = list(self.party.addresses.values())[0]
+        email = list(self.party.emails.values())[0]
+        ref = list(self.party.references.values())[0]
         self.assertTrue(isinstance(address, Address))
         self.assertTrue(isinstance(email, Email))
         self.assertTrue(isinstance(ref, Reference))
@@ -56,7 +56,7 @@ class PartyTest(unittest.TestCase):
         email = generate_email('test@amaas.com', email_primary=True)
         with self.assertRaisesRegexp(ValueError, 'Must set exactly one email as primary'):
             self.party.upsert_email('Test', email)
-        email_type, email_value = self.party.emails.items()[0]
+        email_type, email_value = list(self.party.emails.items())[0]
         email_value.email_primary = False
         with self.assertRaisesRegexp(ValueError, 'Must set exactly one email as primary'):
             self.party.upsert_email(email_type=email_type, email=email_value)
@@ -69,7 +69,7 @@ class PartyTest(unittest.TestCase):
         address = generate_address(address_primary=True)
         with self.assertRaisesRegexp(ValueError, 'Must set exactly one address as primary'):
             self.party.upsert_address('Test', address)
-        address_type, address_value = self.party.addresses.items()[0]
+        address_type, address_value = list(self.party.addresses.items())[0]
         address_value.address_primary = False
         with self.assertRaisesRegexp(ValueError, 'Must set exactly one address as primary'):
             self.party.upsert_address(address_type=address_type, address=address_value)

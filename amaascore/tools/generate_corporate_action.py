@@ -1,5 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+from amaasutils.random_utils import random_string
 import datetime
 from decimal import Decimal
 import random
@@ -8,7 +9,6 @@ from amaascore.corporate_actions.corporate_action import CorporateAction
 from amaascore.corporate_actions.dividend import Dividend
 from amaascore.corporate_actions.split import Split
 from amaascore.core.reference import Reference
-from amaascore.tools.helpers import random_string
 
 REFERENCE_TYPES = ['CAEF']
 
