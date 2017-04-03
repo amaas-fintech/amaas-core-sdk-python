@@ -1,6 +1,5 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-import csv
 import inspect
 
 #  All possible class names must be inserted into the globals collection.
@@ -57,37 +56,3 @@ def json_to_asset(json_asset):
                         if json_asset.get(arg) is not None and arg != 'self'}
     asset = clazz(**constructor_dict)
     return asset
-
-
-def csv_filename_to_assets(filename):
-    with open(filename, 'r') as f:
-        assets = csv_stream_to_assets(f)
-    return assets
-
-
-def csv_stream_to_assets(stream):
-    reader = csv.DictReader(stream)
-    assets = []
-    for row in reader:
-        assets.append(json_to_asset(row))
-    return assets
-
-
-def assets_to_csv(assets, filename):
-    with open(filename, 'w') as csvfile:
-        assets_to_csv_stream(assets=assets, stream=csvfile)
-
-
-def assets_to_csv_stream(assets, stream):
-    if not assets:
-        return
-    asset_dicts = []
-    for asset in assets:
-        asset_dict = asset.to_json()
-        # FOR NOW - remove all children
-        [asset_dict.pop(child, None) for child in asset.children().keys()]
-        asset_dicts.append(asset_dict)
-    fieldnames = asset_dicts[0].keys()
-    writer = csv.DictWriter(stream, fieldnames=fieldnames)
-    writer.writeheader()
-    writer.writerows(asset_dicts)
