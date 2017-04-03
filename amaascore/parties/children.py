@@ -1,5 +1,8 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import re
+
+from amaascore.error_messages import ERROR_LOOKUP
 from amaascore.core.amaas_model import AMaaSModel
 
 
@@ -18,6 +21,17 @@ class Address(AMaaSModel):
         self.version = version
         super(Address, self).__init__(*args, **kwargs)
 
+    @property
+    def country_id(self):
+        if hasattr(self, '_country_id'):
+            return self._country_id
+
+    @country_id.setter
+    def country_id(self, country_id):
+        if country_id:
+            if len(country_id) != 3:
+                raise ValueError(ERROR_LOOKUP.get('country_id_invalid') % country_id)
+            self._country_id = country_id
 
 class Email(AMaaSModel):
 
@@ -27,3 +41,15 @@ class Email(AMaaSModel):
         self.active = active
         self.version = version
         super(Email, self).__init__(*args, **kwargs)
+
+    @property
+    def email(self):
+        if hasattr(self, '_email'):
+            return self._email
+
+    @email.setter
+    def email(self, email):
+        # Validate email addresses
+        if not re.match('[^@]+@[^@]+\.[^@]+', email):
+            raise ValueError(ERROR_LOOKUP.get('email_address_invalid') % email)
+        self._email = email

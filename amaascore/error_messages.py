@@ -4,9 +4,10 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 ERROR_LOOKUP = {'address_invalid': 'Invalid addresses attribute: %s. Party ID %s for Asset Manager %s',
                 'address_primary': 'Must set exactly one address as primary. Party ID %s for Asset Manager %s',
                 'book_type_invalid': 'Invalid book type %s. Book ID: %s for Asset Manager: %s',
+                'country_id_invalid': 'Country ID should be a ISO 3166-1 Alpha-3 code. Value: %s',
                 'email_invalid': 'Invalid emails attribute: %s. Party ID %s for Asset Manager %s',
                 'email_primary': 'Must set exactly one email as primary. Party ID %s for Asset Manager %s',
-                'email_address_invalid': 'Invalid email(s): %s. Party ID %s for Asset Manager %s',
+                'email_address_invalid': 'Invalid email: %s.',
                 'amend_missing_previous': 'Cannot find party to amend: ID %s for Asset Manager %s',
                 'amend_missing_attribute': 'Partial amend failed for Asset Manager: %s on party: %s - '
                                            'Attribute: %s does not exist',

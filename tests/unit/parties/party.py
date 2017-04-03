@@ -60,10 +60,6 @@ class PartyTest(unittest.TestCase):
         email_value.email_primary = False
         with self.assertRaisesRegexp(ValueError, 'Must set exactly one email as primary'):
             self.party.upsert_email(email_type=email_type, email=email_value)
-        email_value.email_primary = True  # Restore back to original value
-        email = generate_email('invalid.email.amaas.com')
-        with self.assertRaisesRegexp(ValueError, 'Invalid email'):
-            self.party.upsert_email('Test', email)
 
     def test_Address(self):
         address = generate_address(address_primary=True)
