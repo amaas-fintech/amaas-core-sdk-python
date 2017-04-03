@@ -29,35 +29,35 @@ def json_to_transaction(json_transaction):
     return transaction
 
 
-def csv_filename_to_transactions(filename):
-    with open(filename, 'r') as f:
-        transactions = csv_stream_to_transactions(f)
-    return transactions
-
-
-def csv_stream_to_transactions(stream):
-    reader = csv.DictReader(stream)
-    transactions = []
-    for row in reader:
-        transactions.append(json_to_transaction(row))
-    return transactions
-
-
-def transactions_to_csv(transactions, filename):
-    with open(filename, 'w') as csvfile:
-        transactions_to_csv_stream(transactions=transactions, stream=csvfile)
-
-
-def transactions_to_csv_stream(transactions, stream):
-    if not transactions:
-        return
-    transaction_dicts = []
-    for transaction in transactions:
-        transaction_dict = transaction.to_json()
-        # FOR NOW - remove all children
-        [transaction_dict.pop(child, None) for child in Transaction.children().keys()]
-        transaction_dicts.append(transaction_dict)
-    fieldnames = transaction_dicts[0].keys()
-    writer = csv.DictWriter(stream, fieldnames=fieldnames)
-    writer.writeheader()
-    writer.writerows(transaction_dicts)
+# def csv_filename_to_transactions(filename):
+#     with open(filename, 'r') as f:
+#         transactions = csv_stream_to_transactions(f)
+#     return transactions
+#
+#
+# def csv_stream_to_transactions(stream):
+#     reader = csv.DictReader(stream)
+#     transactions = []
+#     for row in reader:
+#         transactions.append(json_to_transaction(row))
+#     return transactions
+#
+#
+# def transactions_to_csv(transactions, filename):
+#     with open(filename, 'w') as csvfile:
+#         transactions_to_csv_stream(transactions=transactions, stream=csvfile)
+#
+#
+# def transactions_to_csv_stream(transactions, stream):
+#     if not transactions:
+#         return
+#     transaction_dicts = []
+#     for transaction in transactions:
+#         transaction_dict = transaction.to_json()
+#         # FOR NOW - remove all children
+#         [transaction_dict.pop(child, None) for child in Transaction.children().keys()]
+#         transaction_dicts.append(transaction_dict)
+#     fieldnames = transaction_dicts[0].keys()
+#     writer = csv.DictWriter(stream, fieldnames=fieldnames)
+#     writer.writeheader()
+#     writer.writerows(transaction_dicts)
