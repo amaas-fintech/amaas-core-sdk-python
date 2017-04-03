@@ -1,7 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import copy
-import re
 
 from amaascore.error_messages import ERROR_LOOKUP
 from amaascore.core.amaas_model import AMaaSModel
@@ -73,11 +72,6 @@ class Party(AMaaSModel):
         # If emails are present, one of them must be primary
         if len(emails) and len(primary) != 1:
             raise ValueError(ERROR_LOOKUP.get('email_primary') % (self.party_id, self.asset_manager_id))
-        # Validate email addresses
-        invalid = [email.email for email in emails.values() if not re.match('[^@]+@[^@]+\.[^@]+', email.email)]
-        if invalid:
-            raise ValueError(ERROR_LOOKUP.get('email_address_invalid') % (str(invalid), self.party_id,
-                                                                          self.asset_manager_id))
         self._emails = emails
 
     @property
