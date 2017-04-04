@@ -108,7 +108,7 @@ class AssetManagersInterface(Interface):
         response = self.session.get(url, params=params)
         if response.ok:
             self.logger.info('Successfully Amended Asset Manager Relationship: %s', asset_manager_id)
-            return json_to_relationship(response.json())
+            return [json_to_relationship(json_relationship) for json_relationship in response.json()]
         else:
             self.logger.error(response.text)
             response.raise_for_status()
