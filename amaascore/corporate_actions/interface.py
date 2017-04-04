@@ -17,7 +17,7 @@ class CorporateActionsInterface(Interface):
     def new(self, corporate_action):
         self.logger.info('New Corporate Action - Asset Manager: %s - Corporate Action ID: %s',
                          corporate_action.asset_manager_id, corporate_action.corporate_action_id)
-        url = self.endpoint + '/corporate_actions'
+        url = self.endpoint + '/corporate-actions'
         response = self.session.post(url, json=corporate_action.to_interface())
         if response.ok:
             self.logger.info('Successfully Created Corporate Action - Asset Manager: %s - Corporate Action ID: %s',
@@ -31,7 +31,7 @@ class CorporateActionsInterface(Interface):
     def amend(self, corporate_action):
         self.logger.info('Amend Corporate Action - Asset Manager: %s - Corporate Action ID: %s',
                          corporate_action.asset_manager_id, corporate_action.corporate_action_id)
-        url = '%s/corporate_actions/%s/%s' % (self.endpoint, corporate_action.asset_manager_id,
+        url = '%s/corporate-actions/%s/%s' % (self.endpoint, corporate_action.asset_manager_id,
                                               corporate_action.corporate_action_id)
         response = self.session.put(url, json=corporate_action.to_interface())
         if response.ok:
@@ -46,7 +46,7 @@ class CorporateActionsInterface(Interface):
     def retrieve(self, asset_manager_id, corporate_action_id):
         self.logger.info('Retrieve Corporate Action - Asset Manager: %s - Corporate Action ID: %s', asset_manager_id,
                          corporate_action_id)
-        url = '%s/corporate_actions/%s/%s' % (self.endpoint, asset_manager_id, corporate_action_id)
+        url = '%s/corporate-actions/%s/%s' % (self.endpoint, asset_manager_id, corporate_action_id)
         response = self.session.get(url)
         if response.ok:
             self.logger.info('Successfully Retrieved Corporate Action - Asset Manager: %s - Corporate Action ID: %s',
@@ -59,7 +59,7 @@ class CorporateActionsInterface(Interface):
     def cancel(self, asset_manager_id, corporate_action_id):
         self.logger.info('Cancel Corporate Action - Asset Manager: %s - Corporate Action ID: %s', asset_manager_id,
                          corporate_action_id)
-        url = '%s/corporate_actions/%s/%s' % (self.endpoint, asset_manager_id, corporate_action_id)
+        url = '%s/corporate-actions/%s/%s' % (self.endpoint, asset_manager_id, corporate_action_id)
         json = {'corporate_action_status': 'Cancelled'}
         response = self.session.patch(url, json=json)
         if response.ok:
@@ -78,7 +78,7 @@ class CorporateActionsInterface(Interface):
             search_params['asset_manager_ids'] = asset_manager_ids
         if corporate_action_ids:
             search_params['asset_ids'] = corporate_action_ids
-        url = self.endpoint + '/corporate_actions'
+        url = self.endpoint + '/corporate-actions'
         response = self.session.get(url, params=search_params)
         if response.ok:
             corp_actions = [json_to_corporate_action(json_corp_action) for json_corp_action in response.json()]
@@ -90,7 +90,7 @@ class CorporateActionsInterface(Interface):
 
     def corporate_actions_by_asset_manager(self, asset_manager_id):
         self.logger.info('Retrieve Corporate Actions by Asset Manager: %s', asset_manager_id)
-        url = '%s/corporate_actions/%s' % (self.endpoint, asset_manager_id)
+        url = '%s/corporate-actions/%s' % (self.endpoint, asset_manager_id)
         response = self.session.get(url)
         if response.ok:
             corp_actions = [json_to_corporate_action(json_corp_action) for json_corp_action in response.json()]
