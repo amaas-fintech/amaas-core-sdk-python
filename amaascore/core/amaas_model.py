@@ -76,7 +76,7 @@ class AMaaSModel(object):
         # TODO - check the nested dictionaries
         :return:
         """
-        return str(self.__dict__)
+        return str(self.to_dict())
 
     def __eq__(self, other):
         """Override the default Equals behavior"""
