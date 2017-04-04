@@ -58,4 +58,4 @@ class EODPrice(AMaaSModel):
             if isinstance(business_date, type_check):
                 self._business_date = parse(business_date).date()
             else:
-                self._business_date= business_date
+                self._business_date = business_date

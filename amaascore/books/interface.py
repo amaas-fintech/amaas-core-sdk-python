@@ -64,7 +64,7 @@ class BooksInterface(Interface):
             self.logger.error(response.text)
             response.raise_for_status()
 
-    def search(self, asset_manager_ids=None, book_ids=None):
+    def search(self, asset_manager_ids=None, book_ids=None, business_units=None, owner_ids=None, party_ids=None):
         self.logger.info('Search Books - Asset Manager(s): %s', asset_manager_ids)
         search_params = {}
         # Potentially roll this into a loop through args rather than explicitly named - depends on additional validation
@@ -72,6 +72,12 @@ class BooksInterface(Interface):
             search_params['asset_manager_ids'] = asset_manager_ids
         if book_ids:
             search_params['book_ids'] = book_ids
+        if business_units:
+            search_params['business_units'] = business_units
+        if owner_ids:
+            search_params['owner_ids'] = owner_ids
+        if party_ids:
+            search_params['party_ids'] = party_ids
         url = self.endpoint + '/books'
         response = self.session.get(url, params=search_params)
         if response.ok:
