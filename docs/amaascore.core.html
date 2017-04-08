@@ -1,0 +1,222 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>amaascore.core package &#8212; amaas-core-sdk-python 0.1.11 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1.11',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="amaascore-core-package">
+<h1>amaascore.core package<a class="headerlink" href="#amaascore-core-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-amaascore.core.amaas_model">
+<span id="amaascore-core-amaas-model-module"></span><h2>amaascore.core.amaas_model module<a class="headerlink" href="#module-amaascore.core.amaas_model" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="amaascore.core.amaas_model.AMaaSModel">
+<em class="property">class </em><code class="descclassname">amaascore.core.amaas_model.</code><code class="descname">AMaaSModel</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/core/amaas_model.html#AMaaSModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.core.amaas_model.AMaaSModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="staticmethod">
+<dt id="amaascore.core.amaas_model.AMaaSModel.amaas_model_attributes">
+<em class="property">static </em><code class="descname">amaas_model_attributes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/core/amaas_model.html#AMaaSModel.amaas_model_attributes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.core.amaas_model.AMaaSModel.amaas_model_attributes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="amaascore.core.amaas_model.AMaaSModel.non_interface_attributes">
+<em class="property">static </em><code class="descname">non_interface_attributes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/core/amaas_model.html#AMaaSModel.non_interface_attributes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.core.amaas_model.AMaaSModel.non_interface_attributes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Potentially convert this to attribute annotations</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="amaascore.core.amaas_model.AMaaSModel.to_interface">
+<code class="descname">to_interface</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/core/amaas_model.html#AMaaSModel.to_interface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.core.amaas_model.AMaaSModel.to_interface" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns only the JSON attributes required when interfacing with the AMaaS Core services.
+Non-interface attributes are popped out.
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="amaascore.core.amaas_model.AMaaSModel.to_json">
+<code class="descname">to_json</code><span class="sig-paren">(</span><em>dict_to_convert=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/core/amaas_model.html#AMaaSModel.to_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.core.amaas_model.AMaaSModel.to_json" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="amaascore.core.amaas_model.json_handler">
+<code class="descclassname">amaascore.core.amaas_model.</code><code class="descname">json_handler</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/core/amaas_model.html#json_handler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.core.amaas_model.json_handler" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="amaascore.core.amaas_model.to_json">
+<code class="descclassname">amaascore.core.amaas_model.</code><code class="descname">to_json</code><span class="sig-paren">(</span><em>dict_to_convert</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/core/amaas_model.html#to_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.core.amaas_model.to_json" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="amaascore.core.amaas_model.to_json_string">
+<code class="descclassname">amaascore.core.amaas_model.</code><code class="descname">to_json_string</code><span class="sig-paren">(</span><em>dict_to_convert</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/core/amaas_model.html#to_json_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.core.amaas_model.to_json_string" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-amaascore.core.interface">
+<span id="amaascore-core-interface-module"></span><h2>amaascore.core.interface module<a class="headerlink" href="#module-amaascore.core.interface" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="amaascore.core.interface.Interface">
+<em class="property">class </em><code class="descclassname">amaascore.core.interface.</code><code class="descname">Interface</code><span class="sig-paren">(</span><em>endpoint</em>, <em>use_auth=True</em>, <em>config_filename=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/core/interface.html#Interface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.core.interface.Interface" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Currently this class doesn&#8217;t do anything - but I anticipate it will be needed in the future.</p>
+<dl class="staticmethod">
+<dt id="amaascore.core.interface.Interface.generate_config_filename">
+<em class="property">static </em><code class="descname">generate_config_filename</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/core/interface.html#Interface.generate_config_filename"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.core.interface.Interface.generate_config_filename" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="amaascore.core.interface.Interface.read_token">
+<code class="descname">read_token</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/core/interface.html#Interface.read_token"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.core.interface.Interface.read_token" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-amaascore.core.reference">
+<span id="amaascore-core-reference-module"></span><h2>amaascore.core.reference module<a class="headerlink" href="#module-amaascore.core.reference" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="amaascore.core.reference.Reference">
+<em class="property">class </em><code class="descclassname">amaascore.core.reference.</code><code class="descname">Reference</code><span class="sig-paren">(</span><em>reference_value</em>, <em>active=True</em>, <em>version=1</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/core/reference.html#Reference"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.core.reference.Reference" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#amaascore.core.amaas_model.AMaaSModel" title="amaascore.core.amaas_model.AMaaSModel"><code class="xref py py-class docutils literal"><span class="pre">amaascore.core.amaas_model.AMaaSModel</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-amaascore.core.tenor">
+<span id="amaascore-core-tenor-module"></span><h2>amaascore.core.tenor module<a class="headerlink" href="#module-amaascore.core.tenor" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="amaascore.core.tenor.Tenor">
+<em class="property">class </em><code class="descclassname">amaascore.core.tenor.</code><code class="descname">Tenor</code><span class="sig-paren">(</span><em>tenor=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/core/tenor.html#Tenor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.core.tenor.Tenor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="classmethod">
+<dt id="amaascore.core.tenor.Tenor.check_tenor">
+<em class="property">classmethod </em><code class="descname">check_tenor</code><span class="sig-paren">(</span><em>tenor</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/core/tenor.html#Tenor.check_tenor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.core.tenor.Tenor.check_tenor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="amaascore.core.tenor.Tenor.tenor_to_relativedelta">
+<em class="property">classmethod </em><code class="descname">tenor_to_relativedelta</code><span class="sig-paren">(</span><em>tenor</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/core/tenor.html#Tenor.tenor_to_relativedelta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.core.tenor.Tenor.tenor_to_relativedelta" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="amaascore.core.tenor.Tenor.to_relativedelta">
+<code class="descname">to_relativedelta</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/core/tenor.html#Tenor.to_relativedelta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.core.tenor.Tenor.to_relativedelta" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="amaascore.core.tenor.Tenor.valid_tenors">
+<em class="property">static </em><code class="descname">valid_tenors</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/core/tenor.html#Tenor.valid_tenors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.core.tenor.Tenor.valid_tenors" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-amaascore.core">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-amaascore.core" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">amaascore.core package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-amaascore.core.amaas_model">amaascore.core.amaas_model module</a></li>
+<li><a class="reference internal" href="#module-amaascore.core.interface">amaascore.core.interface module</a></li>
+<li><a class="reference internal" href="#module-amaascore.core.reference">amaascore.core.reference module</a></li>
+<li><a class="reference internal" href="#module-amaascore.core.tenor">amaascore.core.tenor module</a></li>
+<li><a class="reference internal" href="#module-amaascore.core">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/amaascore.core.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, AMaaS.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/amaascore.core.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

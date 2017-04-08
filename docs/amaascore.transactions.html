@@ -1,0 +1,483 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>amaascore.transactions package &#8212; amaas-core-sdk-python 0.1.11 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1.11',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="amaascore-transactions-package">
+<h1>amaascore.transactions package<a class="headerlink" href="#amaascore-transactions-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-amaascore.transactions.children">
+<span id="amaascore-transactions-children-module"></span><h2>amaascore.transactions.children module<a class="headerlink" href="#module-amaascore.transactions.children" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="amaascore.transactions.children.Charge">
+<em class="property">class </em><code class="descclassname">amaascore.transactions.children.</code><code class="descname">Charge</code><span class="sig-paren">(</span><em>charge_value</em>, <em>currency</em>, <em>active=True</em>, <em>net_affecting=True</em>, <em>version=1</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/transactions/children.html#Charge"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.transactions.children.Charge" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="amaascore.core.html#amaascore.core.amaas_model.AMaaSModel" title="amaascore.core.amaas_model.AMaaSModel"><code class="xref py py-class docutils literal"><span class="pre">amaascore.core.amaas_model.AMaaSModel</span></code></a></p>
+<dl class="attribute">
+<dt id="amaascore.transactions.children.Charge.charge_value">
+<code class="descname">charge_value</code><a class="headerlink" href="#amaascore.transactions.children.Charge.charge_value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="amaascore.transactions.children.Code">
+<em class="property">class </em><code class="descclassname">amaascore.transactions.children.</code><code class="descname">Code</code><span class="sig-paren">(</span><em>code_value</em>, <em>active=True</em>, <em>version=1</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/transactions/children.html#Code"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.transactions.children.Code" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="amaascore.core.html#amaascore.core.amaas_model.AMaaSModel" title="amaascore.core.amaas_model.AMaaSModel"><code class="xref py py-class docutils literal"><span class="pre">amaascore.core.amaas_model.AMaaSModel</span></code></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="amaascore.transactions.children.Comment">
+<em class="property">class </em><code class="descclassname">amaascore.transactions.children.</code><code class="descname">Comment</code><span class="sig-paren">(</span><em>comment_value</em>, <em>active=True</em>, <em>version=1</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/transactions/children.html#Comment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.transactions.children.Comment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="amaascore.core.html#amaascore.core.amaas_model.AMaaSModel" title="amaascore.core.amaas_model.AMaaSModel"><code class="xref py py-class docutils literal"><span class="pre">amaascore.core.amaas_model.AMaaSModel</span></code></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="amaascore.transactions.children.Link">
+<em class="property">class </em><code class="descclassname">amaascore.transactions.children.</code><code class="descname">Link</code><span class="sig-paren">(</span><em>linked_transaction_id</em>, <em>active=True</em>, <em>version=1</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/transactions/children.html#Link"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.transactions.children.Link" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="amaascore.core.html#amaascore.core.amaas_model.AMaaSModel" title="amaascore.core.amaas_model.AMaaSModel"><code class="xref py py-class docutils literal"><span class="pre">amaascore.core.amaas_model.AMaaSModel</span></code></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="amaascore.transactions.children.Party">
+<em class="property">class </em><code class="descclassname">amaascore.transactions.children.</code><code class="descname">Party</code><span class="sig-paren">(</span><em>party_id</em>, <em>active=True</em>, <em>version=1</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/transactions/children.html#Party"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.transactions.children.Party" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="amaascore.core.html#amaascore.core.amaas_model.AMaaSModel" title="amaascore.core.amaas_model.AMaaSModel"><code class="xref py py-class docutils literal"><span class="pre">amaascore.core.amaas_model.AMaaSModel</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-amaascore.transactions.enums">
+<span id="amaascore-transactions-enums-module"></span><h2>amaascore.transactions.enums module<a class="headerlink" href="#module-amaascore.transactions.enums" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-amaascore.transactions.interface">
+<span id="amaascore-transactions-interface-module"></span><h2>amaascore.transactions.interface module<a class="headerlink" href="#module-amaascore.transactions.interface" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="amaascore.transactions.interface.TransactionsInterface">
+<em class="property">class </em><code class="descclassname">amaascore.transactions.interface.</code><code class="descname">TransactionsInterface</code><span class="sig-paren">(</span><em>logger=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/transactions/interface.html#TransactionsInterface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.transactions.interface.TransactionsInterface" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="amaascore.core.html#amaascore.core.interface.Interface" title="amaascore.core.interface.Interface"><code class="xref py py-class docutils literal"><span class="pre">amaascore.core.interface.Interface</span></code></a></p>
+<dl class="method">
+<dt id="amaascore.transactions.interface.TransactionsInterface.allocate_transaction">
+<code class="descname">allocate_transaction</code><span class="sig-paren">(</span><em>asset_manager_id</em>, <em>transaction_id</em>, <em>allocation_type</em>, <em>allocation_dicts</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/transactions/interface.html#TransactionsInterface.allocate_transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.transactions.interface.TransactionsInterface.allocate_transaction" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>asset_manager_id</strong> &#8211; </li>
+<li><strong>transaction_id</strong> &#8211; </li>
+<li><strong>allocation_type</strong> &#8211; </li>
+<li><strong>allocation_dicts</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="amaascore.transactions.interface.TransactionsInterface.amend">
+<code class="descname">amend</code><span class="sig-paren">(</span><em>transaction</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/transactions/interface.html#TransactionsInterface.amend"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.transactions.interface.TransactionsInterface.amend" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="amaascore.transactions.interface.TransactionsInterface.cancel">
+<code class="descname">cancel</code><span class="sig-paren">(</span><em>asset_manager_id</em>, <em>transaction_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/transactions/interface.html#TransactionsInterface.cancel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.transactions.interface.TransactionsInterface.cancel" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="amaascore.transactions.interface.TransactionsInterface.net_transactions">
+<code class="descname">net_transactions</code><span class="sig-paren">(</span><em>asset_manager_id</em>, <em>transaction_ids</em>, <em>netting_type='Net'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/transactions/interface.html#TransactionsInterface.net_transactions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.transactions.interface.TransactionsInterface.net_transactions" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>asset_manager_id</strong> &#8211; The asset_manager_id of the netting set owner</li>
+<li><strong>transaction_ids</strong> &#8211; A list of transaction_ids to net</li>
+<li><strong>netting_type</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="amaascore.transactions.interface.TransactionsInterface.new">
+<code class="descname">new</code><span class="sig-paren">(</span><em>transaction</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/transactions/interface.html#TransactionsInterface.new"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.transactions.interface.TransactionsInterface.new" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="amaascore.transactions.interface.TransactionsInterface.position_search">
+<code class="descname">position_search</code><span class="sig-paren">(</span><em>asset_manager_ids=None, book_ids=None, account_ids=None, accounting_types=['Transaction Date'], asset_ids=None, position_date=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/transactions/interface.html#TransactionsInterface.position_search"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.transactions.interface.TransactionsInterface.position_search" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="amaascore.transactions.interface.TransactionsInterface.positions_by_asset_manager">
+<code class="descname">positions_by_asset_manager</code><span class="sig-paren">(</span><em>asset_manager_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/transactions/interface.html#TransactionsInterface.positions_by_asset_manager"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.transactions.interface.TransactionsInterface.positions_by_asset_manager" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="amaascore.transactions.interface.TransactionsInterface.positions_by_asset_manager_book">
+<code class="descname">positions_by_asset_manager_book</code><span class="sig-paren">(</span><em>asset_manager_id</em>, <em>book_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/transactions/interface.html#TransactionsInterface.positions_by_asset_manager_book"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.transactions.interface.TransactionsInterface.positions_by_asset_manager_book" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="amaascore.transactions.interface.TransactionsInterface.retrieve">
+<code class="descname">retrieve</code><span class="sig-paren">(</span><em>asset_manager_id</em>, <em>transaction_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/transactions/interface.html#TransactionsInterface.retrieve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.transactions.interface.TransactionsInterface.retrieve" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="amaascore.transactions.interface.TransactionsInterface.retrieve_netting_set">
+<code class="descname">retrieve_netting_set</code><span class="sig-paren">(</span><em>asset_manager_id</em>, <em>transaction_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/transactions/interface.html#TransactionsInterface.retrieve_netting_set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.transactions.interface.TransactionsInterface.retrieve_netting_set" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns all the transaction_ids associated with a single netting set.  Pass in the ID for any transaction in
+the set.
+:param asset_manager_id:  The asset_manager_id for the netting set owner.
+:param transaction_id: A transaction_id of an entry within the netting set.
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="amaascore.transactions.interface.TransactionsInterface.retrieve_transaction_allocations">
+<code class="descname">retrieve_transaction_allocations</code><span class="sig-paren">(</span><em>asset_manager_id</em>, <em>transaction_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/transactions/interface.html#TransactionsInterface.retrieve_transaction_allocations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.transactions.interface.TransactionsInterface.retrieve_transaction_allocations" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>asset_manager_id</strong> &#8211; </li>
+<li><strong>transaction_id</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="amaascore.transactions.interface.TransactionsInterface.search">
+<code class="descname">search</code><span class="sig-paren">(</span><em>asset_manager_ids=[]</em>, <em>transaction_ids=[]</em>, <em>transaction_statuses=[]</em>, <em>asset_book_ids=[]</em>, <em>counterparty_book_ids=[]</em>, <em>asset_ids=[]</em>, <em>transaction_date_start=None</em>, <em>transaction_date_end=None</em>, <em>code_types=[]</em>, <em>code_values=[]</em>, <em>link_types=[]</em>, <em>linked_transaction_ids=[]</em>, <em>party_types=[]</em>, <em>party_ids=[]</em>, <em>reference_types=[]</em>, <em>reference_values=[]</em>, <em>client_ids=[]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/transactions/interface.html#TransactionsInterface.search"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.transactions.interface.TransactionsInterface.search" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="amaascore.transactions.interface.TransactionsInterface.transactions_by_asset_manager">
+<code class="descname">transactions_by_asset_manager</code><span class="sig-paren">(</span><em>asset_manager_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/transactions/interface.html#TransactionsInterface.transactions_by_asset_manager"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.transactions.interface.TransactionsInterface.transactions_by_asset_manager" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="amaascore.transactions.interface.TransactionsInterface.upsert_transaction_asset">
+<code class="descname">upsert_transaction_asset</code><span class="sig-paren">(</span><em>transaction_asset_json</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/transactions/interface.html#TransactionsInterface.upsert_transaction_asset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.transactions.interface.TransactionsInterface.upsert_transaction_asset" title="Permalink to this definition">¶</a></dt>
+<dd><p>This API should not be called in normal circumstances as the asset cache will populate itself from the assets
+which are created via the Assets API.  However, it can be useful for certain testing scenarios.
+:param transaction_asset_json:
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="amaascore.transactions.interface.TransactionsInterface.upsert_transaction_book">
+<code class="descname">upsert_transaction_book</code><span class="sig-paren">(</span><em>transaction_book_json</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/transactions/interface.html#TransactionsInterface.upsert_transaction_book"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.transactions.interface.TransactionsInterface.upsert_transaction_book" title="Permalink to this definition">¶</a></dt>
+<dd><p>This API should not be called in normal circumstances as the book cache will populate itself from the book
+which are created via the Books API.  However, it can be useful for certain testing scenarios.
+:param transaction_book_json:
+:return:</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-amaascore.transactions.position">
+<span id="amaascore-transactions-position-module"></span><h2>amaascore.transactions.position module<a class="headerlink" href="#module-amaascore.transactions.position" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="amaascore.transactions.position.Position">
+<em class="property">class </em><code class="descclassname">amaascore.transactions.position.</code><code class="descname">Position</code><span class="sig-paren">(</span><em>asset_manager_id</em>, <em>book_id</em>, <em>asset_id</em>, <em>quantity</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/transactions/position.html#Position"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.transactions.position.Position" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="amaascore.core.html#amaascore.core.amaas_model.AMaaSModel" title="amaascore.core.amaas_model.AMaaSModel"><code class="xref py py-class docutils literal"><span class="pre">amaascore.core.amaas_model.AMaaSModel</span></code></a></p>
+<dl class="attribute">
+<dt id="amaascore.transactions.position.Position.quantity">
+<code class="descname">quantity</code><a class="headerlink" href="#amaascore.transactions.position.Position.quantity" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-amaascore.transactions.transaction">
+<span id="amaascore-transactions-transaction-module"></span><h2>amaascore.transactions.transaction module<a class="headerlink" href="#module-amaascore.transactions.transaction" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="amaascore.transactions.transaction.Transaction">
+<em class="property">class </em><code class="descclassname">amaascore.transactions.transaction.</code><code class="descname">Transaction</code><span class="sig-paren">(</span><em>asset_manager_id</em>, <em>asset_book_id</em>, <em>counterparty_book_id</em>, <em>transaction_action</em>, <em>asset_id</em>, <em>quantity</em>, <em>transaction_date</em>, <em>settlement_date</em>, <em>price</em>, <em>transaction_currency</em>, <em>settlement_currency=None</em>, <em>asset=None</em>, <em>execution_time=None</em>, <em>transaction_type='Trade'</em>, <em>transaction_id=None</em>, <em>transaction_status='New'</em>, <em>charges=None</em>, <em>codes=None</em>, <em>comments=None</em>, <em>links=None</em>, <em>parties=None</em>, <em>references=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/transactions/transaction.html#Transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.transactions.transaction.Transaction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="amaascore.core.html#amaascore.core.amaas_model.AMaaSModel" title="amaascore.core.amaas_model.AMaaSModel"><code class="xref py py-class docutils literal"><span class="pre">amaascore.core.amaas_model.AMaaSModel</span></code></a></p>
+<dl class="method">
+<dt id="amaascore.transactions.transaction.Transaction.add_link">
+<code class="descname">add_link</code><span class="sig-paren">(</span><em>link_type</em>, <em>linked_transaction_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/transactions/transaction.html#Transaction.add_link"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.transactions.transaction.Transaction.add_link" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="amaascore.transactions.transaction.Transaction.charge_types">
+<code class="descname">charge_types</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/transactions/transaction.html#Transaction.charge_types"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.transactions.transaction.Transaction.charge_types" title="Permalink to this definition">¶</a></dt>
+<dd><p>TODO - are these helper functions useful?
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="amaascore.transactions.transaction.Transaction.charges_net_effect">
+<code class="descname">charges_net_effect</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/transactions/transaction.html#Transaction.charges_net_effect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.transactions.transaction.Transaction.charges_net_effect" title="Permalink to this definition">¶</a></dt>
+<dd><p>The total effect of the net_affecting charges (note affect vs effect here).</p>
+<p>Currently this is single currency only (AMAAS-110).</p>
+<p>Cast to Decimal in case the result is zero (no net_affecting charges).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="amaascore.transactions.transaction.Transaction.children">
+<em class="property">static </em><code class="descname">children</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/transactions/transaction.html#Transaction.children"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.transactions.transaction.Transaction.children" title="Permalink to this definition">¶</a></dt>
+<dd><p>A dict of which of the attributes are collections of other objects, and what type</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="amaascore.transactions.transaction.Transaction.code_types">
+<code class="descname">code_types</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/transactions/transaction.html#Transaction.code_types"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.transactions.transaction.Transaction.code_types" title="Permalink to this definition">¶</a></dt>
+<dd><p>TODO - are these helper functions useful?
+:return:</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="amaascore.transactions.transaction.Transaction.execution_time">
+<code class="descname">execution_time</code><a class="headerlink" href="#amaascore.transactions.transaction.Transaction.execution_time" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="amaascore.transactions.transaction.Transaction.gross_settlement">
+<code class="descname">gross_settlement</code><a class="headerlink" href="#amaascore.transactions.transaction.Transaction.gross_settlement" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="amaascore.transactions.transaction.Transaction.net_settlement">
+<code class="descname">net_settlement</code><a class="headerlink" href="#amaascore.transactions.transaction.Transaction.net_settlement" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="amaascore.transactions.transaction.Transaction.postings">
+<code class="descname">postings</code><a class="headerlink" href="#amaascore.transactions.transaction.Transaction.postings" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="amaascore.transactions.transaction.Transaction.price">
+<code class="descname">price</code><a class="headerlink" href="#amaascore.transactions.transaction.Transaction.price" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="amaascore.transactions.transaction.Transaction.quantity">
+<code class="descname">quantity</code><a class="headerlink" href="#amaascore.transactions.transaction.Transaction.quantity" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="amaascore.transactions.transaction.Transaction.reference_types">
+<code class="descname">reference_types</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/transactions/transaction.html#Transaction.reference_types"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.transactions.transaction.Transaction.reference_types" title="Permalink to this definition">¶</a></dt>
+<dd><p>TODO - are these helper functions useful?
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="amaascore.transactions.transaction.Transaction.remove_link">
+<code class="descname">remove_link</code><span class="sig-paren">(</span><em>link_type</em>, <em>linked_transaction_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/transactions/transaction.html#Transaction.remove_link"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.transactions.transaction.Transaction.remove_link" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="amaascore.transactions.transaction.Transaction.settlement_date">
+<code class="descname">settlement_date</code><a class="headerlink" href="#amaascore.transactions.transaction.Transaction.settlement_date" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="amaascore.transactions.transaction.Transaction.transaction_action">
+<code class="descname">transaction_action</code><a class="headerlink" href="#amaascore.transactions.transaction.Transaction.transaction_action" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="amaascore.transactions.transaction.Transaction.transaction_date">
+<code class="descname">transaction_date</code><a class="headerlink" href="#amaascore.transactions.transaction.Transaction.transaction_date" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="amaascore.transactions.transaction.Transaction.transaction_status">
+<code class="descname">transaction_status</code><a class="headerlink" href="#amaascore.transactions.transaction.Transaction.transaction_status" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="amaascore.transactions.transaction.Transaction.transaction_type">
+<code class="descname">transaction_type</code><a class="headerlink" href="#amaascore.transactions.transaction.Transaction.transaction_type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="amaascore.transactions.transaction.Transaction.upsert_code">
+<code class="descname">upsert_code</code><span class="sig-paren">(</span><em>code_type</em>, <em>code</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/transactions/transaction.html#Transaction.upsert_code"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.transactions.transaction.Transaction.upsert_code" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="amaascore.transactions.transaction.Transaction.upsert_link_set">
+<code class="descname">upsert_link_set</code><span class="sig-paren">(</span><em>link_type</em>, <em>link_set</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/transactions/transaction.html#Transaction.upsert_link_set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.transactions.transaction.Transaction.upsert_link_set" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove an item altogether by setting link_list to None.
+Currently, only links can contain multiple children of the same type.
+:param link_type:
+:param link_set:
+:return:</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-amaascore.transactions.utils">
+<span id="amaascore-transactions-utils-module"></span><h2>amaascore.transactions.utils module<a class="headerlink" href="#module-amaascore.transactions.utils" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="amaascore.transactions.utils.csv_filename_to_transactions">
+<code class="descclassname">amaascore.transactions.utils.</code><code class="descname">csv_filename_to_transactions</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/transactions/utils.html#csv_filename_to_transactions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.transactions.utils.csv_filename_to_transactions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="amaascore.transactions.utils.csv_stream_to_transactions">
+<code class="descclassname">amaascore.transactions.utils.</code><code class="descname">csv_stream_to_transactions</code><span class="sig-paren">(</span><em>stream</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/transactions/utils.html#csv_stream_to_transactions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.transactions.utils.csv_stream_to_transactions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="amaascore.transactions.utils.json_to_position">
+<code class="descclassname">amaascore.transactions.utils.</code><code class="descname">json_to_position</code><span class="sig-paren">(</span><em>json_position</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/transactions/utils.html#json_to_position"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.transactions.utils.json_to_position" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="amaascore.transactions.utils.json_to_transaction">
+<code class="descclassname">amaascore.transactions.utils.</code><code class="descname">json_to_transaction</code><span class="sig-paren">(</span><em>json_transaction</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/transactions/utils.html#json_to_transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.transactions.utils.json_to_transaction" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="amaascore.transactions.utils.transactions_to_csv">
+<code class="descclassname">amaascore.transactions.utils.</code><code class="descname">transactions_to_csv</code><span class="sig-paren">(</span><em>transactions</em>, <em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/transactions/utils.html#transactions_to_csv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.transactions.utils.transactions_to_csv" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="amaascore.transactions.utils.transactions_to_csv_stream">
+<code class="descclassname">amaascore.transactions.utils.</code><code class="descname">transactions_to_csv_stream</code><span class="sig-paren">(</span><em>transactions</em>, <em>stream</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/transactions/utils.html#transactions_to_csv_stream"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.transactions.utils.transactions_to_csv_stream" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-amaascore.transactions">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-amaascore.transactions" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">amaascore.transactions package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-amaascore.transactions.children">amaascore.transactions.children module</a></li>
+<li><a class="reference internal" href="#module-amaascore.transactions.enums">amaascore.transactions.enums module</a></li>
+<li><a class="reference internal" href="#module-amaascore.transactions.interface">amaascore.transactions.interface module</a></li>
+<li><a class="reference internal" href="#module-amaascore.transactions.position">amaascore.transactions.position module</a></li>
+<li><a class="reference internal" href="#module-amaascore.transactions.transaction">amaascore.transactions.transaction module</a></li>
+<li><a class="reference internal" href="#module-amaascore.transactions.utils">amaascore.transactions.utils module</a></li>
+<li><a class="reference internal" href="#module-amaascore.transactions">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/amaascore.transactions.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, AMaaS.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/amaascore.transactions.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>amaascore.tools.generate_asset &#8212; amaas-core-sdk-python 0.1.11 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.1.11',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for amaascore.tools.generate_asset</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span><span class="p">,</span> <span class="n">division</span><span class="p">,</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">unicode_literals</span>
+
+<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">from</span> <span class="nn">decimal</span> <span class="k">import</span> <span class="n">Decimal</span>
+<span class="kn">import</span> <span class="nn">random</span>
+
+<span class="kn">from</span> <span class="nn">amaascore.assets.asset</span> <span class="k">import</span> <span class="n">Asset</span>
+<span class="kn">from</span> <span class="nn">amaascore.assets.bond</span> <span class="k">import</span> <span class="n">BondGovernment</span>
+<span class="kn">from</span> <span class="nn">amaascore.assets.bond_option</span> <span class="k">import</span> <span class="n">BondOption</span>
+<span class="kn">from</span> <span class="nn">amaascore.assets.foreign_exchange</span> <span class="k">import</span> <span class="n">ForeignExchange</span>
+<span class="kn">from</span> <span class="nn">amaascore.core.reference</span> <span class="k">import</span> <span class="n">Reference</span>
+<span class="kn">from</span> <span class="nn">amaascore.tools.helpers</span> <span class="k">import</span> <span class="n">random_string</span>
+
+<span class="n">REFERENCE_TYPES</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;External&#39;</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="generate_common"><a class="viewcode-back" href="../../../amaascore.tools.html#amaascore.tools.generate_asset.generate_common">[docs]</a><span class="k">def</span> <span class="nf">generate_common</span><span class="p">(</span><span class="n">asset_manager_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">asset_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+    <span class="n">common</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;asset_manager_id&#39;</span><span class="p">:</span> <span class="n">asset_manager_id</span> <span class="ow">or</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1000</span><span class="p">),</span>
+              <span class="s1">&#39;asset_id&#39;</span><span class="p">:</span> <span class="n">asset_id</span> <span class="ow">or</span> <span class="nb">str</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)),</span>
+              <span class="s1">&#39;currency&#39;</span><span class="p">:</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="s1">&#39;SGD&#39;</span><span class="p">,</span> <span class="s1">&#39;USD&#39;</span><span class="p">])</span>
+              <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">common</span></div>
+
+
+<div class="viewcode-block" id="generate_asset"><a class="viewcode-back" href="../../../amaascore.tools.html#amaascore.tools.generate_asset.generate_asset">[docs]</a><span class="k">def</span> <span class="nf">generate_asset</span><span class="p">(</span><span class="n">asset_manager_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">asset_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fungible</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+    <span class="n">common</span> <span class="o">=</span> <span class="n">generate_common</span><span class="p">(</span><span class="n">asset_manager_id</span><span class="o">=</span><span class="n">asset_manager_id</span><span class="p">,</span> <span class="n">asset_id</span><span class="o">=</span><span class="n">asset_id</span><span class="p">)</span>
+    <span class="n">common</span><span class="p">[</span><span class="s1">&#39;fungible&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">])</span> <span class="k">if</span> <span class="n">fungible</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">fungible</span>
+
+    <span class="n">asset</span> <span class="o">=</span> <span class="n">Asset</span><span class="p">(</span><span class="o">**</span><span class="n">common</span><span class="p">)</span>
+    <span class="n">references</span> <span class="o">=</span> <span class="p">{</span><span class="n">ref_type</span><span class="p">:</span> <span class="n">Reference</span><span class="p">(</span><span class="n">reference_value</span><span class="o">=</span><span class="n">random_string</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span> <span class="k">for</span> <span class="n">ref_type</span> <span class="ow">in</span> <span class="n">REFERENCE_TYPES</span><span class="p">}</span>
+
+    <span class="n">asset</span><span class="o">.</span><span class="n">references</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">references</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">asset</span></div>
+
+
+<div class="viewcode-block" id="generate_bond"><a class="viewcode-back" href="../../../amaascore.tools.html#amaascore.tools.generate_asset.generate_bond">[docs]</a><span class="k">def</span> <span class="nf">generate_bond</span><span class="p">(</span><span class="n">asset_manager_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">asset_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">props</span> <span class="o">=</span> <span class="n">generate_common</span><span class="p">(</span><span class="n">asset_manager_id</span><span class="o">=</span><span class="n">asset_manager_id</span><span class="p">,</span> <span class="n">asset_id</span><span class="o">=</span><span class="n">asset_id</span><span class="p">)</span>
+    <span class="n">bond</span> <span class="o">=</span> <span class="n">BondGovernment</span><span class="p">(</span><span class="n">par</span><span class="o">=</span><span class="n">Decimal</span><span class="p">(</span><span class="s1">&#39;1000&#39;</span><span class="p">),</span>
+                          <span class="n">pay_frequency</span><span class="o">=</span><span class="s1">&#39;M&#39;</span><span class="p">,</span>  <span class="c1"># Need to check how we want to represent this</span>
+                          <span class="n">coupon</span><span class="o">=</span><span class="n">Decimal</span><span class="p">(</span><span class="s1">&#39;0.05&#39;</span><span class="p">),</span>
+                          <span class="o">**</span><span class="n">props</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">bond</span></div>
+
+
+<div class="viewcode-block" id="generate_bond_option"><a class="viewcode-back" href="../../../amaascore.tools.html#amaascore.tools.generate_asset.generate_bond_option">[docs]</a><span class="k">def</span> <span class="nf">generate_bond_option</span><span class="p">(</span><span class="n">asset_manager_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">asset_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">option_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">strike</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">option_style</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">props</span> <span class="o">=</span> <span class="n">generate_common</span><span class="p">(</span><span class="n">asset_manager_id</span><span class="o">=</span><span class="n">asset_manager_id</span><span class="p">,</span> <span class="n">asset_id</span><span class="o">=</span><span class="n">asset_id</span><span class="p">)</span>
+    <span class="n">asset</span> <span class="o">=</span> <span class="n">BondOption</span><span class="p">(</span><span class="n">underlying_asset_id</span><span class="o">=</span><span class="n">random_string</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span>
+                       <span class="n">option_style</span><span class="o">=</span><span class="n">option_style</span> <span class="ow">or</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="s1">&#39;European&#39;</span><span class="p">,</span> <span class="s1">&#39;American&#39;</span><span class="p">]),</span>
+                       <span class="n">option_type</span><span class="o">=</span><span class="n">option_type</span> <span class="ow">or</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="s1">&#39;Put&#39;</span><span class="p">,</span> <span class="s1">&#39;Call&#39;</span><span class="p">]),</span>
+                       <span class="n">strike</span><span class="o">=</span><span class="n">strike</span> <span class="ow">or</span> <span class="n">Decimal</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mf">99.0</span><span class="p">,</span> <span class="mf">102.0</span><span class="p">))</span><span class="o">.</span><span class="n">quantize</span><span class="p">(</span><span class="n">Decimal</span><span class="p">(</span><span class="s1">&#39;0.05&#39;</span><span class="p">)),</span>
+                       <span class="o">**</span><span class="n">props</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">asset</span></div>
+
+
+<div class="viewcode-block" id="generate_foreignexchange"><a class="viewcode-back" href="../../../amaascore.tools.html#amaascore.tools.generate_asset.generate_foreignexchange">[docs]</a><span class="k">def</span> <span class="nf">generate_foreignexchange</span><span class="p">(</span><span class="n">asset_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">asset</span> <span class="o">=</span> <span class="n">ForeignExchange</span><span class="p">(</span><span class="n">asset_id</span><span class="o">=</span><span class="n">asset_id</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">asset</span></div>
+
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, AMaaS.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,438 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>amaascore.transactions.transaction &#8212; amaas-core-sdk-python 0.1.11 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.1.11',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for amaascore.transactions.transaction</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span><span class="p">,</span> <span class="n">division</span><span class="p">,</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">unicode_literals</span>
+
+<span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">from</span> <span class="nn">dateutil.parser</span> <span class="k">import</span> <span class="n">parse</span>
+<span class="kn">from</span> <span class="nn">decimal</span> <span class="k">import</span> <span class="n">Decimal</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">uuid</span>
+
+<span class="kn">from</span> <span class="nn">amaascore.error_messages</span> <span class="k">import</span> <span class="n">ERROR_LOOKUP</span>
+<span class="kn">from</span> <span class="nn">amaascore.exceptions</span> <span class="k">import</span> <span class="n">TransactionNeedsSaving</span>
+<span class="kn">from</span> <span class="nn">amaascore.core.amaas_model</span> <span class="k">import</span> <span class="n">AMaaSModel</span>
+<span class="kn">from</span> <span class="nn">amaascore.core.reference</span> <span class="k">import</span> <span class="n">Reference</span>
+<span class="kn">from</span> <span class="nn">amaascore.transactions.children</span> <span class="k">import</span> <span class="n">Charge</span><span class="p">,</span> <span class="n">Code</span><span class="p">,</span> <span class="n">Comment</span><span class="p">,</span> <span class="n">Link</span><span class="p">,</span> <span class="n">Party</span>
+<span class="kn">from</span> <span class="nn">amaascore.transactions.enums</span> <span class="k">import</span> <span class="n">TRANSACTION_ACTIONS</span><span class="p">,</span> <span class="n">TRANSACTION_STATUSES</span><span class="p">,</span> <span class="n">TRANSACTION_TYPES</span>
+
+<span class="c1"># This extremely ugly hack is due to the whole Python 2 vs 3 debacle.</span>
+<span class="n">type_check</span> <span class="o">=</span> <span class="nb">str</span> <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span> <span class="o">&gt;=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">else</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">unicode</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="Transaction"><a class="viewcode-back" href="../../../amaascore.transactions.html#amaascore.transactions.transaction.Transaction">[docs]</a><span class="k">class</span> <span class="nc">Transaction</span><span class="p">(</span><span class="n">AMaaSModel</span><span class="p">):</span>
+
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="Transaction.children"><a class="viewcode-back" href="../../../amaascore.transactions.html#amaascore.transactions.transaction.Transaction.children">[docs]</a>    <span class="k">def</span> <span class="nf">children</span><span class="p">():</span>
+        <span class="sd">&quot;&quot;&quot; A dict of which of the attributes are collections of other objects, and what type &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;charges&#39;</span><span class="p">:</span> <span class="n">Charge</span><span class="p">,</span> <span class="s1">&#39;codes&#39;</span><span class="p">:</span> <span class="n">Code</span><span class="p">,</span> <span class="s1">&#39;comments&#39;</span><span class="p">:</span> <span class="n">Comment</span><span class="p">,</span> <span class="s1">&#39;links&#39;</span><span class="p">:</span> <span class="n">Link</span><span class="p">,</span> <span class="s1">&#39;parties&#39;</span><span class="p">:</span> <span class="n">Party</span><span class="p">,</span>
+                <span class="s1">&#39;references&#39;</span><span class="p">:</span> <span class="n">Reference</span><span class="p">}</span></div>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">asset_manager_id</span><span class="p">,</span> <span class="n">asset_book_id</span><span class="p">,</span> <span class="n">counterparty_book_id</span><span class="p">,</span> <span class="n">transaction_action</span><span class="p">,</span> <span class="n">asset_id</span><span class="p">,</span> <span class="n">quantity</span><span class="p">,</span>
+                 <span class="n">transaction_date</span><span class="p">,</span> <span class="n">settlement_date</span><span class="p">,</span> <span class="n">price</span><span class="p">,</span> <span class="n">transaction_currency</span><span class="p">,</span> <span class="n">settlement_currency</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">asset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">execution_time</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">transaction_type</span><span class="o">=</span><span class="s1">&#39;Trade&#39;</span><span class="p">,</span> <span class="n">transaction_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">transaction_status</span><span class="o">=</span><span class="s1">&#39;New&#39;</span><span class="p">,</span> <span class="n">charges</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">codes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">comments</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">links</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">parties</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">references</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        :param asset_manager_id:</span>
+<span class="sd">        :param asset_book_id:</span>
+<span class="sd">        :param counterparty_book_id:</span>
+<span class="sd">        :param transaction_action:</span>
+<span class="sd">        :param asset_id:</span>
+<span class="sd">        :param quantity:</span>
+<span class="sd">        :param transaction_date:</span>
+<span class="sd">        :param settlement_date:</span>
+<span class="sd">        :param price:</span>
+<span class="sd">        :param transaction_currency:</span>
+<span class="sd">        :param settlement_currency: The currency in which the transaction will be settled.  Defaults to the</span>
+<span class="sd">        transaction_currency if not specified.</span>
+<span class="sd">        :param asset:</span>
+<span class="sd">        :param execution_time:</span>
+<span class="sd">        :param transaction_type:</span>
+<span class="sd">        :param transaction_id:</span>
+<span class="sd">        :param transaction_status:</span>
+<span class="sd">        :param charges:</span>
+<span class="sd">        :param codes:</span>
+<span class="sd">        :param comments:</span>
+<span class="sd">        :param links:</span>
+<span class="sd">        :param parties:</span>
+<span class="sd">        :param references:</span>
+<span class="sd">        :param args:</span>
+<span class="sd">        :param kwargs:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">transaction_id</span> <span class="o">=</span> <span class="n">transaction_id</span> <span class="ow">or</span> <span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">()</span><span class="o">.</span><span class="n">hex</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">asset_manager_id</span> <span class="o">=</span> <span class="n">asset_manager_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">asset_book_id</span> <span class="o">=</span> <span class="n">asset_book_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">counterparty_book_id</span> <span class="o">=</span> <span class="n">counterparty_book_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">transaction_action</span> <span class="o">=</span> <span class="n">transaction_action</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">asset_id</span> <span class="o">=</span> <span class="n">asset_id</span>  <span class="c1"># This is duplicated on the child asset.  Remove?</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">quantity</span> <span class="o">=</span> <span class="n">quantity</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">transaction_date</span> <span class="o">=</span> <span class="n">transaction_date</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settlement_date</span> <span class="o">=</span> <span class="n">settlement_date</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">price</span> <span class="o">=</span> <span class="n">price</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">transaction_currency</span> <span class="o">=</span> <span class="n">transaction_currency</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settlement_currency</span> <span class="o">=</span> <span class="n">settlement_currency</span> <span class="ow">or</span> <span class="n">transaction_currency</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">transaction_type</span> <span class="o">=</span> <span class="n">transaction_type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">transaction_status</span> <span class="o">=</span> <span class="n">transaction_status</span>
+
+        <span class="c1"># Cannot be in method signature or the value gets bound to the constructor call</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">execution_time</span> <span class="o">=</span> <span class="n">execution_time</span> <span class="ow">or</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span>
+
+        <span class="c1"># I don&#39;t put {} in the constructor due to mutability concerns... Need to test some scenarios.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">charges</span> <span class="o">=</span> <span class="n">charges</span> <span class="ow">or</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">codes</span> <span class="o">=</span> <span class="n">codes</span> <span class="ow">or</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">comments</span> <span class="o">=</span> <span class="n">comments</span> <span class="ow">or</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">links</span> <span class="o">=</span> <span class="n">links</span> <span class="ow">or</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parties</span> <span class="o">=</span> <span class="n">parties</span> <span class="ow">or</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">references</span> <span class="o">=</span> <span class="n">references</span> <span class="ow">or</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">references</span><span class="p">[</span><span class="s1">&#39;AMaaS&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Reference</span><span class="p">(</span><span class="n">reference_value</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">transaction_id</span><span class="p">)</span>  <span class="c1"># Upserts the AMaaS Reference</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">postings</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">asset</span> <span class="o">=</span> <span class="n">asset</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Transaction</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">quantity</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_quantity</span>
+
+    <span class="nd">@quantity</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">quantity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Force the quantity to always be a decimal</span>
+<span class="sd">        :param value:</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_quantity</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">price</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_price</span>
+
+    <span class="nd">@price</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">price</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Force the price to always be a decimal</span>
+<span class="sd">        :param value:</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_price</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">transaction_date</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transaction_date</span>
+
+    <span class="nd">@transaction_date</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">transaction_date</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Force the transaction_date to always be a date</span>
+<span class="sd">        :param value:</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">value</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_transaction_date</span> <span class="o">=</span> <span class="n">parse</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="o">.</span><span class="n">date</span><span class="p">()</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">type_check</span><span class="p">)</span> <span class="k">else</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">settlement_date</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_settlement_date</span>
+
+    <span class="nd">@settlement_date</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">settlement_date</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Force the settlement_date to always be a date</span>
+<span class="sd">        :param value:</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">value</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_settlement_date</span> <span class="o">=</span> <span class="n">parse</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="o">.</span><span class="n">date</span><span class="p">()</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">type_check</span><span class="p">)</span> <span class="k">else</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">execution_time</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_execution_time</span>
+
+    <span class="nd">@execution_time</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">execution_time</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Force the execution_time to always be a datetime</span>
+<span class="sd">        :param value:</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">value</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_execution_time</span> <span class="o">=</span> <span class="n">parse</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">type_check</span><span class="p">)</span> <span class="k">else</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">gross_settlement</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;_gross_settlement&#39;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__gross_settlement</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">quantity</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">price</span>
+
+    <span class="nd">@gross_settlement</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">gross_settlement</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gross_settlement</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        :param gross_settlement:</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">gross_settlement</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_gross_settlement</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="n">gross_settlement</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">net_settlement</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;_net_settlement&#39;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_net_settlement</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">gross_settlement</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">charges_net_effect</span><span class="p">()</span>
+
+    <span class="nd">@net_settlement</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">net_settlement</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">net_settlement</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        :param gross_settlement:</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">net_settlement</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_net_settlement</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="n">net_settlement</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">transaction_action</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;_transaction_action&#39;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transaction_action</span>
+
+    <span class="nd">@transaction_action</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">transaction_action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transaction_action</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        :param transaction_action: The action that this transaction is recording - e.g. Buy, Deliver</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">transaction_action</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">TRANSACTION_ACTIONS</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">ERROR_LOOKUP</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;transaction_action_invalid&#39;</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="n">transaction_action</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">transaction_id</span><span class="p">,</span>
+                                                                               <span class="bp">self</span><span class="o">.</span><span class="n">asset_manager_id</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_transaction_action</span> <span class="o">=</span> <span class="n">transaction_action</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">transaction_status</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;_transaction_status&#39;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transaction_status</span>
+
+    <span class="nd">@transaction_status</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">transaction_status</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transaction_status</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        :param transaction_status: The status of the transaction - e.g. New, Netted</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">transaction_status</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">TRANSACTION_STATUSES</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">ERROR_LOOKUP</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;transaction_status_invalid&#39;</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="n">transaction_status</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">transaction_id</span><span class="p">,</span>
+                                                                               <span class="bp">self</span><span class="o">.</span><span class="n">asset_manager_id</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_transaction_status</span> <span class="o">=</span> <span class="n">transaction_status</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">transaction_type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;_transaction_type&#39;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transaction_type</span>
+
+    <span class="nd">@transaction_type</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">transaction_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transaction_type</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        :param transaction_type: The type of transaction that we are recording - e.g. Trade, Payment, Coupon</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">transaction_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">TRANSACTION_TYPES</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">ERROR_LOOKUP</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;transaction_type_invalid&#39;</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="n">transaction_type</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">transaction_id</span><span class="p">,</span>
+                                                                             <span class="bp">self</span><span class="o">.</span><span class="n">asset_manager_id</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_transaction_type</span> <span class="o">=</span> <span class="n">transaction_type</span>
+
+<div class="viewcode-block" id="Transaction.charges_net_effect"><a class="viewcode-back" href="../../../amaascore.transactions.html#amaascore.transactions.transaction.Transaction.charges_net_effect">[docs]</a>    <span class="k">def</span> <span class="nf">charges_net_effect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The total effect of the net_affecting charges (note affect vs effect here).</span>
+
+<span class="sd">        Currently this is single currency only (AMAAS-110).</span>
+
+<span class="sd">        Cast to Decimal in case the result is zero (no net_affecting charges).</span>
+
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Decimal</span><span class="p">(</span><span class="nb">sum</span><span class="p">([</span><span class="n">charge</span><span class="o">.</span><span class="n">charge_value</span> <span class="k">for</span> <span class="n">charge</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">charges</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+                            <span class="k">if</span> <span class="n">charge</span><span class="o">.</span><span class="n">active</span> <span class="ow">and</span> <span class="n">charge</span><span class="o">.</span><span class="n">net_affecting</span><span class="p">]))</span></div>
+
+<div class="viewcode-block" id="Transaction.charge_types"><a class="viewcode-back" href="../../../amaascore.transactions.html#amaascore.transactions.transaction.Transaction.charge_types">[docs]</a>    <span class="k">def</span> <span class="nf">charge_types</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        TODO - are these helper functions useful?</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">charges</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Transaction.code_types"><a class="viewcode-back" href="../../../amaascore.transactions.html#amaascore.transactions.transaction.Transaction.code_types">[docs]</a>    <span class="k">def</span> <span class="nf">code_types</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        TODO - are these helper functions useful?</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">codes</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Transaction.reference_types"><a class="viewcode-back" href="../../../amaascore.transactions.html#amaascore.transactions.transaction.Transaction.reference_types">[docs]</a>    <span class="k">def</span> <span class="nf">reference_types</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        TODO - are these helper functions useful?</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">references</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span></div>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;Transaction object - ID: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">transaction_id</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">postings</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;_postings&#39;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_postings</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">TransactionNeedsSaving</span>
+
+    <span class="nd">@postings</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">postings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">postings</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        TODO - when do we save this from AMaaS Core?</span>
+<span class="sd">        :param postings:</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">postings</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_postings</span> <span class="o">=</span> <span class="n">postings</span>
+
+    <span class="c1"># Upsert methods for safely adding children - this is more important for cases where we trigger action when there</span>
+    <span class="c1"># is a change, e.g. for the case of a @property on the collection.  Since we don&#39;t have that case yet for</span>
+    <span class="c1"># transactions, I have not yet filled out all of these.</span>
+<div class="viewcode-block" id="Transaction.upsert_code"><a class="viewcode-back" href="../../../amaascore.transactions.html#amaascore.transactions.transaction.Transaction.upsert_code">[docs]</a>    <span class="k">def</span> <span class="nf">upsert_code</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">code_type</span><span class="p">,</span> <span class="n">code</span><span class="p">):</span>
+        <span class="n">codes</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">codes</span><span class="p">)</span>
+        <span class="n">codes</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">code_type</span><span class="p">:</span> <span class="n">code</span><span class="p">})</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">codes</span> <span class="o">=</span> <span class="n">codes</span></div>
+
+<div class="viewcode-block" id="Transaction.upsert_link_set"><a class="viewcode-back" href="../../../amaascore.transactions.html#amaascore.transactions.transaction.Transaction.upsert_link_set">[docs]</a>    <span class="k">def</span> <span class="nf">upsert_link_set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">link_type</span><span class="p">,</span> <span class="n">link_set</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Remove an item altogether by setting link_list to None.</span>
+<span class="sd">        Currently, only links can contain multiple children of the same type.</span>
+<span class="sd">        :param link_type:</span>
+<span class="sd">        :param link_set:</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">link_set</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">link_type</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="k">return</span>
+        <span class="n">links</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">links</span><span class="p">)</span>
+        <span class="n">links</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">link_type</span><span class="p">:</span> <span class="n">link_set</span><span class="p">})</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">links</span> <span class="o">=</span> <span class="n">links</span></div>
+
+<div class="viewcode-block" id="Transaction.add_link"><a class="viewcode-back" href="../../../amaascore.transactions.html#amaascore.transactions.transaction.Transaction.add_link">[docs]</a>    <span class="k">def</span> <span class="nf">add_link</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">link_type</span><span class="p">,</span> <span class="n">linked_transaction_id</span><span class="p">):</span>
+        <span class="n">new_link</span> <span class="o">=</span> <span class="n">Link</span><span class="p">(</span><span class="n">linked_transaction_id</span><span class="o">=</span><span class="n">linked_transaction_id</span><span class="p">)</span>
+        <span class="n">link_set</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">link_type</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">link_set</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">link_set</span><span class="p">,</span> <span class="nb">set</span><span class="p">):</span>
+                <span class="n">link_set</span> <span class="o">=</span> <span class="p">{</span><span class="n">link_set</span><span class="p">}</span>
+            <span class="n">link_set</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">new_link</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">link_set</span> <span class="o">=</span> <span class="n">new_link</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">upsert_link_set</span><span class="p">(</span><span class="n">link_type</span><span class="o">=</span><span class="n">link_type</span><span class="p">,</span> <span class="n">link_set</span><span class="o">=</span><span class="n">link_set</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Transaction.remove_link"><a class="viewcode-back" href="../../../amaascore.transactions.html#amaascore.transactions.transaction.Transaction.remove_link">[docs]</a>    <span class="k">def</span> <span class="nf">remove_link</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">link_type</span><span class="p">,</span> <span class="n">linked_transaction_id</span><span class="p">):</span>
+        <span class="n">link_set</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">link_type</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">link_set</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="n">ERROR_LOOKUP</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;transaction_link_not_found&#39;</span><span class="p">))</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">link_set</span><span class="p">,</span> <span class="n">Link</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">link_set</span><span class="o">.</span><span class="n">linked_transaction_id</span> <span class="o">==</span> <span class="n">linked_transaction_id</span><span class="p">:</span>
+                <span class="n">link_set</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="n">ERROR_LOOKUP</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;transaction_link_not_found&#39;</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">output</span> <span class="o">=</span> <span class="p">[</span><span class="n">link</span> <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">link_set</span> <span class="k">if</span> <span class="n">link</span><span class="o">.</span><span class="n">linked_transaction_id</span> <span class="o">==</span> <span class="n">linked_transaction_id</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">output</span><span class="p">:</span>
+                <span class="n">link_set</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="n">ERROR_LOOKUP</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;transaction_link_not_found&#39;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">upsert_link_set</span><span class="p">(</span><span class="n">link_type</span><span class="o">=</span><span class="n">link_type</span><span class="p">,</span> <span class="n">link_set</span><span class="o">=</span><span class="n">link_set</span><span class="p">)</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, AMaaS.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

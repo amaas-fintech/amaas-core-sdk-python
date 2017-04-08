@@ -1,0 +1,369 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>amaascore.transactions.interface &#8212; amaas-core-sdk-python 0.1.11 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.1.11',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for amaascore.transactions.interface</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span><span class="p">,</span> <span class="n">division</span><span class="p">,</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">unicode_literals</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">simplejson</span>
+
+<span class="kn">from</span> <span class="nn">amaascore.config</span> <span class="k">import</span> <span class="n">ENDPOINTS</span>
+<span class="kn">from</span> <span class="nn">amaascore.core.interface</span> <span class="k">import</span> <span class="n">Interface</span>
+<span class="kn">from</span> <span class="nn">amaascore.transactions.utils</span> <span class="k">import</span> <span class="n">json_to_transaction</span><span class="p">,</span> <span class="n">json_to_position</span>
+
+
+<div class="viewcode-block" id="TransactionsInterface"><a class="viewcode-back" href="../../../amaascore.transactions.html#amaascore.transactions.interface.TransactionsInterface">[docs]</a><span class="k">class</span> <span class="nc">TransactionsInterface</span><span class="p">(</span><span class="n">Interface</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">logger</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">endpoint</span> <span class="o">=</span> <span class="n">ENDPOINTS</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;transactions&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">logger</span> <span class="ow">or</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">json_header</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Content-Type&#39;</span><span class="p">:</span> <span class="s1">&#39;application/json&#39;</span><span class="p">}</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">TransactionsInterface</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">endpoint</span><span class="o">=</span><span class="n">endpoint</span><span class="p">)</span>
+
+<div class="viewcode-block" id="TransactionsInterface.new"><a class="viewcode-back" href="../../../amaascore.transactions.html#amaascore.transactions.interface.TransactionsInterface.new">[docs]</a>    <span class="k">def</span> <span class="nf">new</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transaction</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;New Transaction - Asset Manager: </span><span class="si">%s</span><span class="s1"> - Transaction ID: </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">transaction</span><span class="o">.</span><span class="n">asset_manager_id</span><span class="p">,</span>
+                         <span class="n">transaction</span><span class="o">.</span><span class="n">transaction_id</span><span class="p">)</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">endpoint</span> <span class="o">+</span> <span class="s1">&#39;/transactions&#39;</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">transaction</span><span class="o">.</span><span class="n">to_interface</span><span class="p">())</span>
+        <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">ok</span><span class="p">:</span>
+            <span class="n">transaction</span> <span class="o">=</span> <span class="n">json_to_transaction</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+            <span class="k">return</span> <span class="n">transaction</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+            <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="TransactionsInterface.amend"><a class="viewcode-back" href="../../../amaascore.transactions.html#amaascore.transactions.interface.TransactionsInterface.amend">[docs]</a>    <span class="k">def</span> <span class="nf">amend</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transaction</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Amend Transaction - Asset Manager: </span><span class="si">%s</span><span class="s1"> - Transaction ID: </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">transaction</span><span class="o">.</span><span class="n">asset_manager_id</span><span class="p">,</span>
+                         <span class="n">transaction</span><span class="o">.</span><span class="n">transaction_id</span><span class="p">)</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">/transactions/</span><span class="si">%s</span><span class="s1">/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">endpoint</span><span class="p">,</span> <span class="n">transaction</span><span class="o">.</span><span class="n">asset_manager_id</span><span class="p">,</span> <span class="n">transaction</span><span class="o">.</span><span class="n">transaction_id</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">transaction</span><span class="o">.</span><span class="n">to_interface</span><span class="p">())</span>
+        <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">ok</span><span class="p">:</span>
+            <span class="n">transaction</span> <span class="o">=</span> <span class="n">json_to_transaction</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+            <span class="k">return</span> <span class="n">transaction</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+            <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="TransactionsInterface.retrieve"><a class="viewcode-back" href="../../../amaascore.transactions.html#amaascore.transactions.interface.TransactionsInterface.retrieve">[docs]</a>    <span class="k">def</span> <span class="nf">retrieve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">asset_manager_id</span><span class="p">,</span> <span class="n">transaction_id</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Retrieve Transaction - Asset Manager: </span><span class="si">%s</span><span class="s1"> - Transaction ID: </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">asset_manager_id</span><span class="p">,</span>
+                         <span class="n">transaction_id</span><span class="p">)</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">/transactions/</span><span class="si">%s</span><span class="s1">/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">endpoint</span><span class="p">,</span> <span class="n">asset_manager_id</span><span class="p">,</span> <span class="n">transaction_id</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">ok</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">json_to_transaction</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+            <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="TransactionsInterface.transactions_by_asset_manager"><a class="viewcode-back" href="../../../amaascore.transactions.html#amaascore.transactions.interface.TransactionsInterface.transactions_by_asset_manager">[docs]</a>    <span class="k">def</span> <span class="nf">transactions_by_asset_manager</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">asset_manager_id</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Retrieve Transactions by Asset Manager: </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">asset_manager_id</span><span class="p">)</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">/transactions/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">endpoint</span><span class="p">,</span> <span class="n">asset_manager_id</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">ok</span><span class="p">:</span>
+            <span class="n">transactions</span> <span class="o">=</span> <span class="p">[</span><span class="n">json_to_transaction</span><span class="p">(</span><span class="n">json_transaction</span><span class="p">)</span> <span class="k">for</span> <span class="n">json_transaction</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()]</span>
+            <span class="k">return</span> <span class="n">transactions</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+            <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="TransactionsInterface.cancel"><a class="viewcode-back" href="../../../amaascore.transactions.html#amaascore.transactions.interface.TransactionsInterface.cancel">[docs]</a>    <span class="k">def</span> <span class="nf">cancel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">asset_manager_id</span><span class="p">,</span> <span class="n">transaction_id</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Cancel Transaction - Asset Manager: </span><span class="si">%s</span><span class="s1"> - Transaction ID: </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">asset_manager_id</span><span class="p">,</span>
+                         <span class="n">transaction_id</span><span class="p">)</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">/transactions/</span><span class="si">%s</span><span class="s1">/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">endpoint</span><span class="p">,</span> <span class="n">asset_manager_id</span><span class="p">,</span> <span class="n">transaction_id</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">ok</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;DO SOMETHING?&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+            <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="TransactionsInterface.search"><a class="viewcode-back" href="../../../amaascore.transactions.html#amaascore.transactions.interface.TransactionsInterface.search">[docs]</a>    <span class="k">def</span> <span class="nf">search</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">asset_manager_ids</span><span class="o">=</span><span class="p">[],</span> <span class="n">transaction_ids</span><span class="o">=</span><span class="p">[],</span> <span class="n">transaction_statuses</span><span class="o">=</span><span class="p">[],</span>
+               <span class="n">asset_book_ids</span><span class="o">=</span><span class="p">[],</span> <span class="n">counterparty_book_ids</span><span class="o">=</span><span class="p">[],</span> <span class="n">asset_ids</span><span class="o">=</span><span class="p">[],</span> <span class="n">transaction_date_start</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+               <span class="n">transaction_date_end</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">code_types</span><span class="o">=</span><span class="p">[],</span> <span class="n">code_values</span><span class="o">=</span><span class="p">[],</span> <span class="n">link_types</span><span class="o">=</span><span class="p">[],</span> <span class="n">linked_transaction_ids</span><span class="o">=</span><span class="p">[],</span>
+               <span class="n">party_types</span><span class="o">=</span><span class="p">[],</span> <span class="n">party_ids</span><span class="o">=</span><span class="p">[],</span> <span class="n">reference_types</span><span class="o">=</span><span class="p">[],</span> <span class="n">reference_values</span><span class="o">=</span><span class="p">[],</span> <span class="n">client_ids</span><span class="o">=</span><span class="p">[]):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Search Transactions - Asset Manager(s): </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">asset_manager_ids</span><span class="p">)</span>
+        <span class="n">search_params</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="c1"># Potentially roll this into a loop through args rather than explicitly named - depends on additional validation</span>
+        <span class="k">if</span> <span class="n">asset_manager_ids</span><span class="p">:</span>
+            <span class="n">search_params</span><span class="p">[</span><span class="s1">&#39;asset_manager_ids&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">asset_manager_ids</span>
+        <span class="k">if</span> <span class="n">transaction_ids</span><span class="p">:</span>
+            <span class="n">search_params</span><span class="p">[</span><span class="s1">&#39;transaction_ids&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">transaction_ids</span>
+        <span class="k">if</span> <span class="n">transaction_statuses</span><span class="p">:</span>
+            <span class="n">search_params</span><span class="p">[</span><span class="s1">&#39;transaction_statuses&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">transaction_statuses</span>
+        <span class="k">if</span> <span class="n">asset_book_ids</span><span class="p">:</span>
+            <span class="n">search_params</span><span class="p">[</span><span class="s1">&#39;asset_book_ids&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">asset_book_ids</span>
+        <span class="k">if</span> <span class="n">counterparty_book_ids</span><span class="p">:</span>
+            <span class="n">search_params</span><span class="p">[</span><span class="s1">&#39;counterparty_book_ids&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">counterparty_book_ids</span>
+        <span class="k">if</span> <span class="n">asset_ids</span><span class="p">:</span>
+            <span class="n">search_params</span><span class="p">[</span><span class="s1">&#39;asset_ids&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">asset_ids</span>
+        <span class="k">if</span> <span class="n">transaction_date_start</span><span class="p">:</span>
+            <span class="n">search_params</span><span class="p">[</span><span class="s1">&#39;transaction_date_start&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">transaction_date_start</span>
+        <span class="k">if</span> <span class="n">transaction_date_end</span><span class="p">:</span>
+            <span class="n">search_params</span><span class="p">[</span><span class="s1">&#39;transaction_date_end&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">transaction_date_end</span>
+        <span class="k">if</span> <span class="n">code_types</span><span class="p">:</span>
+            <span class="n">search_params</span><span class="p">[</span><span class="s1">&#39;code_types&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">code_types</span>
+        <span class="k">if</span> <span class="n">code_values</span><span class="p">:</span>
+            <span class="n">search_params</span><span class="p">[</span><span class="s1">&#39;code_values&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">code_values</span>
+        <span class="k">if</span> <span class="n">link_types</span><span class="p">:</span>
+            <span class="n">search_params</span><span class="p">[</span><span class="s1">&#39;link_types&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">link_types</span>
+        <span class="k">if</span> <span class="n">linked_transaction_ids</span><span class="p">:</span>
+            <span class="n">search_params</span><span class="p">[</span><span class="s1">&#39;linked_transaction_ids&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">linked_transaction_ids</span>
+        <span class="k">if</span> <span class="n">party_types</span><span class="p">:</span>
+            <span class="n">search_params</span><span class="p">[</span><span class="s1">&#39;party_types&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">party_types</span>
+        <span class="k">if</span> <span class="n">party_ids</span><span class="p">:</span>
+            <span class="n">search_params</span><span class="p">[</span><span class="s1">&#39;party_ids&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">party_ids</span>
+        <span class="k">if</span> <span class="n">reference_types</span><span class="p">:</span>
+            <span class="n">search_params</span><span class="p">[</span><span class="s1">&#39;reference_types&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">reference_types</span>
+        <span class="k">if</span> <span class="n">reference_values</span><span class="p">:</span>
+            <span class="n">search_params</span><span class="p">[</span><span class="s1">&#39;reference_values&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">reference_values</span>
+        <span class="k">if</span> <span class="n">client_ids</span><span class="p">:</span>
+            <span class="n">search_params</span><span class="p">[</span><span class="s1">&#39;client_ids&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">client_ids</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">endpoint</span> <span class="o">+</span> <span class="s1">&#39;/transactions&#39;</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">search_params</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">ok</span><span class="p">:</span>
+            <span class="n">transactions</span> <span class="o">=</span> <span class="p">[</span><span class="n">json_to_transaction</span><span class="p">(</span><span class="n">json_transaction</span><span class="p">)</span> <span class="k">for</span> <span class="n">json_transaction</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()]</span>
+            <span class="k">return</span> <span class="n">transactions</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+            <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="TransactionsInterface.position_search"><a class="viewcode-back" href="../../../amaascore.transactions.html#amaascore.transactions.interface.TransactionsInterface.position_search">[docs]</a>    <span class="k">def</span> <span class="nf">position_search</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">asset_manager_ids</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">book_ids</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">account_ids</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                        <span class="n">accounting_types</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Transaction Date&#39;</span><span class="p">],</span> <span class="n">asset_ids</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">position_date</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Search Positions - Asset Manager(s): </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">asset_manager_ids</span><span class="p">)</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">endpoint</span> <span class="o">+</span> <span class="s1">&#39;/positions&#39;</span>
+        <span class="n">search_params</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="c1"># Potentially roll into a loop</span>
+        <span class="k">if</span> <span class="n">asset_manager_ids</span><span class="p">:</span>
+            <span class="n">search_params</span><span class="p">[</span><span class="s1">&#39;asset_manager_ids&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">asset_manager_ids</span>
+        <span class="k">if</span> <span class="n">book_ids</span><span class="p">:</span>
+            <span class="n">search_params</span><span class="p">[</span><span class="s1">&#39;book_ids&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">book_ids</span>
+        <span class="k">if</span> <span class="n">account_ids</span><span class="p">:</span>
+            <span class="n">search_params</span><span class="p">[</span><span class="s1">&#39;account_ids&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">account_ids</span>
+        <span class="k">if</span> <span class="n">accounting_types</span><span class="p">:</span>
+            <span class="n">search_params</span><span class="p">[</span><span class="s1">&#39;accounting_types&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">accounting_types</span>
+        <span class="k">if</span> <span class="n">asset_ids</span><span class="p">:</span>
+            <span class="n">search_params</span><span class="p">[</span><span class="s1">&#39;asset_ids&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">asset_ids</span>
+        <span class="k">if</span> <span class="n">position_date</span><span class="p">:</span>
+            <span class="n">search_params</span><span class="p">[</span><span class="s1">&#39;position_date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">position_date</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">search_params</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">ok</span><span class="p">:</span>
+            <span class="n">positions</span> <span class="o">=</span> <span class="p">[</span><span class="n">json_to_position</span><span class="p">(</span><span class="n">json_position</span><span class="p">)</span> <span class="k">for</span> <span class="n">json_position</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()]</span>
+            <span class="k">return</span> <span class="n">positions</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+            <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="TransactionsInterface.positions_by_asset_manager_book"><a class="viewcode-back" href="../../../amaascore.transactions.html#amaascore.transactions.interface.TransactionsInterface.positions_by_asset_manager_book">[docs]</a>    <span class="k">def</span> <span class="nf">positions_by_asset_manager_book</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">asset_manager_id</span><span class="p">,</span> <span class="n">book_id</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Positions By Asset Manager: </span><span class="si">%s</span><span class="s1"> and Book: </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">asset_manager_id</span><span class="p">,</span> <span class="n">book_id</span><span class="p">)</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">/positions/</span><span class="si">%s</span><span class="s1">/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">endpoint</span><span class="p">,</span> <span class="n">asset_manager_id</span><span class="p">,</span> <span class="n">book_id</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">ok</span><span class="p">:</span>
+            <span class="n">positions</span> <span class="o">=</span> <span class="p">[</span><span class="n">json_to_position</span><span class="p">(</span><span class="n">json_position</span><span class="p">)</span> <span class="k">for</span> <span class="n">json_position</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()]</span>
+            <span class="k">return</span> <span class="n">positions</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+            <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="TransactionsInterface.positions_by_asset_manager"><a class="viewcode-back" href="../../../amaascore.transactions.html#amaascore.transactions.interface.TransactionsInterface.positions_by_asset_manager">[docs]</a>    <span class="k">def</span> <span class="nf">positions_by_asset_manager</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">asset_manager_id</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Positions By Asset Manager: </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">asset_manager_id</span><span class="p">)</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">/positions/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">endpoint</span><span class="p">,</span> <span class="n">asset_manager_id</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">ok</span><span class="p">:</span>
+            <span class="n">positions</span> <span class="o">=</span> <span class="p">[</span><span class="n">json_to_position</span><span class="p">(</span><span class="n">json_position</span><span class="p">)</span> <span class="k">for</span> <span class="n">json_position</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()]</span>
+            <span class="k">return</span> <span class="n">positions</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+            <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="TransactionsInterface.allocate_transaction"><a class="viewcode-back" href="../../../amaascore.transactions.html#amaascore.transactions.interface.TransactionsInterface.allocate_transaction">[docs]</a>    <span class="k">def</span> <span class="nf">allocate_transaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">asset_manager_id</span><span class="p">,</span> <span class="n">transaction_id</span><span class="p">,</span> <span class="n">allocation_type</span><span class="p">,</span> <span class="n">allocation_dicts</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        :param asset_manager_id:</span>
+<span class="sd">        :param transaction_id:</span>
+<span class="sd">        :param allocation_type:</span>
+<span class="sd">        :param allocation_dicts:</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Allocate Transaction - Asset Manager: </span><span class="si">%s</span><span class="s1"> - Transaction: </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">asset_manager_id</span><span class="p">,</span> <span class="n">transaction_id</span><span class="p">)</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">/allocations/</span><span class="si">%s</span><span class="s1">/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">endpoint</span><span class="p">,</span> <span class="n">asset_manager_id</span><span class="p">,</span> <span class="n">transaction_id</span><span class="p">)</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;allocation_type&#39;</span><span class="p">:</span> <span class="n">allocation_type</span><span class="p">}</span>
+        <span class="c1"># As per https://github.com/kennethreitz/requests/issues/2755 - requests doesn&#39;t support custom Encoders, and</span>
+        <span class="c1"># the default encoding fails on Decimals in Python 3 (but not in Python 2?)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">simplejson</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">allocation_dicts</span><span class="p">),</span>
+                                     <span class="n">headers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">json_header</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">ok</span><span class="p">:</span>
+            <span class="n">allocations</span> <span class="o">=</span> <span class="p">[</span><span class="n">json_to_transaction</span><span class="p">(</span><span class="n">json_allocation</span><span class="p">)</span> <span class="k">for</span> <span class="n">json_allocation</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()]</span>
+            <span class="n">allocation_ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">allocation</span><span class="o">.</span><span class="n">transaction_id</span> <span class="k">for</span> <span class="n">allocation</span> <span class="ow">in</span> <span class="n">allocations</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> Allocations Created - Transactions: </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">allocations</span><span class="p">),</span> <span class="n">allocation_ids</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">allocations</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+            <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="TransactionsInterface.retrieve_transaction_allocations"><a class="viewcode-back" href="../../../amaascore.transactions.html#amaascore.transactions.interface.TransactionsInterface.retrieve_transaction_allocations">[docs]</a>    <span class="k">def</span> <span class="nf">retrieve_transaction_allocations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">asset_manager_id</span><span class="p">,</span> <span class="n">transaction_id</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        :param asset_manager_id:</span>
+<span class="sd">        :param transaction_id:</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Retrieve Allocations - Asset Manager: </span><span class="si">%s</span><span class="s1"> - Transaction: </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">asset_manager_id</span><span class="p">,</span> <span class="n">transaction_id</span><span class="p">)</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">/allocations/</span><span class="si">%s</span><span class="s1">/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">endpoint</span><span class="p">,</span> <span class="n">asset_manager_id</span><span class="p">,</span> <span class="n">transaction_id</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">ok</span><span class="p">:</span>
+            <span class="n">allocations</span> <span class="o">=</span> <span class="p">[</span><span class="n">json_to_transaction</span><span class="p">(</span><span class="n">json_allocation</span><span class="p">)</span> <span class="k">for</span> <span class="n">json_allocation</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()]</span>
+            <span class="k">return</span> <span class="n">allocations</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+            <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="TransactionsInterface.net_transactions"><a class="viewcode-back" href="../../../amaascore.transactions.html#amaascore.transactions.interface.TransactionsInterface.net_transactions">[docs]</a>    <span class="k">def</span> <span class="nf">net_transactions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">asset_manager_id</span><span class="p">,</span> <span class="n">transaction_ids</span><span class="p">,</span> <span class="n">netting_type</span><span class="o">=</span><span class="s1">&#39;Net&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        :param asset_manager_id: The asset_manager_id of the netting set owner</span>
+<span class="sd">        :param transaction_ids:  A list of transaction_ids to net</span>
+<span class="sd">        :param netting_type:</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Net Transactions - Asset Manager: </span><span class="si">%s</span><span class="s1"> - Transactions: </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">asset_manager_id</span><span class="p">,</span> <span class="n">transaction_ids</span><span class="p">)</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">/netting/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">endpoint</span><span class="p">,</span> <span class="n">asset_manager_id</span><span class="p">)</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;netting_type&#39;</span><span class="p">:</span> <span class="n">netting_type</span><span class="p">}</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">transaction_ids</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">ok</span><span class="p">:</span>
+            <span class="n">net_transaction</span> <span class="o">=</span> <span class="n">json_to_transaction</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Net Created - Transaction: </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">net_transaction</span><span class="o">.</span><span class="n">transaction_id</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">net_transaction</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+            <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="TransactionsInterface.retrieve_netting_set"><a class="viewcode-back" href="../../../amaascore.transactions.html#amaascore.transactions.interface.TransactionsInterface.retrieve_netting_set">[docs]</a>    <span class="k">def</span> <span class="nf">retrieve_netting_set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">asset_manager_id</span><span class="p">,</span> <span class="n">transaction_id</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns all the transaction_ids associated with a single netting set.  Pass in the ID for any transaction in</span>
+<span class="sd">        the set.</span>
+<span class="sd">        :param asset_manager_id:  The asset_manager_id for the netting set owner.</span>
+<span class="sd">        :param transaction_id: A transaction_id of an entry within the netting set.</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Retrieve Netting Set - Asset Manager: </span><span class="si">%s</span><span class="s1"> - Transaction: </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">asset_manager_id</span><span class="p">,</span> <span class="n">transaction_id</span><span class="p">)</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">/netting/</span><span class="si">%s</span><span class="s1">/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">endpoint</span><span class="p">,</span> <span class="n">asset_manager_id</span><span class="p">,</span> <span class="n">transaction_id</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">ok</span><span class="p">:</span>
+            <span class="n">net_transaction_id</span><span class="p">,</span> <span class="n">netting_set_json</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">()))</span>
+            <span class="k">return</span> <span class="n">net_transaction_id</span><span class="p">,</span> <span class="p">[</span><span class="n">json_to_transaction</span><span class="p">(</span><span class="n">net_transaction</span><span class="p">)</span> <span class="k">for</span> <span class="n">net_transaction</span> <span class="ow">in</span> <span class="n">netting_set_json</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+            <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="TransactionsInterface.upsert_transaction_asset"><a class="viewcode-back" href="../../../amaascore.transactions.html#amaascore.transactions.interface.TransactionsInterface.upsert_transaction_asset">[docs]</a>    <span class="k">def</span> <span class="nf">upsert_transaction_asset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transaction_asset_json</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This API should not be called in normal circumstances as the asset cache will populate itself from the assets</span>
+<span class="sd">        which are created via the Assets API.  However, it can be useful for certain testing scenarios.</span>
+<span class="sd">        :param transaction_asset_json:</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">endpoint</span> <span class="o">+</span> <span class="s1">&#39;/assets&#39;</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">transaction_asset_json</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">ok</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+            <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="TransactionsInterface.upsert_transaction_book"><a class="viewcode-back" href="../../../amaascore.transactions.html#amaascore.transactions.interface.TransactionsInterface.upsert_transaction_book">[docs]</a>    <span class="k">def</span> <span class="nf">upsert_transaction_book</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transaction_book_json</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This API should not be called in normal circumstances as the book cache will populate itself from the book</span>
+<span class="sd">        which are created via the Books API.  However, it can be useful for certain testing scenarios.</span>
+<span class="sd">        :param transaction_book_json:</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">endpoint</span> <span class="o">+</span> <span class="s1">&#39;/books&#39;</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">transaction_book_json</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">ok</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+            <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, AMaaS.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

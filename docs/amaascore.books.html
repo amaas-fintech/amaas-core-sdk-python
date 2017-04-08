@@ -1,0 +1,227 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>amaascore.books package &#8212; amaas-core-sdk-python 0.1.11 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1.11',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="amaascore-books-package">
+<h1>amaascore.books package<a class="headerlink" href="#amaascore-books-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-amaascore.books.book">
+<span id="amaascore-books-book-module"></span><h2>amaascore.books.book module<a class="headerlink" href="#module-amaascore.books.book" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="amaascore.books.book.Book">
+<em class="property">class </em><code class="descclassname">amaascore.books.book.</code><code class="descname">Book</code><span class="sig-paren">(</span><em>asset_manager_id</em>, <em>book_id=None</em>, <em>book_type='Trading'</em>, <em>book_status='Active'</em>, <em>owner_id=None</em>, <em>party_id=None</em>, <em>close_time=datetime.timedelta(0</em>, <em>64800)</em>, <em>timezone='UTC'</em>, <em>base_currency='USD'</em>, <em>description=''</em>, <em>positions=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/books/book.html#Book"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.books.book.Book" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="amaascore.core.html#amaascore.core.amaas_model.AMaaSModel" title="amaascore.core.amaas_model.AMaaSModel"><code class="xref py py-class docutils literal"><span class="pre">amaascore.core.amaas_model.AMaaSModel</span></code></a></p>
+<dl class="attribute">
+<dt id="amaascore.books.book.Book.book_type">
+<code class="descname">book_type</code><a class="headerlink" href="#amaascore.books.book.Book.book_type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="amaascore.books.book.Book.non_interface_attributes">
+<em class="property">static </em><code class="descname">non_interface_attributes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/books/book.html#Book.non_interface_attributes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.books.book.Book.non_interface_attributes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="amaascore.books.book.Book.positions_by_asset">
+<code class="descname">positions_by_asset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/books/book.html#Book.positions_by_asset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.books.book.Book.positions_by_asset" title="Permalink to this definition">¶</a></dt>
+<dd><p>A dictionary of Position objects keyed by asset_id.
+:return:</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-amaascore.books.enums">
+<span id="amaascore-books-enums-module"></span><h2>amaascore.books.enums module<a class="headerlink" href="#module-amaascore.books.enums" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-amaascore.books.interface">
+<span id="amaascore-books-interface-module"></span><h2>amaascore.books.interface module<a class="headerlink" href="#module-amaascore.books.interface" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="amaascore.books.interface.BooksInterface">
+<em class="property">class </em><code class="descclassname">amaascore.books.interface.</code><code class="descname">BooksInterface</code><span class="sig-paren">(</span><em>logger=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/books/interface.html#BooksInterface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.books.interface.BooksInterface" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="amaascore.core.html#amaascore.core.interface.Interface" title="amaascore.core.interface.Interface"><code class="xref py py-class docutils literal"><span class="pre">amaascore.core.interface.Interface</span></code></a></p>
+<dl class="method">
+<dt id="amaascore.books.interface.BooksInterface.amend">
+<code class="descname">amend</code><span class="sig-paren">(</span><em>book</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/books/interface.html#BooksInterface.amend"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.books.interface.BooksInterface.amend" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="amaascore.books.interface.BooksInterface.books_by_asset_manager">
+<code class="descname">books_by_asset_manager</code><span class="sig-paren">(</span><em>asset_manager_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/books/interface.html#BooksInterface.books_by_asset_manager"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.books.interface.BooksInterface.books_by_asset_manager" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="amaascore.books.interface.BooksInterface.new">
+<code class="descname">new</code><span class="sig-paren">(</span><em>book</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/books/interface.html#BooksInterface.new"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.books.interface.BooksInterface.new" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="amaascore.books.interface.BooksInterface.retire">
+<code class="descname">retire</code><span class="sig-paren">(</span><em>asset_manager_id</em>, <em>book_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/books/interface.html#BooksInterface.retire"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.books.interface.BooksInterface.retire" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="amaascore.books.interface.BooksInterface.retrieve">
+<code class="descname">retrieve</code><span class="sig-paren">(</span><em>asset_manager_id</em>, <em>book_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/books/interface.html#BooksInterface.retrieve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.books.interface.BooksInterface.retrieve" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="amaascore.books.interface.BooksInterface.search">
+<code class="descname">search</code><span class="sig-paren">(</span><em>asset_manager_ids=None</em>, <em>book_ids=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/books/interface.html#BooksInterface.search"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.books.interface.BooksInterface.search" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-amaascore.books.portfolio">
+<span id="amaascore-books-portfolio-module"></span><h2>amaascore.books.portfolio module<a class="headerlink" href="#module-amaascore.books.portfolio" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="amaascore.books.portfolio.Portfolio">
+<em class="property">class </em><code class="descclassname">amaascore.books.portfolio.</code><code class="descname">Portfolio</code><span class="sig-paren">(</span><em>books=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/books/portfolio.html#Portfolio"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.books.portfolio.Portfolio" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>TODO - does this derive from anything?  Sort of depends on whether or not we are planning on storing it.</p>
+<dl class="method">
+<dt id="amaascore.books.portfolio.Portfolio.positions_by_asset">
+<code class="descname">positions_by_asset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/books/portfolio.html#Portfolio.positions_by_asset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.books.portfolio.Portfolio.positions_by_asset" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>A dictionary of Position objects keyed by asset_id.  If an asset position exists in more than one book, they</dt>
+<dd>are combined into a single position.</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="amaascore.books.portfolio.Portfolio.positions_by_book">
+<code class="descname">positions_by_book</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/books/portfolio.html#Portfolio.positions_by_book"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.books.portfolio.Portfolio.positions_by_book" title="Permalink to this definition">¶</a></dt>
+<dd><p>A dictionary of Position objects keyed by book_id.
+:return:</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-amaascore.books.utils">
+<span id="amaascore-books-utils-module"></span><h2>amaascore.books.utils module<a class="headerlink" href="#module-amaascore.books.utils" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="amaascore.books.utils.json_to_book">
+<code class="descclassname">amaascore.books.utils.</code><code class="descname">json_to_book</code><span class="sig-paren">(</span><em>json_book</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/books/utils.html#json_to_book"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.books.utils.json_to_book" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-amaascore.books">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-amaascore.books" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">amaascore.books package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-amaascore.books.book">amaascore.books.book module</a></li>
+<li><a class="reference internal" href="#module-amaascore.books.enums">amaascore.books.enums module</a></li>
+<li><a class="reference internal" href="#module-amaascore.books.interface">amaascore.books.interface module</a></li>
+<li><a class="reference internal" href="#module-amaascore.books.portfolio">amaascore.books.portfolio module</a></li>
+<li><a class="reference internal" href="#module-amaascore.books.utils">amaascore.books.utils module</a></li>
+<li><a class="reference internal" href="#module-amaascore.books">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/amaascore.books.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, AMaaS.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/amaascore.books.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
