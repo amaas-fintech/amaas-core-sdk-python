@@ -1,0 +1,528 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>amaascore.assets package &#8212; amaas-core-sdk-python 0.1.11 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1.11',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="amaascore.books package" href="amaascore.books.html" />
+    <link rel="prev" title="amaascore.asset_managers package" href="amaascore.asset_managers.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="amaascore-assets-package">
+<h1>amaascore.assets package<a class="headerlink" href="#amaascore-assets-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-amaascore.assets.asset">
+<span id="amaascore-assets-asset-module"></span><h2>amaascore.assets.asset module<a class="headerlink" href="#module-amaascore.assets.asset" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="amaascore.assets.asset.Asset">
+<em class="property">class </em><code class="descclassname">amaascore.assets.asset.</code><code class="descname">Asset</code><span class="sig-paren">(</span><em>asset_manager_id</em>, <em>fungible</em>, <em>asset_issuer_id=None</em>, <em>asset_id=None</em>, <em>asset_status='Active'</em>, <em>country_id=None</em>, <em>venue_id=None</em>, <em>currency=None</em>, <em>issue_date=datetime.date(1</em>, <em>1</em>, <em>1)</em>, <em>maturity_date=datetime.date(9999</em>, <em>12</em>, <em>31)</em>, <em>description=''</em>, <em>links={}</em>, <em>references={}</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/assets/asset.html#Asset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.assets.asset.Asset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="amaascore.core.html#amaascore.core.amaas_model.AMaaSModel" title="amaascore.core.amaas_model.AMaaSModel"><code class="xref py py-class docutils literal"><span class="pre">amaascore.core.amaas_model.AMaaSModel</span></code></a></p>
+<dl class="staticmethod">
+<dt id="amaascore.assets.asset.Asset.children">
+<em class="property">static </em><code class="descname">children</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/assets/asset.html#Asset.children"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.assets.asset.Asset.children" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="amaascore.assets.asset.Asset.issue_date">
+<code class="descname">issue_date</code><a class="headerlink" href="#amaascore.assets.asset.Asset.issue_date" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="amaascore.assets.asset.Asset.maturity_date">
+<code class="descname">maturity_date</code><a class="headerlink" href="#amaascore.assets.asset.Asset.maturity_date" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="amaascore.assets.asset.Asset.reference_types">
+<code class="descname">reference_types</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/assets/asset.html#Asset.reference_types"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.assets.asset.Asset.reference_types" title="Permalink to this definition">¶</a></dt>
+<dd><p>TODO - are these helper functions useful?
+:return:</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-amaascore.assets.bond">
+<span id="amaascore-assets-bond-module"></span><h2>amaascore.assets.bond module<a class="headerlink" href="#module-amaascore.assets.bond" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="amaascore.assets.bond.BondBase">
+<em class="property">class </em><code class="descclassname">amaascore.assets.bond.</code><code class="descname">BondBase</code><span class="sig-paren">(</span><em>asset_manager_id</em>, <em>asset_id</em>, <em>maturity_date</em>, <em>coupon</em>, <em>par</em>, <em>pay_frequency</em>, <em>asset_issuer_id</em>, <em>asset_status</em>, <em>description</em>, <em>country_id</em>, <em>venue_id</em>, <em>issue_date</em>, <em>defaulted</em>, <em>links</em>, <em>references</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/assets/bond.html#BondBase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.assets.bond.BondBase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#amaascore.assets.asset.Asset" title="amaascore.assets.asset.Asset"><code class="xref py py-class docutils literal"><span class="pre">amaascore.assets.asset.Asset</span></code></a></p>
+<dl class="attribute">
+<dt id="amaascore.assets.bond.BondBase.coupon">
+<code class="descname">coupon</code><a class="headerlink" href="#amaascore.assets.bond.BondBase.coupon" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="amaascore.assets.bond.BondBase.par">
+<code class="descname">par</code><a class="headerlink" href="#amaascore.assets.bond.BondBase.par" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="amaascore.assets.bond.BondCorporate">
+<em class="property">class </em><code class="descclassname">amaascore.assets.bond.</code><code class="descname">BondCorporate</code><span class="sig-paren">(</span><em>asset_manager_id</em>, <em>asset_id</em>, <em>coupon</em>, <em>par</em>, <em>pay_frequency</em>, <em>defaulted=False</em>, <em>asset_issuer_id=None</em>, <em>maturity_date=datetime.date(9999</em>, <em>12</em>, <em>31)</em>, <em>asset_status='Active'</em>, <em>description=''</em>, <em>country_id=None</em>, <em>venue_id=None</em>, <em>issue_date=datetime.date(1</em>, <em>1</em>, <em>1)</em>, <em>links={}</em>, <em>references={}</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/assets/bond.html#BondCorporate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.assets.bond.BondCorporate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#amaascore.assets.bond.BondBase" title="amaascore.assets.bond.BondBase"><code class="xref py py-class docutils literal"><span class="pre">amaascore.assets.bond.BondBase</span></code></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="amaascore.assets.bond.BondGovernment">
+<em class="property">class </em><code class="descclassname">amaascore.assets.bond.</code><code class="descname">BondGovernment</code><span class="sig-paren">(</span><em>asset_manager_id</em>, <em>asset_id</em>, <em>coupon</em>, <em>par</em>, <em>pay_frequency</em>, <em>defaulted=False</em>, <em>asset_issuer_id=None</em>, <em>maturity_date=datetime.date(9999</em>, <em>12</em>, <em>31)</em>, <em>asset_status='Active'</em>, <em>description=''</em>, <em>country_id=None</em>, <em>venue_id=None</em>, <em>issue_date=datetime.date(1</em>, <em>1</em>, <em>1)</em>, <em>links={}</em>, <em>references={}</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/assets/bond.html#BondGovernment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.assets.bond.BondGovernment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#amaascore.assets.bond.BondBase" title="amaascore.assets.bond.BondBase"><code class="xref py py-class docutils literal"><span class="pre">amaascore.assets.bond.BondBase</span></code></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="amaascore.assets.bond.BondMortgage">
+<em class="property">class </em><code class="descclassname">amaascore.assets.bond.</code><code class="descname">BondMortgage</code><span class="sig-paren">(</span><em>asset_manager_id</em>, <em>asset_id</em>, <em>coupon</em>, <em>par</em>, <em>pay_frequency</em>, <em>defaulted=False</em>, <em>asset_issuer_id=None</em>, <em>maturity_date=datetime.date(9999</em>, <em>12</em>, <em>31)</em>, <em>asset_status='Active'</em>, <em>description=''</em>, <em>country_id=None</em>, <em>venue_id=None</em>, <em>issue_date=datetime.date(1</em>, <em>1</em>, <em>1)</em>, <em>links={}</em>, <em>references={}</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/assets/bond.html#BondMortgage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.assets.bond.BondMortgage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#amaascore.assets.bond.BondBase" title="amaascore.assets.bond.BondBase"><code class="xref py py-class docutils literal"><span class="pre">amaascore.assets.bond.BondBase</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-amaascore.assets.bond_future">
+<span id="amaascore-assets-bond-future-module"></span><h2>amaascore.assets.bond_future module<a class="headerlink" href="#module-amaascore.assets.bond_future" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="amaascore.assets.bond_future.BondFuture">
+<em class="property">class </em><code class="descclassname">amaascore.assets.bond_future.</code><code class="descname">BondFuture</code><span class="sig-paren">(</span><em>asset_manager_id</em>, <em>asset_id</em>, <em>expiry_date</em>, <em>underlying_bond_tenor</em>, <em>underlying_bond_coupon</em>, <em>cheapest_to_deliver_id=None</em>, <em>asset_issuer_id=None</em>, <em>asset_status='Active'</em>, <em>issue_date=datetime.date(1</em>, <em>1</em>, <em>1)</em>, <em>description=''</em>, <em>country_id=None</em>, <em>venue_id=None</em>, <em>links={}</em>, <em>references={}</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/assets/bond_future.html#BondFuture"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.assets.bond_future.BondFuture" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#amaascore.assets.future.Future" title="amaascore.assets.future.Future"><code class="xref py py-class docutils literal"><span class="pre">amaascore.assets.future.Future</span></code></a></p>
+<dl class="attribute">
+<dt id="amaascore.assets.bond_future.BondFuture.underlying_bond_coupon">
+<code class="descname">underlying_bond_coupon</code><a class="headerlink" href="#amaascore.assets.bond_future.BondFuture.underlying_bond_coupon" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-amaascore.assets.bond_future_option">
+<span id="amaascore-assets-bond-future-option-module"></span><h2>amaascore.assets.bond_future_option module<a class="headerlink" href="#module-amaascore.assets.bond_future_option" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="amaascore.assets.bond_future_option.BondFutureOption">
+<em class="property">class </em><code class="descclassname">amaascore.assets.bond_future_option.</code><code class="descname">BondFutureOption</code><span class="sig-paren">(</span><em>asset_manager_id</em>, <em>asset_id</em>, <em>option_type</em>, <em>option_style</em>, <em>strike</em>, <em>underlying_asset_id</em>, <em>asset_issuer_id=None</em>, <em>asset_status='Active'</em>, <em>issue_date=datetime.date(1</em>, <em>1</em>, <em>1)</em>, <em>expiry_date=datetime.date(9999</em>, <em>12</em>, <em>31)</em>, <em>description=''</em>, <em>country_id=None</em>, <em>venue_id=None</em>, <em>links={}</em>, <em>references={}</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/assets/bond_future_option.html#BondFutureOption"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.assets.bond_future_option.BondFutureOption" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#amaascore.assets.future_option.FutureOption" title="amaascore.assets.future_option.FutureOption"><code class="xref py py-class docutils literal"><span class="pre">amaascore.assets.future_option.FutureOption</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-amaascore.assets.bond_option">
+<span id="amaascore-assets-bond-option-module"></span><h2>amaascore.assets.bond_option module<a class="headerlink" href="#module-amaascore.assets.bond_option" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="amaascore.assets.bond_option.BondOption">
+<em class="property">class </em><code class="descclassname">amaascore.assets.bond_option.</code><code class="descname">BondOption</code><span class="sig-paren">(</span><em>asset_manager_id</em>, <em>option_type</em>, <em>strike</em>, <em>underlying_asset_id</em>, <em>option_style</em>, <em>asset_id=None</em>, <em>asset_issuer_id=None</em>, <em>asset_status='Active'</em>, <em>description=''</em>, <em>country_id=None</em>, <em>venue_id=None</em>, <em>issue_date=datetime.date(1</em>, <em>1</em>, <em>1)</em>, <em>expiry_date=datetime.date(9999</em>, <em>12</em>, <em>31)</em>, <em>links={}</em>, <em>references={}</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/assets/bond_option.html#BondOption"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.assets.bond_option.BondOption" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#amaascore.assets.derivative.Derivative" title="amaascore.assets.derivative.Derivative"><code class="xref py py-class docutils literal"><span class="pre">amaascore.assets.derivative.Derivative</span></code></a>, <a class="reference internal" href="#amaascore.assets.option_mixin.OptionMixin" title="amaascore.assets.option_mixin.OptionMixin"><code class="xref py py-class docutils literal"><span class="pre">amaascore.assets.option_mixin.OptionMixin</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-amaascore.assets.cfd">
+<span id="amaascore-assets-cfd-module"></span><h2>amaascore.assets.cfd module<a class="headerlink" href="#module-amaascore.assets.cfd" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="amaascore.assets.cfd.ContractForDifference">
+<em class="property">class </em><code class="descclassname">amaascore.assets.cfd.</code><code class="descname">ContractForDifference</code><span class="sig-paren">(</span><em>asset_manager_id</em>, <em>asset_id</em>, <em>asset_issuer_id=None</em>, <em>asset_status='Active'</em>, <em>description=''</em>, <em>country_id=None</em>, <em>venue_id=None</em>, <em>currency=None</em>, <em>issue_date=None</em>, <em>links={}</em>, <em>references={}</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/assets/cfd.html#ContractForDifference"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.assets.cfd.ContractForDifference" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#amaascore.assets.derivative.Derivative" title="amaascore.assets.derivative.Derivative"><code class="xref py py-class docutils literal"><span class="pre">amaascore.assets.derivative.Derivative</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-amaascore.assets.currency">
+<span id="amaascore-assets-currency-module"></span><h2>amaascore.assets.currency module<a class="headerlink" href="#module-amaascore.assets.currency" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="amaascore.assets.currency.Currency">
+<em class="property">class </em><code class="descclassname">amaascore.assets.currency.</code><code class="descname">Currency</code><span class="sig-paren">(</span><em>asset_id</em>, <em>deliverable</em>, <em>asset_status='Active'</em>, <em>minor_unit_places=2</em>, <em>description=''</em>, <em>country_id=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/assets/currency.html#Currency"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.assets.currency.Currency" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#amaascore.assets.asset.Asset" title="amaascore.assets.asset.Asset"><code class="xref py py-class docutils literal"><span class="pre">amaascore.assets.asset.Asset</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-amaascore.assets.derivative">
+<span id="amaascore-assets-derivative-module"></span><h2>amaascore.assets.derivative module<a class="headerlink" href="#module-amaascore.assets.derivative" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="amaascore.assets.derivative.Derivative">
+<em class="property">class </em><code class="descclassname">amaascore.assets.derivative.</code><code class="descname">Derivative</code><span class="sig-paren">(</span><em>asset_manager_id</em>, <em>asset_id</em>, <em>premium=None</em>, <em>maturity_date=None</em>, <em>asset_issuer_id=None</em>, <em>asset_status='Active'</em>, <em>description=''</em>, <em>country_id=None</em>, <em>venue_id=None</em>, <em>issue_date=None</em>, <em>links={}</em>, <em>references={}</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/assets/derivative.html#Derivative"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.assets.derivative.Derivative" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#amaascore.assets.asset.Asset" title="amaascore.assets.asset.Asset"><code class="xref py py-class docutils literal"><span class="pre">amaascore.assets.asset.Asset</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="amaascore-assets-energy-future-module">
+<h2>amaascore.assets.energy_future module<a class="headerlink" href="#amaascore-assets-energy-future-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-amaascore.assets.equity">
+<span id="amaascore-assets-equity-module"></span><h2>amaascore.assets.equity module<a class="headerlink" href="#module-amaascore.assets.equity" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="amaascore.assets.equity.Equity">
+<em class="property">class </em><code class="descclassname">amaascore.assets.equity.</code><code class="descname">Equity</code><span class="sig-paren">(</span><em>asset_manager_id</em>, <em>asset_id</em>, <em>asset_issuer_id=None</em>, <em>asset_status='Active'</em>, <em>issue_date=None</em>, <em>description=''</em>, <em>country_id=None</em>, <em>venue_id=None</em>, <em>links={}</em>, <em>references={}</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/assets/equity.html#Equity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.assets.equity.Equity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#amaascore.assets.asset.Asset" title="amaascore.assets.asset.Asset"><code class="xref py py-class docutils literal"><span class="pre">amaascore.assets.asset.Asset</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="amaascore-assets-equity-future-module">
+<h2>amaascore.assets.equity_future module<a class="headerlink" href="#amaascore-assets-equity-future-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-amaascore.assets.etf">
+<span id="amaascore-assets-etf-module"></span><h2>amaascore.assets.etf module<a class="headerlink" href="#module-amaascore.assets.etf" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="amaascore.assets.etf.ExchangeTradedFund">
+<em class="property">class </em><code class="descclassname">amaascore.assets.etf.</code><code class="descname">ExchangeTradedFund</code><span class="sig-paren">(</span><em>asset_manager_id</em>, <em>asset_id</em>, <em>asset_issuer_id=None</em>, <em>asset_status='Active'</em>, <em>description=''</em>, <em>country_id=None</em>, <em>venue_id=None</em>, <em>currency=None</em>, <em>issue_date=None</em>, <em>links={}</em>, <em>references={}</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/assets/etf.html#ExchangeTradedFund"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.assets.etf.ExchangeTradedFund" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#amaascore.assets.fund.Fund" title="amaascore.assets.fund.Fund"><code class="xref py py-class docutils literal"><span class="pre">amaascore.assets.fund.Fund</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-amaascore.assets.foreign_exchange">
+<span id="amaascore-assets-foreign-exchange-module"></span><h2>amaascore.assets.foreign_exchange module<a class="headerlink" href="#module-amaascore.assets.foreign_exchange" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="amaascore.assets.foreign_exchange.ForeignExchange">
+<em class="property">class </em><code class="descclassname">amaascore.assets.foreign_exchange.</code><code class="descname">ForeignExchange</code><span class="sig-paren">(</span><em>asset_id</em>, <em>asset_status='Active'</em>, <em>description=''</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/assets/foreign_exchange.html#ForeignExchange"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.assets.foreign_exchange.ForeignExchange" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#amaascore.assets.foreign_exchange.ForeignExchangeBase" title="amaascore.assets.foreign_exchange.ForeignExchangeBase"><code class="xref py py-class docutils literal"><span class="pre">amaascore.assets.foreign_exchange.ForeignExchangeBase</span></code></a></p>
+<p>Currently modelling spot and forward as the same, just two different dates on the transaction.  We might need to
+change that.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="amaascore.assets.foreign_exchange.ForeignExchangeBase">
+<em class="property">class </em><code class="descclassname">amaascore.assets.foreign_exchange.</code><code class="descname">ForeignExchangeBase</code><span class="sig-paren">(</span><em>asset_id</em>, <em>asset_status</em>, <em>description</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/assets/foreign_exchange.html#ForeignExchangeBase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.assets.foreign_exchange.ForeignExchangeBase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#amaascore.assets.asset.Asset" title="amaascore.assets.asset.Asset"><code class="xref py py-class docutils literal"><span class="pre">amaascore.assets.asset.Asset</span></code></a></p>
+<p>This class should never be instantiated</p>
+<dl class="method">
+<dt id="amaascore.assets.foreign_exchange.ForeignExchangeBase.base_currency">
+<code class="descname">base_currency</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/assets/foreign_exchange.html#ForeignExchangeBase.base_currency"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.assets.foreign_exchange.ForeignExchangeBase.base_currency" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="amaascore.assets.foreign_exchange.ForeignExchangeBase.counter_currency">
+<code class="descname">counter_currency</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/assets/foreign_exchange.html#ForeignExchangeBase.counter_currency"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.assets.foreign_exchange.ForeignExchangeBase.counter_currency" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="amaascore.assets.foreign_exchange.NonDeliverableForward">
+<em class="property">class </em><code class="descclassname">amaascore.assets.foreign_exchange.</code><code class="descname">NonDeliverableForward</code><span class="sig-paren">(</span><em>asset_id</em>, <em>asset_status='Active'</em>, <em>description=''</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/assets/foreign_exchange.html#NonDeliverableForward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.assets.foreign_exchange.NonDeliverableForward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#amaascore.assets.foreign_exchange.ForeignExchangeBase" title="amaascore.assets.foreign_exchange.ForeignExchangeBase"><code class="xref py py-class docutils literal"><span class="pre">amaascore.assets.foreign_exchange.ForeignExchangeBase</span></code></a></p>
+<p>Currently modelling spot and forward as the same, just two different dates on the transaction.  We might need to
+change that.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-amaascore.assets.fund">
+<span id="amaascore-assets-fund-module"></span><h2>amaascore.assets.fund module<a class="headerlink" href="#module-amaascore.assets.fund" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="amaascore.assets.fund.Fund">
+<em class="property">class </em><code class="descclassname">amaascore.assets.fund.</code><code class="descname">Fund</code><span class="sig-paren">(</span><em>asset_manager_id</em>, <em>asset_id</em>, <em>asset_issuer_id=None</em>, <em>asset_status='Active'</em>, <em>description=''</em>, <em>country_id=None</em>, <em>venue_id=None</em>, <em>currency=None</em>, <em>creation_date=None</em>, <em>links={}</em>, <em>references={}</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/assets/fund.html#Fund"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.assets.fund.Fund" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#amaascore.assets.asset.Asset" title="amaascore.assets.asset.Asset"><code class="xref py py-class docutils literal"><span class="pre">amaascore.assets.asset.Asset</span></code></a></p>
+<dl class="attribute">
+<dt id="amaascore.assets.fund.Fund.creation_date">
+<code class="descname">creation_date</code><a class="headerlink" href="#amaascore.assets.fund.Fund.creation_date" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-amaascore.assets.future">
+<span id="amaascore-assets-future-module"></span><h2>amaascore.assets.future module<a class="headerlink" href="#module-amaascore.assets.future" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="amaascore.assets.future.Future">
+<em class="property">class </em><code class="descclassname">amaascore.assets.future.</code><code class="descname">Future</code><span class="sig-paren">(</span><em>asset_manager_id</em>, <em>asset_id</em>, <em>asset_issuer_id=None</em>, <em>asset_status='Active'</em>, <em>issue_date=None</em>, <em>expiry_date=None</em>, <em>description=''</em>, <em>country_id=None</em>, <em>venue_id=None</em>, <em>links={}</em>, <em>references={}</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/assets/future.html#Future"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.assets.future.Future" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#amaascore.assets.listed_derivative.ListedDerivative" title="amaascore.assets.listed_derivative.ListedDerivative"><code class="xref py py-class docutils literal"><span class="pre">amaascore.assets.listed_derivative.ListedDerivative</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-amaascore.assets.future_option">
+<span id="amaascore-assets-future-option-module"></span><h2>amaascore.assets.future_option module<a class="headerlink" href="#module-amaascore.assets.future_option" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="amaascore.assets.future_option.FutureOption">
+<em class="property">class </em><code class="descclassname">amaascore.assets.future_option.</code><code class="descname">FutureOption</code><span class="sig-paren">(</span><em>asset_manager_id</em>, <em>asset_id</em>, <em>option_type</em>, <em>option_style</em>, <em>strike</em>, <em>underlying_asset_id</em>, <em>asset_issuer_id=None</em>, <em>asset_status='Active'</em>, <em>issue_date=None</em>, <em>expiry_date=None</em>, <em>description=''</em>, <em>country_id=None</em>, <em>venue_id=None</em>, <em>links={}</em>, <em>references={}</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/assets/future_option.html#FutureOption"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.assets.future_option.FutureOption" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#amaascore.assets.future.Future" title="amaascore.assets.future.Future"><code class="xref py py-class docutils literal"><span class="pre">amaascore.assets.future.Future</span></code></a>, <a class="reference internal" href="#amaascore.assets.option_mixin.OptionMixin" title="amaascore.assets.option_mixin.OptionMixin"><code class="xref py py-class docutils literal"><span class="pre">amaascore.assets.option_mixin.OptionMixin</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-amaascore.assets.fx_option">
+<span id="amaascore-assets-fx-option-module"></span><h2>amaascore.assets.fx_option module<a class="headerlink" href="#module-amaascore.assets.fx_option" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="amaascore.assets.fx_option.ForeignExchangeOption">
+<em class="property">class </em><code class="descclassname">amaascore.assets.fx_option.</code><code class="descname">ForeignExchangeOption</code><span class="sig-paren">(</span><em>asset_manager_id</em>, <em>asset_id</em>, <em>option_type</em>, <em>strike</em>, <em>premium</em>, <em>underlying_asset_id</em>, <em>option_style</em>, <em>issue_date=datetime.date(1</em>, <em>1</em>, <em>1)</em>, <em>maturity_date=datetime.date(9999</em>, <em>12</em>, <em>31)</em>, <em>asset_status='Active'</em>, <em>asset_issuer_id=None</em>, <em>description=''</em>, <em>links={}</em>, <em>references={}</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/assets/fx_option.html#ForeignExchangeOption"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.assets.fx_option.ForeignExchangeOption" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#amaascore.assets.asset.Asset" title="amaascore.assets.asset.Asset"><code class="xref py py-class docutils literal"><span class="pre">amaascore.assets.asset.Asset</span></code></a>, <a class="reference internal" href="#amaascore.assets.option_mixin.OptionMixin" title="amaascore.assets.option_mixin.OptionMixin"><code class="xref py py-class docutils literal"><span class="pre">amaascore.assets.option_mixin.OptionMixin</span></code></a></p>
+<p>An over the counter Option with an underlying FX pair.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-amaascore.assets.index">
+<span id="amaascore-assets-index-module"></span><h2>amaascore.assets.index module<a class="headerlink" href="#module-amaascore.assets.index" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="amaascore.assets.index.Index">
+<em class="property">class </em><code class="descclassname">amaascore.assets.index.</code><code class="descname">Index</code><span class="sig-paren">(</span><em>asset_id</em>, <em>asset_manager_id</em>, <em>asset_issuer_id=None</em>, <em>asset_status='Active'</em>, <em>country_id=None</em>, <em>issue_date=datetime.date(1</em>, <em>1</em>, <em>1)</em>, <em>description=''</em>, <em>links={}</em>, <em>references={}</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/assets/index.html#Index"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.assets.index.Index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#amaascore.assets.asset.Asset" title="amaascore.assets.asset.Asset"><code class="xref py py-class docutils literal"><span class="pre">amaascore.assets.asset.Asset</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="amaascore-assets-index-future-module">
+<h2>amaascore.assets.index_future module<a class="headerlink" href="#amaascore-assets-index-future-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="amaascore-assets-interest-rate-future-module">
+<h2>amaascore.assets.interest_rate_future module<a class="headerlink" href="#amaascore-assets-interest-rate-future-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-amaascore.assets.interface">
+<span id="amaascore-assets-interface-module"></span><h2>amaascore.assets.interface module<a class="headerlink" href="#module-amaascore.assets.interface" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="amaascore.assets.interface.AssetsInterface">
+<em class="property">class </em><code class="descclassname">amaascore.assets.interface.</code><code class="descname">AssetsInterface</code><span class="sig-paren">(</span><em>logger=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/assets/interface.html#AssetsInterface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.assets.interface.AssetsInterface" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="amaascore.core.html#amaascore.core.interface.Interface" title="amaascore.core.interface.Interface"><code class="xref py py-class docutils literal"><span class="pre">amaascore.core.interface.Interface</span></code></a></p>
+<dl class="method">
+<dt id="amaascore.assets.interface.AssetsInterface.amend">
+<code class="descname">amend</code><span class="sig-paren">(</span><em>asset</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/assets/interface.html#AssetsInterface.amend"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.assets.interface.AssetsInterface.amend" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="amaascore.assets.interface.AssetsInterface.assets_by_asset_manager">
+<code class="descname">assets_by_asset_manager</code><span class="sig-paren">(</span><em>asset_manager_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/assets/interface.html#AssetsInterface.assets_by_asset_manager"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.assets.interface.AssetsInterface.assets_by_asset_manager" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="amaascore.assets.interface.AssetsInterface.deactivate">
+<code class="descname">deactivate</code><span class="sig-paren">(</span><em>asset_manager_id</em>, <em>asset_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/assets/interface.html#AssetsInterface.deactivate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.assets.interface.AssetsInterface.deactivate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="amaascore.assets.interface.AssetsInterface.new">
+<code class="descname">new</code><span class="sig-paren">(</span><em>asset</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/assets/interface.html#AssetsInterface.new"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.assets.interface.AssetsInterface.new" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="amaascore.assets.interface.AssetsInterface.retrieve">
+<code class="descname">retrieve</code><span class="sig-paren">(</span><em>asset_manager_id</em>, <em>asset_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/assets/interface.html#AssetsInterface.retrieve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.assets.interface.AssetsInterface.retrieve" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="amaascore.assets.interface.AssetsInterface.search">
+<code class="descname">search</code><span class="sig-paren">(</span><em>asset_manager_ids=None</em>, <em>asset_ids=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/assets/interface.html#AssetsInterface.search"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.assets.interface.AssetsInterface.search" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-amaascore.assets.listed_cfd">
+<span id="amaascore-assets-listed-cfd-module"></span><h2>amaascore.assets.listed_cfd module<a class="headerlink" href="#module-amaascore.assets.listed_cfd" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="amaascore.assets.listed_cfd.ListedContractForDifference">
+<em class="property">class </em><code class="descclassname">amaascore.assets.listed_cfd.</code><code class="descname">ListedContractForDifference</code><span class="sig-paren">(</span><em>asset_manager_id</em>, <em>asset_id</em>, <em>asset_issuer_id=None</em>, <em>asset_status='Active'</em>, <em>description=''</em>, <em>country_id=None</em>, <em>venue_id=None</em>, <em>currency=None</em>, <em>issue_date=datetime.date(1</em>, <em>1</em>, <em>1)</em>, <em>links={}</em>, <em>references={}</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/assets/listed_cfd.html#ListedContractForDifference"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.assets.listed_cfd.ListedContractForDifference" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#amaascore.assets.listed_derivative.ListedDerivative" title="amaascore.assets.listed_derivative.ListedDerivative"><code class="xref py py-class docutils literal"><span class="pre">amaascore.assets.listed_derivative.ListedDerivative</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-amaascore.assets.listed_derivative">
+<span id="amaascore-assets-listed-derivative-module"></span><h2>amaascore.assets.listed_derivative module<a class="headerlink" href="#module-amaascore.assets.listed_derivative" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="amaascore.assets.listed_derivative.ListedDerivative">
+<em class="property">class </em><code class="descclassname">amaascore.assets.listed_derivative.</code><code class="descname">ListedDerivative</code><span class="sig-paren">(</span><em>asset_manager_id</em>, <em>asset_id</em>, <em>maturity_date=datetime.date(9999</em>, <em>12</em>, <em>31)</em>, <em>asset_issuer_id=None</em>, <em>asset_status='Active'</em>, <em>description=''</em>, <em>country_id=None</em>, <em>venue_id=None</em>, <em>issue_date=datetime.date(1</em>, <em>1</em>, <em>1)</em>, <em>links={}</em>, <em>references={}</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/assets/listed_derivative.html#ListedDerivative"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.assets.listed_derivative.ListedDerivative" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#amaascore.assets.asset.Asset" title="amaascore.assets.asset.Asset"><code class="xref py py-class docutils literal"><span class="pre">amaascore.assets.asset.Asset</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-amaascore.assets.option_mixin">
+<span id="amaascore-assets-option-mixin-module"></span><h2>amaascore.assets.option_mixin module<a class="headerlink" href="#module-amaascore.assets.option_mixin" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="amaascore.assets.option_mixin.OptionMixin">
+<em class="property">class </em><code class="descclassname">amaascore.assets.option_mixin.</code><code class="descname">OptionMixin</code><a class="reference internal" href="_modules/amaascore/assets/option_mixin.html#OptionMixin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.assets.option_mixin.OptionMixin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="attribute">
+<dt id="amaascore.assets.option_mixin.OptionMixin.option_style">
+<code class="descname">option_style</code><a class="headerlink" href="#amaascore.assets.option_mixin.OptionMixin.option_style" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="amaascore.assets.option_mixin.OptionMixin.option_type">
+<code class="descname">option_type</code><a class="headerlink" href="#amaascore.assets.option_mixin.OptionMixin.option_type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="amaascore.assets.option_mixin.OptionMixin.strike">
+<code class="descname">strike</code><a class="headerlink" href="#amaascore.assets.option_mixin.OptionMixin.strike" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-amaascore.assets.real_asset">
+<span id="amaascore-assets-real-asset-module"></span><h2>amaascore.assets.real_asset module<a class="headerlink" href="#module-amaascore.assets.real_asset" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="amaascore.assets.real_asset.RealAsset">
+<em class="property">class </em><code class="descclassname">amaascore.assets.real_asset.</code><code class="descname">RealAsset</code><span class="sig-paren">(</span><em>asset_manager_id</em>, <em>asset_id</em>, <em>asset_issuer_id=None</em>, <em>asset_status='Active'</em>, <em>description=''</em>, <em>country_id=None</em>, <em>venue_id=None</em>, <em>currency=None</em>, <em>links={}</em>, <em>references={}</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/assets/real_asset.html#RealAsset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.assets.real_asset.RealAsset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#amaascore.assets.asset.Asset" title="amaascore.assets.asset.Asset"><code class="xref py py-class docutils literal"><span class="pre">amaascore.assets.asset.Asset</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-amaascore.assets.real_estate">
+<span id="amaascore-assets-real-estate-module"></span><h2>amaascore.assets.real_estate module<a class="headerlink" href="#module-amaascore.assets.real_estate" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="amaascore.assets.real_estate.RealEstate">
+<em class="property">class </em><code class="descclassname">amaascore.assets.real_estate.</code><code class="descname">RealEstate</code><span class="sig-paren">(</span><em>asset_manager_id</em>, <em>asset_id</em>, <em>asset_issuer_id=None</em>, <em>asset_status='Active'</em>, <em>description=''</em>, <em>country_id=None</em>, <em>venue_id=None</em>, <em>currency=None</em>, <em>links={}</em>, <em>references={}</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/assets/real_estate.html#RealEstate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.assets.real_estate.RealEstate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#amaascore.assets.real_asset.RealAsset" title="amaascore.assets.real_asset.RealAsset"><code class="xref py py-class docutils literal"><span class="pre">amaascore.assets.real_asset.RealAsset</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="amaascore-assets-synthetic-module">
+<h2>amaascore.assets.synthetic module<a class="headerlink" href="#amaascore-assets-synthetic-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="amaascore-assets-synthetic-from-book-module">
+<h2>amaascore.assets.synthetic_from_book module<a class="headerlink" href="#amaascore-assets-synthetic-from-book-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="amaascore-assets-synthetic-multi-leg-module">
+<h2>amaascore.assets.synthetic_multi_leg module<a class="headerlink" href="#amaascore-assets-synthetic-multi-leg-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-amaascore.assets.utils">
+<span id="amaascore-assets-utils-module"></span><h2>amaascore.assets.utils module<a class="headerlink" href="#module-amaascore.assets.utils" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="amaascore.assets.utils.assets_to_csv">
+<code class="descclassname">amaascore.assets.utils.</code><code class="descname">assets_to_csv</code><span class="sig-paren">(</span><em>assets</em>, <em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/assets/utils.html#assets_to_csv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.assets.utils.assets_to_csv" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="amaascore.assets.utils.assets_to_csv_stream">
+<code class="descclassname">amaascore.assets.utils.</code><code class="descname">assets_to_csv_stream</code><span class="sig-paren">(</span><em>assets</em>, <em>stream</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/assets/utils.html#assets_to_csv_stream"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.assets.utils.assets_to_csv_stream" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="amaascore.assets.utils.csv_filename_to_assets">
+<code class="descclassname">amaascore.assets.utils.</code><code class="descname">csv_filename_to_assets</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/assets/utils.html#csv_filename_to_assets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.assets.utils.csv_filename_to_assets" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="amaascore.assets.utils.csv_stream_to_assets">
+<code class="descclassname">amaascore.assets.utils.</code><code class="descname">csv_stream_to_assets</code><span class="sig-paren">(</span><em>stream</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/assets/utils.html#csv_stream_to_assets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.assets.utils.csv_stream_to_assets" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="amaascore.assets.utils.json_to_asset">
+<code class="descclassname">amaascore.assets.utils.</code><code class="descname">json_to_asset</code><span class="sig-paren">(</span><em>json_asset</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/assets/utils.html#json_to_asset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.assets.utils.json_to_asset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-amaascore.assets">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-amaascore.assets" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">amaascore.assets package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-amaascore.assets.asset">amaascore.assets.asset module</a></li>
+<li><a class="reference internal" href="#module-amaascore.assets.bond">amaascore.assets.bond module</a></li>
+<li><a class="reference internal" href="#module-amaascore.assets.bond_future">amaascore.assets.bond_future module</a></li>
+<li><a class="reference internal" href="#module-amaascore.assets.bond_future_option">amaascore.assets.bond_future_option module</a></li>
+<li><a class="reference internal" href="#module-amaascore.assets.bond_option">amaascore.assets.bond_option module</a></li>
+<li><a class="reference internal" href="#module-amaascore.assets.cfd">amaascore.assets.cfd module</a></li>
+<li><a class="reference internal" href="#module-amaascore.assets.currency">amaascore.assets.currency module</a></li>
+<li><a class="reference internal" href="#module-amaascore.assets.derivative">amaascore.assets.derivative module</a></li>
+<li><a class="reference internal" href="#amaascore-assets-energy-future-module">amaascore.assets.energy_future module</a></li>
+<li><a class="reference internal" href="#module-amaascore.assets.equity">amaascore.assets.equity module</a></li>
+<li><a class="reference internal" href="#amaascore-assets-equity-future-module">amaascore.assets.equity_future module</a></li>
+<li><a class="reference internal" href="#module-amaascore.assets.etf">amaascore.assets.etf module</a></li>
+<li><a class="reference internal" href="#module-amaascore.assets.foreign_exchange">amaascore.assets.foreign_exchange module</a></li>
+<li><a class="reference internal" href="#module-amaascore.assets.fund">amaascore.assets.fund module</a></li>
+<li><a class="reference internal" href="#module-amaascore.assets.future">amaascore.assets.future module</a></li>
+<li><a class="reference internal" href="#module-amaascore.assets.future_option">amaascore.assets.future_option module</a></li>
+<li><a class="reference internal" href="#module-amaascore.assets.fx_option">amaascore.assets.fx_option module</a></li>
+<li><a class="reference internal" href="#module-amaascore.assets.index">amaascore.assets.index module</a></li>
+<li><a class="reference internal" href="#amaascore-assets-index-future-module">amaascore.assets.index_future module</a></li>
+<li><a class="reference internal" href="#amaascore-assets-interest-rate-future-module">amaascore.assets.interest_rate_future module</a></li>
+<li><a class="reference internal" href="#module-amaascore.assets.interface">amaascore.assets.interface module</a></li>
+<li><a class="reference internal" href="#module-amaascore.assets.listed_cfd">amaascore.assets.listed_cfd module</a></li>
+<li><a class="reference internal" href="#module-amaascore.assets.listed_derivative">amaascore.assets.listed_derivative module</a></li>
+<li><a class="reference internal" href="#module-amaascore.assets.option_mixin">amaascore.assets.option_mixin module</a></li>
+<li><a class="reference internal" href="#module-amaascore.assets.real_asset">amaascore.assets.real_asset module</a></li>
+<li><a class="reference internal" href="#module-amaascore.assets.real_estate">amaascore.assets.real_estate module</a></li>
+<li><a class="reference internal" href="#amaascore-assets-synthetic-module">amaascore.assets.synthetic module</a></li>
+<li><a class="reference internal" href="#amaascore-assets-synthetic-from-book-module">amaascore.assets.synthetic_from_book module</a></li>
+<li><a class="reference internal" href="#amaascore-assets-synthetic-multi-leg-module">amaascore.assets.synthetic_multi_leg module</a></li>
+<li><a class="reference internal" href="#module-amaascore.assets.utils">amaascore.assets.utils module</a></li>
+<li><a class="reference internal" href="#module-amaascore.assets">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="amaascore.html">amaascore package</a><ul>
+      <li>Previous: <a href="amaascore.asset_managers.html" title="previous chapter">amaascore.asset_managers package</a></li>
+      <li>Next: <a href="amaascore.books.html" title="next chapter">amaascore.books package</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/amaascore.assets.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, AMaaS.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/amaascore.assets.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

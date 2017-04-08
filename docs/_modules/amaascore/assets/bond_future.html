@@ -1,0 +1,142 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>amaascore.assets.bond_future &#8212; amaas-core-sdk-python 0.1.11 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.1.11',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for amaascore.assets.bond_future</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span><span class="p">,</span> <span class="n">division</span><span class="p">,</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">unicode_literals</span>
+
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">date</span>
+<span class="kn">from</span> <span class="nn">decimal</span> <span class="k">import</span> <span class="n">Decimal</span>
+
+<span class="kn">from</span> <span class="nn">amaascore.assets.future</span> <span class="k">import</span> <span class="n">Future</span>
+
+
+<div class="viewcode-block" id="BondFuture"><a class="viewcode-back" href="../../../amaascore.assets.html#amaascore.assets.bond_future.BondFuture">[docs]</a><span class="k">class</span> <span class="nc">BondFuture</span><span class="p">(</span><span class="n">Future</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">asset_manager_id</span><span class="p">,</span> <span class="n">asset_id</span><span class="p">,</span> <span class="n">expiry_date</span><span class="p">,</span> <span class="n">underlying_bond_tenor</span><span class="p">,</span> <span class="n">underlying_bond_coupon</span><span class="p">,</span>
+                 <span class="n">cheapest_to_deliver_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">asset_issuer_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">asset_status</span><span class="o">=</span><span class="s1">&#39;Active&#39;</span><span class="p">,</span> <span class="n">issue_date</span><span class="o">=</span><span class="n">date</span><span class="o">.</span><span class="n">min</span><span class="p">,</span>
+                 <span class="n">description</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">country_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">venue_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">links</span><span class="o">=</span><span class="p">{},</span> <span class="n">references</span><span class="o">=</span><span class="p">{},</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        :param asset_manager_id: The asset manager who owns the data for this BondFuture</span>
+<span class="sd">        :param asset_id: The owning asset manager&#39;s unique identifier for this BondFuture</span>
+<span class="sd">        :param expiry_date: The date on which this BondFuture will expire</span>
+<span class="sd">        :param underlying_bond_tenor: The tenor of the bond on which this is a future</span>
+<span class="sd">        :param cheapest_to_deliver_id: Populated from the server, cannot be calculated in the SDK.</span>
+<span class="sd">        :param asset_issuer_id: The owning asset manager&#39;s identifier for the issuer of this future</span>
+<span class="sd">        :param asset_status: The status of this BondFuture</span>
+<span class="sd">        :param issue_date: The date on which this BondFuture was created</span>
+<span class="sd">        :param description: A human-readable description of this BondFuture</span>
+<span class="sd">        :param country_id: The ISO 3166-1 alpha-3 code for the country that this BondFutureOption was issued in</span>
+<span class="sd">        :param venue_id: The ISO-10383 identifier for the venue on which this BondFutureOption trades</span>
+<span class="sd">        :param references: A dictionary of additional References for this BondFutureOption</span>
+<span class="sd">        :param args:</span>
+<span class="sd">        :param kwargs:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cheapest_to_deliver_id</span> <span class="o">=</span> <span class="n">cheapest_to_deliver_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">expiry_date</span> <span class="o">=</span> <span class="n">expiry_date</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">underlying_bond_tenor</span> <span class="o">=</span> <span class="n">underlying_bond_tenor</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">underlying_bond_coupon</span> <span class="o">=</span> <span class="n">underlying_bond_coupon</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">BondFuture</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">asset_manager_id</span><span class="o">=</span><span class="n">asset_manager_id</span><span class="p">,</span> <span class="n">asset_id</span><span class="o">=</span><span class="n">asset_id</span><span class="p">,</span>
+                                         <span class="n">asset_issuer_id</span><span class="o">=</span><span class="n">asset_issuer_id</span><span class="p">,</span> <span class="n">asset_status</span><span class="o">=</span><span class="n">asset_status</span><span class="p">,</span>
+                                         <span class="n">description</span><span class="o">=</span><span class="n">description</span><span class="p">,</span> <span class="n">country_id</span><span class="o">=</span><span class="n">country_id</span><span class="p">,</span> <span class="n">venue_id</span><span class="o">=</span><span class="n">venue_id</span><span class="p">,</span>
+                                         <span class="n">links</span><span class="o">=</span><span class="n">links</span><span class="p">,</span> <span class="n">references</span><span class="o">=</span><span class="n">references</span><span class="p">,</span> <span class="n">issue_date</span><span class="o">=</span><span class="n">issue_date</span><span class="p">,</span>
+                                         <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">underlying_bond_coupon</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;_underlying_bond_coupon&#39;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_underlying_bond_coupon</span>
+
+    <span class="nd">@underlying_bond_coupon</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">underlying_bond_coupon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">underlying_bond_coupon</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The coupon paid out by the underlying bond.  Represented as a fraction of 1 (e.g. 0.05 is 5%).</span>
+<span class="sd">        :param underlying_bond_coupon:</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">underlying_bond_coupon</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_underlying_bond_coupon</span> <span class="o">=</span> <span class="n">Decimal</span><span class="p">(</span><span class="n">underlying_bond_coupon</span><span class="p">)</span></div>
+
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, AMaaS.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

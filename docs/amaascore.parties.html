@@ -1,0 +1,332 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>amaascore.parties package &#8212; amaas-core-sdk-python 0.1.11 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1.11',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="amaascore.tools package" href="amaascore.tools.html" />
+    <link rel="prev" title="amaascore.monitor package" href="amaascore.monitor.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="amaascore-parties-package">
+<h1>amaascore.parties package<a class="headerlink" href="#amaascore-parties-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="amaascore-parties-asset-manager-module">
+<h2>amaascore.parties.asset_manager module<a class="headerlink" href="#amaascore-parties-asset-manager-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-amaascore.parties.broker">
+<span id="amaascore-parties-broker-module"></span><h2>amaascore.parties.broker module<a class="headerlink" href="#module-amaascore.parties.broker" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="amaascore.parties.broker.Broker">
+<em class="property">class </em><code class="descclassname">amaascore.parties.broker.</code><code class="descname">Broker</code><span class="sig-paren">(</span><em>asset_manager_id</em>, <em>party_id</em>, <em>base_currency=None</em>, <em>description=''</em>, <em>party_status='Active'</em>, <em>addresses={}</em>, <em>emails={}</em>, <em>links={}</em>, <em>references={}</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/parties/broker.html#Broker"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.parties.broker.Broker" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#amaascore.parties.company.Company" title="amaascore.parties.company.Company"><code class="xref py py-class docutils literal"><span class="pre">amaascore.parties.company.Company</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-amaascore.parties.children">
+<span id="amaascore-parties-children-module"></span><h2>amaascore.parties.children module<a class="headerlink" href="#module-amaascore.parties.children" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="amaascore.parties.children.Address">
+<em class="property">class </em><code class="descclassname">amaascore.parties.children.</code><code class="descname">Address</code><span class="sig-paren">(</span><em>line_one</em>, <em>city</em>, <em>country_id</em>, <em>address_primary</em>, <em>line_two=None</em>, <em>region=None</em>, <em>postal_code=None</em>, <em>active=True</em>, <em>version=1</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/parties/children.html#Address"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.parties.children.Address" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="amaascore.core.html#amaascore.core.amaas_model.AMaaSModel" title="amaascore.core.amaas_model.AMaaSModel"><code class="xref py py-class docutils literal"><span class="pre">amaascore.core.amaas_model.AMaaSModel</span></code></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="amaascore.parties.children.Email">
+<em class="property">class </em><code class="descclassname">amaascore.parties.children.</code><code class="descname">Email</code><span class="sig-paren">(</span><em>email</em>, <em>email_primary</em>, <em>active=True</em>, <em>version=1</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/parties/children.html#Email"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.parties.children.Email" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="amaascore.core.html#amaascore.core.amaas_model.AMaaSModel" title="amaascore.core.amaas_model.AMaaSModel"><code class="xref py py-class docutils literal"><span class="pre">amaascore.core.amaas_model.AMaaSModel</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-amaascore.parties.company">
+<span id="amaascore-parties-company-module"></span><h2>amaascore.parties.company module<a class="headerlink" href="#module-amaascore.parties.company" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="amaascore.parties.company.Company">
+<em class="property">class </em><code class="descclassname">amaascore.parties.company.</code><code class="descname">Company</code><span class="sig-paren">(</span><em>asset_manager_id</em>, <em>party_id</em>, <em>base_currency=None</em>, <em>description=''</em>, <em>party_status='Active'</em>, <em>addresses={}</em>, <em>emails={}</em>, <em>links={}</em>, <em>references={}</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/parties/company.html#Company"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.parties.company.Company" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#amaascore.parties.organisation.Organisation" title="amaascore.parties.organisation.Organisation"><code class="xref py py-class docutils literal"><span class="pre">amaascore.parties.organisation.Organisation</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-amaascore.parties.enums">
+<span id="amaascore-parties-enums-module"></span><h2>amaascore.parties.enums module<a class="headerlink" href="#module-amaascore.parties.enums" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-amaascore.parties.exchange">
+<span id="amaascore-parties-exchange-module"></span><h2>amaascore.parties.exchange module<a class="headerlink" href="#module-amaascore.parties.exchange" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="amaascore.parties.exchange.Exchange">
+<em class="property">class </em><code class="descclassname">amaascore.parties.exchange.</code><code class="descname">Exchange</code><span class="sig-paren">(</span><em>asset_manager_id</em>, <em>party_id</em>, <em>base_currency=None</em>, <em>description=''</em>, <em>party_status='Active'</em>, <em>addresses={}</em>, <em>emails={}</em>, <em>links={}</em>, <em>references={}</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/parties/exchange.html#Exchange"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.parties.exchange.Exchange" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#amaascore.parties.company.Company" title="amaascore.parties.company.Company"><code class="xref py py-class docutils literal"><span class="pre">amaascore.parties.company.Company</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-amaascore.parties.fund">
+<span id="amaascore-parties-fund-module"></span><h2>amaascore.parties.fund module<a class="headerlink" href="#module-amaascore.parties.fund" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="amaascore.parties.fund.Fund">
+<em class="property">class </em><code class="descclassname">amaascore.parties.fund.</code><code class="descname">Fund</code><span class="sig-paren">(</span><em>asset_manager_id</em>, <em>party_id</em>, <em>base_currency</em>, <em>description=''</em>, <em>party_status='Active'</em>, <em>addresses={}</em>, <em>emails={}</em>, <em>links={}</em>, <em>references={}</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/parties/fund.html#Fund"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.parties.fund.Fund" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#amaascore.parties.company.Company" title="amaascore.parties.company.Company"><code class="xref py py-class docutils literal"><span class="pre">amaascore.parties.company.Company</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-amaascore.parties.government_agency">
+<span id="amaascore-parties-government-agency-module"></span><h2>amaascore.parties.government_agency module<a class="headerlink" href="#module-amaascore.parties.government_agency" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="amaascore.parties.government_agency.GovernmentAgency">
+<em class="property">class </em><code class="descclassname">amaascore.parties.government_agency.</code><code class="descname">GovernmentAgency</code><span class="sig-paren">(</span><em>asset_manager_id</em>, <em>party_id</em>, <em>description=''</em>, <em>party_status='Active'</em>, <em>addresses={}</em>, <em>emails={}</em>, <em>links={}</em>, <em>references={}</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/parties/government_agency.html#GovernmentAgency"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.parties.government_agency.GovernmentAgency" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#amaascore.parties.organisation.Organisation" title="amaascore.parties.organisation.Organisation"><code class="xref py py-class docutils literal"><span class="pre">amaascore.parties.organisation.Organisation</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-amaascore.parties.individual">
+<span id="amaascore-parties-individual-module"></span><h2>amaascore.parties.individual module<a class="headerlink" href="#module-amaascore.parties.individual" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="amaascore.parties.individual.Individual">
+<em class="property">class </em><code class="descclassname">amaascore.parties.individual.</code><code class="descname">Individual</code><span class="sig-paren">(</span><em>asset_manager_id</em>, <em>party_id</em>, <em>given_names=''</em>, <em>surname=''</em>, <em>date_of_birth=None</em>, <em>base_currency=None</em>, <em>party_status='Active'</em>, <em>addresses={}</em>, <em>emails={}</em>, <em>links={}</em>, <em>references={}</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/parties/individual.html#Individual"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.parties.individual.Individual" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#amaascore.parties.party.Party" title="amaascore.parties.party.Party"><code class="xref py py-class docutils literal"><span class="pre">amaascore.parties.party.Party</span></code></a></p>
+<dl class="attribute">
+<dt id="amaascore.parties.individual.Individual.date_of_birth">
+<code class="descname">date_of_birth</code><a class="headerlink" href="#amaascore.parties.individual.Individual.date_of_birth" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="amaascore.parties.individual.Individual.description">
+<code class="descname">description</code><a class="headerlink" href="#amaascore.parties.individual.Individual.description" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-amaascore.parties.interface">
+<span id="amaascore-parties-interface-module"></span><h2>amaascore.parties.interface module<a class="headerlink" href="#module-amaascore.parties.interface" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="amaascore.parties.interface.PartiesInterface">
+<em class="property">class </em><code class="descclassname">amaascore.parties.interface.</code><code class="descname">PartiesInterface</code><span class="sig-paren">(</span><em>logger=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/parties/interface.html#PartiesInterface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.parties.interface.PartiesInterface" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="amaascore.core.html#amaascore.core.interface.Interface" title="amaascore.core.interface.Interface"><code class="xref py py-class docutils literal"><span class="pre">amaascore.core.interface.Interface</span></code></a></p>
+<dl class="method">
+<dt id="amaascore.parties.interface.PartiesInterface.amend">
+<code class="descname">amend</code><span class="sig-paren">(</span><em>party</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/parties/interface.html#PartiesInterface.amend"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.parties.interface.PartiesInterface.amend" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="amaascore.parties.interface.PartiesInterface.deactivate">
+<code class="descname">deactivate</code><span class="sig-paren">(</span><em>asset_manager_id</em>, <em>party_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/parties/interface.html#PartiesInterface.deactivate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.parties.interface.PartiesInterface.deactivate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="amaascore.parties.interface.PartiesInterface.new">
+<code class="descname">new</code><span class="sig-paren">(</span><em>party</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/parties/interface.html#PartiesInterface.new"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.parties.interface.PartiesInterface.new" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="amaascore.parties.interface.PartiesInterface.parties_by_asset_manager">
+<code class="descname">parties_by_asset_manager</code><span class="sig-paren">(</span><em>asset_manager_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/parties/interface.html#PartiesInterface.parties_by_asset_manager"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.parties.interface.PartiesInterface.parties_by_asset_manager" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="amaascore.parties.interface.PartiesInterface.retrieve">
+<code class="descname">retrieve</code><span class="sig-paren">(</span><em>asset_manager_id</em>, <em>party_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/parties/interface.html#PartiesInterface.retrieve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.parties.interface.PartiesInterface.retrieve" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="amaascore.parties.interface.PartiesInterface.search">
+<code class="descname">search</code><span class="sig-paren">(</span><em>asset_manager_ids=None</em>, <em>party_ids=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/parties/interface.html#PartiesInterface.search"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.parties.interface.PartiesInterface.search" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-amaascore.parties.organisation">
+<span id="amaascore-parties-organisation-module"></span><h2>amaascore.parties.organisation module<a class="headerlink" href="#module-amaascore.parties.organisation" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="amaascore.parties.organisation.Organisation">
+<em class="property">class </em><code class="descclassname">amaascore.parties.organisation.</code><code class="descname">Organisation</code><span class="sig-paren">(</span><em>asset_manager_id</em>, <em>party_id</em>, <em>description=''</em>, <em>base_currency=None</em>, <em>party_status='Active'</em>, <em>addresses={}</em>, <em>emails={}</em>, <em>links={}</em>, <em>references={}</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/parties/organisation.html#Organisation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.parties.organisation.Organisation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#amaascore.parties.party.Party" title="amaascore.parties.party.Party"><code class="xref py py-class docutils literal"><span class="pre">amaascore.parties.party.Party</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-amaascore.parties.party">
+<span id="amaascore-parties-party-module"></span><h2>amaascore.parties.party module<a class="headerlink" href="#module-amaascore.parties.party" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="amaascore.parties.party.Party">
+<em class="property">class </em><code class="descclassname">amaascore.parties.party.</code><code class="descname">Party</code><span class="sig-paren">(</span><em>asset_manager_id</em>, <em>party_id</em>, <em>party_status='Active'</em>, <em>base_currency=None</em>, <em>description=''</em>, <em>addresses={}</em>, <em>emails={}</em>, <em>links={}</em>, <em>references={}</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/parties/party.html#Party"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.parties.party.Party" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="amaascore.core.html#amaascore.core.amaas_model.AMaaSModel" title="amaascore.core.amaas_model.AMaaSModel"><code class="xref py py-class docutils literal"><span class="pre">amaascore.core.amaas_model.AMaaSModel</span></code></a></p>
+<dl class="attribute">
+<dt id="amaascore.parties.party.Party.addresses">
+<code class="descname">addresses</code><a class="headerlink" href="#amaascore.parties.party.Party.addresses" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="amaascore.parties.party.Party.children">
+<em class="property">static </em><code class="descname">children</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/parties/party.html#Party.children"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.parties.party.Party.children" title="Permalink to this definition">¶</a></dt>
+<dd><p>A dict of which of the attributes are collections of other objects, and what type</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="amaascore.parties.party.Party.emails">
+<code class="descname">emails</code><a class="headerlink" href="#amaascore.parties.party.Party.emails" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="amaascore.parties.party.Party.party_status">
+<code class="descname">party_status</code><a class="headerlink" href="#amaascore.parties.party.Party.party_status" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="amaascore.parties.party.Party.upsert_address">
+<code class="descname">upsert_address</code><span class="sig-paren">(</span><em>address_type</em>, <em>address</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/parties/party.html#Party.upsert_address"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.parties.party.Party.upsert_address" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="amaascore.parties.party.Party.upsert_email">
+<code class="descname">upsert_email</code><span class="sig-paren">(</span><em>email_type</em>, <em>email</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/parties/party.html#Party.upsert_email"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.parties.party.Party.upsert_email" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-amaascore.parties.utils">
+<span id="amaascore-parties-utils-module"></span><h2>amaascore.parties.utils module<a class="headerlink" href="#module-amaascore.parties.utils" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="amaascore.parties.utils.csv_filename_to_parties">
+<code class="descclassname">amaascore.parties.utils.</code><code class="descname">csv_filename_to_parties</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/parties/utils.html#csv_filename_to_parties"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.parties.utils.csv_filename_to_parties" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="amaascore.parties.utils.csv_stream_to_parties">
+<code class="descclassname">amaascore.parties.utils.</code><code class="descname">csv_stream_to_parties</code><span class="sig-paren">(</span><em>stream</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/parties/utils.html#csv_stream_to_parties"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.parties.utils.csv_stream_to_parties" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="amaascore.parties.utils.json_to_party">
+<code class="descclassname">amaascore.parties.utils.</code><code class="descname">json_to_party</code><span class="sig-paren">(</span><em>json_to_convert</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/parties/utils.html#json_to_party"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.parties.utils.json_to_party" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="amaascore.parties.utils.parties_to_csv">
+<code class="descclassname">amaascore.parties.utils.</code><code class="descname">parties_to_csv</code><span class="sig-paren">(</span><em>parties</em>, <em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/parties/utils.html#parties_to_csv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.parties.utils.parties_to_csv" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="amaascore.parties.utils.parties_to_csv_stream">
+<code class="descclassname">amaascore.parties.utils.</code><code class="descname">parties_to_csv_stream</code><span class="sig-paren">(</span><em>parties</em>, <em>stream</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/parties/utils.html#parties_to_csv_stream"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.parties.utils.parties_to_csv_stream" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-amaascore.parties">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-amaascore.parties" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">amaascore.parties package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#amaascore-parties-asset-manager-module">amaascore.parties.asset_manager module</a></li>
+<li><a class="reference internal" href="#module-amaascore.parties.broker">amaascore.parties.broker module</a></li>
+<li><a class="reference internal" href="#module-amaascore.parties.children">amaascore.parties.children module</a></li>
+<li><a class="reference internal" href="#module-amaascore.parties.company">amaascore.parties.company module</a></li>
+<li><a class="reference internal" href="#module-amaascore.parties.enums">amaascore.parties.enums module</a></li>
+<li><a class="reference internal" href="#module-amaascore.parties.exchange">amaascore.parties.exchange module</a></li>
+<li><a class="reference internal" href="#module-amaascore.parties.fund">amaascore.parties.fund module</a></li>
+<li><a class="reference internal" href="#module-amaascore.parties.government_agency">amaascore.parties.government_agency module</a></li>
+<li><a class="reference internal" href="#module-amaascore.parties.individual">amaascore.parties.individual module</a></li>
+<li><a class="reference internal" href="#module-amaascore.parties.interface">amaascore.parties.interface module</a></li>
+<li><a class="reference internal" href="#module-amaascore.parties.organisation">amaascore.parties.organisation module</a></li>
+<li><a class="reference internal" href="#module-amaascore.parties.party">amaascore.parties.party module</a></li>
+<li><a class="reference internal" href="#module-amaascore.parties.utils">amaascore.parties.utils module</a></li>
+<li><a class="reference internal" href="#module-amaascore.parties">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="amaascore.html">amaascore package</a><ul>
+      <li>Previous: <a href="amaascore.monitor.html" title="previous chapter">amaascore.monitor package</a></li>
+      <li>Next: <a href="amaascore.tools.html" title="next chapter">amaascore.tools package</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/amaascore.parties.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, AMaaS.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/amaascore.parties.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

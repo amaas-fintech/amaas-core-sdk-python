@@ -1,0 +1,251 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>amaascore.corporate_actions package &#8212; amaas-core-sdk-python 0.1.11 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1.11',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="amaascore-corporate-actions-package">
+<h1>amaascore.corporate_actions package<a class="headerlink" href="#amaascore-corporate-actions-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-amaascore.corporate_actions.corporate_action">
+<span id="amaascore-corporate-actions-corporate-action-module"></span><h2>amaascore.corporate_actions.corporate_action module<a class="headerlink" href="#module-amaascore.corporate_actions.corporate_action" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="amaascore.corporate_actions.corporate_action.CorporateAction">
+<em class="property">class </em><code class="descclassname">amaascore.corporate_actions.corporate_action.</code><code class="descname">CorporateAction</code><span class="sig-paren">(</span><em>asset_manager_id</em>, <em>corporate_action_id</em>, <em>record_date</em>, <em>corporate_action_status='Open'</em>, <em>asset_id=None</em>, <em>party_id=None</em>, <em>declared_date=None</em>, <em>settlement_date=None</em>, <em>elective=False</em>, <em>message=None</em>, <em>description=''</em>, <em>references=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/corporate_actions/corporate_action.html#CorporateAction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.corporate_actions.corporate_action.CorporateAction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="amaascore.core.html#amaascore.core.amaas_model.AMaaSModel" title="amaascore.core.amaas_model.AMaaSModel"><code class="xref py py-class docutils literal"><span class="pre">amaascore.core.amaas_model.AMaaSModel</span></code></a></p>
+<dl class="staticmethod">
+<dt id="amaascore.corporate_actions.corporate_action.CorporateAction.children">
+<em class="property">static </em><code class="descname">children</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/corporate_actions/corporate_action.html#CorporateAction.children"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.corporate_actions.corporate_action.CorporateAction.children" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="amaascore.corporate_actions.corporate_action.CorporateAction.declared_date">
+<code class="descname">declared_date</code><a class="headerlink" href="#amaascore.corporate_actions.corporate_action.CorporateAction.declared_date" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="amaascore.corporate_actions.corporate_action.CorporateAction.record_date">
+<code class="descname">record_date</code><a class="headerlink" href="#amaascore.corporate_actions.corporate_action.CorporateAction.record_date" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="amaascore.corporate_actions.corporate_action.CorporateAction.settlement_date">
+<code class="descname">settlement_date</code><a class="headerlink" href="#amaascore.corporate_actions.corporate_action.CorporateAction.settlement_date" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-amaascore.corporate_actions.dividend">
+<span id="amaascore-corporate-actions-dividend-module"></span><h2>amaascore.corporate_actions.dividend module<a class="headerlink" href="#module-amaascore.corporate_actions.dividend" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="amaascore.corporate_actions.dividend.Dividend">
+<em class="property">class </em><code class="descclassname">amaascore.corporate_actions.dividend.</code><code class="descname">Dividend</code><span class="sig-paren">(</span><em>asset_manager_id</em>, <em>corporate_action_id</em>, <em>record_date</em>, <em>dividend_rate</em>, <em>dividend_asset_id</em>, <em>corporate_action_status='Open'</em>, <em>asset_id=None</em>, <em>party_id=None</em>, <em>declared_date=None</em>, <em>settlement_date=None</em>, <em>elective=False</em>, <em>message=None</em>, <em>description=''</em>, <em>references=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/corporate_actions/dividend.html#Dividend"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.corporate_actions.dividend.Dividend" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#amaascore.corporate_actions.corporate_action.CorporateAction" title="amaascore.corporate_actions.corporate_action.CorporateAction"><code class="xref py py-class docutils literal"><span class="pre">amaascore.corporate_actions.corporate_action.CorporateAction</span></code></a></p>
+<dl class="attribute">
+<dt id="amaascore.corporate_actions.dividend.Dividend.dividend_rate">
+<code class="descname">dividend_rate</code><a class="headerlink" href="#amaascore.corporate_actions.dividend.Dividend.dividend_rate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-amaascore.corporate_actions.interface">
+<span id="amaascore-corporate-actions-interface-module"></span><h2>amaascore.corporate_actions.interface module<a class="headerlink" href="#module-amaascore.corporate_actions.interface" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="amaascore.corporate_actions.interface.CorporateActionsInterface">
+<em class="property">class </em><code class="descclassname">amaascore.corporate_actions.interface.</code><code class="descname">CorporateActionsInterface</code><span class="sig-paren">(</span><em>logger=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/corporate_actions/interface.html#CorporateActionsInterface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.corporate_actions.interface.CorporateActionsInterface" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="amaascore.core.html#amaascore.core.interface.Interface" title="amaascore.core.interface.Interface"><code class="xref py py-class docutils literal"><span class="pre">amaascore.core.interface.Interface</span></code></a></p>
+<dl class="method">
+<dt id="amaascore.corporate_actions.interface.CorporateActionsInterface.amend">
+<code class="descname">amend</code><span class="sig-paren">(</span><em>corporate_action</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/corporate_actions/interface.html#CorporateActionsInterface.amend"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.corporate_actions.interface.CorporateActionsInterface.amend" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="amaascore.corporate_actions.interface.CorporateActionsInterface.cancel">
+<code class="descname">cancel</code><span class="sig-paren">(</span><em>asset_manager_id</em>, <em>corporate_action_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/corporate_actions/interface.html#CorporateActionsInterface.cancel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.corporate_actions.interface.CorporateActionsInterface.cancel" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="amaascore.corporate_actions.interface.CorporateActionsInterface.corporate_actions_by_asset_manager">
+<code class="descname">corporate_actions_by_asset_manager</code><span class="sig-paren">(</span><em>asset_manager_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/corporate_actions/interface.html#CorporateActionsInterface.corporate_actions_by_asset_manager"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.corporate_actions.interface.CorporateActionsInterface.corporate_actions_by_asset_manager" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="amaascore.corporate_actions.interface.CorporateActionsInterface.new">
+<code class="descname">new</code><span class="sig-paren">(</span><em>corporate_action</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/corporate_actions/interface.html#CorporateActionsInterface.new"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.corporate_actions.interface.CorporateActionsInterface.new" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="amaascore.corporate_actions.interface.CorporateActionsInterface.retrieve">
+<code class="descname">retrieve</code><span class="sig-paren">(</span><em>asset_manager_id</em>, <em>corporate_action_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/corporate_actions/interface.html#CorporateActionsInterface.retrieve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.corporate_actions.interface.CorporateActionsInterface.retrieve" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="amaascore.corporate_actions.interface.CorporateActionsInterface.search">
+<code class="descname">search</code><span class="sig-paren">(</span><em>asset_manager_ids=None</em>, <em>corporate_action_ids=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/corporate_actions/interface.html#CorporateActionsInterface.search"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.corporate_actions.interface.CorporateActionsInterface.search" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-amaascore.corporate_actions.notification">
+<span id="amaascore-corporate-actions-notification-module"></span><h2>amaascore.corporate_actions.notification module<a class="headerlink" href="#module-amaascore.corporate_actions.notification" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="amaascore.corporate_actions.notification.Notification">
+<em class="property">class </em><code class="descclassname">amaascore.corporate_actions.notification.</code><code class="descname">Notification</code><span class="sig-paren">(</span><em>asset_manager_id</em>, <em>corporate_action_id</em>, <em>record_date</em>, <em>corporate_action_status='Open'</em>, <em>asset_id=None</em>, <em>party_id=None</em>, <em>declared_date=None</em>, <em>settlement_date=None</em>, <em>elective=False</em>, <em>message=None</em>, <em>description=''</em>, <em>references=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/corporate_actions/notification.html#Notification"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.corporate_actions.notification.Notification" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#amaascore.corporate_actions.corporate_action.CorporateAction" title="amaascore.corporate_actions.corporate_action.CorporateAction"><code class="xref py py-class docutils literal"><span class="pre">amaascore.corporate_actions.corporate_action.CorporateAction</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-amaascore.corporate_actions.split">
+<span id="amaascore-corporate-actions-split-module"></span><h2>amaascore.corporate_actions.split module<a class="headerlink" href="#module-amaascore.corporate_actions.split" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="amaascore.corporate_actions.split.Split">
+<em class="property">class </em><code class="descclassname">amaascore.corporate_actions.split.</code><code class="descname">Split</code><span class="sig-paren">(</span><em>asset_manager_id</em>, <em>corporate_action_id</em>, <em>record_date</em>, <em>ratio</em>, <em>corporate_action_status='Open'</em>, <em>asset_id=None</em>, <em>party_id=None</em>, <em>declared_date=None</em>, <em>settlement_date=None</em>, <em>elective=False</em>, <em>message=None</em>, <em>description=''</em>, <em>references=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/corporate_actions/split.html#Split"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.corporate_actions.split.Split" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#amaascore.corporate_actions.corporate_action.CorporateAction" title="amaascore.corporate_actions.corporate_action.CorporateAction"><code class="xref py py-class docutils literal"><span class="pre">amaascore.corporate_actions.corporate_action.CorporateAction</span></code></a></p>
+<dl class="attribute">
+<dt id="amaascore.corporate_actions.split.Split.ratio">
+<code class="descname">ratio</code><a class="headerlink" href="#amaascore.corporate_actions.split.Split.ratio" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-amaascore.corporate_actions.utils">
+<span id="amaascore-corporate-actions-utils-module"></span><h2>amaascore.corporate_actions.utils module<a class="headerlink" href="#module-amaascore.corporate_actions.utils" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="amaascore.corporate_actions.utils.corporate_actions_to_csv">
+<code class="descclassname">amaascore.corporate_actions.utils.</code><code class="descname">corporate_actions_to_csv</code><span class="sig-paren">(</span><em>corporate_actions</em>, <em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/corporate_actions/utils.html#corporate_actions_to_csv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.corporate_actions.utils.corporate_actions_to_csv" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="amaascore.corporate_actions.utils.corporate_actions_to_csv_stream">
+<code class="descclassname">amaascore.corporate_actions.utils.</code><code class="descname">corporate_actions_to_csv_stream</code><span class="sig-paren">(</span><em>corporate_actions</em>, <em>stream</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/corporate_actions/utils.html#corporate_actions_to_csv_stream"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.corporate_actions.utils.corporate_actions_to_csv_stream" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="amaascore.corporate_actions.utils.csv_filename_to_corporate_actions">
+<code class="descclassname">amaascore.corporate_actions.utils.</code><code class="descname">csv_filename_to_corporate_actions</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/corporate_actions/utils.html#csv_filename_to_corporate_actions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.corporate_actions.utils.csv_filename_to_corporate_actions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="amaascore.corporate_actions.utils.csv_stream_to_corporate_actions">
+<code class="descclassname">amaascore.corporate_actions.utils.</code><code class="descname">csv_stream_to_corporate_actions</code><span class="sig-paren">(</span><em>stream</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/corporate_actions/utils.html#csv_stream_to_corporate_actions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.corporate_actions.utils.csv_stream_to_corporate_actions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="amaascore.corporate_actions.utils.json_to_corporate_action">
+<code class="descclassname">amaascore.corporate_actions.utils.</code><code class="descname">json_to_corporate_action</code><span class="sig-paren">(</span><em>json_corporate_action</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/amaascore/corporate_actions/utils.html#json_to_corporate_action"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#amaascore.corporate_actions.utils.json_to_corporate_action" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-amaascore.corporate_actions">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-amaascore.corporate_actions" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">amaascore.corporate_actions package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-amaascore.corporate_actions.corporate_action">amaascore.corporate_actions.corporate_action module</a></li>
+<li><a class="reference internal" href="#module-amaascore.corporate_actions.dividend">amaascore.corporate_actions.dividend module</a></li>
+<li><a class="reference internal" href="#module-amaascore.corporate_actions.interface">amaascore.corporate_actions.interface module</a></li>
+<li><a class="reference internal" href="#module-amaascore.corporate_actions.notification">amaascore.corporate_actions.notification module</a></li>
+<li><a class="reference internal" href="#module-amaascore.corporate_actions.split">amaascore.corporate_actions.split module</a></li>
+<li><a class="reference internal" href="#module-amaascore.corporate_actions.utils">amaascore.corporate_actions.utils module</a></li>
+<li><a class="reference internal" href="#module-amaascore.corporate_actions">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/amaascore.corporate_actions.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, AMaaS.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/amaascore.corporate_actions.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
