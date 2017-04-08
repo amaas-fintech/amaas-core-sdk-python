@@ -1,3 +1,2 @@
 #!/bin/bash
-
-cp -r ./_build/html/* ../docs
+cp -r ./_build/html/. ../docs
