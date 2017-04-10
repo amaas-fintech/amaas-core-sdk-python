@@ -3,6 +3,10 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import datetime
 from decimal import Decimal
 import json
+import sys
+
+# This extremely ugly hack is due to the whole Python 2 vs 3 debacle.
+type_check = str if sys.version_info >= (3, 0, 0) else (str, unicode)
 
 
 def json_handler(value):
@@ -44,6 +48,18 @@ class AMaaSModel(object):
         self.updated_by = kwargs.get('updated_by') or 'TEMP'  # Should come from logged in user
         self.created_time = kwargs.get('created_time')  # Comes from database
         self.updated_time = kwargs.get('updated_time')  # Comes from database
+
+    @property
+    def version(self):
+        return self._version
+
+    @version.setter
+    def version(self, version):
+        """ Cast string versions to int (if read from a file etc) """
+        if isinstance(version, type_check):
+            self._version = int(version)
+        elif isinstance(version, int):
+            self._version = version
 
     def to_interface(self):
         """

@@ -17,6 +17,7 @@ class PartiesInterface(Interface):
         super(PartiesInterface, self).__init__(endpoint=endpoint)
 
     def new(self, party):
+        self.logger.info('New Party - Asset Manager: %s - Party ID: %s', party.asset_manager_id, party.party_id)
         url = self.endpoint + '/parties'
         response = self.session.post(url, json=party.to_interface())
         if response.ok:
@@ -27,6 +28,7 @@ class PartiesInterface(Interface):
             response.raise_for_status()
 
     def amend(self, party):
+        self.logger.info('Amend Party - Asset Manager: %s - Party ID: %s', party.asset_manager_id, party.party_id)
         url = '%s/parties/%s/%s' % (self.endpoint, party.asset_manager_id, party.party_id)
         response = self.session.put(url, json=party.to_interface())
         if response.ok:
@@ -50,6 +52,7 @@ class PartiesInterface(Interface):
             response.raise_for_status()
 
     def retrieve(self, asset_manager_id, party_id):
+        self.logger.info('Retrieve Party - Asset Manager: %s - Party ID: %s', asset_manager_id, party_id)
         url = '%s/parties/%s/%s' % (self.endpoint, asset_manager_id, party_id)
         response = self.session.get(url)
         if response.ok:
@@ -59,6 +62,7 @@ class PartiesInterface(Interface):
             response.raise_for_status()
 
     def deactivate(self, asset_manager_id, party_id):
+        self.logger.info('Deactivate Party - Asset Manager: %s - Party ID: %s', asset_manager_id, party_id)
         url = '%s/parties/%s/%s' % (self.endpoint, asset_manager_id, party_id)
         json = {'party_status': 'Inactive'}
         response = self.session.patch(url, json=json)
