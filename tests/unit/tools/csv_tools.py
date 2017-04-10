@@ -8,9 +8,11 @@ import unittest
 
 from amaascore.assets.asset import Asset
 from amaascore.assets.utils import json_to_asset
+from amaascore.books.book import Book
 from amaascore.tools.csv_tools import objects_to_csv, objects_to_csv_stream, \
     csv_filename_to_objects, csv_stream_to_objects
 from amaascore.tools.generate_asset import generate_asset
+from amaascore.tools.generate_book import generate_book
 
 
 class CSVTest(unittest.TestCase):
@@ -41,6 +43,19 @@ class CSVTest(unittest.TestCase):
         with open(temp_filepath, 'r') as temp_file:
             data = temp_file.readlines()
         self.assertEqual(len(data), 6)  # 5 assets + header
+        os.close(file_desc)
+        os.remove(temp_filepath)
+
+    def test_BooksToCSVStream(self):
+        # Books have no children so test this case as well.
+        file_desc, temp_filepath = tempfile.mkstemp()
+        books = [generate_book() for i in range(5)]
+        with open(temp_filepath, 'w') as temp_file:
+            objects_to_csv_stream(objects=books, stream=temp_file, clazz=Book)
+        # Read the file back out again
+        with open(temp_filepath, 'r') as temp_file:
+            data = temp_file.readlines()
+        self.assertEqual(len(data), 6)  # 5 books + header
         os.close(file_desc)
         os.remove(temp_filepath)
 
