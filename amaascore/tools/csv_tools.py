@@ -28,7 +28,7 @@ def objects_to_csv_stream(objects, stream, clazz=None):
     object_dicts = []
     for obj in objects:
         obj_dict = obj.to_json()
-        if clazz:
+        if clazz and hasattr(clazz, 'children'):
             # FOR NOW - remove all children
             [obj_dict.pop(child, None) for child in clazz.children().keys()]
         object_dicts.append(obj_dict)
