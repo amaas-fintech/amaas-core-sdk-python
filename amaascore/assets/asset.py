@@ -5,6 +5,7 @@ from dateutil.parser import parse
 import sys
 import uuid
 
+from amaascore.assets.children import Link
 from amaascore.core.amaas_model import AMaaSModel
 from amaascore.core.reference import Reference
 
@@ -16,7 +17,7 @@ class Asset(AMaaSModel):
 
     @staticmethod
     def children():
-        return {'references': Reference}
+        return {'links': Link, 'references': Reference}
 
     def __init__(self, asset_manager_id, fungible, asset_issuer_id=None, asset_id=None, asset_status='Active',
                  country_id=None, venue_id=None, currency=None, issue_date=date.min, maturity_date=date.max,

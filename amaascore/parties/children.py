@@ -33,6 +33,7 @@ class Address(AMaaSModel):
                 raise ValueError(ERROR_LOOKUP.get('country_id_invalid') % country_id)
             self._country_id = country_id
 
+
 class Email(AMaaSModel):
 
     def __init__(self, email, email_primary, active=True, version=1, *args, **kwargs):
@@ -53,3 +54,12 @@ class Email(AMaaSModel):
         if not re.match('[^@]+@[^@]+\.[^@]+', email):
             raise ValueError(ERROR_LOOKUP.get('email_address_invalid') % email)
         self._email = email
+
+
+class Link(AMaaSModel):
+
+    def __init__(self, linked_party_id, active=True, version=1, *args, **kwargs):
+        self.linked_party_id = linked_party_id
+        self.active = active
+        self.version = version
+        super(Link, self).__init__(*args, **kwargs)
