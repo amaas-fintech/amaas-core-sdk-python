@@ -12,32 +12,24 @@ type_check = str if sys.version_info >= (3, 0, 0) else (str, unicode)
 class Individual(Party):
 
     def __init__(self, asset_manager_id, party_id, given_names='', surname='', date_of_birth=None, base_currency=None,
-                 party_status='Active',
+                 party_status='Active', description=None,
                  addresses=None, emails=None, links=None, references=None, *args, **kwargs):
         if not hasattr(self, 'party_class'):  # A more specific child class may have already set this
             self.party_class = 'Individual'
         self.given_names = given_names
         self.surname = surname
         self.date_of_birth = date_of_birth
+        description = description or '%s, %s' % (self.surname, self.given_names)
         super(Individual, self).__init__(asset_manager_id=asset_manager_id, party_id=party_id,
                                          base_currency=base_currency, party_status=party_status,
+                                         description=description,
                                          addresses=addresses, emails=emails, links=links, references=references,
                                          *args, **kwargs)
-
-    @property
-    def description(self):
-        return self._description if hasattr(self, '_description') else '%s, %s' % (self.surname, self.given_names)
-
-    @description.setter
-    def description(self, description):
-        if description:
-            self._description = description
 
     @property
     def date_of_birth(self):
         if hasattr(self, '_date_of_birth'):
             return self._date_of_birth
-
 
     @date_of_birth.setter
     def date_of_birth(self, value):
