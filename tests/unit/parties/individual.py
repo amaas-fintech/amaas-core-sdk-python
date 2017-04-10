@@ -24,5 +24,9 @@ class IndividualTest(unittest.TestCase):
         self.assertEqual(type(self.individual), Individual)
         self.assertTrue(isinstance(self.individual, Party))
 
+    def test_Description(self):
+        self.assertEqual(', '.join([self.individual.surname, self.individual.given_names]),
+                         self.individual.description)
+
 if __name__ == '__main__':
     unittest.main()

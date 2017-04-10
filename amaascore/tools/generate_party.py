@@ -53,7 +53,7 @@ def generate_broker(asset_manager_id=None, party_id=None, party_status=None):
 
 def generate_individual(asset_manager_id=None, party_id=None, party_status=None):
     attributes = generate_common(asset_manager_id=asset_manager_id, party_id=party_id, party_status=party_status)
-    individual = Individual(**attributes)
+    individual = Individual(given_names=random_string(10), surname=random_string(10), **attributes)
     return individual
 
 
