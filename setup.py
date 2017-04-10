@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 requires = [
-    'amaasutils'
+    'amaasutils',
     'configparser',
     'python-dateutil',
     'pytz',
@@ -10,7 +10,7 @@ requires = [
 
 setup(
     name='amaascore',
-    version='0.1.11',
+    version='0.1.12',
     description='Asset Management as a Service - Core SDK',
     license='Apache License 2.0',
     url='https://github.com/amaas-fintech/amaas-core-sdk-python',
