@@ -27,6 +27,7 @@ from amaascore.assets.listed_cfd import ListedContractForDifference
 from amaascore.assets.listed_derivative import ListedDerivative
 from amaascore.assets.real_asset import RealAsset
 from amaascore.assets.real_estate import RealEstate
+from amaascore.assets.sukuk import Sukuk
 from amaascore.assets.synthetic import Synthetic
 from amaascore.assets.synthetic_from_book import SyntheticFromBook
 from amaascore.assets.synthetic_multi_leg import SyntheticMultiLeg

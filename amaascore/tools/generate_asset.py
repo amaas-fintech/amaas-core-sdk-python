@@ -1,7 +1,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 
-from amaasutils.random_utils import random_string, random_decimal
+from amaasutils.random_utils import random_string, random_decimal, random_date
 import datetime
 from decimal import Decimal
 import random
@@ -12,6 +12,7 @@ from amaascore.assets.bond_option import BondOption
 from amaascore.assets.foreign_exchange import ForeignExchange
 from amaascore.assets.fund import Fund
 from amaascore.assets.future import Future
+from amaascore.assets.sukuk import Sukuk
 from amaascore.assets.synthetic import Synthetic
 from amaascore.core.reference import Reference
 
@@ -82,6 +83,12 @@ def generate_future(asset_manager_id=None, asset_id=None):
                    tick_size=Decimal('0.01'),
                    **props)
     return asset
+
+
+def generate_sukuk(asset_manager_id=None, asset_id=None):
+    props = generate_common(asset_manager_id=asset_manager_id, asset_id=asset_id)
+    sukuk = Sukuk(maturity_date=random_date(end_year=2050), **props)
+    return sukuk
 
 
 def generate_synthetic(asset_manager_id=None, asset_id=None):
