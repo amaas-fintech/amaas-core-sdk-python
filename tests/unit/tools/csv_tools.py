@@ -8,7 +8,7 @@ import unittest
 
 from amaascore.assets.asset import Asset
 from amaascore.assets.utils import json_to_asset
-from amaascore.tools.csv import objects_to_csv, objects_to_csv_stream, \
+from amaascore.tools.csv_tools import objects_to_csv, objects_to_csv_stream, \
     csv_filename_to_objects, csv_stream_to_objects
 from amaascore.tools.generate_asset import generate_asset
 
