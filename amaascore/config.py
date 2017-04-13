@@ -53,3 +53,9 @@ DEFAULT_LOGGING = {
         },
     }
 }
+
+COGNITO_CLIENT_ID = '55n70ns9u5stie272e1tl7v32v'  # This is not secret - it is just an identifier
+
+# Do not change this
+COGNITO_REGION = 'us-west-2'
+COGNITO_POOL = 'us-west-2_wKa82vECF'

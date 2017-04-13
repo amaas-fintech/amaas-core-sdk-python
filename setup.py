@@ -10,7 +10,7 @@ requires = [
 
 setup(
     name='amaascore',
-    version='0.1.16',
+    version='0.1.17',
     description='Asset Management as a Service - Core SDK',
     license='Apache License 2.0',
     url='https://github.com/amaas-fintech/amaas-core-sdk-python',

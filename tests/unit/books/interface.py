@@ -70,6 +70,14 @@ class BooksInterfaceTest(unittest.TestCase):
         books = self.books_interface.books_by_asset_manager(asset_manager_id=asset_manager_id)
         self.assertEqual(len(books), len(asset_manager_books))
 
+    def test_BookConfigByAssetManager(self):
+        self.books_interface.new(self.book)
+        book_config = self.books_interface.book_config(asset_manager_id=self.book.asset_manager_id)
+        self.assertEqual(len(book_config.keys()), 3)
+        self.assertEqual(len(book_config.get('business_unit')), 1)
+        self.assertEqual(len(book_config.get('owner_id')), 1)
+        self.assertEqual(len(book_config.get('party_id')), 1)
+
     def test_Unicode(self):
         unicode_description = '日本語入力'
         self.book.description = unicode_description

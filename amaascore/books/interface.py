@@ -16,7 +16,7 @@ class BooksInterface(Interface):
 
     def new(self, book):
         self.logger.info('New Book - Asset Manager: %s - Book ID: %s', book.asset_manager_id, book.book_id)
-        url = self.endpoint + '/books'
+        url = '%s/books/%s' % (self.endpoint, book.asset_manager_id)
         response = self.session.post(url, json=book.to_interface())
         if response.ok:
             self.logger.info('Successfully Created Book - Asset Manager: %s - Book ID: %s', book.asset_manager_id,
@@ -96,6 +96,18 @@ class BooksInterface(Interface):
             books = [json_to_book(json_book) for json_book in response.json()]
             self.logger.info('Returned %s Books.', len(books))
             return books
+        else:
+            self.logger.error(response.text)
+            response.raise_for_status()
+
+    def book_config(self, asset_manager_id):
+        self.logger.info('Retrieve Book Config by Asset Manager: %s', asset_manager_id)
+        url = '%s/book_config/%s' % (self.endpoint, asset_manager_id)
+        response = self.session.get(url)
+        if response.ok:
+            book_config = response.json()
+            self.logger.info('Successfully returned Book Config for %s', asset_manager_id)
+            return book_config
         else:
             self.logger.error(response.text)
             response.raise_for_status()
