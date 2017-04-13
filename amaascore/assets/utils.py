@@ -11,6 +11,7 @@ from amaascore.assets.bond_future_option import BondFutureOption
 from amaascore.assets.bond_option import BondOption
 from amaascore.assets.cfd import ContractForDifference
 from amaascore.assets.currency import Currency
+from amaascore.assets.custom_asset import CustomAsset
 from amaascore.assets.derivative import Derivative
 from amaascore.assets.energy_future import EnergyFuture
 from amaascore.assets.equity import Equity
