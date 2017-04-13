@@ -17,7 +17,7 @@ class CorporateActionsInterface(Interface):
     def new(self, corporate_action):
         self.logger.info('New Corporate Action - Asset Manager: %s - Corporate Action ID: %s',
                          corporate_action.asset_manager_id, corporate_action.corporate_action_id)
-        url = self.endpoint + '/corporate-actions'
+        url = '%s/corporate-actions/%s' % (self.endpoint, corporate_action.asset_manager_id)
         response = self.session.post(url, json=corporate_action.to_interface())
         if response.ok:
             self.logger.info('Successfully Created Corporate Action - Asset Manager: %s - Corporate Action ID: %s',

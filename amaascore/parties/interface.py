@@ -18,7 +18,7 @@ class PartiesInterface(Interface):
 
     def new(self, party):
         self.logger.info('New Party - Asset Manager: %s - Party ID: %s', party.asset_manager_id, party.party_id)
-        url = self.endpoint + '/parties'
+        url = '%s/parties/%s' % (self.endpoint, party.asset_manager_id)
         response = self.session.post(url, json=party.to_interface())
         if response.ok:
             party = json_to_party(response.json())

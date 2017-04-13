@@ -18,7 +18,7 @@ class AssetsInterface(Interface):
 
     def new(self, asset):
         self.logger.info('New Asset - Asset Manager: %s - Asset ID: %s', asset.asset_manager_id, asset.asset_id)
-        url = self.endpoint + '/assets'
+        url = '%s/assets/%s' % (self.endpoint, asset.asset_manager_id)
         response = self.session.post(url, json=asset.to_interface())
         if response.ok:
             self.logger.info('Successfully Created Asset - Asset Manager: %s - Asset ID: %s', asset.asset_manager_id,
