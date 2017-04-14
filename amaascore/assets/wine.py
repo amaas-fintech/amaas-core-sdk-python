@@ -16,10 +16,10 @@ class Wine(RealAsset):
                  region=None, appellation=None, classification=None, color=None, bottle_size=None,
                  bottle_in_cellar=None, bottle_location=None, storage_cost=None, rating_type=None,
                  rating_value=None, packing_type=None, to_drink_start=None, to_drink_end=None,
-                 drinking_notes=None, asset_issuer_id=None,
+                 asset_issuer_id=None,
                  asset_status='Active', description='', country_id=None, venue_id=None,
                  currency=None, issue_date=date.min,
-                 links=None, references=None, *args, **kwargs):
+                 comments=None, links=None, references=None, *args, **kwargs):
         self.year = year
         self.producer = producer
         self.region = region
@@ -35,12 +35,11 @@ class Wine(RealAsset):
         self.packing_type = packing_type
         self.to_drink_start = to_drink_start
         self.to_drink_end = to_drink_end
-        self.drinking_notes = drinking_notes
         super(Wine, self).__init__(asset_manager_id=asset_manager_id, asset_id=asset_id,
                                    asset_issuer_id=asset_issuer_id, asset_status=asset_status,
                                    description=description, country_id=country_id, venue_id=venue_id,
                                    issue_date=issue_date, currency=currency, maturity_date=maturity_date,
-                                   links=links, references=references,
+                                   comments=comments, links=links, references=references,
                                    *args, **kwargs)
 
     @property

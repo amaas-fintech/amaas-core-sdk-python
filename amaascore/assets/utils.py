@@ -11,6 +11,7 @@ from amaascore.assets.bond_future_option import BondFutureOption
 from amaascore.assets.bond_option import BondOption
 from amaascore.assets.cfd import ContractForDifference
 from amaascore.assets.currency import Currency
+from amaascore.assets.custom_asset import CustomAsset
 from amaascore.assets.derivative import Derivative
 from amaascore.assets.energy_future import EnergyFuture
 from amaascore.assets.equity import Equity
@@ -31,6 +32,7 @@ from amaascore.assets.sukuk import Sukuk
 from amaascore.assets.synthetic import Synthetic
 from amaascore.assets.synthetic_from_book import SyntheticFromBook
 from amaascore.assets.synthetic_multi_leg import SyntheticMultiLeg
+from amaascore.assets.wine import Wine
 
 
 def json_to_asset(json_asset):
@@ -49,6 +51,8 @@ def json_to_asset(json_asset):
             collection[child_type] = child
         json_asset[collection_name] = collection
     clazz = globals().get(json_asset.get('asset_type'))
+    if not clazz:
+        raise ValueError('Missing Asset Type: %s' % json_asset.get('asset_type'))
     args = inspect.getargspec(clazz.__init__)
     # Some fields are always added in, even though they're not explicitly part of the constructor
     clazz_args = args.args + clazz.amaas_model_attributes()

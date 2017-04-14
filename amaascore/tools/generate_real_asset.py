@@ -1,10 +1,11 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from amaasutils.random_utils import random_string, random_decimal, random_date
+from amaasutils.random_utils import random_string, random_date
 import random
 
 from amaascore.assets.enums import WINE_CLASSIFICATIONS, WINE_PACKING_TYPE
 from amaascore.assets.wine import Wine
+from amaascore.core.comment import Comment
 from amaascore.tools.generate_asset import generate_common
 
 
@@ -25,6 +26,6 @@ def generate_wine(asset_manager_id=None, asset_id=None):
                 packing_type=random.choice(list(WINE_PACKING_TYPE)),
                 to_drink_start=random_date(start_year=2000),
                 to_drink_end=random_date(end_year=2050),
-                drinking_notes=None,
+                comments = {'DrinkingNotes': Comment(comment_value=random_string(100))},
                 **props)
     return wine

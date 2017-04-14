@@ -2,26 +2,25 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 from datetime import date
 
-from amaascore.assets.asset import Asset
+from amaascore.assets.synthetic import Synthetic
 
 
-class SyntheticMultiLeg(Asset):
+class SyntheticMultiLeg(Synthetic):
     """
     A synthetic asset which takes multiple assets as 'legs'.  The value of the entire structure is equal to the sum of
     the legs.
     """
     def __init__(self, asset_id, asset_manager_id, legs=None, asset_issuer_id=None, asset_status='Active',
                  country_id=None, currency=None, description='', fungible=True, issue_date=date.min,
-                 maturity_date=date.max, links=None, references=None, *args, **kwargs):
-        if not hasattr(self, 'asset_class'):  # A more specific child class may have already set this
-            self.asset_class = 'Synthetic'
+                 maturity_date=date.max, comments=None, links=None, references=None, *args, **kwargs):
         self.legs = legs
         super(SyntheticMultiLeg, self).__init__(asset_manager_id=asset_manager_id, asset_id=asset_id,
                                                 fungible=fungible, asset_issuer_id=asset_issuer_id,
                                                 asset_status=asset_status, currency=currency,
                                                 issue_date=issue_date, maturity_date=maturity_date,
                                                 country_id=country_id, description=description,
-                                                links=links, references=references, *args, **kwargs)
+                                                comments=comments, links=links, references=references,
+                                                *args, **kwargs)
 
     @property
     def legs(self):

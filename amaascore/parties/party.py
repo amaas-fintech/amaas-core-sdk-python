@@ -4,6 +4,7 @@ import copy
 
 from amaascore.error_messages import ERROR_LOOKUP
 from amaascore.core.amaas_model import AMaaSModel
+from amaascore.core.comment import Comment
 from amaascore.core.reference import Reference
 from amaascore.parties.children import Address, Email, Link
 from amaascore.parties.enums import PARTY_STATUSES
@@ -14,10 +15,10 @@ class Party(AMaaSModel):
     @staticmethod
     def children():
         """ A dict of which of the attributes are collections of other objects, and what type """
-        return {'addresses': Address, 'emails': Email, 'links': Link, 'references': Reference}
+        return {'addresses': Address, 'comments': Comment, 'emails': Email, 'links': Link, 'references': Reference}
 
     def __init__(self, asset_manager_id, party_id, party_status='Active', base_currency=None, description='',
-                 addresses=None, emails=None, links=None, references=None, *args, **kwargs):
+                 addresses=None, comments=None, emails=None, links=None, references=None, *args, **kwargs):
         self.asset_manager_id = asset_manager_id
         self.party_id = party_id
         self.party_status = party_status
@@ -28,6 +29,7 @@ class Party(AMaaSModel):
         self.description = description
         # Defaults are here not in constructor for mutability reasons.
         self.addresses = addresses or {}
+        self.comments = comments or {}
         self.emails = emails or {}
         self.links = links or {}
         self.references = references or {}

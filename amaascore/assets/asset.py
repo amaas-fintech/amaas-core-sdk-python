@@ -7,6 +7,7 @@ import uuid
 
 from amaascore.assets.children import Link
 from amaascore.core.amaas_model import AMaaSModel
+from amaascore.core.comment import Comment
 from amaascore.core.reference import Reference
 
 # This extremely ugly hack is due to the whole Python 2 vs 3 debacle.
@@ -17,11 +18,11 @@ class Asset(AMaaSModel):
 
     @staticmethod
     def children():
-        return {'links': Link, 'references': Reference}
+        return {'comments': Comment, 'links': Link, 'references': Reference}
 
     def __init__(self, asset_manager_id, fungible, asset_issuer_id=None, asset_id=None, asset_status='Active',
                  country_id=None, venue_id=None, currency=None, issue_date=date.min, maturity_date=date.max,
-                 description='', links=None, references=None, client_additional=None,
+                 description='', comments=None, links=None, references=None, client_additional=None,
                  *args, **kwargs):
         self.asset_manager_id = asset_manager_id
         self.asset_id = asset_id or uuid.uuid4().hex
@@ -39,6 +40,7 @@ class Asset(AMaaSModel):
         self.description = description
         self.client_additional = client_additional  # A field to allow people to build their own assets
         # Defaults are here not in constructor for mutability reasons.
+        self.comments = comments or {}
         self.links = links or {}
         self.references = references or {}
         self.references['AMaaS'] = Reference(reference_value=self.asset_id)  # Upserts the AMaaS Reference
