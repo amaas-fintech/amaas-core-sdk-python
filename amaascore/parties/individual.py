@@ -13,7 +13,7 @@ class Individual(Party):
 
     def __init__(self, asset_manager_id, party_id, given_names='', surname='', date_of_birth=None, base_currency=None,
                  party_status='Active', description=None,
-                 addresses=None, emails=None, links=None, references=None, *args, **kwargs):
+                 addresses=None, comments=None, emails=None, links=None, references=None, *args, **kwargs):
         if not hasattr(self, 'party_class'):  # A more specific child class may have already set this
             self.party_class = 'Individual'
         self.given_names = given_names
@@ -23,7 +23,8 @@ class Individual(Party):
         super(Individual, self).__init__(asset_manager_id=asset_manager_id, party_id=party_id,
                                          base_currency=base_currency, party_status=party_status,
                                          description=description,
-                                         addresses=addresses, emails=emails, links=links, references=references,
+                                         addresses=addresses, comments=comments, emails=emails,
+                                         links=links, references=references,
                                          *args, **kwargs)
 
     @property
