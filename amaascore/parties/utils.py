@@ -30,6 +30,8 @@ def json_to_party(json_to_convert):
             collection[child_type] = child
         json_to_convert[collection_name] = collection
     clazz = globals().get(json_to_convert.get('party_type'))
+    if not clazz:
+        raise ValueError('Missing Party Type: %s' % json_to_convert.get('party_type'))
     args = inspect.getargspec(clazz.__init__)
     # Some fields are always added in, even though they're not explicitly part of the constructor
     clazz_args = args.args + clazz.amaas_model_attributes()
