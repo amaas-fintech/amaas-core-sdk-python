@@ -1,15 +1,16 @@
 # coding=utf-8
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+from amaasutils.logging_utils import DEFAULT_LOGGING
 import random
+import requests_mock
 import unittest
 
-from amaascore.config import DEFAULT_LOGGING
 from amaascore.assets.asset import Asset
 from amaascore.assets.bond_option import BondOption
 from amaascore.assets.foreign_exchange import ForeignExchange
 from amaascore.assets.interface import AssetsInterface
-from amaascore.tools.generate_asset import generate_asset, generate_foreignexchange
+from amaascore.tools.generate_asset import generate_asset, generate_foreignexchange, generate_assets
 
 import logging.config
 logging.config.dictConfig(DEFAULT_LOGGING)
@@ -71,21 +72,23 @@ class AssetsInterfaceTest(unittest.TestCase):
         self.assertEqual(asset.asset_id, self.asset_id)
         self.assertEqual(asset.asset_status, 'Inactive')
 
-    def test_Search(self):
+    @requests_mock.Mocker()
+    def test_Search(self, mocker):
+        # This test is somewhat fake - but the integration tests are for the bigger picture
+        endpoint = '%s/assets' % self.assets_interface.endpoint
+        assets = generate_assets(asset_manager_ids=[self.asset_manager_id, self.asset_manager_id+1])
+        mocker.get(endpoint, json=[asset.to_json() for asset in assets])
         all_assets = self.assets_interface.search()
-        random_asset_index = random.randint(0, len(all_assets)-1)
-        asset_manager_id = all_assets[random_asset_index].asset_manager_id
-        asset_manager_assets = [asset for asset in all_assets if asset.asset_manager_id in [0, asset_manager_id]]
-        assets = self.assets_interface.search(asset_manager_ids=[asset_manager_id])
-        self.assertEqual(len(assets), len(asset_manager_assets))
+        self.assertEqual(assets, all_assets)
 
-    def test_AssetsByAssetManager(self):
-        all_assets = self.assets_interface.search()
-        random_asset_index = random.randint(0, len(all_assets)-1)
-        asset_manager_id = all_assets[random_asset_index].asset_manager_id
-        asset_manager_assets = [asset for asset in all_assets if asset.asset_manager_id in [0, asset_manager_id]]
-        assets = self.assets_interface.assets_by_asset_manager(asset_manager_id=asset_manager_id)
-        self.assertEqual(len(assets), len(asset_manager_assets))
+    @requests_mock.Mocker()
+    def test_AssetsByAssetManager(self, mocker):
+        # This test is somewhat fake - but the integration tests are for the bigger picture
+        endpoint = '%s/assets/%s' % (self.assets_interface.endpoint, self.asset_manager_id)
+        assets = generate_assets(asset_manager_ids=[self.asset_manager_id])
+        mocker.get(endpoint, json=[asset.to_json() for asset in assets])
+        asset_manager_assets = self.assets_interface.assets_by_asset_manager(asset_manager_id=self.asset_manager_id)
+        self.assertEqual(assets, asset_manager_assets)
 
     def test_ChildrenPopulated(self):
         asset = self.assets_interface.new(self.asset)

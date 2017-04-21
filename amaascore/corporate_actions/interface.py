@@ -2,17 +2,15 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import logging
 
-from amaascore.config import ENDPOINTS
 from amaascore.core.interface import Interface
 from amaascore.corporate_actions.utils import json_to_corporate_action
 
 
 class CorporateActionsInterface(Interface):
 
-    def __init__(self, logger=None):
-        endpoint = ENDPOINTS.get('corporate_actions')
+    def __init__(self, logger=None, environment='dev'):
         self.logger = logger or logging.getLogger(__name__)
-        super(CorporateActionsInterface, self).__init__(endpoint=endpoint)
+        super(CorporateActionsInterface, self).__init__(endpoint_type='corporate_actions', environment=environment)
 
     def new(self, corporate_action):
         self.logger.info('New Corporate Action - Asset Manager: %s - Corporate Action ID: %s',

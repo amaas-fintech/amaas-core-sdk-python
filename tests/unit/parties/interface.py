@@ -1,11 +1,11 @@
 # coding=utf-8
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+from amaasutils.logging_utils import DEFAULT_LOGGING
 import random
 import requests_mock
 import unittest
 
-from amaascore.config import DEFAULT_LOGGING
 from amaascore.parties.broker import Broker
 from amaascore.parties.party import Party
 from amaascore.parties.interface import PartiesInterface
@@ -93,7 +93,6 @@ class PartiesInterfaceTest(unittest.TestCase):
         party = self.parties_interface.new(self.party)
         retrieved_party = self.parties_interface.retrieve(asset_manager_id=self.asset_manager_id,
                                                           party_id=self.party_id)
-
         self.assertGreater(len(party.addresses), 0)
         self.assertGreater(len(party.emails), 0)
         self.assertGreater(len(party.references), 0)

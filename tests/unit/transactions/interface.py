@@ -1,6 +1,7 @@
 # coding=utf-8
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+from amaasutils.logging_utils import DEFAULT_LOGGING
 from amaasutils.random_utils import random_string
 import datetime
 from decimal import Decimal
@@ -9,7 +10,6 @@ import random
 import requests_mock
 import unittest
 
-from amaascore.config import DEFAULT_LOGGING
 from amaascore.transactions.children import Comment
 from amaascore.transactions.transaction import Transaction
 from amaascore.transactions.interface import TransactionsInterface

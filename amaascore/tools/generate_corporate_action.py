@@ -47,3 +47,11 @@ def generate_split(asset_manager_id=None, corporate_action_id=None, asset_id=Non
                                  asset_id=asset_id)
     split = Split(ratio=(random.randint(1, 5), random.randint(1, 5)), **attributes)
     return split
+
+
+def generate_corporate_actions(asset_manager_ids=[], number=5):
+    corporate_actions = []
+    for i in range(number):
+        corporate_action = generate_corporate_action(asset_manager_id=random.choice(asset_manager_ids))
+        corporate_actions.append(corporate_action)
+    return corporate_actions

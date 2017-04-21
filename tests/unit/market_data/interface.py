@@ -1,11 +1,11 @@
 # coding=utf-8
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+from amaasutils.logging_utils import DEFAULT_LOGGING
 from datetime import date
 import random
 import unittest
 
-from amaascore.config import DEFAULT_LOGGING
 from amaascore.market_data.interface import MarketDataInterface
 from amaascore.tools.generate_market_data import generate_eod_price, generate_fx_rate
 

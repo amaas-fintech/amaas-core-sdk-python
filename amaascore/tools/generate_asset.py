@@ -95,3 +95,11 @@ def generate_synthetic(asset_manager_id=None, asset_id=None):
     props = generate_common(asset_manager_id=asset_manager_id, asset_id=asset_id)
     synthetic = Synthetic(**props)
     return synthetic
+
+
+def generate_assets(asset_manager_ids=[], number=5):
+    assets = []
+    for i in range(number):
+        asset = generate_asset(asset_manager_id=random.choice(asset_manager_ids))
+        assets.append(asset)
+    return assets
