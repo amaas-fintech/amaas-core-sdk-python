@@ -2,17 +2,15 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import logging
 
-from amaascore.config import ENDPOINTS
 from amaascore.core.interface import Interface
 from amaascore.monitor.utils import json_to_item
 
 
 class MonitorInterface(Interface):
 
-    def __init__(self, logger=None):
-        endpoint = ENDPOINTS.get('monitor')
+    def __init__(self, logger=None, environment='dev'):
         self.logger = logger or logging.getLogger(__name__)
-        super(MonitorInterface, self).__init__(endpoint=endpoint)
+        super(MonitorInterface, self).__init__(endpoint_type='monitor', environment=environment)
 
     def new_item(self, item):
         url = self.endpoint + '/items'

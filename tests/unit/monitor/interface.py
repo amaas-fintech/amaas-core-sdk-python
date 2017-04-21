@@ -1,10 +1,10 @@
 # coding=utf-8
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+from amaasutils.logging_utils import DEFAULT_LOGGING
 import random
 import unittest
 
-from amaascore.config import DEFAULT_LOGGING
 from amaascore.monitor.interface import MonitorInterface
 from amaascore.tools.generate_monitor_item import generate_item
 

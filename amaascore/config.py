@@ -19,40 +19,15 @@ if LOCAL:
     }
 else:
     ENDPOINTS = {
-        'asset_managers': 'https://c1hes1s60m.execute-api.ap-southeast-1.amazonaws.com/' + env,
-        'assets': 'https://zc6udsq1nb.execute-api.ap-southeast-1.amazonaws.com/' + env,
-        'books': 'https://smc367plfg.execute-api.ap-southeast-1.amazonaws.com/' + env,
-        'corporate_actions': 'https://basklngdyh.execute-api.ap-southeast-1.amazonaws.com/' + env,
-        'market_data': 'https://f0rpi7vksi.execute-api.ap-southeast-1.amazonaws.com/' + env,
-        'monitor': 'https://wt50nd7j7l.execute-api.ap-southeast-1.amazonaws.com/' + env,
-        'parties': 'https://hpihgzmxoc.execute-api.ap-southeast-1.amazonaws.com/' + env,
-        'transactions': 'https://1w0gb581sl.execute-api.ap-southeast-1.amazonaws.com/' + env
+        'asset_managers': 'https://mg739bdgdf.execute-api.ap-southeast-1.amazonaws.com/',
+        'assets': 'https://12jlsrn8i2.execute-api.ap-southeast-1.amazonaws.com/',
+        'books': 'https://jcbhgd69ie.execute-api.ap-southeast-1.amazonaws.com/',
+        'corporate_actions': 'https://w5f5d9hphj.execute-api.ap-southeast-1.amazonaws.com/',
+        'market_data': 'https://y7rh2tl8sj.execute-api.ap-southeast-1.amazonaws.com/',
+        'monitor': 'https://wt50nd7j7l.execute-api.ap-southeast-1.amazonaws.com/',
+        'parties': 'https://ugkl20kxi4.execute-api.ap-southeast-1.amazonaws.com/',
+        'transactions': 'https://1w0gb581sl.execute-api.ap-southeast-1.amazonaws.com/'
     }
-
-DEFAULT_LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'formatters': {
-        'standard': {
-            'format': '%(asctime)s.%(msecs)03d [%(levelname)s] %(name)s: %(message)s',
-            'datefmt': '%z %Y-%m-%d %H:%M:%S',
-        },
-    },
-    'handlers': {
-        'default': {
-            'level': 'INFO',
-            'formatter': 'standard',
-            'class': 'logging.StreamHandler',
-        },
-    },
-    'loggers': {
-        '': {
-            'handlers': ['default'],
-            'level': 'INFO',
-            'propagate': True
-        },
-    }
-}
 
 COGNITO_CLIENT_ID = '55n70ns9u5stie272e1tl7v32v'  # This is not secret - it is just an identifier
 

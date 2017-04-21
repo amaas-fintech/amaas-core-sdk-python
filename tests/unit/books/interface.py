@@ -1,10 +1,10 @@
 # coding=utf-8
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+from amaasutils.logging_utils import DEFAULT_LOGGING
 import random
 import unittest
 
-from amaascore.config import DEFAULT_LOGGING
 from amaascore.books.interface import BooksInterface
 from amaascore.tools.generate_book import generate_book
 
@@ -16,12 +16,12 @@ class BooksInterfaceTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        pass
         cls.books_interface = BooksInterface()
+        cls.asset_manager_id = random.randint(1, 2**31-1)
 
     def setUp(self):
         self.longMessage = True  # Print complete error message on failure
-        self.book = generate_book()
+        self.book = generate_book(asset_manager_id=self.asset_manager_id)
         self.book_id = self.book.book_id
 
     def tearDown(self):
@@ -71,8 +71,9 @@ class BooksInterfaceTest(unittest.TestCase):
         self.assertEqual(len(books), len(asset_manager_books))
 
     def test_BookConfigByAssetManager(self):
-        self.books_interface.new(self.book)
-        book_config = self.books_interface.book_config(asset_manager_id=self.book.asset_manager_id)
+        book = generate_book()
+        self.books_interface.new(book)
+        book_config = self.books_interface.book_config(asset_manager_id=book.asset_manager_id)
         self.assertEqual(len(book_config.keys()), 3)
         self.assertEqual(len(book_config.get('business_unit')), 1)
         self.assertEqual(len(book_config.get('owner_id')), 1)

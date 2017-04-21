@@ -2,17 +2,15 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import logging
 
-from amaascore.config import ENDPOINTS
 from amaascore.core.interface import Interface
 from amaascore.market_data.utils import json_to_eod_price, json_to_fx_rate
 
 
 class MarketDataInterface(Interface):
 
-    def __init__(self, logger=None):
-        endpoint = ENDPOINTS.get('market_data')
+    def __init__(self, logger=None, environment='dev'):
         self.logger = logger or logging.getLogger(__name__)
-        super(MarketDataInterface, self).__init__(endpoint=endpoint)
+        super(MarketDataInterface, self).__init__(endpoint_type='market_data', environment=environment)
 
     def persist_eod_prices(self, asset_manager_id, business_date, eod_prices, update_existing_prices=True):
         """

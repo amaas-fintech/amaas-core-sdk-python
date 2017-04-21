@@ -4,17 +4,15 @@ import json
 import logging
 
 from amaascore.assets.utils import json_to_asset
-from amaascore.config import ENDPOINTS
 from amaascore.core.interface import Interface
 from amaascore.core.amaas_model import json_handler
 
 
 class AssetsInterface(Interface):
 
-    def __init__(self, logger=None):
-        endpoint = ENDPOINTS.get('assets')
+    def __init__(self, logger=None, environment='dev'):
         self.logger = logger or logging.getLogger(__name__)
-        super(AssetsInterface, self).__init__(endpoint=endpoint)
+        super(AssetsInterface, self).__init__(endpoint_type='assets', environment=environment)
 
     def new(self, asset):
         self.logger.info('New Asset - Asset Manager: %s - Asset ID: %s', asset.asset_manager_id, asset.asset_id)

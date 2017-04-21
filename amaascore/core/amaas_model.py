@@ -44,8 +44,8 @@ class AMaaSModel(object):
 
     def __init__(self, *args, **kwargs):
         self.version = kwargs.get('version') or 1
-        self.created_by = kwargs.get('created_by') or 'TEMP'  # Should come from logged in user
-        self.updated_by = kwargs.get('updated_by') or 'TEMP'  # Should come from logged in user
+        self.created_by = kwargs.get('created_by')
+        self.updated_by = kwargs.get('updated_by')
         self.created_time = kwargs.get('created_time')  # Comes from database
         self.updated_time = kwargs.get('updated_time')  # Comes from database
 

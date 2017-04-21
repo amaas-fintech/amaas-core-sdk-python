@@ -1,10 +1,10 @@
 # coding=utf-8
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+from amaasutils.logging_utils import DEFAULT_LOGGING
 from decimal import Decimal
 import unittest
 
-from amaascore.config import DEFAULT_LOGGING
 from amaascore.transactions.children import Charge
 from amaascore.transactions.interface import TransactionsInterface
 from amaascore.tools.generate_asset import generate_asset

@@ -3,7 +3,6 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging
 
 from amaascore.asset_managers.utils import json_to_asset_manager, json_to_relationship
-from amaascore.config import ENDPOINTS
 from amaascore.core.interface import Interface
 
 
@@ -12,10 +11,9 @@ class AssetManagersInterface(Interface):
     The interface to the Asset Managers service for reading Asset Manager information.
     """
 
-    def __init__(self, logger=None):
-        endpoint = ENDPOINTS.get('asset_managers')
+    def __init__(self, logger=None, environment='dev'):
         self.logger = logger or logging.getLogger(__name__)
-        super(AssetManagersInterface, self).__init__(endpoint=endpoint)
+        super(AssetManagersInterface, self).__init__(endpoint_type='asset_managers', environment=environment)
 
     def new(self, asset_manager):
         self.logger.info('New Asset Manager: %s', asset_manager.asset_manager_id)
@@ -78,7 +76,7 @@ class AssetManagersInterface(Interface):
     def new_relationship(self, relationship):
         self.logger.info('New Asset Manager Relationship: %s and %s', relationship.asset_manager_id,
                          relationship.relation_id)
-        url = '%s/asset-manager-relationships' % self.endpoint
+        url = '%s/asset-manager-relationships/%s' % (self.endpoint, relationship.asset_manager_id)
         response = self.session.post(url, json=relationship.to_interface())
         if response.ok:
             self.logger.info('Successfully Created Asset Manager Relationship: %s', relationship.asset_manager_id)
