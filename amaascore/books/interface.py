@@ -8,9 +8,10 @@ from amaascore.core.interface import Interface
 
 class BooksInterface(Interface):
 
-    def __init__(self, logger=None, environment='dev'):
+    def __init__(self, environment='dev', logger=None, endpoint=None):
         logger = logger or logging.getLogger(__name__)
-        super(BooksInterface, self).__init__(endpoint_type='books', environment=environment, logger=logger)
+        super(BooksInterface, self).__init__(endpoint=endpoint, endpoint_type='books', environment=environment,
+                                             logger=logger)
 
     def new(self, book):
         self.logger.info('New Book - Asset Manager: %s - Book ID: %s', book.asset_manager_id, book.book_id)

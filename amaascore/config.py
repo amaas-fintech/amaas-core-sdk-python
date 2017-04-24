@@ -24,7 +24,7 @@ else:
         'books': 'https://jcbhgd69ie.execute-api.ap-southeast-1.amazonaws.com/',
         'corporate_actions': 'https://w5f5d9hphj.execute-api.ap-southeast-1.amazonaws.com/',
         'market_data': 'https://y7rh2tl8sj.execute-api.ap-southeast-1.amazonaws.com/',
-        'monitor': 'https://wt50nd7j7l.execute-api.ap-southeast-1.amazonaws.com/',
+        'monitor': 'https://6cf4vv0973.execute-api.ap-southeast-1.amazonaws.com/',
         'parties': 'https://ugkl20kxi4.execute-api.ap-southeast-1.amazonaws.com/',
         'transactions': 'https://1w0gb581sl.execute-api.ap-southeast-1.amazonaws.com/'
     }
