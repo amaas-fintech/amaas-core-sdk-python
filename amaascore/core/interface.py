@@ -18,7 +18,7 @@ class AMaaSSession(object):
         self.username = username
         self.password = password
         self.tokens = None
-        self.last_authenticated = 'TEP' # None
+        self.last_authenticated = None
         self.session = requests.Session()
         self.client = boto3.client('cognito-idp', COGNITO_REGION)
         self.aws = AWSSRP(username=self.username, password=self.password, pool_id=COGNITO_POOL,
@@ -79,14 +79,14 @@ class Interface(object):
     Currently this class doesn't do anything - but I anticipate it will be needed in the future.
     """
 
-    def __init__(self, endpoint_type, environment='dev', username=None, password=None,
+    def __init__(self, endpoint_type, endpoint=None, environment='dev', username=None, password=None,
                  use_auth=True, config_filename=None, logger=None):
         self.logger = logger or logging.getLogger(__name__)
         self.config_filename = config_filename
         self.auth_token = self.read_config('token') if use_auth is True else ''
         self.endpoint_type = endpoint_type
         self.environment = environment
-        self.endpoint = self.get_endpoint()
+        self.endpoint = endpoint or self.get_endpoint()
         self.json_header = {'Content-Type': 'application/json'}
         username = username or self.read_config('username')
         password = password or self.read_config('password')
@@ -95,6 +95,8 @@ class Interface(object):
 
     def get_endpoint(self):
         endpoint = ENDPOINTS.get(self.endpoint_type)
+        if not endpoint:
+            raise KeyError('Cannot find endpoint')
         if not LOCAL:
             endpoint += self.environment
             self.logger.info("Using Endpoint: %s", endpoint)

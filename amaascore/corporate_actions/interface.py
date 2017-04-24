@@ -8,9 +8,10 @@ from amaascore.corporate_actions.utils import json_to_corporate_action
 
 class CorporateActionsInterface(Interface):
 
-    def __init__(self, logger=None, environment='dev'):
+    def __init__(self, environment='dev', logger=None, endpoint=None):
         self.logger = logger or logging.getLogger(__name__)
-        super(CorporateActionsInterface, self).__init__(endpoint_type='corporate_actions', environment=environment)
+        super(CorporateActionsInterface, self).__init__(endpoint=endpoint, endpoint_type='corporate_actions',
+                                                        environment=environment)
 
     def new(self, corporate_action):
         self.logger.info('New Corporate Action - Asset Manager: %s - Corporate Action ID: %s',

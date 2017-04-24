@@ -8,12 +8,12 @@ from amaascore.monitor.utils import json_to_item
 
 class MonitorInterface(Interface):
 
-    def __init__(self, logger=None, environment='dev'):
+    def __init__(self, environment='dev', logger=None, endpoint=None):
         self.logger = logger or logging.getLogger(__name__)
-        super(MonitorInterface, self).__init__(endpoint_type='monitor', environment=environment)
+        super(MonitorInterface, self).__init__(endpoint=endpoint, endpoint_type='monitor', environment=environment)
 
     def new_item(self, item):
-        url = self.endpoint + '/items'
+        url = '%s/items/%s' % (self.endpoint, item.asset_manager_id)
         response = self.session.post(url, json=item.to_interface())
         if response.ok:
             item = json_to_item(response.json())
