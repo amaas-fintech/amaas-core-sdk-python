@@ -6,12 +6,13 @@ from amaascore.asset_managers.enums import RELATIONSHIP_TYPES
 
 class Relationship(AMaaSModel):
 
-    def __init__(self, asset_manager_id, relation_id,  relationship_type, client_id, relationship_status='Active',
-                 *args, **kwargs):
+    def __init__(self, asset_manager_id, related_id, relationship_id,  relationship_type, client_id,
+                 relationship_status='Pending', *args, **kwargs):
         """
 
         :param asset_manager_id: The ID of the Asset Manager who owns this relationship
-        :param relation_id: The ID of the Asset Manager to whom this relationship connects
+        :param related_id: The ID of the Asset Manager to whom this relationship connects
+        :param relationship_id: An ID for this relationship
         :param relationship_type: The type of relationship between these Asset Managers
         :param client_id: The client_id that owns this relationship
         :param relationship_status: The status of the relationship
@@ -19,7 +20,8 @@ class Relationship(AMaaSModel):
         :param kwargs:
         """
         self.asset_manager_id = asset_manager_id
-        self.relation_id = relation_id
+        self.related_id = related_id
+        self.relationship_id = relationship_id
         self.relationship_status = relationship_status
         self.relationship_type = relationship_type
         self.client_id = client_id
