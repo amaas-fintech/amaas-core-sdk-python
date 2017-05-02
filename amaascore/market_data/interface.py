@@ -35,9 +35,10 @@ class MarketDataInterface(Interface):
             self.logger.error(response.text)
             response.raise_for_status()
 
-    def retrieve_eod_prices(self, asset_manager_id, business_date):
+    def retrieve_eod_prices(self, asset_manager_id, business_date, asset_ids=None):
         url = '%s/eod-prices/%s/%s' % (self.endpoint, asset_manager_id, business_date.isoformat())
-        response = self.session.get(url=url)
+        params = {'asset_ids': ','.join(asset_ids)} if asset_ids else {}
+        response = self.session.get(url=url, params=params)
         if response.ok:
             eod_prices = [json_to_eod_price(eod_price) for eod_price in response.json()]
             self.logger.info('Returned %s EOD Prices.', len(eod_prices))
@@ -66,9 +67,10 @@ class MarketDataInterface(Interface):
             self.logger.error(response.text)
             response.raise_for_status()
 
-    def retrieve_fx_rates(self, asset_manager_id, business_date):
+    def retrieve_fx_rates(self, asset_manager_id, business_date, asset_ids=None):
         url = '%s/fx-rates/%s/%s' % (self.endpoint, asset_manager_id, business_date.isoformat())
-        response = self.session.get(url=url)
+        params = {'asset_ids': ','.join(asset_ids)} if asset_ids else {}
+        response = self.session.get(url=url, params=params)
         if response.ok:
             fx_rates = [json_to_fx_rate(fx_rate) for fx_rate in response.json()]
             self.logger.info('Returned %s FX Rates.', len(fx_rates))

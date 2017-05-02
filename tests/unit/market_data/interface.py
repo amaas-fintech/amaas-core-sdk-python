@@ -48,6 +48,15 @@ class MarketDataInterfaceTest(unittest.TestCase):
                                                         business_date=self.business_date)
         self.assertEqual(set(eod_prices), {self.eod_price1, self.eod_price2})
 
+    def test_RetrieveSpecificEODPrices(self):
+        self.interface.persist_eod_prices(asset_manager_id=self.asset_manager_id, business_date=self.business_date,
+                                          eod_prices=[self.eod_price1, self.eod_price2],
+                                          update_existing_prices=True)
+        eod_prices = self.interface.retrieve_eod_prices(asset_manager_id=self.asset_manager_id,
+                                                        business_date=self.business_date,
+                                                        asset_ids=[self.eod_price1.asset_id, self.eod_price2.asset_id])
+        self.assertEqual(set(eod_prices), {self.eod_price1, self.eod_price2})
+
     def test_PersistFXRates(self):
         fx_rates = self.interface.persist_fx_rates(asset_manager_id=self.asset_manager_id,
                                                    business_date=self.business_date,
@@ -61,6 +70,15 @@ class MarketDataInterfaceTest(unittest.TestCase):
                                         update_existing_rates=True)
         fx_rates = self.interface.retrieve_fx_rates(asset_manager_id=self.asset_manager_id,
                                                     business_date=self.business_date)
+        self.assertEqual(set(fx_rates), {self.fx_rate1, self.fx_rate2})
+
+    def test_RetrieveSpecificFXRates(self):
+        self.interface.persist_fx_rates(asset_manager_id=self.asset_manager_id, business_date=self.business_date,
+                                        fx_rates=[self.fx_rate1, self.fx_rate2],
+                                        update_existing_rates=True)
+        fx_rates = self.interface.retrieve_fx_rates(asset_manager_id=self.asset_manager_id,
+                                                    business_date=self.business_date,
+                                                    asset_ids=[self.fx_rate1.asset_id, self.fx_rate2.asset_id])
         self.assertEqual(set(fx_rates), {self.fx_rate1, self.fx_rate2})
 
 if __name__ == '__main__':
