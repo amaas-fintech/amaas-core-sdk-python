@@ -12,6 +12,7 @@ from amaascore.parties.government_agency import GovernmentAgency
 from amaascore.parties.individual import Individual
 from amaascore.parties.organisation import Organisation
 from amaascore.parties.party import Party
+from amaascore.parties.sub_fund import SubFund
 
 
 def json_to_party(json_to_convert):
