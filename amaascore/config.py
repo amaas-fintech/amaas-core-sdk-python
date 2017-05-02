@@ -4,7 +4,7 @@ LOCAL = False
 
 envs = {'dev', 'staging'}
 
-env = 'dev'
+ENVIRONMENT = 'staging'
 
 if LOCAL:
     ENDPOINTS = {
@@ -19,14 +19,14 @@ if LOCAL:
     }
 else:
     ENDPOINTS = {
-        'asset_managers': 'https://mg739bdgdf.execute-api.ap-southeast-1.amazonaws.com/',
-        'assets': 'https://12jlsrn8i2.execute-api.ap-southeast-1.amazonaws.com/',
-        'books': 'https://jcbhgd69ie.execute-api.ap-southeast-1.amazonaws.com/',
-        'corporate_actions': 'https://w5f5d9hphj.execute-api.ap-southeast-1.amazonaws.com/',
-        'market_data': 'https://y7rh2tl8sj.execute-api.ap-southeast-1.amazonaws.com/',
-        'monitor': 'https://6cf4vv0973.execute-api.ap-southeast-1.amazonaws.com/',
-        'parties': 'https://ugkl20kxi4.execute-api.ap-southeast-1.amazonaws.com/',
-        'transactions': 'https://1w0gb581sl.execute-api.ap-southeast-1.amazonaws.com/'
+        'asset_managers': 'https://iwe48ph25i.execute-api.ap-southeast-1.amazonaws.com/%s/assetmanager',
+        'assets': 'https://iwe48ph25i.execute-api.ap-southeast-1.amazonaws.com/%s/asset',
+        'books': 'https://iwe48ph25i.execute-api.ap-southeast-1.amazonaws.com/%s/book',
+        'corporate_actions': 'https://iwe48ph25i.execute-api.ap-southeast-1.amazonaws.com/%s/corporateaction',
+        'market_data': 'https://iwe48ph25i.execute-api.ap-southeast-1.amazonaws.com/%s/marketdata',
+        'monitor': 'https://iwe48ph25i.execute-api.ap-southeast-1.amazonaws.com/%s/monitor',
+        'parties': 'https://iwe48ph25i.execute-api.ap-southeast-1.amazonaws.com/%s/party',
+        'transactions': 'https://iwe48ph25i.execute-api.ap-southeast-1.amazonaws.com/%s/transaction'
     }
 
 COGNITO_CLIENT_ID = '55n70ns9u5stie272e1tl7v32v'  # This is not secret - it is just an identifier

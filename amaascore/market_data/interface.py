@@ -2,13 +2,14 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import logging
 
+from amaascore.config import ENVIRONMENT
 from amaascore.core.interface import Interface
 from amaascore.market_data.utils import json_to_eod_price, json_to_fx_rate
 
 
 class MarketDataInterface(Interface):
 
-    def __init__(self, environment='dev', logger=None, endpoint=None):
+    def __init__(self, environment=ENVIRONMENT, logger=None, endpoint=None):
         self.logger = logger or logging.getLogger(__name__)
         super(MarketDataInterface, self).__init__(endpoint=endpoint, endpoint_type='market_data',
                                                   environment=environment)
