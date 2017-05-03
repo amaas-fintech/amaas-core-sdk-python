@@ -43,13 +43,14 @@ class FundamentalsInterface(Interface):
             self.logger.error(response.text)
             response.raise_for_status()
 
-    def calc_business_date(self, start_date, country_code, offset, invalid_dates=None):
+    def calc_business_date(self, start_date, country_codes, offset, invalid_dates=None):
         self.logger.info('Calculating business date')
         url = '%s/business-date' % self.endpoint
         params = {'start_date': start_date.isoformat(),
-                  'country_code': country_code,
-                  'offset': offset,
-                  'invalid_dates': ','.join([invalid_date.isoformat() for invalid_date in invalid_dates])}
+                  'country_codes': ','.join(country_codes),
+                  'offset': offset}
+        if invalid_dates:
+            params['invalid_dates'] = ','.join([invalid_date.isoformat() for invalid_date in invalid_dates])
         response = self.session.get(url, params=params)
         if response.ok:
             self.logger.info('Successfully calculated business date')
