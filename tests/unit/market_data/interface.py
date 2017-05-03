@@ -2,7 +2,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 from amaasutils.logging_utils import DEFAULT_LOGGING
-from datetime import date
+from datetime import date, timedelta
 import random
 import unittest
 
@@ -79,6 +79,24 @@ class MarketDataInterfaceTest(unittest.TestCase):
                                                     business_date=self.business_date,
                                                     asset_ids=[self.fx_rate1.asset_id, self.fx_rate2.asset_id])
         self.assertEqual(set(fx_rates), {self.fx_rate1, self.fx_rate2})
+
+    def test_RollPrices(self):
+        yesterday = self.business_date - timedelta(days=1)
+        eod_price1 = generate_eod_price(asset_manager_id=self.asset_manager_id, business_date=yesterday)
+        eod_price2 = generate_eod_price(asset_manager_id=self.asset_manager_id, business_date=yesterday)
+        eod_price3 = generate_eod_price(asset_manager_id=self.asset_manager_id, business_date=yesterday)
+        self.interface.persist_eod_prices(asset_manager_id=self.asset_manager_id, business_date=yesterday,
+                                          eod_prices=[eod_price1, eod_price2, eod_price3],
+                                          update_existing_prices=True)
+        prices = self.interface.roll_prices(asset_manager_id=self.asset_manager_id,
+                                            previous_date=yesterday,
+                                            asset_ids=[eod_price1.asset_id, eod_price3.asset_id],
+                                            update_existing_prices=True)
+        eod_prices = self.interface.retrieve_eod_prices(asset_manager_id=self.asset_manager_id,
+                                                        business_date=self.business_date)
+        self.assertEqual(len(eod_prices), 2)
+        self.assertEqual(prices, eod_prices)
+        self.assertEqual({price.business_date for price in prices}, {self.business_date})
 
 if __name__ == '__main__':
     unittest.main()
