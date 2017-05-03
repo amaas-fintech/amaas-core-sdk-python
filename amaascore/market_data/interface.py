@@ -1,8 +1,10 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import json
 import logging
 
 from amaascore.config import ENVIRONMENT
+from amaascore.core.amaas_model import json_handler
 from amaascore.core.interface import Interface
 from amaascore.market_data.utils import json_to_eod_price, json_to_fx_rate
 
@@ -43,6 +45,20 @@ class MarketDataInterface(Interface):
             eod_prices = [json_to_eod_price(eod_price) for eod_price in response.json()]
             self.logger.info('Returned %s EOD Prices.', len(eod_prices))
             return eod_prices
+        else:
+            self.logger.error(response.text)
+            response.raise_for_status()
+
+    def roll_prices(self, asset_manager_id, previous_date, asset_ids, update_existing_prices=False):
+        url = '%s/roll-prices/%s' % (self.endpoint, asset_manager_id)
+        params = {'update_existing_prices': update_existing_prices}
+        json_body = json.loads(json.dumps({'previous_date': previous_date,
+                                           'asset_ids': ','.join(asset_ids)}, default=json_handler))
+        response = self.session.post(url=url, params=params, json=json_body)
+        if response.ok:
+            prices = [json_to_eod_price(price) for price in response.json()]
+            self.logger.info('Rolled %s Prices.', len(prices))
+            return prices
         else:
             self.logger.error(response.text)
             response.raise_for_status()
