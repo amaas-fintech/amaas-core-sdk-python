@@ -19,7 +19,7 @@ class TransactionsInterface(Interface):
     def new(self, transaction):
         self.logger.info('New Transaction - Asset Manager: %s - Transaction ID: %s', transaction.asset_manager_id,
                          transaction.transaction_id)
-        url = self.endpoint + '/transactions'
+        url = '%s/transactions/%s' % (self.endpoint, transaction.asset_manager_id)
         response = self.session.post(url, json=transaction.to_interface())
         if response.ok:
             transaction = json_to_transaction(response.json())

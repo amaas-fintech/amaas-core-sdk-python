@@ -17,7 +17,6 @@ class CorporateActionsInterfaceTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        pass
         cls.corporate_actions_interface = CorporateActionsInterface()
 
     def setUp(self):

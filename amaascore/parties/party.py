@@ -28,11 +28,11 @@ class Party(AMaaSModel):
         self.base_currency = base_currency
         self.description = description
         # Defaults are here not in constructor for mutability reasons.
-        self.addresses = addresses or {}
-        self.comments = comments or {}
-        self.emails = emails or {}
-        self.links = links or {}
-        self.references = references or {}
+        self.addresses = addresses.copy() if addresses else {}
+        self.comments = comments.copy() if comments else {}
+        self.emails = emails.copy() if emails else {}
+        self.links = links.copy() if links else {}
+        self.references = references.copy() if references else {}
         super(Party, self).__init__(*args, **kwargs)
 
     def upsert_address(self, address_type, address):

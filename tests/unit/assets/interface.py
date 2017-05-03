@@ -20,7 +20,6 @@ class AssetsInterfaceTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        pass
         cls.assets_interface = AssetsInterface()
 
     def setUp(self):

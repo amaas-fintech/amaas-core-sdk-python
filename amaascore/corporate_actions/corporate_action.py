@@ -34,7 +34,7 @@ class CorporateAction(AMaaSModel):
         self.message = message
         self.description = description
         # Defaults are here not in constructor for mutability reasons.
-        self.references = references or {}
+        self.references = references.copy() if references else {}
         self.references['AMaaS'] = Reference(reference_value=self.corporate_action_id)  # Upserts the AMaaS Reference
 
         super(CorporateAction, self).__init__(*args, **kwargs)

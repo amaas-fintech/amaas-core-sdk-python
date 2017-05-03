@@ -40,9 +40,9 @@ class Asset(AMaaSModel):
         self.description = description
         self.client_additional = client_additional  # A field to allow people to build their own assets
         # Defaults are here not in constructor for mutability reasons.
-        self.comments = comments or {}
-        self.links = links or {}
-        self.references = references or {}
+        self.comments = comments.copy() if comments else {}
+        self.links = links.copy() if links else {}
+        self.references = references.copy() if references else {}
         self.references['AMaaS'] = Reference(reference_value=self.asset_id)  # Upserts the AMaaS Reference
 
         super(Asset, self).__init__(*args, **kwargs)

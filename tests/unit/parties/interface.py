@@ -19,7 +19,6 @@ class PartiesInterfaceTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        pass
         cls.parties_interface = PartiesInterface()
 
     def setUp(self):

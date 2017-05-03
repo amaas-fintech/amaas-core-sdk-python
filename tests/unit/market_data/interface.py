@@ -17,7 +17,6 @@ class MarketDataInterfaceTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        pass
         cls.interface = MarketDataInterface()
 
     def setUp(self):
