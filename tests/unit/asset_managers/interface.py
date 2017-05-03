@@ -1,5 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+from amaasutils.logging_utils import DEFAULT_LOGGING
 import random
 import unittest
 
@@ -8,6 +9,9 @@ from amaascore.asset_managers.interface import AssetManagersInterface
 from amaascore.asset_managers.relationship import Relationship
 from amaascore.tools.generate_asset_manager import generate_asset_manager, generate_relationship
 
+import logging.config
+logging.config.dictConfig(DEFAULT_LOGGING)
+
 
 class AssetManagersInterfaceTest(unittest.TestCase):
 
@@ -15,7 +19,7 @@ class AssetManagersInterfaceTest(unittest.TestCase):
         self.longMessage = True  # Print complete error message on failure
         self.asset_managers_interface = AssetManagersInterface()
         self.asset_manager_id = random.randint(1, 2**31-1)
-        self.relation_id = random.randint(1, 2**31-1)
+        self.related_id = random.randint(1, 2**31-1)
 
     def tearDown(self):
         pass
@@ -40,20 +44,20 @@ class AssetManagersInterfaceTest(unittest.TestCase):
     def test_NewRelationship(self):
         asset_manager = generate_asset_manager(asset_manager_id=self.asset_manager_id)
         self.asset_managers_interface.new(asset_manager)
-        relation = generate_asset_manager(asset_manager_id=self.relation_id)
+        relation = generate_asset_manager(asset_manager_id=self.related_id)
         self.asset_managers_interface.new(relation)
         relationship = generate_relationship(asset_manager_id=self.asset_manager_id,
-                                             relation_id=self.relation_id)
+                                             related_id=self.related_id)
         relationship = self.asset_managers_interface.new_relationship(relationship)
         self.assertEqual(type(relationship), Relationship)
 
     def test_AmendRelationship(self):
         asset_manager = generate_asset_manager(asset_manager_id=self.asset_manager_id)
         self.asset_managers_interface.new(asset_manager)
-        relation = generate_asset_manager(asset_manager_id=self.relation_id)
+        relation = generate_asset_manager(asset_manager_id=self.related_id)
         self.asset_managers_interface.new(relation)
         relationship = generate_relationship(asset_manager_id=self.asset_manager_id,
-                                             relation_id=self.relation_id,
+                                             related_id=self.related_id,
                                              relationship_type='External')
         relationship = self.asset_managers_interface.new_relationship(relationship)
         relationship.relationship_type = 'Employee'
@@ -63,10 +67,10 @@ class AssetManagersInterfaceTest(unittest.TestCase):
     def test_RetrieveRelationship(self):
         asset_manager = generate_asset_manager(asset_manager_id=self.asset_manager_id)
         self.asset_managers_interface.new(asset_manager)
-        relation = generate_asset_manager(asset_manager_id=self.relation_id)
+        relation = generate_asset_manager(asset_manager_id=self.related_id)
         self.asset_managers_interface.new(relation)
         relationship = generate_relationship(asset_manager_id=self.asset_manager_id,
-                                             relation_id=self.relation_id,
+                                             related_id=self.related_id,
                                              relationship_type='External')
         relationship = self.asset_managers_interface.new_relationship(relationship)
         relationship.relationship_type = 'Employee'

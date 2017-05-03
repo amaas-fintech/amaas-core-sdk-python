@@ -79,12 +79,12 @@ class Transaction(AMaaSModel):
         self.execution_time = execution_time or datetime.datetime.utcnow()
 
         # Defaults are here not in constructor for mutability reasons.
-        self.charges = charges or {}
-        self.codes = codes or {}
-        self.comments = comments or {}
-        self.links = links or {}
-        self.parties = parties or {}
-        self.references = references or {}
+        self.charges = charges.copy() if charges else {}
+        self.codes = codes.copy() if codes else {}
+        self.comments = comments.copy() if comments else {}
+        self.links = links.copy() if links else {}
+        self.parties = parties.copy() if parties else {}
+        self.references = references.copy() if references else {}
         self.references['AMaaS'] = Reference(reference_value=self.transaction_id)  # Upserts the AMaaS Reference
 
         self.postings = []

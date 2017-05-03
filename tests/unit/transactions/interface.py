@@ -24,7 +24,6 @@ class TransactionsInterfaceTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        pass
         cls.transactions_interface = TransactionsInterface()
 
     def setUp(self):

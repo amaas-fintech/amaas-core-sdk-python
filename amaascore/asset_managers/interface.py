@@ -77,7 +77,7 @@ class AssetManagersInterface(Interface):
 
     def new_relationship(self, relationship):
         self.logger.info('New Asset Manager Relationship: %s and %s', relationship.asset_manager_id,
-                         relationship.relation_id)
+                         relationship.related_id)
         url = '%s/asset-manager-relationships/%s' % (self.endpoint, relationship.asset_manager_id)
         response = self.session.post(url, json=relationship.to_interface())
         if response.ok:
@@ -89,7 +89,7 @@ class AssetManagersInterface(Interface):
 
     def amend_relationship(self, relationship):
         self.logger.info('Amend Asset Manager Relationship: %s and %s', relationship.asset_manager_id,
-                         relationship.relation_id)
+                         relationship.related_id)
         url = '%s/asset-manager-relationships/%s' % (self.endpoint, relationship.asset_manager_id)
         response = self.session.put(url, json=relationship.to_interface())
         if response.ok:
@@ -99,12 +99,12 @@ class AssetManagersInterface(Interface):
             self.logger.error(response.text)
             response.raise_for_status()
 
-    def retrieve_relationships(self, asset_manager_id, relation_id=None, include_inactive=False):
+    def retrieve_relationships(self, asset_manager_id, related_id=None, include_inactive=False):
         self.logger.info('Retrieve Asset Manager Relationship: %s', asset_manager_id)
         url = '%s/asset-manager-relationships/%s' % (self.endpoint, asset_manager_id)
         params = {'include_inactive': include_inactive}
-        if relation_id:
-            params['relation_id'] = relation_id
+        if related_id:
+            params['related_id'] = related_id
         response = self.session.get(url, params=params)
         if response.ok:
             self.logger.info('Successfully Amended Asset Manager Relationship: %s', asset_manager_id)

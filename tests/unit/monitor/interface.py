@@ -3,10 +3,11 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 from amaasutils.logging_utils import DEFAULT_LOGGING
 import random
+import requests_mock
 import unittest
 
 from amaascore.monitor.interface import MonitorInterface
-from amaascore.tools.generate_monitor_item import generate_item
+from amaascore.tools.generate_monitor_item import generate_item, generate_items
 
 import logging.config
 logging.config.dictConfig(DEFAULT_LOGGING)
@@ -16,13 +17,14 @@ class MonitorInterfaceTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        pass
         cls.monitor_interface = MonitorInterface()
 
     def setUp(self):
         self.longMessage = True  # Print complete error message on failure
+        self.maxDiff = None
         self.item = generate_item()
         self.item_id = self.item.item_id
+        self.asset_manager_id = random.randint(1, 2**31-1)
 
     def tearDown(self):
         pass
@@ -53,21 +55,23 @@ class MonitorInterfaceTest(unittest.TestCase):
         self.assertEqual(item.item_id, self.item_id)
         self.assertEqual(item.item_status, 'Closed')
 
-    def test_Search(self):
+    @requests_mock.Mocker()
+    def test_Search(self, mocker):
+        # This test is somewhat fake - but the integration tests are for the bigger picture
+        endpoint = '%s/items' % self.monitor_interface.endpoint
+        items = generate_items(asset_manager_ids=[self.asset_manager_id, self.asset_manager_id+1])
+        mocker.get(endpoint, json=[item.to_json() for item in items])
         all_items = self.monitor_interface.search_items()
-        random_item_index = random.randint(0, len(all_items)-1)
-        asset_manager_id = all_items[random_item_index].asset_manager_id
-        asset_manager_items = [item for item in all_items if item.asset_manager_id == asset_manager_id]
-        items = self.monitor_interface.search_items(asset_manager_ids=[asset_manager_id])
-        self.assertEqual(len(items), len(asset_manager_items))
+        self.assertEqual(items, all_items)
 
-    def test_ItemsByAssetManager(self):
-        all_items = self.monitor_interface.search_items()
-        random_item_index = random.randint(0, len(all_items)-1)
-        asset_manager_id = all_items[random_item_index].asset_manager_id
-        asset_manager_items = [item for item in all_items if item.asset_manager_id == asset_manager_id]
-        items = self.monitor_interface.items_by_asset_manager(asset_manager_id=asset_manager_id)
-        self.assertEqual(len(items), len(asset_manager_items))
+    @requests_mock.Mocker()
+    def test_ItemsByAssetManager(self, mocker):
+        # This test is somewhat fake - but the integration tests are for the bigger picture
+        endpoint = '%s/items/%s' % (self.monitor_interface.endpoint, self.asset_manager_id)
+        items = generate_items(asset_manager_ids=[self.asset_manager_id])
+        mocker.get(endpoint, json=[item.to_json() for item in items])
+        asset_manager_items = self.monitor_interface.items_by_asset_manager(asset_manager_id=self.asset_manager_id)
+        self.assertEqual(items, asset_manager_items)
 
     def test_Unicode(self):
         unicode_message = '日本語入力'

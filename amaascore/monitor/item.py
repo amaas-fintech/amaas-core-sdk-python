@@ -1,8 +1,13 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+from dateutil.parser import parse
+import sys
 import uuid
 
 from amaascore.core.amaas_model import AMaaSModel
+
+# This extremely ugly hack is due to the whole Python 2 vs 3 debacle.
+type_check = str if sys.version_info >= (3, 0, 0) else (str, unicode)
 
 
 class Item(AMaaSModel):
@@ -24,3 +29,18 @@ class Item(AMaaSModel):
         self.asset_id = asset_id
         self.item_date = item_date
         super(Item, self).__init__(*args, **kwargs)
+
+    @property
+    def item_date(self):
+        if hasattr(self, '_item_date'):
+            return self._item_date
+
+    @item_date.setter
+    def item_date(self, item_date):
+        """
+
+        :param item_date:
+        :return:
+        """
+        if item_date:
+            self._item_date = parse(item_date).date() if isinstance(item_date, type_check) else item_date

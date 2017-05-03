@@ -22,3 +22,11 @@ def generate_item(client_id=None, asset_manager_id=None, item_id=None, item_clas
         message=message or random_string(200)
     )
     return item
+
+
+def generate_items(asset_manager_ids=[], number=5):
+    items = []
+    for i in range(number):
+        item = generate_item(asset_manager_id=random.choice(asset_manager_ids))
+        items.append(item)
+    return items
