@@ -15,7 +15,8 @@ from amaascore.transactions.transaction import Transaction
 from amaascore.transactions.interface import TransactionsInterface
 from amaascore.tools.generate_asset import generate_asset
 from amaascore.tools.generate_book import generate_book
-from amaascore.tools.generate_transaction import generate_transaction, generate_transactions, generate_positions
+from amaascore.tools.generate_transaction import generate_transaction, generate_transactions,\
+    generate_positions, generate_position
 
 logging.config.dictConfig(DEFAULT_LOGGING)
 
@@ -148,6 +149,16 @@ class TransactionsInterfaceTest(unittest.TestCase):
         positions = generate_positions(asset_manager_ids=[self.asset_manager_id])
         mocker.get(endpoint, json=[position.to_json() for position in positions])
         results = self.transactions_interface.positions_by_asset_manager(asset_manager_id=self.asset_manager_id)
+        self.assertEqual(positions, results)
+
+    @requests_mock.Mocker()
+    def test_PositionsByAssetManagerWithBooks(self, mocker):
+        # This test is somewhat fake - but the integration tests are for the bigger picture
+        endpoint = '%s/positions/%s' % (self.transactions_interface.endpoint, self.asset_manager_id)
+        positions = [generate_position(asset_manager_id=self.asset_manager_id, book_id='TEST')]
+        mocker.get(endpoint, json=[position.to_json() for position in positions])
+        results = self.transactions_interface.positions_by_asset_manager(asset_manager_id=self.asset_manager_id,
+                                                                         book_ids=['TEST'])
         self.assertEqual(positions, results)
 
     def test_MultipleLink(self):

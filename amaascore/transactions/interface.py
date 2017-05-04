@@ -165,6 +165,7 @@ class TransactionsInterface(Interface):
             self.logger.error(response.text)
             response.raise_for_status()
 
+    # Should this method just be collapsed into positions_by_asset_manager?
     def positions_by_asset_manager_book(self, asset_manager_id, book_id):
         self.logger.info('Retrieve Positions by Asset Manager: %s and Book: %s', asset_manager_id, book_id)
         url = '%s/positions/%s/%s' % (self.endpoint, asset_manager_id, book_id)
@@ -177,10 +178,11 @@ class TransactionsInterface(Interface):
             self.logger.error(response.text)
             response.raise_for_status()
 
-    def positions_by_asset_manager(self, asset_manager_id):
+    def positions_by_asset_manager(self, asset_manager_id, book_ids=None):
         self.logger.info('Retrieve Positions by Asset Manager: %s', asset_manager_id)
         url = '%s/positions/%s' % (self.endpoint, asset_manager_id)
-        response = self.session.get(url)
+        params = {'book_ids': ','.join(book_ids)} if book_ids else {}
+        response = self.session.get(url, params=params)
         if response.ok:
             positions = [json_to_position(json_position) for json_position in response.json()]
             self.logger.info('Returned %s Positions.', len(positions))
