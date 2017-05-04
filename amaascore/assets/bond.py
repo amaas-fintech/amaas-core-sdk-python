@@ -10,8 +10,8 @@ from amaascore.assets.asset import Asset
 class BondBase(Asset):
 
     def __init__(self, asset_manager_id, asset_id, maturity_date, coupon, par, pay_frequency, asset_issuer_id,
-                 asset_status, description, country_id, venue_id, issue_date, defaulted, links, references,
-                 *args, **kwargs):
+                 asset_status, roll_price, display_name, description, country_id, venue_id, issue_date, defaulted,
+                 links, references, *args, **kwargs):
         self.asset_class = 'Bond'
         self.coupon = coupon
         self.par = par
@@ -19,6 +19,7 @@ class BondBase(Asset):
         self.defaulted = defaulted
         super(BondBase, self).__init__(asset_manager_id=asset_manager_id, asset_id=asset_id, fungible=True,
                                        asset_issuer_id=asset_issuer_id, asset_status=asset_status,
+                                       roll_price=roll_price, display_name=display_name,
                                        description=description, country_id=country_id, venue_id=venue_id,
                                        issue_date=issue_date, maturity_date=maturity_date, links=links,
                                        references=references,
@@ -59,10 +60,11 @@ class BondBase(Asset):
 class BondGovernment(BondBase):
 
     def __init__(self, asset_manager_id, asset_id, coupon, par, pay_frequency, defaulted=False, asset_issuer_id=None,
-                 maturity_date=date.max, asset_status='Active', description='', country_id=None, venue_id=None,
-                 issue_date=date.min, links=None, references=None, *args, **kwargs):
+                 maturity_date=date.max, asset_status='Active', roll_price=False, display_name='', description='',
+                 country_id=None, venue_id=None, issue_date=date.min, links=None, references=None, *args, **kwargs):
         super(BondGovernment, self).__init__(asset_manager_id=asset_manager_id, asset_id=asset_id,
                                              asset_issuer_id=asset_issuer_id, asset_status=asset_status,
+                                             roll_price=roll_price, display_name=display_name,
                                              description=description, country_id=country_id, venue_id=venue_id,
                                              maturity_date=maturity_date, links=links, references=references,
                                              coupon=coupon, par=par, issue_date=issue_date, pay_frequency=pay_frequency,
@@ -72,10 +74,11 @@ class BondGovernment(BondBase):
 class BondCorporate(BondBase):
 
     def __init__(self, asset_manager_id, asset_id, coupon, par, pay_frequency, defaulted=False, asset_issuer_id=None,
-                 maturity_date=date.max, asset_status='Active', description='', country_id=None, venue_id=None,
-                 issue_date=date.min, links=None, references=None, *args, **kwargs):
+                 maturity_date=date.max, asset_status='Active', roll_price=True, display_name='', description='',
+                 country_id=None, venue_id=None, issue_date=date.min, links=None, references=None, *args, **kwargs):
         super(BondCorporate, self).__init__(asset_manager_id=asset_manager_id, asset_id=asset_id,
                                             asset_issuer_id=asset_issuer_id, asset_status=asset_status,
+                                            roll_price=roll_price, display_name=display_name,
                                             description=description, country_id=country_id, venue_id=venue_id,
                                             maturity_date=maturity_date, links=links, references=references,
                                             coupon=coupon, par=par, issue_date=issue_date, pay_frequency=pay_frequency,
@@ -85,10 +88,11 @@ class BondCorporate(BondBase):
 class BondMortgage(BondBase):
 
     def __init__(self, asset_manager_id, asset_id, coupon, par, pay_frequency, defaulted=False, asset_issuer_id=None,
-                 maturity_date=date.max, asset_status='Active', description='', country_id=None, venue_id=None,
-                 issue_date=date.min, links=None, references=None, *args, **kwargs):
+                 maturity_date=date.max, asset_status='Active', roll_price=True, display_name='', description='',
+                 country_id=None, venue_id=None, issue_date=date.min, links=None, references=None, *args, **kwargs):
         super(BondMortgage, self).__init__(asset_manager_id=asset_manager_id, asset_id=asset_id,
                                            asset_issuer_id=asset_issuer_id, asset_status=asset_status,
+                                           roll_price=roll_price, display_name=display_name,
                                            description=description, country_id=country_id, venue_id=venue_id,
                                            maturity_date=maturity_date, links=links, references=references,
                                            coupon=coupon, par=par, issue_date=issue_date, pay_frequency=pay_frequency,

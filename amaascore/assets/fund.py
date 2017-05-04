@@ -14,7 +14,7 @@ type_check = str if sys.version_info >= (3, 0, 0) else (str, unicode)
 class Fund(Asset):
 
     def __init__(self, asset_manager_id, asset_id, fund_type, nav=None, expense_ratio=None, net_assets=None,
-                 asset_issuer_id=None, asset_status='Active', description='',
+                 asset_issuer_id=None, asset_status='Active', roll_price=False, display_name='', description='',
                  country_id=None, venue_id=None, currency=None, creation_date=None,
                  links=None, references=None,
                  *args, **kwargs):
@@ -27,6 +27,7 @@ class Fund(Asset):
         self.net_assets = net_assets
         super(Fund, self).__init__(asset_manager_id=asset_manager_id, asset_id=asset_id, fungible=True,
                                    asset_issuer_id=asset_issuer_id, asset_status=asset_status,
+                                   display_name=display_name, roll_price=roll_price,
                                    description=description, country_id=country_id, venue_id=venue_id,
                                    currency=currency, links=links, references=references, *args, **kwargs)
 

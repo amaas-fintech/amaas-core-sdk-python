@@ -34,7 +34,11 @@ Create a file called .amaas.cfg in your homedir, with the following:
 .. code-block:: none
 
     [auth]
-    token=YOUR_KEY
+    username=YOUR_USERNAME
+    password=YOUR_PASSWORD
+
+Note that the password is never transferred across the wire as AMaaS uses the Secure Remote Password protocol:
+https://en.wikipedia.org/wiki/Secure_Remote_Password_protocol
 
 
 Example code and demonstrations
