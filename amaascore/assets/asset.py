@@ -2,6 +2,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 from datetime import date
 from dateutil.parser import parse
+import re
 import sys
 import uuid
 
@@ -22,12 +23,15 @@ class Asset(AMaaSModel):
 
     def __init__(self, asset_manager_id, fungible, asset_issuer_id=None, asset_id=None, asset_status='Active',
                  country_id=None, venue_id=None, currency=None, issue_date=date.min, maturity_date=date.max,
-                 description='', comments=None, links=None, references=None, client_additional=None,
+                 roll_price=True, display_name='', description='',
+                 comments=None, links=None, references=None, client_additional=None,
                  *args, **kwargs):
         self.asset_manager_id = asset_manager_id
         self.asset_id = asset_id or uuid.uuid4().hex
         if not hasattr(self, 'asset_class'):  # A more specific child class may have already set this
             self.asset_class = 'Asset'
+        # This can be overridden if necessary but I think it probably shouldn't
+        self.asset_type_display = ' '.join(re.findall('[A-Z][^A-Z]*', self.__class__.__name__))
         self.asset_type = self.__class__.__name__
         self.fungible = fungible
         self.asset_issuer_id = asset_issuer_id
@@ -37,6 +41,8 @@ class Asset(AMaaSModel):
         self.currency = currency
         self.issue_date = issue_date
         self.maturity_date = maturity_date
+        self.roll_price = roll_price
+        self.display_name = display_name
         self.description = description
         self.client_additional = client_additional  # A field to allow people to build their own assets
         # Defaults are here not in constructor for mutability reasons.

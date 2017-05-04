@@ -9,6 +9,7 @@ class ForeignExchangeBase(Asset):
     def __init__(self, asset_id, asset_status, description, *args, **kwargs):
         self.asset_class = 'ForeignExchange'
         super(ForeignExchangeBase, self).__init__(asset_manager_id=0, asset_id=asset_id, fungible=True,
+                                                  display_name=asset_id, roll_price=False,
                                                   asset_status=asset_status, description=description,
                                                   *args, **kwargs)
 

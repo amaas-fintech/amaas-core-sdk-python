@@ -21,7 +21,6 @@ def generate_relationship(asset_manager_id=None, client_id=None, related_id=None
     relationship = Relationship(asset_manager_id=asset_manager_id,
                                 relationship_id=str(random.randint(1, 2**31-1)),
                                 client_id=client_id or random.randint(1, 2**31-1),
-                                relationship_id=random_string(5),
                                 relationship_type=relationship_type or random.choice(list(RELATIONSHIP_TYPES)),
                                 related_id=related_id or random.randint(1, 2**31-1))
     return relationship
