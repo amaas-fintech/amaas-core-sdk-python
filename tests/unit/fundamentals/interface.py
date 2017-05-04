@@ -38,17 +38,27 @@ class FundamentalsInterfaceTest(unittest.TestCase):
 
     def test_BusinessDate(self):
         # Let's pretend the 1st May is an invalid settlement day for a hypothetical bond
-        today = date(2017, 4, 28)  # This is a Friday
+        start_date = date(2017, 4, 28)  # This is a Friday
         mayday = [date(2017, 5, 1)]
-        settlement_date = self.fundamentals_interface.calc_business_date(start_date=today, country_codes=['USA'],
+        settlement_date = self.fundamentals_interface.calc_business_date(start_date=start_date, country_codes=['USA'],
                                                                          offset=2, invalid_dates=mayday)
         self.assertEqual(settlement_date, date(2017, 5, 3))  # 2 day offset + weekend + extra date
 
     def test_BusinessDateAcrossMultipleCalendars(self):
-        today = date(2017, 4, 28)  # This is a Friday
-        settlement_date = self.fundamentals_interface.calc_business_date(start_date=today, offset=2,
+        start_date = date(2017, 4, 28)  # This is a Friday
+        settlement_date = self.fundamentals_interface.calc_business_date(start_date=start_date, offset=2,
                                                                          country_codes=['USA', 'GBR'])
         self.assertEqual(settlement_date, date(2017, 5, 3))  # 2 day offset + weekend + UK holiday
+
+    def test_GetDateInfo(self):
+        business_date = date(2017, 4, 29)  # This is a Saturday
+        date_info = self.fundamentals_interface.get_date_info(business_date=business_date,
+                                                              country_codes=['USA', 'GBR'])
+        self.assertEqual(date_info, {'USA': {'working_day': False}, 'GBR': {'working_day': False}})
+        business_date = date(2017, 5, 1)  # This is a UK holiday
+        date_info = self.fundamentals_interface.get_date_info(business_date=business_date,
+                                                              country_codes=['USA', 'GBR'])
+        self.assertEqual(date_info, {'USA': {'working_day': True}, 'GBR': {'working_day': False}})
 
 if __name__ == '__main__':
     unittest.main()

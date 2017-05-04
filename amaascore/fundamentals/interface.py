@@ -60,3 +60,15 @@ class FundamentalsInterface(Interface):
         else:
             self.logger.error(response.text)
             response.raise_for_status()
+
+    def get_date_info(self, business_date, country_codes):
+        self.logger.info('Getting information about date: %s', business_date)
+        url = '%s/date-info/%s' % (self.endpoint, business_date.isoformat())
+        params = {'country_codes': ','.join(country_codes)}
+        response = self.session.get(url, params=params)
+        if response.ok:
+            self.logger.info('Successfully got information about date')
+            return response.json()
+        else:
+            self.logger.error(response.text)
+            response.raise_for_status()
