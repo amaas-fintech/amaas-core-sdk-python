@@ -26,15 +26,15 @@ def generate_common(asset_manager_id=None, asset_id=None):
               'currency': random.choice(['SGD', 'USD']),
               'display_name': random_string(10)
               }
-
     return common
 
 
-def generate_asset(asset_manager_id=None, asset_id=None, fungible=None):
+def generate_asset(asset_manager_id=None, asset_id=None, fungible=None, roll_price=None, country_id=None):
 
     common = generate_common(asset_manager_id=asset_manager_id, asset_id=asset_id)
     common['fungible'] = random.choice([True, False]) if fungible is None else fungible
-
+    common['roll_price'] = random.choice([True, False]) if roll_price is None else roll_price
+    common['country_id'] = country_id or random.choice(['SGP', 'USA', 'GBR', 'JPN'])
     asset = Asset(**common)
     references = {ref_type: Reference(reference_value=random_string(10)) for ref_type in REFERENCE_TYPES}
 
