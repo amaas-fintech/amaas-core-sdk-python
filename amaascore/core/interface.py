@@ -1,8 +1,8 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import boto3
-from datetime import datetime
 from configparser import ConfigParser, NoSectionError
+from datetime import datetime
 import logging
 from os.path import expanduser, join
 import requests
@@ -14,17 +14,32 @@ from amaascore.exceptions import AMaaSException
 
 class AMaaSSession(object):
 
+    __shared_state = {}
+
     def __init__(self, username, password, logger):
-        self.username = username
-        self.password = password
-        self.tokens = None
-        self.last_authenticated = None
-        self.session = requests.Session()
-        self.client = boto3.client('cognito-idp', COGNITO_REGION)
-        self.aws = AWSSRP(username=self.username, password=self.password, pool_id=COGNITO_POOL,
-                          client_id=COGNITO_CLIENT_ID, client=self.client)
-        self.logger = logger
-        self.login()
+        if not AMaaSSession.__shared_state:
+            AMaaSSession.__shared_state = self.__dict__
+            self.refresh_period = 45 * 60  # minutes * seconds
+            self.username = username
+            self.password = password
+            self.tokens = None
+            self.last_authenticated = None
+            self.session = requests.Session()
+            self.client = boto3.client('cognito-idp', COGNITO_REGION)
+            self.aws = AWSSRP(username=self.username, password=self.password, pool_id=COGNITO_POOL,
+                              client_id=COGNITO_CLIENT_ID, client=self.client)
+            self.logger = logger
+        else:
+            self.__dict__ = AMaaSSession.__shared_state
+        if self.needs_refresh():
+            self.login()
+
+    def needs_refresh(self):
+        if not (self.last_authenticated and
+                (datetime.utcnow() - self.last_authenticated).seconds < self.refresh_period):
+            return True
+        else:
+            return False
 
     def login(self):
         self.logger.info("Attempting login for: %s", self.username)
@@ -40,35 +55,35 @@ class AMaaSSession(object):
 
     def put(self, url, data=None, **kwargs):
         # Add a refresh
-        if self.last_authenticated:
+        if self.last_authenticated and not self.needs_refresh():
             return self.session.put(url=url, data=data, **kwargs)
         else:
             raise AMaaSException('Not Authenticated')
 
     def post(self, url, data=None, **kwargs):
         # Add a refresh
-        if self.last_authenticated:
+        if self.last_authenticated and not self.needs_refresh():
             return self.session.post(url=url, data=data, **kwargs)
         else:
             raise AMaaSException('Not Authenticated')
 
     def delete(self, url, **kwargs):
         # Add a refresh
-        if self.last_authenticated:
+        if self.last_authenticated and not self.needs_refresh():
             return self.session.delete(url=url, **kwargs)
         else:
             raise AMaaSException('Not Authenticated')
 
     def get(self, url, **kwargs):
         # Add a refresh
-        if self.last_authenticated:
+        if self.last_authenticated and not self.needs_refresh():
             return self.session.get(url=url, **kwargs)
         else:
             raise AMaaSException('Not Authenticated')
 
     def patch(self, url, data=None, **kwargs):
         # Add a refresh
-        if self.last_authenticated:
+        if self.last_authenticated and not self.needs_refresh():
             return self.session.patch(url=url, data=data, **kwargs)
         else:
             raise AMaaSException('Not Authenticated')
@@ -80,10 +95,9 @@ class Interface(object):
     """
 
     def __init__(self, endpoint_type, endpoint=None, environment=ENVIRONMENT, username=None, password=None,
-                 use_auth=True, config_filename=None, logger=None):
+                 config_filename=None, logger=None):
         self.logger = logger or logging.getLogger(__name__)
         self.config_filename = config_filename
-        self.auth_token = self.read_config('token') if use_auth is True else ''
         self.endpoint_type = endpoint_type
         self.environment = environment
         self.endpoint = endpoint or self.get_endpoint()

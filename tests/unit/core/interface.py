@@ -1,40 +1,35 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from configparser import ConfigParser
-import os.path
-import tempfile
+from amaasutils.logging_utils import DEFAULT_LOGGING
+from datetime import datetime, timedelta
+import logging.config
 import unittest
 
 from amaascore.core.interface import Interface
-from amaascore.exceptions import AMaaSException
+
+logging.config.dictConfig(DEFAULT_LOGGING)
+
+logger = logging.getLogger(__name__)
 
 
 class InterfaceTest(unittest.TestCase):
 
-    def test_NoAuth(self):
-        interface = Interface(endpoint='DUMMY', use_auth=False)
-        self.assertEqual(interface.auth_token, '')
-
     def test_GenerateConfigFilename(self):
         # This isn't a great test since there are too many permutations to properly test
-        interface = Interface(endpoint='DUMMY')
+        interface = Interface(endpoint_type='DUMMY', endpoint='DUMMY', logger=logger)
         self.assertIsNotNone(interface.generate_config_filename())
 
-    def test_ReadTokenWithPath(self):
-        # Create a dummy file
-        config = ConfigParser()
-        config['auth'] = {'token': 'TEST_VALUE'}
-        filename = os.path.join(tempfile.gettempdir(), 'amaas.cfg')
-        # Writing our configuration file to 'example.cfg'
-        with open(filename, 'w') as configfile:
-            config.write(configfile)
-        interface = Interface(endpoint='DUMMY', use_auth=True, config_filename=filename)
-        self.assertEqual(interface.auth_token, 'TEST_VALUE')
-        os.remove(filename)
+    def test_MultipleSessionsShareLogin(self):
+        interface1 = Interface(endpoint_type='DUMMY', endpoint='DUMMY', logger=logger)
+        interface2 = Interface(endpoint_type='DUMMY', endpoint='DUMMY', logger=logger)
+        self.assertEqual(interface1.session.last_authenticated, interface2.session.last_authenticated)
 
-    def test_ReadTokenMissingPath(self):
-        with self.assertRaisesRegexp(AMaaSException, 'Invalid AMaaS config file'):
-            interface = Interface(endpoint='DUMMY', use_auth=True, config_filename='INVALID')
+    def test_NeedsRefresh(self):
+        interface1 = Interface(endpoint_type='DUMMY', endpoint='DUMMY', logger=logger)
+        self.assertEqual(interface1.session.needs_refresh(), False)
+        # Fake the last_authenticated timing
+        interface1.session.last_authenticated = datetime.utcnow() - timedelta(hours=1)
+        self.assertEqual(interface1.session.needs_refresh(), True)
 
 if __name__ == '__main__':
     unittest.main()
