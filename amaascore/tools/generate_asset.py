@@ -12,6 +12,7 @@ from amaascore.assets.bond_option import BondOption
 from amaascore.assets.foreign_exchange import ForeignExchange
 from amaascore.assets.fund import Fund
 from amaascore.assets.future import Future
+from amaascore.assets.fx_option import ForeignExchangeOption
 from amaascore.assets.sukuk import Sukuk
 from amaascore.assets.synthetic import Synthetic
 from amaascore.core.reference import Reference
@@ -84,6 +85,17 @@ def generate_future(asset_manager_id=None, asset_id=None):
                    tick_size=Decimal('0.01'),
                    expiry_date=random_date(start_year=date.today().year+1),
                    **props)
+    return asset
+
+
+def generate_fx_option(asset_manager_id=None, asset_id=None, option_type=None, strike=None, option_style=None):
+    props = generate_common(asset_manager_id=asset_manager_id, asset_id=asset_id)
+    del props['currency']  # FX doesn't have a currency
+    asset = ForeignExchangeOption(underlying_asset_id=random_string(10),
+                                  option_style=option_style or random.choice(['European', 'American']),
+                                  option_type=option_type or random.choice(['Put', 'Call']),
+                                  strike=strike or Decimal(random.uniform(99.0, 102.0)).quantize(Decimal('0.05')),
+                                  **props)
     return asset
 
 
