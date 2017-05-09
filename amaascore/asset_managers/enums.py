@@ -5,3 +5,4 @@ ASSET_MANAGER_TYPES = {'Accredited Investor', 'Bank', 'Broker', 'Corporate Treas
                        'Fund Administrator', 'Fund Manager', 'Hedge Fund', 'Private Equity', 'Retail',
                        'Venture Capital'}
 RELATIONSHIP_TYPES = {'Administrator', 'External', 'Front Office', 'Employee'}
+ACCOUNT_TYPES = {'Test', 'Basic', 'Professional'}
