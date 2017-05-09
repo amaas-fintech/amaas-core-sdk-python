@@ -17,6 +17,6 @@ class ContractForDifference(Derivative):
                                                     asset_status=asset_status, display_name=display_name,
                                                     description=description,
                                                     country_id=country_id, venue_id=venue_id, issue_date=issue_date,
-                                                    maturity_date=None, currency=currency, links=links,
+                                                    currency=currency, links=links,
                                                     references=references,
                                                     *args, **kwargs)

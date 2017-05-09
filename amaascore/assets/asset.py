@@ -22,7 +22,7 @@ class Asset(AMaaSModel):
         return {'comments': Comment, 'links': Link, 'references': Reference}
 
     def __init__(self, asset_manager_id, fungible, asset_issuer_id=None, asset_id=None, asset_status='Active',
-                 country_id=None, venue_id=None, currency=None, issue_date=date.min, maturity_date=date.max,
+                 country_id=None, venue_id=None, currency=None, issue_date=date.min,
                  roll_price=True, display_name='', description='',
                  comments=None, links=None, references=None, client_additional=None,
                  *args, **kwargs):
@@ -40,7 +40,6 @@ class Asset(AMaaSModel):
         self.venue_id = venue_id
         self.currency = currency
         self.issue_date = issue_date
-        self.maturity_date = maturity_date
         self.roll_price = roll_price
         self.display_name = display_name
         self.description = description

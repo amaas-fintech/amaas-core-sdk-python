@@ -9,7 +9,7 @@ from amaascore.assets.future_option import FutureOption
 class BondFutureOption(FutureOption):
 
     def __init__(self, asset_manager_id, asset_id, option_type, option_style, strike, underlying_asset_id,
-                 settlement_type, contract_size, point_value, tick_size, quote_unit=None,
+                 settlement_type, contract_size, point_value, tick_size, quote_unit=None, currency=None,
                  asset_issuer_id=None, asset_status='Active', issue_date=date.min, expiry_date=date.max,
                  display_name='', description='', country_id=None, venue_id=None,
                  links=None, references=None, *args, **kwargs):
@@ -36,7 +36,7 @@ class BondFutureOption(FutureOption):
         """
         super(BondFutureOption, self).__init__(asset_manager_id=asset_manager_id, asset_id=asset_id,
                                                asset_issuer_id=asset_issuer_id, asset_status=asset_status,
-                                               display_name=display_name,
+                                               display_name=display_name, currency=currency,
                                                description=description, country_id=country_id, venue_id=venue_id,
                                                links=links, references=references, issue_date=issue_date,
                                                expiry_date=expiry_date, option_style=option_style, strike=strike,

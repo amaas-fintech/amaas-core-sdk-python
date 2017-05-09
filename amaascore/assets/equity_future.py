@@ -10,7 +10,7 @@ class EquityFuture(Future):
 
     def __init__(self, asset_manager_id, asset_id, settlement_type, contract_size, point_value, tick_size,
                  quote_unit=None, asset_issuer_id=None, asset_status='Active', issue_date=date.min,
-                 expiry_date=date.max,
+                 expiry_date=date.max, currency=None,
                  display_name='', description='', country_id=None, venue_id=None,
                  links=None, references=None, *args, **kwargs):
         """
@@ -33,7 +33,7 @@ class EquityFuture(Future):
                                            settlement_type=settlement_type, contract_size=contract_size,
                                            point_value=point_value, tick_size=tick_size, quote_unit=quote_unit,
                                            asset_issuer_id=asset_issuer_id, asset_status=asset_status,
-                                           display_name=display_name,
+                                           display_name=display_name, currency=currency,
                                            description=description, country_id=country_id, venue_id=venue_id,
                                            links=links, references=references, issue_date=issue_date,
                                            expiry_date=expiry_date,
