@@ -7,7 +7,7 @@ from amaascore.assets.fund import Fund
 from amaascore.tools.generate_asset import generate_fund
 
 
-class FutureTest(unittest.TestCase):
+class FundTest(unittest.TestCase):
 
     def setUp(self):
         self.longMessage = True  # Print complete error message on failure

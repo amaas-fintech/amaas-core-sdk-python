@@ -2,7 +2,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 
 from amaasutils.random_utils import random_string, random_decimal, random_date
-import datetime
+from datetime import date
 from decimal import Decimal
 import random
 
@@ -82,6 +82,7 @@ def generate_future(asset_manager_id=None, asset_id=None):
                    contract_size=10000,
                    point_value=Decimal('50'),
                    tick_size=Decimal('0.01'),
+                   expiry_date=random_date(start_year=date.today().year+1),
                    **props)
     return asset
 

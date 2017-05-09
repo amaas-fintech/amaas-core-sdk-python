@@ -12,7 +12,7 @@ type_check = str if sys.version_info >= (3, 0, 0) else (str, unicode)
 
 class Wine(RealAsset):
 
-    def __init__(self, asset_manager_id, asset_id, maturity_date=date.max, year=None, producer=None,
+    def __init__(self, asset_manager_id, asset_id, year=None, producer=None,
                  region=None, appellation=None, classification=None, color=None, bottle_size=None,
                  bottle_in_cellar=None, bottle_location=None, storage_cost=None, rating_type=None,
                  rating_value=None, packing_type=None, to_drink_start=None, to_drink_end=None,
@@ -38,7 +38,7 @@ class Wine(RealAsset):
                                    asset_issuer_id=asset_issuer_id, asset_status=asset_status,
                                    display_name=display_name,
                                    description=description, country_id=country_id, venue_id=venue_id,
-                                   issue_date=issue_date, currency=currency, maturity_date=maturity_date,
+                                   issue_date=issue_date, currency=currency,
                                    comments=comments, links=links, references=references,
                                    *args, **kwargs)
 
