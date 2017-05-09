@@ -11,6 +11,20 @@ from amaascore.corporate_actions.split import Split
 
 
 def json_to_corporate_action(json_corporate_action):
+    # Iterate through the corp action children, converting the various JSON attributes into the relevant class type
+    for (collection_name, clazz) in CorporateAction.children().items():
+        children = json_corporate_action.pop(collection_name, {})
+        collection = {}
+        for (child_type, child_json) in children.items():
+            # Handle the case where there are multiple children for a given type - e.g. links
+            if isinstance(child_json, list):
+                child = set()
+                for child_json_in_list in child_json:
+                    child.add(clazz(**child_json_in_list))
+            else:
+                child = clazz(**child_json)
+            collection[child_type] = child
+        json_corporate_action[collection_name] = collection
     clazz = globals().get(json_corporate_action.get('corporate_action_type'))
     args = inspect.getargspec(clazz.__init__)
     # Some fields are always added in, even though they're not explicitly part of the constructor
