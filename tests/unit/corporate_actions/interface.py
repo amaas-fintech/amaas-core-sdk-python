@@ -74,8 +74,8 @@ class CorporateActionsInterfaceTest(unittest.TestCase):
         endpoint = '%s/corporate-actions/%s' % (self.corporate_actions_interface.endpoint, self.asset_manager_id)
         corporate_actions = generate_corporate_actions(asset_manager_ids=[self.asset_manager_id])
         mocker.get(endpoint, json=[corporate_action.to_json() for corporate_action in corporate_actions])
-        asset_manager_corporate_actions = self.corporate_actions_interface.corporate_actions_by_asset_manager(self.asset_manager_id)
-        self.assertEqual(corporate_actions, asset_manager_corporate_actions)
+        amca = self.corporate_actions_interface.corporate_actions_by_asset_manager(self.asset_manager_id)
+        self.assertEqual(corporate_actions, amca)
 
     def test_Unicode(self):
         unicode_description = '日本語入力'
