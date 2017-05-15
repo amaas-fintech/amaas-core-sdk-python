@@ -49,7 +49,6 @@ class Asset(AMaaSModel):
         self.links = links.copy() if links else {}
         self.references = references.copy() if references else {}
         self.references['AMaaS'] = Reference(reference_value=self.asset_id)  # Upserts the AMaaS Reference
-
         super(Asset, self).__init__(*args, **kwargs)
 
     def reference_types(self):
@@ -91,3 +90,17 @@ class Asset(AMaaSModel):
 
     def __str__(self):
         return "Asset object - ID: %s" % self.asset_id
+
+    def get_country_codes(self):
+        return [self.country_id]
+
+    def get_country_and_exchange_codes(self):
+        """
+        This function returns dictionary in the format of {"country_codes": [XYZ, ABC], "venue_id": [ABC]} 
+        Where country_codes = self.country_id and venue_id = self.venue_id
+        except for FX where we also return the country_ids associated with the legs of the FX transaction 
+        (e.g. USDJPY returns USA + JPN).
+        Assuming country_codes and venue_id attributes' values are of list data type
+        """
+        codes = {'country_codes': self.get_country_codes(), 'venue_id': self.venue_id}
+        return codes
