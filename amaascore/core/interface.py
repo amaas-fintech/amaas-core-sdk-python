@@ -8,7 +8,7 @@ from os.path import expanduser, join
 import requests
 from warrant.aws_srp import AWSSRP
 
-from amaascore.config import COGNITO_REGION, COGNITO_CLIENT_ID, COGNITO_POOL, ENDPOINTS, LOCAL, ENVIRONMENT
+from amaascore.config import COGNITO_REGION, COGNITO_CLIENT_ID, COGNITO_POOL, ENDPOINTS, LOCAL_ENDPOINT, ENVIRONMENT
 from amaascore.exceptions import AMaaSException
 
 
@@ -108,12 +108,13 @@ class Interface(object):
         self.logger.info('Interface Created')
 
     def get_endpoint(self):
+        if self.environment == 'local':
+            return LOCAL_ENDPOINT
         endpoint = ENDPOINTS.get(self.endpoint_type)
         if not endpoint:
             raise KeyError('Cannot find endpoint')
-        if not LOCAL:
-            endpoint = endpoint % self.environment
-            self.logger.info("Using Endpoint: %s", endpoint)
+        endpoint = endpoint % self.environment
+        self.logger.info("Using Endpoint: %s", endpoint)
         return endpoint
 
     @staticmethod
