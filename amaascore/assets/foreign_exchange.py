@@ -28,8 +28,9 @@ class ForeignExchange(ForeignExchangeBase):
     Currently modelling spot and forward as the same, just two different dates on the transaction.  We might need to
     change that.
     """
-    def __init__(self, asset_id, asset_status='Active', description='', *args, **kwargs):
+    def __init__(self, asset_id, asset_status='Active', country_codes=[], description='', *args, **kwargs):
         super(ForeignExchange, self).__init__(asset_id=asset_id, asset_status=asset_status, description=description,
+                                              country_codes=country_codes,
                                               *args, **kwargs)
 
 
@@ -39,7 +40,7 @@ class NonDeliverableForward(ForeignExchangeBase):
     change that.
     """
 
-    def __init__(self, asset_id, asset_status='Active', description='', *args, **kwargs):
-        super(NonDeliverableForward, self).__init__(asset_id=asset_id, asset_status=asset_status,
+    def __init__(self, asset_id, asset_status='Active', description='', country_codes=[], *args, **kwargs):
+        super(NonDeliverableForward, self).__init__(asset_id=asset_id, asset_status=asset_status, country_codes=country_codes,
                                                     description=description, *args, **kwargs)
 
