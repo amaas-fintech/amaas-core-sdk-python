@@ -94,7 +94,7 @@ class Asset(AMaaSModel):
     def get_country_codes(self):
         return [self.country_id]
 
-    def get_country_and_exchange_codes(self):
+    def country_and_venue_codes(self):
         """
         This function returns dictionary in the format of {"country_codes": [XYZ, ABC], "venue_id": [ABC]} 
         Where country_codes = self.country_id and venue_id = self.venue_id
