@@ -100,7 +100,6 @@ class Asset(AMaaSModel):
         Where country_codes = self.country_id and venue_id = self.venue_id
         except for FX where we also return the country_ids associated with the legs of the FX transaction 
         (e.g. USDJPY returns USA + JPN).
-        Assuming country_codes and venue_id attributes' values are of list data type
         """
-        codes = {'country_codes': self.get_country_codes(), 'venue_id': self.venue_id}
+        codes = {'country_codes': self.get_country_codes(), 'venue_id': [self.venue_id]}
         return codes
