@@ -84,9 +84,9 @@ class AssetsInterface(Interface):
         search_params = {}
         # Potentially roll this into a loop through args rather than explicitly named - depends on additional validation
         if asset_manager_ids:
-            search_params['asset_manager_ids'] = asset_manager_ids
+            search_params['asset_manager_ids'] = ','.join(asset_manager_ids)
         if asset_ids:
-            search_params['asset_ids'] = asset_ids
+            search_params['asset_ids'] = ','.join(asset_ids)
         url = self.endpoint + '/assets'
         response = self.session.get(url, params=search_params)
         if response.ok:
