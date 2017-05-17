@@ -62,7 +62,7 @@ class AssetManagersInterface(Interface):
         search_params = {}
         # Potentially roll this into a loop through args rather than explicitly named - depends on additional validation
         if asset_manager_ids:
-            search_params['asset_manager_ids'] = ','.join(asset_manager_ids)
+            search_params['asset_manager_ids'] = ','.join([str(amid) for amid in asset_manager_ids])
         if client_ids:
             search_params['client_ids'] = ','.join(client_ids)
         url = self.endpoint + '/asset-managers'
