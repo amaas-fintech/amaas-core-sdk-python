@@ -76,7 +76,7 @@ class PartiesInterface(Interface):
         search_params = {}
         # Potentially roll this into a loop through args rather than explicitly named - depends on additional validation
         if asset_manager_ids:
-            search_params['asset_manager_ids'] = ','.join(asset_manager_ids)
+            search_params['asset_manager_ids'] = ','.join([str(amid) for amid in asset_manager_ids])
         if party_ids:
             search_params['party_ids'] = ','.join(party_ids)
         url = self.endpoint + '/parties'
