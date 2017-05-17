@@ -85,5 +85,12 @@ class BooksInterfaceTest(unittest.TestCase):
         book = self.books_interface.new(self.book)
         self.assertEqual(book.description, unicode_description)
 
+    def test_Clear(self):
+        self.books_interface.new(self.book)
+        count = self.books_interface.clear(self.asset_manager_id)
+        self.assertEqual(count, 1)
+        results = self.books_interface.search(asset_manager_ids=[self.asset_manager_id])
+        self.assertEqual(len(results), 0)
+
 if __name__ == '__main__':
     unittest.main()

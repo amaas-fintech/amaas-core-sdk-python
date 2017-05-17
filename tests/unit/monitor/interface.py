@@ -22,9 +22,9 @@ class MonitorInterfaceTest(unittest.TestCase):
     def setUp(self):
         self.longMessage = True  # Print complete error message on failure
         self.maxDiff = None
-        self.item = generate_item()
-        self.item_id = self.item.item_id
         self.asset_manager_id = random.randint(1, 2**31-1)
+        self.item = generate_item(asset_manager_id=self.asset_manager_id)
+        self.item_id = self.item.item_id
 
     def tearDown(self):
         pass
@@ -78,6 +78,13 @@ class MonitorInterfaceTest(unittest.TestCase):
         self.item.message = unicode_message
         item = self.monitor_interface.new_item(self.item)
         self.assertEqual(item.message, unicode_message)
+
+    def test_Clear(self):
+        self.monitor_interface.new_item(self.item)
+        count = self.monitor_interface.clear(self.asset_manager_id)
+        self.assertEqual(count, 1)
+        results = self.monitor_interface.search_items(asset_manager_ids=[self.asset_manager_id])
+        self.assertEqual(len(results), 0)
 
 if __name__ == '__main__':
     unittest.main()

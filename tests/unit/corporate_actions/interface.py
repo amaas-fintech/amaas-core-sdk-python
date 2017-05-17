@@ -23,7 +23,7 @@ class CorporateActionsInterfaceTest(unittest.TestCase):
         self.maxDiff = None
         self.longMessage = True  # Print complete error message on failure
         self.asset_manager_id = random.randint(1, 2**31-1)
-        self.corporate_action = generate_corporate_action()
+        self.corporate_action = generate_corporate_action(asset_manager_id=self.asset_manager_id)
         self.corporate_action_id = self.corporate_action.corporate_action_id
 
     def tearDown(self):
@@ -82,6 +82,15 @@ class CorporateActionsInterfaceTest(unittest.TestCase):
         self.corporate_action.description = unicode_description
         corporate_action = self.corporate_actions_interface.new(self.corporate_action)
         self.assertEqual(corporate_action.description, unicode_description)
+
+    def test_Clear(self):
+        self.corporate_actions_interface.new(self.corporate_action)
+        count = self.corporate_actions_interface.clear(self.asset_manager_id)
+        self.assertEqual(count, 1)
+        results = self.corporate_actions_interface.search(asset_manager_ids=[self.asset_manager_id])
+        # Strip out the 'shared' corporate actions
+        results = [result for result in results if result.asset_manager_id == self.asset_manager_id]
+        self.assertEqual(len(results), 0)
 
 if __name__ == '__main__':
     unittest.main()

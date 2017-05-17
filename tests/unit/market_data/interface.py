@@ -4,6 +4,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 from amaasutils.logging_utils import DEFAULT_LOGGING
 from datetime import date, timedelta
 import random
+from requests.exceptions import HTTPError
 import unittest
 
 from amaascore.market_data.interface import MarketDataInterface
@@ -97,6 +98,24 @@ class MarketDataInterfaceTest(unittest.TestCase):
         self.assertEqual(len(eod_prices), 2)
         self.assertEqual(prices, eod_prices)
         self.assertEqual({price.business_date for price in prices}, {self.business_date})
+
+    def test_Clear(self):
+        self.interface.persist_eod_prices(asset_manager_id=self.asset_manager_id,
+                                          eod_prices=[self.eod_price1, self.eod_price2],
+                                          business_date=self.business_date,
+                                          update_existing_prices=True)
+        self.interface.persist_fx_rates(asset_manager_id=self.asset_manager_id,
+                                        fx_rates=[self.fx_rate1, self.fx_rate2],
+                                        business_date=self.business_date,
+                                        update_existing_rates=True)
+        counts = self.interface.clear(self.asset_manager_id)
+        self.assertEqual(counts, {'fx_rate_count': 2, 'eod_price_count': 2})
+        with self.assertRaisesRegex(HTTPError, 'Not Found'):
+            self.interface.retrieve_eod_prices(asset_manager_id=self.asset_manager_id,
+                                               business_date=self.business_date)
+        with self.assertRaisesRegex(HTTPError, 'Not Found'):
+            self.interface.retrieve_fx_rates(asset_manager_id=self.asset_manager_id,
+                                             business_date=self.business_date)
 
 if __name__ == '__main__':
     unittest.main()

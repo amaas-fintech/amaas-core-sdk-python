@@ -38,6 +38,7 @@ class MarketDataInterface(Interface):
             response.raise_for_status()
 
     def retrieve_eod_prices(self, asset_manager_id, business_date, asset_ids=None):
+        self.logger.info('Retrieve EOD Prices - Asset Manager: %s - Business Date: %s', asset_manager_id, business_date)
         url = '%s/eod-prices/%s/%s' % (self.endpoint, asset_manager_id, business_date.isoformat())
         params = {'asset_ids': ','.join(asset_ids)} if asset_ids else {}
         response = self.session.get(url=url, params=params)
@@ -72,6 +73,7 @@ class MarketDataInterface(Interface):
         :param update_existing_rates:
         :return:
         """
+        self.logger.info('Persist FX Rates - Asset Manager: %s - Business Date: %s', asset_manager_id, business_date)
         url = '%s/fx-rates/%s/%s' % (self.endpoint, asset_manager_id, business_date.isoformat())
         params = {'update_existing_rates': update_existing_rates}
         fx_rates_json = [fx_rate.to_interface() for fx_rate in fx_rates]
@@ -84,6 +86,7 @@ class MarketDataInterface(Interface):
             response.raise_for_status()
 
     def retrieve_fx_rates(self, asset_manager_id, business_date, asset_ids=None):
+        self.logger.info('Retrieve FX Rates - Asset Manager: %s - Business Date: %s', asset_manager_id, business_date)
         url = '%s/fx-rates/%s/%s' % (self.endpoint, asset_manager_id, business_date.isoformat())
         params = {'asset_ids': ','.join(asset_ids)} if asset_ids else {}
         response = self.session.get(url=url, params=params)
@@ -91,6 +94,23 @@ class MarketDataInterface(Interface):
             fx_rates = [json_to_fx_rate(fx_rate) for fx_rate in response.json()]
             self.logger.info('Returned %s FX Rates.', len(fx_rates))
             return fx_rates
+        else:
+            self.logger.error(response.text)
+            response.raise_for_status()
+
+    def clear(self, asset_manager_id):
+        """ This method deletes all the data for an asset_manager_id.
+            It should be used with extreme caution.  In production it
+            is almost always better to Inactivate rather than delete. """
+        self.logger.info('Clear Market Data - Asset Manager: %s', asset_manager_id)
+        url = '%s/clear/%s' % (self.endpoint, asset_manager_id)
+        response = self.session.delete(url)
+        if response.ok:
+            eod_price_count = response.json().get('eod_price_count', 'Unknown')
+            self.logger.info('Deleted %s EOD Prices.', eod_price_count)
+            fx_rate_count = response.json().get('fx_rate_count', 'Unknown')
+            self.logger.info('Deleted %s FX Rates.', fx_rate_count)
+            return response.json()
         else:
             self.logger.error(response.text)
             response.raise_for_status()

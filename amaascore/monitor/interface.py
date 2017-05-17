@@ -80,3 +80,18 @@ class MonitorInterface(Interface):
         else:
             self.logger.error(response.text)
             response.raise_for_status()
+
+    def clear(self, asset_manager_id):
+        """ This method deletes all the data for an asset_manager_id.
+            It should be used with extreme caution.  In production it
+            is almost always better to Close rather than delete. """
+        self.logger.info('Clear Monitor - Asset Manager: %s', asset_manager_id)
+        url = '%s/clear/%s' % (self.endpoint, asset_manager_id)
+        response = self.session.delete(url)
+        if response.ok:
+            count = response.json().get('count', 'Unknown')
+            self.logger.info('Deleted %s Items.', count)
+            return count
+        else:
+            self.logger.error(response.text)
+            response.raise_for_status()

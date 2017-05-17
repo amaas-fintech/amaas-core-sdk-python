@@ -102,5 +102,14 @@ class AssetsInterfaceTest(unittest.TestCase):
         asset = self.assets_interface.new(self.asset)
         self.assertEqual(asset.description, unicode_description)
 
+    def test_Clear(self):
+        self.assets_interface.new(self.asset)
+        count = self.assets_interface.clear(self.asset_manager_id)
+        self.assertEqual(count, 1)
+        results = self.assets_interface.search(asset_manager_ids=[self.asset_manager_id])
+        # Strip out the 'shared' assets
+        results = [result for result in results if result.asset_manager_id == self.asset_manager_id]
+        self.assertEqual(len(results), 0)
+
 if __name__ == '__main__':
     unittest.main()
