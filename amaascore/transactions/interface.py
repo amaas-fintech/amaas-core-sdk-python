@@ -339,3 +339,22 @@ class TransactionsInterface(Interface):
                                   book transfer, except it requires an external message to a
                                   custodian to instruct them to move the stock to a
                                    different depot account.""")
+
+    def clear(self, asset_manager_id, book_ids=None):
+        """ This method deletes all the data for an asset_manager_id
+            and option book_ids.
+            It should be used with extreme caution.  In production it
+            is almost always better to Inactivate rather than delete. """
+        self.logger.info('Clear Transactions & Positions - Asset Manager: %s', asset_manager_id)
+        url = '%s/clear/%s' % (self.endpoint, asset_manager_id)
+        params = {'asset_manager_ids': ','.join(book_ids)} if book_ids else {}
+        response = self.session.delete(url, params=params)
+        if response.ok:
+            tran_count = response.json().get('transaction_count', 'Unknown')
+            self.logger.info('Deleted %s Transactions.', tran_count)
+            pos_count = response.json().get('position_count', 'Unknown')
+            self.logger.info('Deleted %s Positions.', pos_count)
+            return response.json()
+        else:
+            self.logger.error(response.text)
+            response.raise_for_status()

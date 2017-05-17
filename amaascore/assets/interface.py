@@ -98,12 +98,28 @@ class AssetsInterface(Interface):
             response.raise_for_status()
 
     def assets_by_asset_manager(self, asset_manager_id):
+        self.logger.info('Retrieve Assets By Asset Manager: %s', asset_manager_id)
         url = '%s/assets/%s' % (self.endpoint, asset_manager_id)
         response = self.session.get(url)
         if response.ok:
             assets = [json_to_asset(json_asset) for json_asset in response.json()]
             self.logger.info('Returned %s Assets.', len(assets))
             return assets
+        else:
+            self.logger.error(response.text)
+            response.raise_for_status()
+
+    def clear(self, asset_manager_id):
+        """ This method deletes all the data for an asset_manager_id.
+            It should be used with extreme caution.  In production it
+            is almost always better to Inactivate rather than delete. """
+        self.logger.info('Clear Assets - Asset Manager: %s', asset_manager_id)
+        url = '%s/clear/%s' % (self.endpoint, asset_manager_id)
+        response = self.session.delete(url)
+        if response.ok:
+            count = response.json().get('count', 'Unknown')
+            self.logger.info('Deleted %s Assets.', count)
+            return count
         else:
             self.logger.error(response.text)
             response.raise_for_status()

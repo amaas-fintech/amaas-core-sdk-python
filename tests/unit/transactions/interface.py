@@ -197,5 +197,13 @@ class TransactionsInterfaceTest(unittest.TestCase):
         transaction = self.transactions_interface.new(self.transaction)
         self.assertEqual(transaction.comments.get('Unicode').comment_value, unicode_comment)
 
+    def test_Clear(self):
+        self.transactions_interface.new(self.transaction)
+        count = self.transactions_interface.clear(self.asset_manager_id)
+        self.assertEqual(count['transaction_count'], 1)
+        self.assertGreater(count['position_count'], 0)
+        results = self.transactions_interface.search(asset_manager_ids=[self.asset_manager_id])
+        self.assertEqual(len(results), 0)
+
 if __name__ == '__main__':
     unittest.main()
