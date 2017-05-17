@@ -103,3 +103,7 @@ class Asset(AMaaSModel):
         """
         codes = {'country_codes': self.get_country_codes(), 'venue_id': [self.venue_id]}
         return codes
+        
+    def get_currencies(self):
+        return [self.currency]
+

@@ -23,6 +23,9 @@ class ForeignExchangeBase(Asset):
 
     def get_country_codes(self):
         return self.country_codes
+    
+    def get_currencies(self):
+        return [self.base_currency(), self.counter_currency()]
         
 class ForeignExchange(ForeignExchangeBase):
     """
