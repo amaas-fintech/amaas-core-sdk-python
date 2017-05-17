@@ -56,9 +56,9 @@ class MonitorInterface(Interface):
         search_params = {}
         # Potentially roll this into a loop through args rather than explicitly named - depends on additional validation
         if asset_manager_ids:
-            search_params['asset_manager_ids'] = asset_manager_ids
+            search_params['asset_manager_ids'] = ','.join(asset_manager_ids)
         if item_ids:
-            search_params['item_ids'] = item_ids
+            search_params['item_ids'] = ','.join(item_ids)
         url = self.endpoint + '/items'
         response = self.session.get(url, params=search_params)
         if response.ok:

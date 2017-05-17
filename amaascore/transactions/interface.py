@@ -95,39 +95,39 @@ class TransactionsInterface(Interface):
         search_params = {}
         # Potentially roll this into a loop through args rather than explicitly named - depends on additional validation
         if asset_manager_ids:
-            search_params['asset_manager_ids'] = asset_manager_ids
+            search_params['asset_manager_ids'] = ','.join(asset_manager_ids)
         if transaction_ids:
-            search_params['transaction_ids'] = transaction_ids
+            search_params['transaction_ids'] = ','.join(transaction_ids)
         if transaction_statuses:
-            search_params['transaction_statuses'] = transaction_statuses
+            search_params['transaction_statuses'] = ','.join(transaction_statuses)
         if asset_book_ids:
-            search_params['asset_book_ids'] = asset_book_ids
+            search_params['asset_book_ids'] = ','.join(asset_book_ids)
         if counterparty_book_ids:
-            search_params['counterparty_book_ids'] = counterparty_book_ids
+            search_params['counterparty_book_ids'] = ','.join(counterparty_book_ids)
         if asset_ids:
-            search_params['asset_ids'] = asset_ids
+            search_params['asset_ids'] = ','.join(asset_ids)
         if transaction_date_start:
             search_params['transaction_date_start'] = transaction_date_start
         if transaction_date_end:
             search_params['transaction_date_end'] = transaction_date_end
         if code_types:
-            search_params['code_types'] = code_types
+            search_params['code_types'] = ','.join(code_types)
         if code_values:
-            search_params['code_values'] = code_values
+            search_params['code_values'] = ','.join(code_values)
         if link_types:
-            search_params['link_types'] = link_types
+            search_params['link_types'] = ','.join(link_types)
         if linked_transaction_ids:
-            search_params['linked_transaction_ids'] = linked_transaction_ids
+            search_params['linked_transaction_ids'] = ','.join(linked_transaction_ids)
         if party_types:
-            search_params['party_types'] = party_types
+            search_params['party_types'] = ','.join(party_types)
         if party_ids:
-            search_params['party_ids'] = party_ids
+            search_params['party_ids'] = ','.join(party_ids)
         if reference_types:
-            search_params['reference_types'] = reference_types
+            search_params['reference_types'] = ','.join(reference_types)
         if reference_values:
-            search_params['reference_values'] = reference_values
+            search_params['reference_values'] = ','.join(reference_values)
         if client_ids:
-            search_params['client_ids'] = client_ids
+            search_params['client_ids'] = ','.join(client_ids)
         url = self.endpoint + '/transactions'
         response = self.session.get(url, params=search_params)
         if response.ok:
@@ -145,15 +145,15 @@ class TransactionsInterface(Interface):
         search_params = {}
         # Potentially roll into a loop
         if asset_manager_ids:
-            search_params['asset_manager_ids'] = asset_manager_ids
+            search_params['asset_manager_ids'] = ','.join(asset_manager_ids)
         if book_ids:
-            search_params['book_ids'] = book_ids
+            search_params['book_ids'] = ','.join(book_ids)
         if account_ids:
-            search_params['account_ids'] = account_ids
+            search_params['account_ids'] = ','.join(account_ids)
         if accounting_types:
-            search_params['accounting_types'] = accounting_types
+            search_params['accounting_types'] = ','.join(accounting_types)
         if asset_ids:
-            search_params['asset_ids'] = asset_ids
+            search_params['asset_ids'] = ','.join(asset_ids)
         if position_date:
             search_params['position_date'] = position_date
         response = self.session.get(url, params=search_params)
