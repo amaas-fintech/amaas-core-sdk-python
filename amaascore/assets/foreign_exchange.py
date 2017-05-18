@@ -27,6 +27,35 @@ class ForeignExchangeBase(Asset):
     def get_currencies(self):
         return [self.base_currency(), self.counter_currency()]
         
+    @property
+    def major(self):
+        return self._major
+
+    @major.setter
+    def major(self, major):
+        """
+
+        :param major:
+        :return:
+        """
+        if major:
+            self._major = major
+        else:
+            self._major = False
+
+    @property
+    def country_codes(self):
+        return self._country_codes
+
+    @country_codes.setter
+    def country_codes(self, country_codes):
+        """
+
+        :param country_codes:
+        :return:
+        """
+        self._country_codes = country_codes
+
 class ForeignExchange(ForeignExchangeBase):
     """
     Currently modelling spot and forward as the same, just two different dates on the transaction.  We might need to
