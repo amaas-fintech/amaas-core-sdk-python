@@ -33,8 +33,9 @@ class FundamentalsInterface(Interface):
         years = ','.join([str(year) for year in years])
         self.logger.info('Get Holiday Calendar for: %s for years: %s', country_codes, years)
         url = '%s/holidays' % self.endpoint
-        params = {'country_codes': ','.join(country_codes),
-                  'years': ','.join(years)}
+        params = {'country_codes': country_codes,
+                  'years': years}
+
         response = self.session.get(url, params=params)
         if response.ok:
             self.logger.info('Successfully retrieved holidays')
