@@ -17,7 +17,7 @@ class Party(AMaaSModel):
         """ A dict of which of the attributes are collections of other objects, and what type """
         return {'addresses': Address, 'comments': Comment, 'emails': Email, 'links': Link, 'references': Reference}
 
-    def __init__(self, asset_manager_id, party_id, party_status='Active', base_currency=None, description='',
+    def __init__(self, asset_manager_id, party_id, party_status='Active', base_currency=None, display_name='', legal_name='', url='', description='',
                  addresses=None, comments=None, emails=None, links=None, references=None, *args, **kwargs):
         self.asset_manager_id = asset_manager_id
         self.party_id = party_id
@@ -26,6 +26,9 @@ class Party(AMaaSModel):
             self.party_class = 'Party'
         self.party_type = self.__class__.__name__
         self.base_currency = base_currency
+        self.display_name = display_name
+        self.legal_name = legal_name
+        self.url = url
         self.description = description
         # Defaults are here not in constructor for mutability reasons.
         self.addresses = addresses.copy() if addresses else {}
