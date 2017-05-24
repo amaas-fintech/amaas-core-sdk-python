@@ -105,5 +105,14 @@ class PartiesInterfaceTest(unittest.TestCase):
         party = self.parties_interface.new(self.party)
         self.assertEqual(party.description, unicode_description)
 
+    def test_Clear(self):
+        self.parties_interface.new(self.party)
+        count = self.parties_interface.clear(self.asset_manager_id)
+        self.assertEqual(count, 1)
+        results = self.parties_interface.search(asset_manager_ids=[self.asset_manager_id])
+        # Strip out the 'shared' parties
+        results = [result for result in results if result.asset_manager_id == self.asset_manager_id]
+        self.assertEqual(len(results), 0)
+
 if __name__ == '__main__':
     unittest.main()

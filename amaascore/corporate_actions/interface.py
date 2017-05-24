@@ -75,9 +75,9 @@ class CorporateActionsInterface(Interface):
         search_params = {}
         # Potentially roll this into a loop through args rather than explicitly named - depends on additional validation
         if asset_manager_ids:
-            search_params['asset_manager_ids'] = asset_manager_ids
+            search_params['asset_manager_ids'] = ','.join([str(amid) for amid in asset_manager_ids])
         if corporate_action_ids:
-            search_params['asset_ids'] = corporate_action_ids
+            search_params['asset_ids'] = ','.join(corporate_action_ids)
         url = self.endpoint + '/corporate-actions'
         response = self.session.get(url, params=search_params)
         if response.ok:
@@ -96,6 +96,21 @@ class CorporateActionsInterface(Interface):
             corp_actions = [json_to_corporate_action(json_corp_action) for json_corp_action in response.json()]
             self.logger.info('Returned %s Corporate Actions.', len(corp_actions))
             return corp_actions
+        else:
+            self.logger.error(response.text)
+            response.raise_for_status()
+
+    def clear(self, asset_manager_id):
+        """ This method deletes all the data for an asset_manager_id.
+            It should be used with extreme caution.  In production it
+            is almost always better to Inactivate rather than delete. """
+        self.logger.info('Clear Corporate Actions - Asset Manager: %s', asset_manager_id)
+        url = '%s/clear/%s' % (self.endpoint, asset_manager_id)
+        response = self.session.delete(url)
+        if response.ok:
+            count = response.json().get('count', 'Unknown')
+            self.logger.info('Deleted %s Corporate Actions.', count)
+            return count
         else:
             self.logger.error(response.text)
             response.raise_for_status()

@@ -69,15 +69,15 @@ class BooksInterface(Interface):
         search_params = {}
         # Potentially roll this into a loop through args rather than explicitly named - depends on additional validation
         if asset_manager_ids:
-            search_params['asset_manager_ids'] = asset_manager_ids
+            search_params['asset_manager_ids'] = ','.join([str(amid) for amid in asset_manager_ids])
         if book_ids:
-            search_params['book_ids'] = book_ids
+            search_params['book_ids'] = ','.join(book_ids)
         if business_units:
-            search_params['business_units'] = business_units
+            search_params['business_units'] = ','.join(business_units)
         if owner_ids:
-            search_params['owner_ids'] = owner_ids
+            search_params['owner_ids'] = ','.join(owner_ids)
         if party_ids:
-            search_params['party_ids'] = party_ids
+            search_params['party_ids'] = ','.join(party_ids)
         url = self.endpoint + '/books'
         response = self.session.get(url, params=search_params)
         if response.ok:
@@ -108,6 +108,21 @@ class BooksInterface(Interface):
             book_config = response.json()
             self.logger.info('Successfully returned Book Config for %s', asset_manager_id)
             return book_config
+        else:
+            self.logger.error(response.text)
+            response.raise_for_status()
+
+    def clear(self, asset_manager_id):
+        """ This method deletes all the data for an asset_manager_id.
+            It should be used with extreme caution.  In production it
+            is almost always better to Retire rather than delete. """
+        self.logger.info('Clear Books - Asset Manager: %s', asset_manager_id)
+        url = '%s/clear/%s' % (self.endpoint, asset_manager_id)
+        response = self.session.delete(url)
+        if response.ok:
+            count = response.json().get('count', 'Unknown')
+            self.logger.info('Deleted %s Books.', count)
+            return count
         else:
             self.logger.error(response.text)
             response.raise_for_status()

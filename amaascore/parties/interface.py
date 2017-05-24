@@ -76,9 +76,9 @@ class PartiesInterface(Interface):
         search_params = {}
         # Potentially roll this into a loop through args rather than explicitly named - depends on additional validation
         if asset_manager_ids:
-            search_params['asset_manager_ids'] = asset_manager_ids
+            search_params['asset_manager_ids'] = ','.join([str(amid) for amid in asset_manager_ids])
         if party_ids:
-            search_params['party_ids'] = party_ids
+            search_params['party_ids'] = ','.join(party_ids)
         url = self.endpoint + '/parties'
         response = self.session.get(url, params=search_params)
         if response.ok:
@@ -97,6 +97,21 @@ class PartiesInterface(Interface):
             parties = [json_to_party(json_party) for json_party in response.json()]
             self.logger.info('Returned %s Parties.', len(parties))
             return parties
+        else:
+            self.logger.error(response.text)
+            response.raise_for_status()
+
+    def clear(self, asset_manager_id):
+        """ This method deletes all the data for an asset_manager_id.
+            It should be used with extreme caution.  In production it
+            is almost always better to Inactivate rather than delete. """
+        self.logger.info('Clear Parties - Asset Manager: %s', asset_manager_id)
+        url = '%s/clear/%s' % (self.endpoint, asset_manager_id)
+        response = self.session.delete(url)
+        if response.ok:
+            count = response.json().get('count', 'Unknown')
+            self.logger.info('Deleted %s Parties.', count)
+            return count
         else:
             self.logger.error(response.text)
             response.raise_for_status()

@@ -2,7 +2,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 
 ASSET_MANAGER_TYPES = {'Accredited Investor', 'Bank', 'Broker', 'Corporate Treasury', 'Family Office',
-                       'Fund Administrator', 'Fund Manager', 'Hedge Fund', 'Private Equity', 'Retail',
+                       'Fund Administrator', 'Fund Manager', 'Hedge Fund', 'Individual', 'Private Equity',
                        'Venture Capital'}
 RELATIONSHIP_TYPES = {'Administrator', 'External', 'Front Office', 'Employee'}
 ACCOUNT_TYPES = {'Test', 'Basic', 'Professional'}
