@@ -37,12 +37,13 @@ class EquityUploader(object):
 
     @staticmethod
     def download(asset_manager_id, asset_id_list):
-        """retrieve the assets"""
+        """retrieve the assets mainly for test purposes"""
         interface = AssetsInterface()
         logging.config.dictConfig(DEFAULT_LOGGING)
         logger = logging.getLogger(__name__)
         equities = []
         for asset_id in asset_id_list:
             equities.append(interface.retrieve(asset_manager_id=asset_manager_id, asset_id=asset_id))
+            interface.deactivate(asset_manager_id=asset_manager_id, asset_id=asset_id)
         return equities
 
