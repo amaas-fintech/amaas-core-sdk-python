@@ -33,7 +33,8 @@ from amaascore.assets.synthetic import Synthetic
 from amaascore.assets.synthetic_from_book import SyntheticFromBook
 from amaascore.assets.synthetic_multi_leg import SyntheticMultiLeg
 from amaascore.assets.wine import Wine
-
+from amaascore.assets.automobile import Automobile
+from amaascore.assets.warrant import Warrant
 
 def json_to_asset(json_asset):
     # Iterate through the asset children, converting the various JSON attributes into the relevant class type
