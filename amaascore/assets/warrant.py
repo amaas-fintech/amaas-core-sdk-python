@@ -2,8 +2,8 @@ from datetime import datetime, date
 from dateutil import parser
 from dateutil.parser import parse
 
-from asset import Asset
-from equity import Equity
+from amaascore.assets.asset import Asset
+from amaascore.assets.equity import Equity
 
 class Warrant(Equity):
 
