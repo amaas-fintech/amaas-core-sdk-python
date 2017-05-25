@@ -27,7 +27,7 @@ class AutomobileUploader(object):
     def upload(asset_manager_id, client_id, csvpath):
         """convert csv file rows to objects and insert;
            asset_manager_id and client_id from the UI (login)"""
-        interface = AssetsInterface(environment='local')
+        interface = AssetsInterface()
         logging.config.dictConfig(DEFAULT_LOGGING)
         logger = logging.getLogger(__name__)
         params = {'asset_manager_id': asset_manager_id, 'client_id': client_id}
@@ -40,7 +40,7 @@ class AutomobileUploader(object):
     @staticmethod
     def download(asset_manager_id, asset_id_list):
         """retrieve the assets mainly for test purposes"""
-        interface = AssetsInterface(environment='local')
+        interface = AssetsInterface()
         logging.config.dictConfig(DEFAULT_LOGGING)
         logger = logging.getLogger(__name__)
         automobiles = []
