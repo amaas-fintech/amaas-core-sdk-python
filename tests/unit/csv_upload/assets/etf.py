@@ -18,7 +18,7 @@ class ETFUploaderTest(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def test_WarrantUploadDownload(self):
+    def test_ETFUploadDownload(self):
         ETFUploader().upload(asset_manager_id=self.asset_manager_id, client_id=self.client_id, csvpath=self.csvfile)
         ETFUploader().download(asset_manager_id=self.asset_manager_id, asset_id_list=[self.asset_id])
 
