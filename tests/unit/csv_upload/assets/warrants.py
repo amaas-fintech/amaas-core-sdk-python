@@ -3,8 +3,8 @@ import csv
 import random
 
 from amaasutils.random_utils import random_string
-from amaascore.csv_upload.assets.warrant import *
-from amaascore.assets.warrant import Warrant
+from amaascore.csv_upload.assets.warrants import WarrantUploader
+from amaascore.assets.warrants import Warrant
 from amaascore.tools.csv_tools import objects_to_csv_stream
 
 class WarrantUploaderTest(unittest.TestCase):
@@ -12,7 +12,7 @@ class WarrantUploaderTest(unittest.TestCase):
     def setUp(self):
         self.longMessage = True  # Print complete error message on failure
         self.asset_manager_id = self.client_id = 1
-        self.csvfile = 'WarrantUploaderTest.csv'
+        self.csvfile = 'WarrantsUploaderTest.csv'
         self.asset_id = 'AGDJSA2T'
 
     def tearDown(self):

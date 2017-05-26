@@ -2,7 +2,7 @@ import logging.config
 import csv
 
 from amaascore.tools.csv_tools import csv_stream_to_objects
-from amaascore.assets.warrant import Warrant
+from amaascore.assets.warrants import Warrant
 from amaascore.assets.interface import AssetsInterface
 from amaasutils.logging_utils import DEFAULT_LOGGING
 
