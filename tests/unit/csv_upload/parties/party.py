@@ -13,14 +13,17 @@ class PartyUploaderTest(unittest.TestCase):
         self.longMessage = True  # Print complete error message on failure
         self.asset_manager_id = self.client_id = 1
         self.csvfile = 'PartyUploaderTest.csv'
-        self.party_id = random_string(8)
+        self.party_ids = []
+        for i in range(2):
+            self.party_ids.append(random_string(8))
 
     def tearDown(self):
         pass
 
     def test_PartyUploadDownload(self):
-        PartyUploader().upload(asset_manager_id=self.asset_manager_id, csvpath=self.csvfile, party_id=self.party_id)
-        PartyUploader().download(asset_manager_id=self.asset_manager_id, party_id_list=[self.party_id])
+        for party_id in self.party_ids:
+            PartyUploader().upload(asset_manager_id=self.asset_manager_id, csvpath=self.csvfile, party_id=party_id)
+        PartyUploader().download(asset_manager_id=self.asset_manager_id, party_id_list=self.party_ids)
 
 if __name__ == '__main__':
     unittest.main()
