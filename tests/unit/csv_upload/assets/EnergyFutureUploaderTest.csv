@@ -1,2 +1,2 @@
-asset_id,settlement_type,contract_size,point_value,tick_size,quote_unit,asset_issuer_id,asset_status,issue_date,expiry_date,currency,display_name,description,country_id,venue_id
-GDHDISR12,123,123,123,123,123,123,Active,09/01/01,09/01/01,SGD,mirror,123,USA,123
+settlement_type,contract_size,point_value,tick_size,quote_unit,asset_issuer_id,issue_date,expiry_date,currency,display_name,description,country_id,venue_id
+Cash,123,123,123,123,123,09/01/01,09/01/01,SGD,mirror,123,USA,123
