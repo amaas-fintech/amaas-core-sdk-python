@@ -16,19 +16,20 @@ class EnergyFutureUploader(object):
         Dict = dict(orderedDict)
         for key, var in params.items():
             Dict[key]=var
-        asset_id = Dict.pop('asset_id', None)
-        asset_status = 'Active'
+        Dict.pop('asset_id', None)
+        asset_id = params.pop('asset_id', None)
+        asset_status = Dict.pop('Active', None)
         energy_future = EnergyFuture(asset_id=asset_id, asset_status=asset_status, **dict(Dict))
         return energy_future
 
     @staticmethod
-    def upload(asset_manager_id, client_id, csvpath):
+    def upload(asset_manager_id, client_id, csvpath, asset_id):
         """convert csv file rows to objects and insert;
            asset_manager_id and client_id from the UI (login)"""
         interface = AssetsInterface()
         logging.config.dictConfig(DEFAULT_LOGGING)
         logger = logging.getLogger(__name__)
-        params = {'asset_manager_id': asset_manager_id, 'client_id': client_id}
+        params = {'asset_manager_id': asset_manager_id, 'client_id': client_id, 'asset_id': asset_id}
         with open(csvpath) as csvfile:
             energy_futures = csv_stream_to_objects(stream=csvfile, json_handler=EnergyFutureUploader.json_handler, **params)
         for energy_future in energy_futures:
