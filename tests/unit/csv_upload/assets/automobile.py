@@ -7,7 +7,7 @@ from amaascore.csv_upload.assets.automobile import AutomobileUploader
 from amaascore.assets.automobile import Automobile
 from amaascore.tools.csv_tools import objects_to_csv_stream
 
-class EquityUploaderTest(unittest.TestCase):
+class AutomobileUploaderTest(unittest.TestCase):
 
     def setUp(self):
         self.longMessage = True  # Print complete error message on failure
