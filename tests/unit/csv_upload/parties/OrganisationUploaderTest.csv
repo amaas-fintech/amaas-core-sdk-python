@@ -1,2 +1,3 @@
-party_status,base_currency,description,addresses,comments,emails
-Active,SGD,,,,
+party_id,party_status,base_currency,description,addresses,comments,emails
+ZRQ4KKOB,Active,SGD,,,,
+82UPZCUO,Active,SGD,,,,
