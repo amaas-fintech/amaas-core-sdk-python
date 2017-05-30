@@ -13,17 +13,26 @@ class EquityUploaderTest(unittest.TestCase):
         self.longMessage = True  # Print complete error message on failure
         self.asset_manager_id = self.client_id = 1
         self.csvfile = 'AutomobileUploaderTest.csv'
-        #self.asset_id = 'US9IZ3235T'
-        self.asset_ids = []
-        for i in range(2):
-            self.asset_ids.append(random_string(8))
-        
+        self.asset_ids = [random_string(8), random_string(8)]
+        with open(self.csvfile, 'r+', newline='') as readfile:
+            reader = csv.reader(readfile)
+            for row in reader:
+                header = row
+                break
+        with open(self.csvfile, 'w+', newline='') as writefile:
+            writer = csv.writer(writefile)
+            writer.writerow(header)
+            writer.writerow([self.asset_ids[0], '123', 'USA', '123', '123', '123', '01/05/09', '01/05/09', 'USD',
+                             'Active', '01/05/09', '0', '1900', '01/05/09', '123', '123', '123', 'McLaren', 'amaas_super_car',
+                             'White', 'R', 'M', 'super rare', 'DC', '1', 'GBR', '123', '123LHD'])
+            writer.writerow([self.asset_ids[1], '123', 'USA', '123', '123', '123', '01/05/09', '01/05/09', 'USD',
+                             'Active', '01/05/09', '0', '1900', '01/05/09', '123', '123', '123', 'McLaren', 'amaas_super_car',
+                             'White', 'R', 'M', 'super rare', 'DC', '1', 'GBR', '123', '123LHD'])        
     def tearDown(self):
         pass
 
     def test_AutomobileUploadDownload(self):
-        for asset_id in self.asset_ids:
-            AutomobileUploader().upload(asset_manager_id=self.asset_manager_id, client_id=self.client_id, csvpath=self.csvfile, asset_id=asset_id)
+        AutomobileUploader().upload(asset_manager_id=self.asset_manager_id, client_id=self.client_id, csvpath=self.csvfile)
         AutomobileUploader().download(asset_manager_id=self.asset_manager_id, asset_id_list=self.asset_ids)
 
 if __name__ == '__main__':

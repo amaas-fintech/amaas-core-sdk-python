@@ -1,2 +1,3 @@
-nav,expense_ratio,net_assets,asset_issuer_id,asset_status,description,display_name,roll_price,country_id,venue_id,currency,creation_date
-123,123,123,123,Active,123,123,123,USA,123,USD,09/01/01
+asset_id,nav,expense_ratio,net_assets,asset_issuer_id,asset_status,description,display_name,roll_price,country_id,venue_id,currency,creation_date
+7IZSD83Y,123,123,123,123,Active,123,123,123,USA,123,USD,09/01/01
+TJGWO516,123,123,123,123,Active,123,123,123,USA,123,USD,09/01/01
