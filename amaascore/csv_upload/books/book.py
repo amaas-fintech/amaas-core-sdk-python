@@ -16,21 +16,20 @@ class BookUploader(object):
         Dict = dict(orderedDict)
         for key, var in params.items():
             Dict[key]=var
-        Dict.pop('book_id', None)
-        book_id = params.pop('book_id', None)
+        book_id = Dict.pop('book_id', None)
         book_status = Dict.pop('book_status', 'Active')
         book_type = Dict.pop('book_type', 'Trading')
         book = Book(book_id=book_id, book_status=book_status, **dict(Dict))
         return book
 
     @staticmethod
-    def upload(asset_manager_id, csvpath, book_id):
+    def upload(asset_manager_id, csvpath):
         """convert csv file rows to objects and insert;
            asset_manager_id and client_id from the UI (login)"""
         interface = BooksInterface()
         logging.config.dictConfig(DEFAULT_LOGGING)
         logger = logging.getLogger(__name__)
-        params = {'asset_manager_id': asset_manager_id, 'book_id': book_id}
+        params = {'asset_manager_id': asset_manager_id}
         with open(csvpath) as csvfile:
             books = csv_stream_to_objects(stream=csvfile, json_handler=BookUploader.json_handler, **params)
         for book in books:

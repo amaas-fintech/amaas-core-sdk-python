@@ -16,20 +16,19 @@ class WarrantUploader(object):
         Dict = dict(orderedDict)
         for key, var in params.items():
             Dict[key]=var
-        Dict.pop('asset_id', None)
-        asset_id = params.pop('asset_id', None)
+        asset_id = Dict.pop('asset_id', None)
         asset_status = Dict.pop('asset_status', 'Active')
         warrant = Warrant(asset_id=asset_id, asset_status=asset_status, **dict(Dict))
         return warrant
 
     @staticmethod
-    def upload(asset_manager_id, client_id, csvpath, asset_id):
+    def upload(asset_manager_id, client_id, csvpath):
         """convert csv file rows to objects and insert;
            asset_manager_id and client_id from the UI (login)"""
         interface = AssetsInterface()
         logging.config.dictConfig(DEFAULT_LOGGING)
         logger = logging.getLogger(__name__)
-        params = {'asset_manager_id': asset_manager_id, 'client_id': client_id, 'asset_id': asset_id}
+        params = {'asset_manager_id': asset_manager_id, 'client_id': client_id}
         with open(csvpath) as csvfile:
             warrants = csv_stream_to_objects(stream=csvfile, json_handler=WarrantUploader.json_handler, **params)
         for warrant in warrants:
