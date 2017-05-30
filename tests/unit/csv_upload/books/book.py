@@ -12,17 +12,24 @@ class BookUploaderTest(unittest.TestCase):
     def setUp(self):
         self.longMessage = True  # Print complete error message on failure
         self.asset_manager_id = self.client_id = 1
+        self.book_ids = [random_string(8), random_string(8)]
         self.csvfile = 'BookUploaderTest.csv'
-        self.book_ids = []
-        for i in range(2):
-            self.book_ids.append(random_string(8))
+        with open(self.csvfile, 'r+', newline='') as readfile:
+            reader = csv.reader(readfile)
+            for row in reader:
+                header = row
+                break
+        with open(self.csvfile, 'w+', newline='') as writefile:
+            writer = csv.writer(writefile)
+            writer.writerow(header)
+            writer.writerow([self.book_ids[0], '', 'Active', '', '', '', '', 'SGD', '', '', ''])
+            writer.writerow([self.book_ids[1], '', 'Active', '', '', '', '', 'SGD', '', '', ''])
 
     def tearDown(self):
         pass
 
     def test_PartyUploadDownload(self):
-        for book_id in self.book_ids:
-            BookUploader().upload(asset_manager_id=self.asset_manager_id, csvpath=self.csvfile, book_id=book_id)
+        BookUploader().upload(asset_manager_id=self.asset_manager_id, csvpath=self.csvfile)
         BookUploader().download(asset_manager_id=self.asset_manager_id, book_id_list=self.book_ids)
 
 if __name__ == '__main__':
