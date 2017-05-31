@@ -1,0 +1,3 @@
+amaasclass,corporate_action_id,record_date,dividend_rate,dividend_asset_id,corporate_action_status,asset_id,party_id,declared_date,settlement_date,elective,message,description
+Dividend,F8DH3431,09/01/01,0.1,1,Open,1,2,09/01/01,09/01/01,1,,
+Dividend,3OXTYRPD,09/01/01,0.1,1,Open,1,2,09/01/01,09/01/01,1,,
