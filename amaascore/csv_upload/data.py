@@ -56,6 +56,13 @@ from amaascore.corporate_actions.dividend import Dividend
 from amaascore.corporate_actions.notification import Notification
 from amaascore.corporate_actions.split import Split
 
+from amaascore.market_data.eod_price import EODPrice
+from amaascore.market_data.fx_rate import FXRate
+from amaascore.market_data.quote import Quote
+
+from amaascore.transactions.position import Position
+from amaascore.transactions.transaction import Transaction
+
 class Uploader(object):
 
     def __init__(self):
