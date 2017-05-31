@@ -3,9 +3,7 @@ import csv
 import random
 
 from amaasutils.random_utils import random_string
-from amaascore.csv_upload.assets.equity import EquityUploader
-from amaascore.assets.equity import Equity
-from amaascore.tools.csv_tools import objects_to_csv_stream
+from amaascore.csv_upload.data import Uploader
 
 class EquityUploaderTest(unittest.TestCase):
 
@@ -22,16 +20,16 @@ class EquityUploaderTest(unittest.TestCase):
         with open(self.csvfile, 'w+', newline='') as writefile:
             writer = csv.writer(writefile)
             writer.writerow(header)
-            writer.writerow([self.asset_ids[0], '123', '123', '123', '123', '123', '123', '123', '123', '123', '123','',''])
-            writer.writerow([self.asset_ids[1], '123', '123', '123', '123', '123', '123', '123', '123', '123', '123','',''])
+            writer.writerow(['Equity', self.asset_ids[0], '123', '123', '123', '123', '123', '123', '123', '123', '123', '123','',''])
+            writer.writerow(['Equity', self.asset_ids[1], '123', '123', '123', '123', '123', '123', '123', '123', '123', '123','',''])
 
 
     def tearDown(self):
         pass
 
     def test_PartyUploadDownload(self):
-        EquityUploader().upload(asset_manager_id=self.asset_manager_id, client_id=self.client_id, csvpath=self.csvfile)
-        EquityUploader().download(asset_manager_id=self.asset_manager_id, asset_id_list=self.asset_ids)
+        Uploader().upload(csvpath=self.csvfile, asset_manager_id=self.asset_manager_id, client_id=self.client_id)
+        Uploader().download(csvpath=self.csvfile, asset_manager_id=self.asset_manager_id, data_id_type='asset_id', data_id_list=self.asset_ids)
 
 if __name__ == '__main__':
     unittest.main()

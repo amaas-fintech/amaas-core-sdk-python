@@ -3,9 +3,7 @@ import csv
 import random
 
 from amaasutils.random_utils import random_string
-from amaascore.csv_upload.parties.party import PartyUploader
-from amaascore.parties.party import Party
-from amaascore.tools.csv_tools import objects_to_csv_stream
+from amaascore.csv_upload.data import Uploader
 
 class PartyUploaderTest(unittest.TestCase):
 
@@ -22,15 +20,15 @@ class PartyUploaderTest(unittest.TestCase):
         with open(self.csvfile, 'w+', newline='') as writefile:
             writer = csv.writer(writefile)
             writer.writerow(header)
-            writer.writerow([self.party_ids[0], 'Active', 'SGD', '', '', '', ''])
-            writer.writerow([self.party_ids[1], 'Active', 'SGD', '', '', '', ''])
+            writer.writerow(['Party', self.party_ids[0], 'Active', 'SGD', '', '', '', ''])
+            writer.writerow(['Party', self.party_ids[1], 'Active', 'SGD', '', '', '', ''])
 
     def tearDown(self):
         pass
 
     def test_PartyUploadDownload(self):
-        PartyUploader().upload(asset_manager_id=self.asset_manager_id, csvpath=self.csvfile)
-        PartyUploader().download(asset_manager_id=self.asset_manager_id, party_id_list=self.party_ids)
+        Uploader().upload(csvpath=self.csvfile, asset_manager_id=self.asset_manager_id)
+        Uploader().download(csvpath=self.csvfile, asset_manager_id=self.asset_manager_id, data_id_type='party_id', data_id_list=self.party_ids)
 
 if __name__ == '__main__':
     unittest.main()

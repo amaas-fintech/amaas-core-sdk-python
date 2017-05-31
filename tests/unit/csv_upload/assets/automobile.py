@@ -3,9 +3,7 @@ import csv
 import random
 
 from amaasutils.random_utils import random_string
-from amaascore.csv_upload.assets.automobile import AutomobileUploader
-from amaascore.assets.automobile import Automobile
-from amaascore.tools.csv_tools import objects_to_csv_stream
+from amaascore.csv_upload.data import Uploader
 
 class AutomobileUploaderTest(unittest.TestCase):
 
@@ -22,18 +20,18 @@ class AutomobileUploaderTest(unittest.TestCase):
         with open(self.csvfile, 'w+', newline='') as writefile:
             writer = csv.writer(writefile)
             writer.writerow(header)
-            writer.writerow([self.asset_ids[0], '123', 'USA', '123', '123', '123', '01/05/09', '01/05/09', 'USD',
+            writer.writerow(['Automobile', self.asset_ids[0], '123', 'USA', '123', '123', '123', '01/05/09', '01/05/09', 'USD',
                              'Active', '01/05/09', '0', '1900', '01/05/09', '123', '123', '123', 'McLaren', 'amaas_super_car',
                              'White', 'R', 'M', 'super rare', 'DC', '1', 'GBR', '123', '123LHD'])
-            writer.writerow([self.asset_ids[1], '123', 'USA', '123', '123', '123', '01/05/09', '01/05/09', 'USD',
+            writer.writerow(['Automobile', self.asset_ids[1], '123', 'USA', '123', '123', '123', '01/05/09', '01/05/09', 'USD',
                              'Active', '01/05/09', '0', '1900', '01/05/09', '123', '123', '123', 'McLaren', 'amaas_super_car',
                              'White', 'R', 'M', 'super rare', 'DC', '1', 'GBR', '123', '123LHD'])        
     def tearDown(self):
         pass
 
     def test_AutomobileUploadDownload(self):
-        AutomobileUploader().upload(asset_manager_id=self.asset_manager_id, client_id=self.client_id, csvpath=self.csvfile)
-        AutomobileUploader().download(asset_manager_id=self.asset_manager_id, asset_id_list=self.asset_ids)
+        Uploader().upload(asset_manager_id=self.asset_manager_id, client_id=self.client_id, csvpath=self.csvfile)
+        Uploader().download(csvpath=self.csvfile, asset_manager_id=self.asset_manager_id, data_id_type='asset_id', data_id_list=self.asset_ids)
 
 if __name__ == '__main__':
     unittest.main()

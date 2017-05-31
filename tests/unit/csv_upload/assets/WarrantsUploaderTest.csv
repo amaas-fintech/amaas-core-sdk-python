@@ -1,3 +1,3 @@
-asset_id,asset_issuer_id,asset_status,description,country_id,venue_id,currency,issue_date,share_class,display_name,roll_price,underlying_price,strike_price,cv_ratio,exercise_type,expiration_date,first_exercise_date,last_trade_date,issue_price,issued_quant,outstanding,issuer,settlement_type,warrant_type
-AW3N5E88,123,Active,123,USA,123,USD,01/05/09,Warrant,123,123,123,123,1,E,01/05/09,01/05/09,01/05/09,123,123,123,123,C,C
-BA0LTYW7,123,Active,123,USA,123,USD,01/05/09,Warrant,123,123,123,123,1,E,01/05/09,01/05/09,01/05/09,123,123,123,123,C,C
+amaasclass,asset_id,asset_issuer_id,asset_status,description,country_id,venue_id,currency,issue_date,share_class,display_name,roll_price,underlying_price,strike_price,cv_ratio,exercise_type,expiration_date,first_exercise_date,last_trade_date,issue_price,issued_quant,outstanding,issuer,settlement_type,warrant_type
+Warrant,9DIC581M,123,Active,123,USA,123,USD,01/05/09,Warrant,123,123,123,123,1,E,01/05/09,01/05/09,01/05/09,123,123,123,123,C,C
+Warrant,M8B5Y9SR,123,Active,123,USA,123,USD,01/05/09,Warrant,123,123,123,123,1,E,01/05/09,01/05/09,01/05/09,123,123,123,123,C,C
