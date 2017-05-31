@@ -51,6 +51,11 @@ from amaascore.parties.sub_fund import SubFund
 
 from amaascore.books.book import Book
 
+from amaascore.corporate_actions.corporate_action import CorporateAction
+from amaascore.corporate_actions.dividend import Dividend
+from amaascore.corporate_actions.notification import Notification
+from amaascore.corporate_actions.split import Split
+
 class Uploader(object):
 
     def __init__(self):
