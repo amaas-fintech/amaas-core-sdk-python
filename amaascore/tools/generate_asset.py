@@ -15,6 +15,7 @@ from amaascore.assets.future import Future
 from amaascore.assets.fx_option import ForeignExchangeOption
 from amaascore.assets.sukuk import Sukuk
 from amaascore.assets.synthetic import Synthetic
+from amaascore.assets.private_investment import PrivateInvestment
 from amaascore.core.reference import Reference
 
 REFERENCE_TYPES = ['External']
@@ -117,3 +118,19 @@ def generate_assets(asset_manager_ids=[], number=5):
         asset = generate_asset(asset_manager_id=random.choice(asset_manager_ids))
         assets.append(asset)
     return assets
+
+def generate_private_investment(asset_manager_id=None, asset_id=None, client_id=None):
+    attributes = generate_common(asset_manager_id=None, asset_id=None)
+    """currency, display_name"""
+    private_investment = PrivateInvestment(client_id=client_id or random_string(5),
+                                           asset_issuer_id=random_string(8),
+                                           category='Private Equity', 
+                                           sub_category='Leverage Buyout',
+                                           num_shares=1000,
+                                           price_share=1000,
+                                           share_type='Ordinary Shares',
+                                           maturity_date=random_date(),
+                                           lock_up_period=52,
+                                           investment_term=52,
+                                           **attributes)
+    return private_investment
