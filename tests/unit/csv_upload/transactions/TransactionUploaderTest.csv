@@ -1,0 +1,3 @@
+amaasclass,transaction_id,asset_book_id,counterparty_book_id,transaction_action,asset_id,quantity,transaction_date,settlement_date,price,transaction_currency,settlement_currency,asset,execution_time,transaction_type,transaction_status
+Transaction,2M0T936I,1,2,Buy,3,10,09/01/01,09/01/01,1,SGD,USD,DSC,09/01/01,Allocation,New
+Transaction,E93RMBHS,1,2,Buy,3,10,09/01/01,09/01/01,1,SGD,USD,DSC,09/01/01,Allocation,New
