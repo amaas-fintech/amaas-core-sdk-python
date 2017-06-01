@@ -44,7 +44,6 @@ class PrivateInvestment(Asset):
         self.high_water_mark = high_water_mark
         self.maturity_date = maturity_date
         self.lock_up_period = lock_up_period
-        self.investment_date = investment_date
         self.investment_term = investment_term
 
     @property
