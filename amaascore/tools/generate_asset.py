@@ -125,7 +125,7 @@ def generate_private_investment(asset_manager_id=None, asset_id=None, client_id=
     private_investment = PrivateInvestment(client_id=client_id or random_string(5),
                                            asset_issuer_id=random_string(8),
                                            category='Private Equity', 
-                                           sub_category='Leverage Buyout',
+                                           sub_category='Leverage Buyout Funds',
                                            num_shares=1000,
                                            price_share=1000,
                                            share_type='Ordinary Shares',
