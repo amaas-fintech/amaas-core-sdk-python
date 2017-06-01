@@ -33,7 +33,7 @@ class PartyUploader(object):
     @staticmethod
     def upload(asset_manager_id, csvpath):
         """convert csv file rows to objects and insert;
-           asset_manager_id and client_id from the UI (login)"""
+           asset_manager_id from the UI (login)"""
         interface = PartiesInterface()
         logging.config.dictConfig(DEFAULT_LOGGING)
         logger = logging.getLogger(__name__)
@@ -46,7 +46,7 @@ class PartyUploader(object):
 
     @staticmethod
     def download(asset_manager_id, party_id_list):
-        """retrieve the assets mainly for test purposes"""
+        """retrieve the parties mainly for test purposes"""
         interface = PartiesInterface()
         logging.config.dictConfig(DEFAULT_LOGGING)
         logger = logging.getLogger(__name__)

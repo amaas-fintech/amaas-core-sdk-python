@@ -25,7 +25,7 @@ class BookUploader(object):
     @staticmethod
     def upload(asset_manager_id, csvpath):
         """convert csv file rows to objects and insert;
-           asset_manager_id and client_id from the UI (login)"""
+           asset_manager_id from the UI (login)"""
         interface = BooksInterface()
         logging.config.dictConfig(DEFAULT_LOGGING)
         logger = logging.getLogger(__name__)
@@ -38,7 +38,7 @@ class BookUploader(object):
 
     @staticmethod
     def download(asset_manager_id, book_id_list):
-        """retrieve the assets mainly for test purposes"""
+        """retrieve the books mainly for test purposes"""
         interface = BooksInterface()
         logging.config.dictConfig(DEFAULT_LOGGING)
         logger = logging.getLogger(__name__)
