@@ -1,5 +1,6 @@
 import logging.config
 import csv
+import json
 
 from amaascore.tools.csv_tools import csv_stream_to_objects
 from amaasutils.logging_utils import DEFAULT_LOGGING
@@ -38,6 +39,7 @@ from amaascore.assets.synthetic_from_book import SyntheticFromBook
 from amaascore.assets.synthetic_multi_leg import SyntheticMultiLeg
 from amaascore.assets.wine import Wine
 from amaascore.assets.warrants import Warrant
+from amaascore.assets.children import Link, Reference
 
 from amaascore.parties.broker import Broker
 from amaascore.parties.company import Company
@@ -48,6 +50,7 @@ from amaascore.parties.individual import Individual
 from amaascore.parties.organisation import Organisation
 from amaascore.parties.party import Party
 from amaascore.parties.sub_fund import SubFund
+from amaascore.parties.children import Link, Email, Address
 
 from amaascore.books.book import Book
 
@@ -62,6 +65,7 @@ from amaascore.market_data.quote import Quote
 
 from amaascore.transactions.position import Position
 from amaascore.transactions.transaction import Transaction
+from amaascore.transactions.children import Charge, Code, Comment, Link, Party
 
 class Uploader(object):
 
@@ -69,11 +73,18 @@ class Uploader(object):
         pass
 
     @staticmethod
-    def json_handler(orderedDict, params):
+    def json_handler(csvpath, orderedDict, params):
         Dict = dict(orderedDict)
         for key, var in params.items():
             Dict[key]=var
         data_class = Dict.pop('amaasclass', None)
+        if Dict.get('links', None) is not None:
+            links_input = Dict.pop('links')
+            links_dict = dict()
+
+
+
+        if Dict[references]
         obj = globals()[data_class](**dict(Dict))
         return obj
 
