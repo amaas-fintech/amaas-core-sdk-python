@@ -1,7 +1,11 @@
 import logging.config
 import csv
+import json
 
 from amaascore.tools.csv_tools import csv_stream_to_objects
+from amaasutils.logging_utils import DEFAULT_LOGGING
+from amaascore.csv_upload.enums import *
+
 from amaascore.assets.asset import Asset
 from amaascore.assets.automobile import Automobile
 from amaascore.assets.bond import BondCorporate, BondGovernment, BondMortgage
@@ -35,8 +39,11 @@ from amaascore.assets.synthetic_from_book import SyntheticFromBook
 from amaascore.assets.synthetic_multi_leg import SyntheticMultiLeg
 from amaascore.assets.wine import Wine
 from amaascore.assets.warrants import Warrant
+
+from amaascore.assets.children import Link, Reference
+from amaascore.csv_upload.assets.utils import asset_formatted_string_to_links, asset_formatted_string_to_references
+
 from amaascore.assets.interface import AssetsInterface
-from amaasutils.logging_utils import DEFAULT_LOGGING
 
 class AssetUploader(object):
 
@@ -48,18 +55,24 @@ class AssetUploader(object):
         Dict = dict(orderedDict)
         for key, var in params.items():
             Dict[key]=var
-        asset_id = Dict.pop('asset_id', None)
-        asset_status = Dict.pop('asset_status','Active')
-        asset_class = Dict.pop('amaasasset', 'Asset')
-        asset = globals()[asset_class](asset_id=asset_id, asset_status=asset_status, **dict(Dict))
-        """asset = getattr(globals()[asset_class](), '__init__')(asset_id=asset_id, asset_status=asset_status, **dict(Dict))"""
-        return asset
+        data_class = Dict.pop('amaasclass', None)
+        #check for links input data
+        if Dict.get('links', '') != '' or Dict.get('links', '')!= '{}':
+            links_input = Dict.pop('links')
+            Dict['links'] = asset_formatted_string_to_links(links_input)
+        #check for references input data
+        if Dict.get('references', '') != '' or Dict.get('references', '')!= '{}':
+            references_input = Dict.pop('references')
+            Dict['references'] = asset_formatted_string_to_references(references_input)
+        #construct the class using Dict as params argument
+        obj = globals()[data_class](**dict(Dict))
+        return obj
 
     @staticmethod
-    def upload(asset_manager_id, client_id, csvpath):
-        """convert csv file rows to objects and insert;
-           asset_manager_id and client_id from the UI (login)"""
-        interface = AssetsInterface()
+    def upload(csvpath, asset_manager_id, client_id=None):
+        """convert csv file rows to assets and insert;
+           asset_manager_id and possibly client_id from the UI (login)"""
+        interface = AssetsInterface(environment='local')
         logging.config.dictConfig(DEFAULT_LOGGING)
         logger = logging.getLogger(__name__)
         params = {'asset_manager_id': asset_manager_id, 'client_id': client_id}
@@ -67,16 +80,16 @@ class AssetUploader(object):
             assets = csv_stream_to_objects(stream=csvfile, json_handler=AssetUploader.json_handler, **params)
         for asset in assets:
             interface.new(asset)
-            logger.info('Creating new asset (asset_id) %s successfully', asset.asset_id)
+            logger.info('Creating this asset and upload to database successfully')
 
     @staticmethod
     def download(asset_manager_id, asset_id_list):
         """retrieve the assets mainly for test purposes"""
-        interface = AssetsInterface()
+        interface = AssetsInterface(environment='local')
         logging.config.dictConfig(DEFAULT_LOGGING)
         logger = logging.getLogger(__name__)
         assets = []
         for asset_id in asset_id_list:
             assets.append(interface.retrieve(asset_manager_id=asset_manager_id, asset_id=asset_id))
-            interface.deactivate(asset_manager_id=asset_manager_id, asset_id=asset_id)
+            #interface.deactivate(asset_manager_id=asset_manager_id, **Dict)
         return assets
