@@ -6,8 +6,9 @@ from decimal import Decimal
 import random
 
 from amaascore.core.reference import Reference
+from amaascore.transactions.cash_transaction import CashTransaction
 from amaascore.transactions.children import Charge, Code, Comment, Link, Party
-from amaascore.transactions.enums import TRANSACTION_ACTIONS
+from amaascore.transactions.enums import TRANSACTION_ACTIONS, CASH_TRANSACTION_TYPES
 from amaascore.transactions.position import Position
 from amaascore.transactions.transaction import Transaction
 
@@ -18,22 +19,15 @@ PARTY_TYPES = ['Prime Broker']
 REFERENCE_TYPES = ['External']
 
 
-def generate_common(asset_manager_id, asset_book_id, counterparty_book_id, asset_id, quantity, price, transaction_date,
-                    transaction_id, transaction_action, transaction_type, transaction_status, transaction_currency,
-                    settlement_currency):
-
-    # Explicitly handle price is None (in case price is 0)
-    price = Decimal(random.uniform(1.0, 1000.0)).quantize(Decimal('0.01')) if price is None else price
+def generate_common(asset_manager_id, asset_book_id, counterparty_book_id, asset_id, quantity, transaction_date,
+                    transaction_id, transaction_action, transaction_type, transaction_status):
 
     common = {'asset_manager_id': asset_manager_id or random.randint(1, 1000),
               'asset_book_id': asset_book_id or random_string(8),
               'counterparty_book_id': counterparty_book_id or random_string(8),
               'asset_id': asset_id or str(random.randint(1, 1000)),
               'quantity': quantity or Decimal(random.randint(0, 5000)),
-              'price': price,
               'transaction_date': transaction_date or datetime.date.today(),
-              'transaction_currency': transaction_currency or random.choice(['SGD', 'USD']),
-              'settlement_currency': settlement_currency or transaction_currency or random.choice(['SGD', 'USD']),
               'transaction_action': transaction_action or random.choice(list(TRANSACTION_ACTIONS)),
               'transaction_id': transaction_id,
               'transaction_status': transaction_status or 'New',
@@ -49,15 +43,18 @@ def generate_transaction(asset_manager_id=None, asset_book_id=None, counterparty
                          price=None, transaction_action=None, transaction_type=None,
                          transaction_status=None, transaction_currency=None, settlement_currency=None,
                          net_affecting_charges=None, charge_currency=None):
-
+    # Explicitly handle price is None (in case price is 0)
+    price = Decimal(random.uniform(1.0, 1000.0)).quantize(Decimal('0.01')) if price is None else price
+    transaction_currency = transaction_currency or random.choice(['SGD', 'USD'])
+    settlement_currency = settlement_currency or transaction_currency or random.choice(['SGD', 'USD'])
     common = generate_common(asset_manager_id=asset_manager_id, asset_book_id=asset_book_id,
                              counterparty_book_id=counterparty_book_id, asset_id=asset_id, quantity=quantity,
-                             price=price, transaction_date=transaction_date, transaction_id=transaction_id,
+                             transaction_date=transaction_date, transaction_id=transaction_id,
                              transaction_action=transaction_action, transaction_status=transaction_status,
-                             transaction_type=transaction_type, transaction_currency=transaction_currency,
-                             settlement_currency=settlement_currency)
+                             transaction_type=transaction_type)
 
-    transaction = Transaction(**common)
+    transaction = Transaction(price=price, transaction_currency=transaction_currency,
+                              settlement_currency=settlement_currency, **common)
     charges = {charge_type: Charge(charge_value=Decimal(random.uniform(1.0, 100.0)).quantize(Decimal('0.01')),
                                    currency=charge_currency or random.choice(['USD', 'SGD']),
                                    net_affecting=net_affecting_charges or random.choice([True, False]))
@@ -77,6 +74,21 @@ def generate_transaction(asset_manager_id=None, asset_book_id=None, counterparty
     transaction.links.update(links)
     transaction.parties.update(parties)
     transaction.references.update(references)
+    return transaction
+
+
+def generate_cash_transaction(asset_manager_id=None, asset_book_id=None, counterparty_book_id=None,
+                              asset_id=None, quantity=None, transaction_date=None, transaction_id=None,
+                              transaction_action=None, transaction_type=None,
+                              transaction_status=None):
+    transaction_type = transaction_type or random.choice(list(CASH_TRANSACTION_TYPES))
+    common = generate_common(asset_manager_id=asset_manager_id, asset_book_id=asset_book_id,
+                             counterparty_book_id=counterparty_book_id, asset_id=asset_id, quantity=quantity,
+                             transaction_date=transaction_date, transaction_id=transaction_id,
+                             transaction_action=transaction_action, transaction_status=transaction_status,
+                             transaction_type=transaction_type)
+
+    transaction = CashTransaction(**common)
     return transaction
 
 

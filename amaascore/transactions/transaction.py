@@ -118,6 +118,32 @@ class Transaction(AMaaSModel):
         self._price = Decimal(value)
 
     @property
+    def transaction_currency(self):
+        return self._transaction_currency
+
+    @transaction_currency.setter
+    def transaction_currency(self, transaction_currency):
+        if transaction_currency and len(transaction_currency) == 3:
+            self._transaction_currency = transaction_currency
+        else:
+            raise ValueError(ERROR_LOOKUP['currency_invalid'] % (transaction_currency,
+                                                                 self.transaction_id,
+                                                                 self.asset_manager_id))
+
+    @property
+    def settlement_currency(self):
+        return self._settlement_currency
+
+    @settlement_currency.setter
+    def settlement_currency(self, settlement_currency):
+        if settlement_currency and len(settlement_currency) == 3:
+            self._settlement_currency = settlement_currency
+        else:
+            raise ValueError(ERROR_LOOKUP['currency_invalid'] % (settlement_currency,
+                                                                 self.transaction_id,
+                                                                 self.asset_manager_id))
+
+    @property
     def transaction_date(self):
         return self._transaction_date
 
