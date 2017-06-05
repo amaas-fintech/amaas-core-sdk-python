@@ -51,7 +51,7 @@ class AssetUploader(object):
         pass
 
     @staticmethod
-    def json_handler(orderedDict, params):
+    def json_handler(orderedDict, params=dict()):
         Dict = dict(orderedDict)
         for key, var in params.items():
             Dict[key]=var
@@ -77,7 +77,7 @@ class AssetUploader(object):
         logger = logging.getLogger(__name__)
         params = {'asset_manager_id': asset_manager_id, 'client_id': client_id}
         with open(csvpath) as csvfile:
-            assets = csv_stream_to_objects(stream=csvfile, json_handler=AssetUploader.json_handler, **params)
+            assets = csv_stream_to_objects(stream=csvfile, json_handler=AssetUploader.json_handler, params=params)
         for asset in assets:
             interface.new(asset)
             logger.info('Creating this asset and upload to database successfully')
