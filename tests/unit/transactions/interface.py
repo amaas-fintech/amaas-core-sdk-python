@@ -10,13 +10,14 @@ import random
 import requests_mock
 import unittest
 
+from amaascore.transactions.cash_transaction import CashTransaction
 from amaascore.transactions.children import Comment
 from amaascore.transactions.transaction import Transaction
 from amaascore.transactions.interface import TransactionsInterface
 from amaascore.tools.generate_asset import generate_asset
 from amaascore.tools.generate_book import generate_book
 from amaascore.tools.generate_transaction import generate_transaction, generate_transactions,\
-    generate_positions, generate_position
+    generate_positions, generate_position, generate_cash_transaction
 
 logging.config.dictConfig(DEFAULT_LOGGING)
 
@@ -204,6 +205,16 @@ class TransactionsInterfaceTest(unittest.TestCase):
         self.assertGreater(count['position_count'], 0)
         results = self.transactions_interface.search(asset_manager_ids=[self.asset_manager_id])
         self.assertEqual(len(results), 0)
+
+    def test_CashTransaction(self):
+        transaction = generate_cash_transaction(asset_manager_id=self.asset_manager_id,
+                                                asset_id='JPY',
+                                                asset_book_id=self.asset_book.book_id,
+                                                counterparty_book_id=self.counterparty_book.book_id)
+        self.transactions_interface.new(transaction)
+        transaction = self.transactions_interface.retrieve(transaction.asset_manager_id,
+                                                           transaction.transaction_id)
+        self.assertEqual(type(transaction), CashTransaction)
 
 if __name__ == '__main__':
     unittest.main()

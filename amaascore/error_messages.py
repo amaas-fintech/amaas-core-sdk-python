@@ -7,6 +7,7 @@ ERROR_LOOKUP = {'address_invalid': 'Invalid addresses attribute: %s. Party ID %s
                 'am_account_type_invalid': 'Account Type: %s is invalid.  Asset Manager: %s',
                 'book_type_invalid': 'Invalid book type %s. Book ID: %s for Asset Manager: %s',
                 'country_id_invalid': 'Country ID should be a ISO 3166-1 Alpha-3 code. Value: %s',
+                'currency_invalid': 'Invalid currency %s. Transaction ID: %s for asset manager: %s',
                 'email_invalid': 'Invalid emails attribute: %s. Party ID %s for Asset Manager %s',
                 'email_primary': 'Must set exactly one email as primary. Party ID %s for Asset Manager %s',
                 'email_address_invalid': 'Invalid email: %s.',

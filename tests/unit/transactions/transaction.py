@@ -168,5 +168,9 @@ class TransactionTest(unittest.TestCase):
         transaction2 = Transaction(**attr)
         self.assertEqual(len(transaction2.parties), 0)
 
+    def test_InvalidCurrency(self):
+        with self.assertRaisesRegexp(ValueError, 'Invalid currency Invalid'):
+            self.transaction.transaction_currency = 'Invalid'
+
 if __name__ == '__main__':
     unittest.main()
