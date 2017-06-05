@@ -3,36 +3,36 @@ import csv
 import random
 
 from amaasutils.random_utils import random_string
-from amaascore.csv_upload.assets.equity import EquityUploader
-from amaascore.assets.equity import Equity
-from amaascore.tools.csv_tools import objects_to_csv_stream
+from amaascore.csv_upload.assets.asset import AssetUploader
 
 class EquityUploaderTest(unittest.TestCase):
 
     def setUp(self):
         self.longMessage = True  # Print complete error message on failure
-        #self.EquityUploader = EquityUploader()
         self.asset_manager_id = self.client_id = 1
         self.csvfile = 'EquityUploaderTest.csv'
-        self.asset_id = random_string(10)
-        print(self.asset_id)
-        file_content = []
-        line_to_override = {2:[self.asset_id, '123', '123', '123', '123', '123', '123', '123', '123', '123', '123', '', '']}
-        with open(self.csvfile) as csv_read:
-            csvreader = csv.reader(csv_read)
-            file_content.extend(csvreader)
-        with open(self.csvfile, 'w+') as csv_write:
-            csvwriter = csv.writer(csv_write)
-            for line, row in enumerate(file_content):
-                data = line_to_override.get(line, row)
-                csvwriter.writerow(data)
+        self.asset_ids = [random_string(8), random_string(8)]
+        with open(self.csvfile, 'r+', newline='') as readfile:
+            reader = csv.reader(readfile)
+            for row in reader:
+                header = row
+                break
+        with open(self.csvfile, 'w+', newline='') as writefile:
+            writer = csv.writer(writefile)
+            writer.writerow(header)
+            writer.writerow(['Equity', self.asset_ids[0], '123', '123', '123', '123', '123', '123', '123', '123', '123', '123',
+                             '{link_1:[{linked_asset_id:12345},{linked_asset_id:54321,active:true}],link_2:[{linked_asset_id:12365}]}', 
+                             '{reference_1:{reference_value:1,active:true},reference_2:{reference_value:2}}'])
+            writer.writerow(['Equity', self.asset_ids[1], '123', '123', '123', '123', '123', '123', '123', '123', '123', '123',
+                             '{link_1:[{linked_asset_id:12345},{linked_asset_id:54321,active:true}],link_2:[{linked_asset_id:12365}]}', 
+                             '{reference_1:{reference_value:1,active:true},reference_2:{reference_value:2}}'])
 
     def tearDown(self):
         pass
 
     def test_EquityUploadDownload(self):
-        EquityUploader().upload(asset_manager_id=self.asset_manager_id, client_id=self.client_id, csvpath=self.csvfile)
-        EquityUploader().download(asset_manager_id=self.asset_manager_id, asset_id_list=[self.asset_id])
+        AssetUploader().upload(csvpath=self.csvfile, asset_manager_id=self.asset_manager_id, client_id=self.client_id)
+        AssetUploader().download(asset_manager_id=self.asset_manager_id, asset_id_list=self.asset_ids)
 
 if __name__ == '__main__':
     unittest.main()

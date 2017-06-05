@@ -84,7 +84,8 @@ class Automobile(RealAsset):
         """trans_type input is 0 or 1, 0 means buy and 1 means sell"""
         if (trans_type is None):
             self._trans_type = None
-        elif isinstance(trans_type, int):
+        elif isinstance(trans_type, int) or isinstance(trans_type, str):
+            trans_type = int(float(trans_type))
             if trans_type == 0:
                 self._trans_type = 'Buy'
             elif trans_type == 1:
@@ -240,7 +241,8 @@ class Automobile(RealAsset):
         """imported input is 0 or 1, 0 means not imported one and 1 means an imported car"""
         if (imported is None):
             self._imported = None
-        elif isinstance(imported, int):
+        elif isinstance(imported, int) or isinstance(imported, str):
+            imported = int(float(imported))
             if imported == 0:
                 self._imported = 'Buy'
             elif imported == 1:
@@ -374,7 +376,10 @@ class Automobile(RealAsset):
     def petrol_grade(self, petrol_grade):
         if (petrol_grade is None):
             self._petrol_grade = None
-        elif petrol_grade in set(CAR_PETROL_GRADE.keys()):
-            self._petrol_grade = CAR_PETROL_GRADE[petrol_grade]
         else:
-            raise ValueError("Invalid data type for petrol_grade (87~94): %s" % petrol_grade)
+            if isinstance(petrol_grade, str):
+                petrol_grade = int(float(petrol_grade))
+            if petrol_grade in set(CAR_PETROL_GRADE.keys()):
+                self._petrol_grade = CAR_PETROL_GRADE[petrol_grade]
+            else:
+                raise ValueError("Invalid data type for petrol_grade (87~94): %s" % petrol_grade)

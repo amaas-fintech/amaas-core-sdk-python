@@ -13,7 +13,7 @@ class ContractForDifference(Derivative):
                  links=None, references=None,
                  *args, **kwargs):
         super(ContractForDifference, self).__init__(asset_manager_id=asset_manager_id, asset_id=asset_id,
-                                                    fungible=False, asset_issuer_id=asset_issuer_id,
+                                                    asset_issuer_id=asset_issuer_id,
                                                     asset_status=asset_status, display_name=display_name,
                                                     description=description,
                                                     country_id=country_id, venue_id=venue_id, issue_date=issue_date,

@@ -1,0 +1,3 @@
+amaasclass,asset_id,option_type,option_style,strike,underlying_asset_id,settlement_type,contract_size,point_value,tick_size,quote_unit,currency,asset_issuer_id,asset_status,issue_date,expiry_date,display_name,description,country_id,venue_id
+BondFutureOption,46UHN6BL,Put,European,1,,Cash,,1,1,,SGD,,Active,09/01/01,09/01/01,,,,
+BondFutureOption,92VX82EV,Call,European,1,,Cash,,1,1,,SGD,,Active,09/01/01,09/01/01,,,,
