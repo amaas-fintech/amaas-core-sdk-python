@@ -1,8 +1,8 @@
 from datetime import date
 from dateutil.parser import parse
 
-from real_asset import RealAsset
-from enums import *
+from amaascore.assets.real_asset import RealAsset
+from amaascore.assets.enums import *
 
 class Automobile(RealAsset):
 
@@ -82,7 +82,7 @@ class Automobile(RealAsset):
     @trans_type.setter
     def trans_type(self, trans_type):
         """trans_type input is 0 or 1, 0 means buy and 1 means sell"""
-        if (trans_type is None):
+        if (trans_type is None or trans_type == ''):
             self._trans_type = None
         elif isinstance(trans_type, int) or isinstance(trans_type, str):
             trans_type = int(float(trans_type))
@@ -145,7 +145,7 @@ class Automobile(RealAsset):
 
     @make.setter
     def make(self, make):
-        if (make is None):
+        if (make is None or make == ''):
             self._make = None
         elif make in CAR_MAKE_RECORD:
             self._make = make
@@ -167,7 +167,7 @@ class Automobile(RealAsset):
 
     @color.setter
     def color(self, color):
-        if color is None:
+        if color is None or color == '':
             self._color = None
         elif color in CAR_COLOR_RECORD:
             self._color = color
@@ -180,7 +180,7 @@ class Automobile(RealAsset):
 
     @style.setter
     def style(self, style):
-        if style is None:
+        if style is None or style == '':
             self._style = None
         elif style in set(CAR_STYLE.keys()):
             self._style = style
@@ -195,7 +195,7 @@ class Automobile(RealAsset):
 
     @genre.setter
     def genre(self, genre):
-        if genre is None:
+        if genre is None or genre == '':
             self._genre = None
         elif genre in set(CAR_GENRE.keys()):
             self._genre = genre
@@ -210,7 +210,7 @@ class Automobile(RealAsset):
 
     @rarity.setter
     def rarity(self, rarity):
-        if (rarity is None):
+        if (rarity is None or rarity == ''):
             self._rarity = None
         elif rarity in CAR_RARITY:
             self._rarity = rarity
@@ -223,7 +223,7 @@ class Automobile(RealAsset):
 
     @condition.setter
     def condition(self, condition):
-        if (condition is None):
+        if (condition is None or condition == ''):
             self._condition = None
         elif condition in set(CAR_CONDITION.keys()):
             self._condition = condition
@@ -239,7 +239,7 @@ class Automobile(RealAsset):
     @imported.setter
     def imported(self, imported):
         """imported input is 0 or 1, 0 means not imported one and 1 means an imported car"""
-        if (imported is None):
+        if (imported is None or imported == ''):
             self._imported = None
         elif isinstance(imported, int) or isinstance(imported, str):
             imported = int(float(imported))
@@ -282,7 +282,7 @@ class Automobile(RealAsset):
 
     @steering.setter
     def steering(self, steering):
-        if (steering is None):
+        if (steering is None or steering == ''):
             self._steering = None
         elif steering == 'LHD' or steering == 'RHD':
             self._steering = steering
@@ -295,7 +295,7 @@ class Automobile(RealAsset):
 
     @gearbox.setter
     def gearbox(self, gearbox):
-        if (gearbox is None):
+        if (gearbox is None or gearbox == ''):
             self._gearbox = None
         elif gearbox == 'A' or gearbox == 'M':
             self._gearbox = gearbox
@@ -316,7 +316,7 @@ class Automobile(RealAsset):
 
     @drive.setter
     def drive(self, drive):
-        if (drive is None):
+        if (drive is None or drive == ''):
             self._drive = None
         elif drive == 'RWD' or drive == 'FWD' or drive == 'AWD':
             self._drive = drive
@@ -361,7 +361,7 @@ class Automobile(RealAsset):
 
     @fuel_type.setter
     def fuel_type(self, fuel_type):
-        if (fuel_type is None):
+        if (fuel_type is None or fuel_type == ''):
             self._fuel_type = None
         elif fuel_type == 'Petrol' or fuel_type == 'Diesel':
             self._fuel_type = fuel_type
@@ -374,7 +374,7 @@ class Automobile(RealAsset):
 
     @petrol_grade.setter
     def petrol_grade(self, petrol_grade):
-        if (petrol_grade is None):
+        if (petrol_grade is None or petrol_grade == ''):
             self._petrol_grade = None
         else:
             if isinstance(petrol_grade, str):
