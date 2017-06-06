@@ -63,3 +63,36 @@ class Link(AMaaSModel):
         self.active = active
         self.version = version
         super(Link, self).__init__(*args, **kwargs)
+
+class Reference(AMaaSModel):
+    
+    def __init__(self, reference_value, active=True, *args, **kwargs):
+        self.reference_value = reference_value
+        self.active = active
+        super(Reference, self).__init__(*args, **kwargs)
+
+
+class Comment(AMaaSModel):
+    """
+    A free text comment about the party
+    """
+    @staticmethod
+    def stored_attributes():
+        return {'comment_value', 'active', 'version'}
+
+    @staticmethod
+    def party_key():
+        return 'comment_type'
+
+    @staticmethod
+    def unique():
+        return True
+
+    @staticmethod
+    def table_name():
+        return 'party_comments'
+
+    def __init__(self, comment_value, active=True, *args, **kwargs):
+        self.comment_value = comment_value
+        self.active = active
+        super(Comment, self).__init__(*args, **kwargs)
