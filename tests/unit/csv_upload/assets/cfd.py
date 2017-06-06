@@ -3,7 +3,7 @@ import csv
 import random
 
 from amaasutils.random_utils import random_string
-from amaascore.csv_upload.data import Uploader
+from amaascore.csv_upload.assets.asset import AssetUploader
 
 class CFDUploaderTest(unittest.TestCase):
 
@@ -20,16 +20,19 @@ class CFDUploaderTest(unittest.TestCase):
         with open(self.csvfile, 'w+', newline='') as writefile:
             writer = csv.writer(writefile)
             writer.writerow(header)
-            writer.writerow(['ContractForDifference', self.asset_ids[0], '', '', '', 'USA', '', 'USD', '09/01/01'])
-            writer.writerow(['ContractForDifference', self.asset_ids[1], '', '', '', 'USA', '', 'USD', '09/01/01'])
-
+            writer.writerow(['ContractForDifference', self.asset_ids[0], '', '', '', 'USA', '', 'USD', '09/01/01',
+                             '{link_1:[{linked_asset_id:12345},{linked_asset_id:54321,active:true}],link_2:[{linked_asset_id:12365}]}', 
+                             '{reference_1:{reference_value:1,active:true},reference_2:{reference_value:2}}'])
+            writer.writerow(['ContractForDifference', self.asset_ids[1], '', '', '', 'USA', '', 'USD', '09/01/01',
+                             '{link_1:[{linked_asset_id:12345},{linked_asset_id:54321,active:true}],link_2:[{linked_asset_id:12365}]}', 
+                             '{reference_1:{reference_value:1,active:true},reference_2:{reference_value:2}}'])
 
     def tearDown(self):
         pass
 
     def test_CFDUploadDownload(self):
-        Uploader().upload(asset_manager_id=self.asset_manager_id, client_id=self.client_id, csvpath=self.csvfile)
-        Uploader().download(csvpath=self.csvfile, asset_manager_id=self.asset_manager_id, data_id_type='asset_id', data_id_list=self.asset_ids)
+        AssetUploader().upload(asset_manager_id=self.asset_manager_id, client_id=self.client_id, csvpath=self.csvfile)
+        AssetUploader().download(asset_manager_id=self.asset_manager_id, asset_id_list=self.asset_ids)
 
 if __name__ == '__main__':
     unittest.main()

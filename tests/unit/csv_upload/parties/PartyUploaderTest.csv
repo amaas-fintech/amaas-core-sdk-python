@@ -1,3 +1,3 @@
-amaasclass,party_id,party_status,base_currency,description,addresses,comments,emails
-Party,VW4HG491,Active,SGD,,,,
-Party,LG56YG7G,Active,SGD,,,,
+amaasclass,party_id,party_status,base_currency,description,addresses,comments,emails,links,references,links,references
+Party,3ZTE84U3,Active,SGD,description,"{address_1:{line_one:12345,city:Singapore,country_id:SGD,address_primary:123,line_two:6789,active:true}}","{comment_1:{comment_value:1,active:true},comment_2:{comment_value:2,active:false}}","{email_1:{email:1@1.com,email_primary:true,active:true},email_2:{email:2@2.com,email_primary:false}}","{link_1:[{linked_party_id:12345},{linked_party_id:54321,active:true}],link_2:[{linked_party_id:12365}]}","{reference_1:{reference_value:1,active:true},reference_2:{reference_value:2}}"
+Party,DLQHFGGA,Active,SGD,description,"{address_1:{line_one:12345,city:Singapore,country_id:SGD,address_primary:123,line_two:6789,active:true}}","{comment_1:{comment_value:1,active:true},comment_2:{comment_value:2,active:false}}","{email_1:{email:1@1.com,email_primary:true,active:true},email_2:{email:2@2.com,email_primary:false}}","{link_1:[{linked_party_id:12345},{linked_party_id:54321,active:true}],link_2:[{linked_party_id:12365}]}","{reference_1:{reference_value:1,active:true},reference_2:{reference_value:2}}"
