@@ -12,7 +12,7 @@ class BookUploader(object):
         pass
 
     @staticmethod
-    def json_handler(orderedDict, params):
+    def json_handler(orderedDict, params=dict()):
         Dict = dict(orderedDict)
         for key, var in params.items():
             Dict[key]=var
@@ -31,7 +31,7 @@ class BookUploader(object):
         logger = logging.getLogger(__name__)
         params = {'asset_manager_id': asset_manager_id}
         with open(csvpath) as csvfile:
-            books = csv_stream_to_objects(stream=csvfile, json_handler=BookUploader.json_handler, **params)
+            books = csv_stream_to_objects(stream=csvfile, json_handler=BookUploader.json_handler, params=params)
         for book in books:
             interface.new(book)
             logger.info('Creating new book %s successfully', book.book_id)

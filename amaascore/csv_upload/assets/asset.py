@@ -41,7 +41,7 @@ from amaascore.assets.wine import Wine
 from amaascore.assets.warrants import Warrant
 
 from amaascore.assets.children import Link, Reference
-from amaascore.csv_upload.assets.utils import asset_formatted_string_to_links, asset_formatted_string_to_references
+from amaascore.csv_upload.assets.utils import process_normal
 
 from amaascore.assets.interface import AssetsInterface
 
@@ -56,20 +56,13 @@ class AssetUploader(object):
         for key, var in params.items():
             Dict[key]=var
         data_class = Dict.pop('amaasclass', None)
-        #check for links input data
-        if Dict.get('links', '') != '' or Dict.get('links', '')!= '{}':
-            links_input = Dict.pop('links')
-            Dict['links'] = asset_formatted_string_to_links(links_input)
-        #check for references input data
-        if Dict.get('references', '') != '' or Dict.get('references', '')!= '{}':
-            references_input = Dict.pop('references')
-            Dict['references'] = asset_formatted_string_to_references(references_input)
+        Dict = process_normal(Dict)
         #construct the class using Dict as params argument
         obj = globals()[data_class](**dict(Dict))
         return obj
 
     @staticmethod
-    def upload(csvpath, asset_manager_id, client_id=None):
+    def upload(csvpath, asset_manager_id=None, client_id=None):
         """convert csv file rows to assets and insert;
            asset_manager_id and possibly client_id from the UI (login)"""
         interface = AssetsInterface(environment='local')
