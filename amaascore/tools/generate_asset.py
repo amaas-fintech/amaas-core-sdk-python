@@ -16,6 +16,8 @@ from amaascore.assets.fx_option import ForeignExchangeOption
 from amaascore.assets.sukuk import Sukuk
 from amaascore.assets.synthetic import Synthetic
 from amaascore.assets.private_investment import PrivateInvestment
+from amaascore.assets.automobile import Automobile
+from amaascore.assets.warrants import Warrant
 from amaascore.core.reference import Reference
 
 REFERENCE_TYPES = ['External']
@@ -134,3 +136,13 @@ def generate_private_investment(asset_manager_id=None, asset_id=None, client_id=
                                            investment_term=52,
                                            **attributes)
     return private_investment
+
+def generate_automobile(asset_manager_id=None, asset_id=None, client_id=None):
+    attributes = generate_common(asset_manager_id=None, asset_id=None)
+    automobile = Automobile(client_id=1, **attributes)
+    return automobile
+
+def generate_warrant(asset_manager_id=None, asset_id=None, client_id=None):
+    attributes = generate_common(asset_manager_id=None, asset_id=None)
+    warrant = Warrant(client_id=1, **attributes)
+    return warrant
