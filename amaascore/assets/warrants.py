@@ -76,11 +76,10 @@ class Warrant(Equity):
     def exercise_type(self, exercise_type):
         if (exercise_type is None):
             self._exercise_type = None
-        elif isinstance(exercise_type, str):
-            if exercise_type == 'E' or exercise_type == 'A':
-                self._exercise_type = exercise_type
         else:
-            raise ValueError("Invalid data type for exercise_type: %s" % exercise_type)
+            if exercise_type not in ['European', 'American']:
+                raise ValueError("Invalid exercise_type European/American: %s" % exercise_type)
+            self._exercise_type = exercise_type
 
     @property
     def expiration_date(self):
@@ -146,11 +145,10 @@ class Warrant(Equity):
     def settlement_type(self, settlement_type):
         if (settlement_type is None):
             self._settlement_type = None
-        elif isinstance(settlement_type, str):
-            if settlement_type == 'C' or settlement_type == 'P':
-                self._settlement_type = settlement_type
         else:
-            raise ValueError("Invalid data type for settlement_type: %s" % settlement_type)
+            if settlement_type not in ['Cash', 'Physical']:
+                raise ValueError("Invalid settlement_type Cash/Physical" % settlement_type)
+            self._settlement_type = settlement_type
 
     @property
     def warrant_type(self):
@@ -160,8 +158,8 @@ class Warrant(Equity):
     def warrant_type(self, warrant_type):
         if (warrant_type is None):
             self._warrant_type = None
-        elif isinstance(warrant_type, str):
-            if warrant_type == 'C' or warrant_type == 'T':
-                self._warrant_type = warrant_type
         else:
-            raise ValueError("Invalid data type for warrant_type: %s" % warrant_type)
+            if warrant_type not in ["Covered", "Tradition"]:
+                raise ValueError("Invalid warrant_type Covered/Tradition: %s" % warrant_type)
+            self._warrant_type = warrant_type
+

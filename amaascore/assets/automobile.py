@@ -18,7 +18,7 @@ class Automobile(RealAsset):
                  country_id=None, display_name='', description='',
                  venue_id=None, issue_date=None, maturity_date=date.max, comments=None,
                  links=None, references=None, additional=None, currency=None,
-                 asset_status='Active', trans_date=None, trans_type=None, manufac_year=None,
+                 asset_status='Active', manufac_year=None,
                  value_date=None, value=None, account_id=None,
                  vehicle_id=None, make=None, model=None, color=None,
                  style=None, genre=None, rarity=None,
@@ -36,8 +36,6 @@ class Automobile(RealAsset):
                                          comments=comments, links=links, references=references,
                                          additional=additional,
                                          *args, **kwargs)
-        self.trans_date = trans_date
-        self.trans_type = trans_type
         self.manufac_year = manufac_year
         self.value_date = value_date
         self.value = value
@@ -64,36 +62,6 @@ class Automobile(RealAsset):
         self.speed = speed
         self.fuel_type = fuel_type
         self.petrol_grade = petrol_grade
-
-    @property
-    def trans_date(self):
-        return self._trans_date
-
-    @trans_date.setter
-    def trans_date(self, trans_date):
-        if isinstance(trans_date, str):
-            trans_date = parse(trans_date).date()
-        self._trans_date = trans_date
-
-    @property
-    def trans_type(self):
-        return self._trans_type
-
-    @trans_type.setter
-    def trans_type(self, trans_type):
-        """trans_type input is 0 or 1, 0 means buy and 1 means sell"""
-        if (trans_type is None or trans_type == ''):
-            self._trans_type = None
-        elif isinstance(trans_type, int) or isinstance(trans_type, str):
-            trans_type = int(float(trans_type))
-            if trans_type == 0:
-                self._trans_type = 'Buy'
-            elif trans_type == 1:
-                self._trans_type = 'Sell'
-            else:
-                raise ValueError("Invalid value for transaction type: %s" % trans_type)
-        else:
-            raise ValueError("Invalid data type for transaction type: %s" % trans_type)
 
     @property
     def manufac_year(self):
@@ -145,7 +113,7 @@ class Automobile(RealAsset):
 
     @make.setter
     def make(self, make):
-        if (make is None or make == ''):
+        if (not make):
             self._make = None
         elif make in CAR_MAKE_RECORD:
             self._make = make
@@ -167,7 +135,7 @@ class Automobile(RealAsset):
 
     @color.setter
     def color(self, color):
-        if color is None or color == '':
+        if not color:
             self._color = None
         elif color in CAR_COLOR_RECORD:
             self._color = color
@@ -180,7 +148,7 @@ class Automobile(RealAsset):
 
     @style.setter
     def style(self, style):
-        if style is None or style == '':
+        if not style:
             self._style = None
         elif style in set(CAR_STYLE.keys()):
             self._style = style
@@ -195,7 +163,7 @@ class Automobile(RealAsset):
 
     @genre.setter
     def genre(self, genre):
-        if genre is None or genre == '':
+        if not genre:
             self._genre = None
         elif genre in set(CAR_GENRE.keys()):
             self._genre = genre
@@ -210,7 +178,7 @@ class Automobile(RealAsset):
 
     @rarity.setter
     def rarity(self, rarity):
-        if (rarity is None or rarity == ''):
+        if (not rarity):
             self._rarity = None
         elif rarity in CAR_RARITY:
             self._rarity = rarity
@@ -223,7 +191,7 @@ class Automobile(RealAsset):
 
     @condition.setter
     def condition(self, condition):
-        if (condition is None or condition == ''):
+        if (not condition):
             self._condition = None
         elif condition in set(CAR_CONDITION.keys()):
             self._condition = condition
@@ -238,19 +206,12 @@ class Automobile(RealAsset):
 
     @imported.setter
     def imported(self, imported):
-        """imported input is 0 or 1, 0 means not imported one and 1 means an imported car"""
-        if (imported is None or imported == ''):
+        if (not imported):
             self._imported = None
-        elif isinstance(imported, int) or isinstance(imported, str):
-            imported = int(float(imported))
-            if imported == 0:
-                self._imported = 'Buy'
-            elif imported == 1:
-                self._imported = 'Sell'
-            else:
-                raise ValueError("Invalid value for imported (boolean 0/1): %s" % imported)
         else:
-            raise ValueError("Invalid data type for imported (boolean 0/1): %s" % imported)
+            if imported not in [True, False]:
+                raise ValueError("imported should be True or False: %s" % imported)
+            self._imported = imported
 
     @property
     def imported_country_id(self):
@@ -282,12 +243,12 @@ class Automobile(RealAsset):
 
     @steering.setter
     def steering(self, steering):
-        if (steering is None or steering == ''):
+        if (not steering):
             self._steering = None
-        elif steering == 'LHD' or steering == 'RHD':
-            self._steering = steering
         else:
-            raise ValueError("Invalid data type for steering ('LHD'/'RHD'): %s" % steering)
+            if steering not in ['LHD', 'RHD']:
+                raise ValueError("Invalid steering LHD/RHD: %s" % steering)
+            self._steering = steering
 
     @property
     def gearbox(self):
@@ -295,12 +256,12 @@ class Automobile(RealAsset):
 
     @gearbox.setter
     def gearbox(self, gearbox):
-        if (gearbox is None or gearbox == ''):
+        if (not gearbox):
             self._gearbox = None
-        elif gearbox == 'A' or gearbox == 'M':
-            self._gearbox = gearbox
         else:
-            raise ValueError("Invalid data type for gearbox ('A'/'M'): %s" % gearbox)
+            if gearbox not in ['A', 'M']:
+                raise ValueError("Invalid gearbox A/M: %s" % gearbox)
+            self._gearbox = gearbox
 
     @property
     def gears(self):
@@ -316,12 +277,12 @@ class Automobile(RealAsset):
 
     @drive.setter
     def drive(self, drive):
-        if (drive is None or drive == ''):
+        if (not drive):
             self._drive = None
-        elif drive == 'RWD' or drive == 'FWD' or drive == 'AWD':
-            self._drive = drive
         else:
-            raise ValueError("Invalid data type for drive ('RWD'/'FWD'/'AWD'): %s" % drive)
+            if drive not in ['RWD', 'FWD', 'AWD']:
+                raise ValueError("Invalid drive RWD/FWD/AWD: %s" % drive)
+            self._drive = drive
 
     @property
     def engine_cap(self):
@@ -361,12 +322,12 @@ class Automobile(RealAsset):
 
     @fuel_type.setter
     def fuel_type(self, fuel_type):
-        if (fuel_type is None or fuel_type == ''):
+        if (not fuel_type):
             self._fuel_type = None
-        elif fuel_type == 'Petrol' or fuel_type == 'Diesel':
-            self._fuel_type = fuel_type
         else:
-            raise ValueError("Invalid data type for fuel_type (Petrol/Diesel): %s" % fuel_type)
+            if fuel_type not in ['Petrol', 'Diesel']:
+                raise ValueError("Invalid fuel_type Petrol/Diesel: %s" % fuel_type)
+            self._fuel_type = fuel_type
 
     @property
     def petrol_grade(self):
@@ -374,7 +335,7 @@ class Automobile(RealAsset):
 
     @petrol_grade.setter
     def petrol_grade(self, petrol_grade):
-        if (petrol_grade is None or petrol_grade == ''):
+        if (not petrol_grade):
             self._petrol_grade = None
         else:
             if isinstance(petrol_grade, str):
