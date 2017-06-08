@@ -28,7 +28,7 @@ def asset_formatted_string_to_links(links_input):
                 params_dict[field.split(':')[0]] = True
             else:
                 params_dict[field.split(':')[0]] = field.split(':')[1]
-        link_list.append(Link(params_dict))
+        link_list.append(Link(**params_dict))
         params_dict = dict()
         while(value!= '' and value[0:2] == ',{'):
             temp = value.split('}', 1)[0]
@@ -41,7 +41,7 @@ def asset_formatted_string_to_links(links_input):
                     params_dict[field.split(':')[0]] = True
                 else:
                     params_dict[field.split(':')[0]] = field.split(':')[1]
-            link_list.append(Link(params_dict))
+            link_list.append(Link(**params_dict))
             params_dict = dict()
         links_dict[key] = link_list
         if (links_input[0] == ','):
@@ -76,7 +76,7 @@ def asset_formatted_string_to_references(references_input):
                 params_dict[field.split(':')[0]] = True
             else:
                 params_dict[field.split(':')[0]] = field.split(':')[1]
-        reference_dict[key] = Reference(params_dict)
+        reference_dict[key] = Reference(**params_dict)
         if len(references_input.split('}', 1))==2:
             references_input = references_input.split('}', 1)[1]
         else:
