@@ -11,6 +11,9 @@ amaasclass,asset_id,links.link1.0.linked_asset_id,links.link1.0.active
 Equity,12345,54321,true
 """
 import csv
+from datetime import date, datetime
+from dateutil.parser import parse
+from decimal import Decimal
 
 from amaascore.tools.csv_tools import csv_stream_to_objects
 from amaasutils.logging_utils import DEFAULT_LOGGING
@@ -31,36 +34,61 @@ from amaascore.assets.children import Link, Reference
 from amaascore.parties.children import Address, Email, Link, Reference, Comment
 from amaascore.transactions.children import Charge, Code, Comment, Link, Party, Reference
 
-
+#lists to dicide which a particular class belong to
 ASSET = ['Asset', 'Automobile', 'BondFutureOption', 'BondFuture', 'BondOption', 'Bond', 'ContractForDifference', 'Currency', 'CustomAsset', 
          'Derivative', 'EnergyFuture', 'EquityFuture', 'Equity', 'ExchangeTradedFund', 'ForeignExchange', 'Fund', 'FutureOption', 'Future'
          'ForeignExchangeOption', 'IndexFuture', 'Index', 'InterestRateFuture', 'ListedContractForDifference', 'ListedDerivative'
          'OptionMixin', 'RealAsset', 'RealEstate', 'Sukuk', 'SyntheticFromBook', 'SyntheticMultiLeg', 'Synthetic', 'Warrant', 'Wine']
-
 PARTY = ['Broker', 'Company', 'Exchange', 'Fund', 'GovernmentAgency', 'Individual', 'Organisation', 'Party', 'SubFund']
-
 BOOK = ['Book']
-
 CORPORATE_ACTION = ['CorporateAction', 'Dividend', 'Notification', 'Split']
-
 MARKET_DATA = ['EODPrice', 'FXRate', 'Quote']
-
 TRANSACTION = ['Transaction']
-
 ASSET_MANAGER = ['AssetManager', 'Relationship']
-
+#children_class dictionary director for different classes
 CHILDREN_CLASS = {'asset': {'links': assets.children.Link, 'references': assets.children.Reference},
                   'party': {'addresses': parties.children.Address, 'emails': parties.children.Email,
-                             'links': parties.children.Link, 'references': parties.children.Reference,
-                             'comments': parties.children.Comment},
+                            'links': parties.children.Link, 'references': parties.children.Reference,
+                            'comments': parties.children.Comment},
                   'transaction': {'charges': transactions.children.Charge, 'codes': transactions.children.Code,
-                                   'comments': transactions.children.Comment, 'links': transactions.children.Link,
-                                   'references': transactions.children.Reference, 'parties': transactions.children.Party},
+                                  'comments': transactions.children.Comment, 'links': transactions.children.Link,
+                                  'references': transactions.children.Reference, 'parties': transactions.children.Party},
                   'asset_manager': {},
                   'book': {},
-                  'corporate_action': {'references': assets.children.Reference}}
-
+                  'corporate_action': {'references': assets.children.Reference}} #no Reference class found in corporate_actions
+#chiildren fields names that signal children fields
 CHILDREN_SIGNAL = {'references', 'addresses', 'emails', 'comments', 'charges', 'codes', 'parties'}
+#parameters datatypes:
+INTEGER_PARAMS = {'internal_id', 'client_id', 'asset_manager_id', 'version',
+                  'default_book_owner_id', 'related_id', 'quantity',
+                  'valid_to_id', 'charge_value', 'price', 'gross_settlement',
+                  'net_settlement', }
+STRING_PARAMS = {'asset_id', 'asset_status', 'asset_class', 'asset_type', 'asset_issuer_id',
+                 'country_id', 'venue_id', 'currency', 'display_name', 'description',
+                 'created_by', 'updated_by', 'reference_type', 'reference_value',
+                 'link_type', 'linked_asset_id', 'comment_type', 'comment_value',
+                 'party_id', 'party_status', 'party_class', 'party_type', 'base_currency',
+                 'legal_name', 'url', 'address_type', 'line_one', 'line_two',
+                 'city', 'region', 'postal_code', 'comment_type', 'comment_value',
+                 'email_primary', 'email_type', 'email', 'linked_party_id',
+                 'asset_manager_type', 'asset_manager_status', 'dafault_timezone',
+                 'account_type', 'relationship_id', 'relationship_type',
+                 'relationship_status', 'book_id', 'book_status', 'book_type',
+                 'business_unit', 'timezone', 'owner_id', 'corporate_action_id',
+                 'corporate_action_type', 'corporate_action_status',
+                 'message', 'accounting_type', 'item_id', 'item_status',
+                 'item_category', 'details', 'charge_type', 'transaction_id',
+                 'code_type', 'code_value', 'linked_transaction_id',
+                 'reason', 'transaction_status', 'asset_book_id', 'counterparty_book_id',
+                 'transaction_action', 'transaction_type', 'transaction_currency',
+                 'settlement_currency'}
+BOOLEAN_PARAMS = {'fungible', 'roll_price', 'active', 'address_primary', 'elective',
+                  'net_affecting', 'lifecycle'}
+DATE_PARAMS = {'issue_date', 'maturity_date', 'declared_date', 'record_date', 'settlement_date',
+               'posting_date', 'posting_type', 'transaction_date', 'settlement_date'}
+DATETIME_PARAMS = {'created_time', 'updated_time', 'default_book_close_time', 'close_time',
+                   'valid_from', 'valid_to', 'execution_time'}
+JSON_PARAMS = {'additional', 'client_additional'}
 
 def direct_to_class(amaasclass):
     """direct from amaasclass (first params given in the row) to the dictionary of the children class"""
@@ -129,7 +157,7 @@ def formatted_string_to_links(links_input, clazz):
             temp = temp[1:]
         temp_list = temp.split(',')
         for field in temp_list:
-            params_dict[field.split(':')[0]] = process_value(field.split(':')[1])
+            params_dict.update(process_field(field))
         link_list.append(clazz(**params_dict))
         params_dict = dict()
         while(value!= '' and value[0:2] == ',{'):
@@ -139,7 +167,7 @@ def formatted_string_to_links(links_input, clazz):
                 temp = temp[1:]
             temp_list = temp.split(',')
             for field in temp_list:
-                params_dict[field.split(':')[0]] = process_value(field.split(':')[1])
+                params_dict.update(process_field(field))
             link_list.append(clazz(**params_dict))
             params_dict = dict()
         links_dict[key] = link_list
@@ -178,7 +206,7 @@ def formatted_string_to_others(typi_input, clazz):
             temp = temp[1:]
         temp_list = temp.split(',')
         for field in temp_list:
-            params_dict[field.split(':')[0]] = process_value(field.split(':')[1])
+            params_dict.update(process_field(field))
         typi_dict[key] = clazz(**params_dict)
         if len(typi_input.split('}', 1))==2:
             typi_input = typi_input.split('}', 1)[1]
@@ -203,6 +231,7 @@ def process_header(header_str):
 
 def process_value(value_str):
     """
+    naive version of processing the values: leave the work for constructors
     process the value to check exotic value inputs
     true or false should be converted to python boolean values
     empty strings should be converted to None because it is undefined
@@ -218,6 +247,33 @@ def process_value(value_str):
     else:
         return value_str
 
+def process_value_with_header(header_str, value_str):
+    """
+    This function processes the value field of each key,value pair
+    By datatype implied by the key, from the class DB construction
+    """
+    if header_str in INTEGER_PARAMS:
+        return int(value_str)
+    elif header_str in BOOLEAN_PARAMS:
+        if value_str == 'true' or value_str == 'True':
+            return True
+        else:
+            return False
+    elif header_str in DATE_PARAMS:
+        return parse(value_str).date()
+    elif header_str in DATETIME_PARAMS:
+        return datetime.strptime(value_str)
+    else:
+        return value_str
+
+def process_field(field_str):
+    """This function deals with particular fields that contain key value pairs seperated by ':'"""
+    params_update_dict = dict()
+    field_key = field_str.split(':')[0]
+    field_value = field_str.split(':')[1]
+    params_update_dict[field_key] = process_value_with_header(field_key, field_value)
+    return params_update_dict
+
 def children_signal(header_str):
     """Check whether the string is signalling the field is a children feild"""
     if '.' in header_str:
@@ -225,9 +281,13 @@ def children_signal(header_str):
     return False
 
 def group_raw_to_formatted_string_dict(raw_dict):
-    """this method can convert the children fields value by grouping them and convert to formatted string internally decided"""
+    """
+    This method can convert the children fields value by grouping them 
+    And convert to formatted string internally decided
+    """
     cooked_dict = dict()
-    last_header_first = last_header_second = last_header_third = last_header_fourth = None
+    last_header_first = last_header_second = None
+    last_header_third = last_header_fourth = None
     for header, value in raw_dict.items():
         header = process_header(header)
         if isinstance(header, list):
@@ -280,7 +340,7 @@ def group_raw_to_formatted_string_dict(raw_dict):
 def process_normal(_dict):
     """
     this method process the _dict to correct dict to be called by class constructor
-    this method will be imported and called by main csv uploader function to help process the csv input stream
+    this method will be imported and called by main csv uploader function
     """
     cooked_dict = group_raw_to_formatted_string_dict(_dict)
     data_class = cooked_dict.pop('amaasclass', '')
@@ -292,6 +352,6 @@ def process_normal(_dict):
         elif cooked_key == 'links':
             processed_dict = {cooked_key: formatted_string_to_links(cooked_value, children_class_dict[cooked_key])}
         else:
-            processed_dict = {cooked_key: process_value(cooked_value)}
+            processed_dict = {cooked_key: process_value_with_header(cooked_key, cooked_value)}
         tasty_dict.update(processed_dict)
     return tasty_dict
