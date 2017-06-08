@@ -4,7 +4,8 @@ import json
 
 from amaascore.tools.csv_tools import csv_stream_to_objects
 from amaasutils.logging_utils import DEFAULT_LOGGING
-from amaascore.csv_upload.enums import *
+from amaascore.csv_upload.utils import process_normal
+from amaascore.csv_upload.utils import interface_direct_class, interface_direct_csvpath
 
 from amaascore.assets.asset import Asset
 from amaascore.assets.automobile import Automobile
@@ -73,18 +74,12 @@ class Uploader(object):
         pass
 
     @staticmethod
-    def json_handler(csvpath, orderedDict, params):
+    def json_handler(orderedDict, params):
         Dict = dict(orderedDict)
         for key, var in params.items():
             Dict[key]=var
-        data_class = Dict.pop('amaasclass', None)
-        if Dict.get('links', None) is not None:
-            links_input = Dict.pop('links')
-            links_dict = dict()
-
-
-
-        if Dict[references]
+        data_class = Dict.get('amaasclass', None)
+        Dict = process_normal(Dict)
         obj = globals()[data_class](**dict(Dict))
         return obj
 
@@ -92,7 +87,7 @@ class Uploader(object):
     def upload(csvpath, asset_manager_id, client_id=None):
         """convert csv file rows to objects and insert;
            asset_manager_id and possibly client_id from the UI (login)"""
-        interface = interface_direct(csvpath)
+        interface = interface_direct_csvpath(csvpath)
         print(interface)
         logging.config.dictConfig(DEFAULT_LOGGING)
         logger = logging.getLogger(__name__)
@@ -101,7 +96,7 @@ class Uploader(object):
         else:
             params = {'asset_manager_id': asset_manager_id, 'client_id': client_id}
         with open(csvpath) as csvfile:
-            objs = csv_stream_to_objects(stream=csvfile, json_handler=Uploader.json_handler, **params)
+            objs = csv_stream_to_objects(stream=csvfile, json_handler=Uploader.json_handler, params=params)
         for obj in objs:
             interface.new(obj)
             logger.info('Creating this object and upload to database successfully')
@@ -109,7 +104,7 @@ class Uploader(object):
     @staticmethod
     def download(csvpath, asset_manager_id, data_id_type, data_id_list):
         """retrieve the objs mainly for test purposes"""
-        interface = interface_direct(csvpath)
+        interface = interface_direct_csvpath(csvpath)
         logging.config.dictConfig(DEFAULT_LOGGING)
         logger = logging.getLogger(__name__)
         objs = []
@@ -117,5 +112,4 @@ class Uploader(object):
             Dict = dict()
             Dict[data_id_type] = data_id
             objs.append(interface.retrieve(asset_manager_id=asset_manager_id, **Dict))
-            #interface.deactivate(asset_manager_id=asset_manager_id, **Dict)
         return objs
