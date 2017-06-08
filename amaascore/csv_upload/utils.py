@@ -7,7 +7,7 @@
 #boolean strings will be converted to True or False
 """
 example csv header and row values: (take note of children fields header format)
-amaasclass,asset_id,links.link1[0].linked_asset_id,links.link1[0].active
+amaasclass,asset_id,links.link1.0.linked_asset_id,links.link1.0.active
 Equity,12345,54321,true
 """
 import csv

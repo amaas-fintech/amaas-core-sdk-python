@@ -4,7 +4,6 @@ import json
 
 from amaascore.tools.csv_tools import csv_stream_to_objects
 from amaasutils.logging_utils import DEFAULT_LOGGING
-from amaascore.csv_upload.enums import *
 
 from amaascore.assets.asset import Asset
 from amaascore.assets.automobile import Automobile
