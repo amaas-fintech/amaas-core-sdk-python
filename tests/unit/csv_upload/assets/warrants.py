@@ -3,7 +3,7 @@ import csv
 import random
 
 from amaasutils.random_utils import random_string
-from amaascore.csv_upload.assets.asset import AssetUploader
+from amaascore.csv_upload.data import Uploader
 
 class WarrantUploaderTest(unittest.TestCase):
 
@@ -23,20 +23,18 @@ class WarrantUploaderTest(unittest.TestCase):
             writer.writerow(['Warrant', self.asset_ids[0], '123', 'Active', '123', 'USA', '123', 'USD', '01/05/09',
                             'Warrant', '123', '123', '123', '123', '1', 'E', '01/05/09', '01/05/09', '01/05/09', '123',
                             '123', '123', '123', 'C', 'C',
-                            '{link_1:[{linked_asset_id:12345},{linked_asset_id:54321,active:true}],link_2:[{linked_asset_id:12365}]}', 
-                            '{reference_1:{reference_value:1,active:true},reference_2:{reference_value:2}}'])
+                            '12345', '54321', 'true', '1', 'true', '2'])
             writer.writerow(['Warrant', self.asset_ids[1], '123', 'Active', '123', 'USA', '123', 'USD', '01/05/09',
                             'Warrant', '123', '123', '123', '123', '1', 'E', '01/05/09', '01/05/09', '01/05/09', '123',
                             '123', '123', '123', 'C', 'C',
-                            '{link_1:[{linked_asset_id:12345},{linked_asset_id:54321,active:true}],link_2:[{linked_asset_id:12365}]}', 
-                            '{reference_1:{reference_value:1,active:true},reference_2:{reference_value:2}}'])
+                            '12345', '54321', 'true', '1', 'true', '2'])
 
     def tearDown(self):
         pass
 
     def test_WarrantUploadDownload(self):
-        AssetUploader().upload(asset_manager_id=self.asset_manager_id, client_id=self.client_id, csvpath=self.csvfile)
-        AssetUploader().download(asset_manager_id=self.asset_manager_id, asset_id_list=self.asset_ids)
+        Uploader().upload(asset_manager_id=self.asset_manager_id, client_id=self.client_id, csvpath=self.csvfile)
+        Uploader().download(csvpath=self.csvfile, asset_manager_id=self.asset_manager_id, data_id_type='asset_id', data_id_list=self.asset_ids)
 
 if __name__ == '__main__':
     unittest.main()

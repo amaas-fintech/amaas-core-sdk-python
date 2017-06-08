@@ -3,7 +3,7 @@ import csv
 import random
 
 from amaasutils.random_utils import random_string
-from amaascore.csv_upload.corporate_actions.corporate_action import CorporateActionUploader
+from amaascore.csv_upload.data import Uploader
 
 class CorporateActionUploaderTest(unittest.TestCase):
 
@@ -27,8 +27,8 @@ class CorporateActionUploaderTest(unittest.TestCase):
         pass
 
     def test_CorporateActionUploadDownload(self):
-        CorporateActionUploader().upload(csvpath=self.csvfile, asset_manager_id=self.asset_manager_id)
-        CorporateActionUploader().download(asset_manager_id=self.asset_manager_id, corporate_action_id_list=self.corporate_action_ids)
+        Uploader().upload(csvpath=self.csvfile, asset_manager_id=self.asset_manager_id)
+        Uploader().download(csvpath=self.csvfile, asset_manager_id=self.asset_manager_id, data_id_type='corporate_action_id', data_id_list=self.corporate_action_ids)
 
 if __name__ == '__main__':
     unittest.main()
