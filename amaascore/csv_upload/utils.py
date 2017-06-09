@@ -215,19 +215,11 @@ def formatted_string_to_others(typi_input, clazz):
     return typi_dict
 
 def process_header(header_str):
-    """helper method"""
+    """helper method - assuming the children fields headers are seperated by dot"""
     if not children_signal(header_str):
         return header_str
     naive_split = header_str.split('.')
     return naive_split
-    if naive_split[0] == 'links':
-        res_list = [naive_split[0]]
-        res_list.append(naive_split[1].split('[')[0])
-        res_list.append(int(naive_split[1].split('[')[1][0:-1]))
-        res_list.append(naive_split[2])
-        return res_list
-    else:
-        return naive_split
 
 def process_value(value_str):
     """
