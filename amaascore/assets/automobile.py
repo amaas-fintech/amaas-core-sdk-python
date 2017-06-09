@@ -18,7 +18,7 @@ class Automobile(RealAsset):
                  country_id=None, display_name='', description='',
                  venue_id=None, issue_date=None, maturity_date=date.max, comments=None,
                  links=None, references=None, additional=None, currency=None,
-                 asset_status='Active', manufacture_year=None,
+                 asset_status='Active', model_year=None,
                  value_date=None, value=None, account_id=None,
                  vehicle_id=None, make=None, model=None, color=None,
                  style=None, genre=None, rarity=None,
@@ -36,7 +36,7 @@ class Automobile(RealAsset):
                                          comments=comments, links=links, references=references,
                                          additional=additional,
                                          *args, **kwargs)
-        self.manufacure_year = manufacture_year
+        self.model_year = model_year
         self.value_date = value_date
         self.value = value
         self.account_id = account_id
@@ -64,14 +64,14 @@ class Automobile(RealAsset):
         self.petrol_grade = petrol_grade
 
     @property
-    def manufacture_year(self):
-        return self._manufacture_year
+    def model_year(self):
+        return self._model_year
 
-    @manufacture_year.setter
-    def manufacture_year(self, manufacture_year):
-        if isinstance(manufacture_year, str):
-            manufacture_year = int(manufacture_year)
-        self._manufacture_year = manufacture_year
+    @model_year.setter
+    def model_year(self, model_year):
+        if isinstance(model_year, str):
+            model_year = int(model_year)
+        self._model_year = model_year
 
     @property
     def value_date(self):
