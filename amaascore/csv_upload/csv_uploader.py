@@ -4,8 +4,7 @@ import json
 
 from amaascore.tools.csv_tools import csv_stream_to_objects
 from amaasutils.logging_utils import DEFAULT_LOGGING
-from amaasutils.csv_upload_utils import process_normal
-from amaasutils.csv_upload_utils import interface_direct_class, interface_direct_csvpath
+from amaascore.csv_upload.utils import process_normal, interface_direct_class, interface_direct_csvpath
 
 from amaascore.assets.asset import Asset
 from amaascore.assets.automobile import Automobile
