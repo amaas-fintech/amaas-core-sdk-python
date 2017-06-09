@@ -40,7 +40,6 @@ from amaascore.assets.synthetic_from_book import SyntheticFromBook
 from amaascore.assets.synthetic_multi_leg import SyntheticMultiLeg
 from amaascore.assets.wine import Wine
 from amaascore.assets.warrants import Warrant
-from amaascore.assets.children import Link, Reference
 
 from amaascore.parties.broker import Broker
 from amaascore.parties.company import Company
@@ -51,7 +50,6 @@ from amaascore.parties.individual import Individual
 from amaascore.parties.organisation import Organisation
 from amaascore.parties.party import Party
 from amaascore.parties.sub_fund import SubFund
-from amaascore.parties.children import Link, Email, Address
 
 from amaascore.books.book import Book
 
@@ -66,7 +64,9 @@ from amaascore.market_data.quote import Quote
 
 from amaascore.transactions.position import Position
 from amaascore.transactions.transaction import Transaction
-from amaascore.transactions.children import Charge, Code, Comment, Link, Party
+
+from amaascore.asset_managers.asset_manager import AssetManager
+from amaascore.asset_managers.relationship import Relationship
 
 class Uploader(object):
 
@@ -84,14 +84,15 @@ class Uploader(object):
         return obj
 
     @staticmethod
-    def upload(csvpath, asset_manager_id, client_id=None):
+    def upload(csvpath, asset_manager_id=None, client_id=None):
         """convert csv file rows to objects and insert;
            asset_manager_id and possibly client_id from the UI (login)"""
         interface = interface_direct_csvpath(csvpath)
-        print(interface)
         logging.config.dictConfig(DEFAULT_LOGGING)
         logger = logging.getLogger(__name__)
-        if client_id==None:
+        if asset_manager_id is None:
+            params = dict()
+        elif client_id is None:
             params = {'asset_manager_id': asset_manager_id}
         else:
             params = {'asset_manager_id': asset_manager_id, 'client_id': client_id}
