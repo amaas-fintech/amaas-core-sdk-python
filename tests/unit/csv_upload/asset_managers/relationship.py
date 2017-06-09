@@ -3,7 +3,7 @@ import csv
 import random
 
 from amaasutils.random_utils import random_string
-from amaascore.csv_upload.asset_managers.asset_manager import AssetManagerUploader
+from amaascore.csv_upload.csv_uploader import Uploader
 
 class AssetManagerUploaderTest(unittest.TestCase):
 
@@ -27,8 +27,7 @@ class AssetManagerUploaderTest(unittest.TestCase):
         pass
 
     def test_RelationUploadDownload(self):
-        AssetManagerUploader().upload(csvpath=self.csvfile)
-        AssetManagerUploader().download(asset_manager_id_list=self.asset_manager_ids)
+        Uploader().upload(csvpath=self.csvfile)
 
 if __name__ == '__main__':
     unittest.main()
