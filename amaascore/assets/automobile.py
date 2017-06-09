@@ -18,7 +18,7 @@ class Automobile(RealAsset):
                  country_id=None, display_name='', description='',
                  venue_id=None, issue_date=None, maturity_date=date.max, comments=None,
                  links=None, references=None, additional=None, currency=None,
-                 asset_status='Active', manufac_year=None,
+                 asset_status='Active', manufacture_year=None,
                  value_date=None, value=None, account_id=None,
                  vehicle_id=None, make=None, model=None, color=None,
                  style=None, genre=None, rarity=None,
@@ -36,7 +36,7 @@ class Automobile(RealAsset):
                                          comments=comments, links=links, references=references,
                                          additional=additional,
                                          *args, **kwargs)
-        self.manufac_year = manufac_year
+        self.manufacure_year = manufacture_year
         self.value_date = value_date
         self.value = value
         self.account_id = account_id
@@ -64,14 +64,14 @@ class Automobile(RealAsset):
         self.petrol_grade = petrol_grade
 
     @property
-    def manufac_year(self):
-        return self._manufac_year
+    def manufacture_year(self):
+        return self._manufacture_year
 
-    @manufac_year.setter
-    def manufac_year(self, manufac_year):
-        if isinstance(manufac_year, str):
-            manufac_year = int(manufac_year)
-        self._manufac_year = manufac_year
+    @manufacture_year.setter
+    def manufacture_year(self, manufacture_year):
+        if isinstance(manufacture_year, str):
+            manufacture_year = int(manufacture_year)
+        self._manufacture_year = manufacture_year
 
     @property
     def value_date(self):
@@ -113,7 +113,7 @@ class Automobile(RealAsset):
 
     @make.setter
     def make(self, make):
-        if (not make):
+        if not make:
             self._make = None
         elif make in CAR_MAKE_RECORD:
             self._make = make
@@ -178,7 +178,7 @@ class Automobile(RealAsset):
 
     @rarity.setter
     def rarity(self, rarity):
-        if (not rarity):
+        if not rarity:
             self._rarity = None
         elif rarity in CAR_RARITY:
             self._rarity = rarity
@@ -191,7 +191,7 @@ class Automobile(RealAsset):
 
     @condition.setter
     def condition(self, condition):
-        if (not condition):
+        if not condition:
             self._condition = None
         elif condition in set(CAR_CONDITION.keys()):
             self._condition = condition
@@ -206,7 +206,7 @@ class Automobile(RealAsset):
 
     @imported.setter
     def imported(self, imported):
-        if (not imported):
+        if not imported:
             self._imported = None
         else:
             if imported not in [True, False]:
@@ -243,7 +243,7 @@ class Automobile(RealAsset):
 
     @steering.setter
     def steering(self, steering):
-        if (not steering):
+        if not steering:
             self._steering = None
         else:
             if steering not in ['LHD', 'RHD']:
@@ -256,7 +256,7 @@ class Automobile(RealAsset):
 
     @gearbox.setter
     def gearbox(self, gearbox):
-        if (not gearbox):
+        if not gearbox:
             self._gearbox = None
         else:
             if gearbox not in ['A', 'M']:
@@ -277,7 +277,7 @@ class Automobile(RealAsset):
 
     @drive.setter
     def drive(self, drive):
-        if (not drive):
+        if not drive:
             self._drive = None
         else:
             if drive not in ['RWD', 'FWD', 'AWD']:
@@ -322,7 +322,7 @@ class Automobile(RealAsset):
 
     @fuel_type.setter
     def fuel_type(self, fuel_type):
-        if (not fuel_type):
+        if not fuel_type:
             self._fuel_type = None
         else:
             if fuel_type not in ['Petrol', 'Diesel']:
@@ -335,7 +335,7 @@ class Automobile(RealAsset):
 
     @petrol_grade.setter
     def petrol_grade(self, petrol_grade):
-        if (not petrol_grade):
+        if not petrol_grade:
             self._petrol_grade = None
         else:
             if isinstance(petrol_grade, str):

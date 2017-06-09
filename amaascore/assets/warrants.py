@@ -74,7 +74,7 @@ class Warrant(Equity):
 
     @exercise_type.setter
     def exercise_type(self, exercise_type):
-        if (exercise_type is None):
+        if exercise_type is None:
             self._exercise_type = None
         else:
             if exercise_type not in ['European', 'American']:
@@ -143,7 +143,7 @@ class Warrant(Equity):
 
     @settlement_type.setter
     def settlement_type(self, settlement_type):
-        if (settlement_type is None):
+        if settlement_type is None:
             self._settlement_type = None
         else:
             if settlement_type not in ['Cash', 'Physical']:
@@ -156,10 +156,10 @@ class Warrant(Equity):
 
     @warrant_type.setter
     def warrant_type(self, warrant_type):
-        if (warrant_type is None):
+        if warrant_type is None:
             self._warrant_type = None
         else:
-            if warrant_type not in ["Covered", "Tradition"]:
-                raise ValueError("Invalid warrant_type Covered/Tradition: %s" % warrant_type)
+            if warrant_type not in ["Covered", "Traditional"]:
+                raise ValueError("Invalid warrant_type Covered/Traditional: %s" % warrant_type)
             self._warrant_type = warrant_type
 
