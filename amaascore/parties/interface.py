@@ -50,9 +50,11 @@ class PartiesInterface(Interface):
             self.logger.error(response.text)
             response.raise_for_status()
 
-    def retrieve(self, asset_manager_id, party_id):
+    def retrieve(self, asset_manager_id, party_id, version=None):
         self.logger.info('Retrieve Party - Asset Manager: %s - Party ID: %s', asset_manager_id, party_id)
         url = '%s/parties/%s/%s' % (self.endpoint, asset_manager_id, party_id)
+        if version:
+            url += '?version=%d' % int(version)
         response = self.session.get(url)
         if response.ok:
             return json_to_party(response.json())

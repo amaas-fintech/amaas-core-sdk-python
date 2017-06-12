@@ -54,9 +54,11 @@ class AssetsInterface(Interface):
             self.logger.error(response.text)
             response.raise_for_status()
 
-    def retrieve(self, asset_manager_id, asset_id):
+    def retrieve(self, asset_manager_id, asset_id, version=None):
         self.logger.info('Retrieve Asset - Asset Manager: %s - Asset ID: %s', asset_manager_id, asset_id)
         url = '%s/assets/%s/%s' % (self.endpoint, asset_manager_id, asset_id)
+        if version:
+            url += '?version=%d' % int(version)
         response = self.session.get(url)
         if response.ok:
             self.logger.info('Successfully Retrieved Asset - Asset Manager: %s - Asset ID: %s', asset_manager_id,
