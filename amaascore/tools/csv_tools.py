@@ -9,11 +9,11 @@ def csv_filename_to_objects(filename, json_handler):
     return objects
 
 
-def csv_stream_to_objects(stream, json_handler, **kwargs):
+def csv_stream_to_objects(stream, json_handler, params=dict()):
     reader = csv.DictReader(stream)
     objects = []
     for row in reader:
-        objects.append(json_handler(row, **kwargs))
+        objects.append(json_handler(row, params))
     return objects
 
 

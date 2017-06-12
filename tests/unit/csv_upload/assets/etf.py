@@ -20,8 +20,10 @@ class ETFUploaderTest(unittest.TestCase):
         with open(self.csvfile, 'w+', newline='') as writefile:
             writer = csv.writer(writefile)
             writer.writerow(header)
-            writer.writerow(['ExchangeTradedFund', self.asset_ids[0], '123', '123', '123', '123', 'Active', '123', '123', '123', 'USA', '123', 'USD', '09/01/01'])
-            writer.writerow(['ExchangeTradedFund', self.asset_ids[1], '123', '123', '123', '123', 'Active', '123', '123', '123', 'USA', '123', 'USD', '09/01/01'])
+            writer.writerow(['ExchangeTradedFund', self.asset_ids[0], '123', '123', '123', '123', 'Active', '123', '123', '123', 'USA', '123', 'USD', '09/01/01',
+                             '12345', '54321', 'true', '1', 'true', '2'])
+            writer.writerow(['ExchangeTradedFund', self.asset_ids[1], '123', '123', '123', '123', 'Active', '123', '123', '123', 'USA', '123', 'USD', '09/01/01',
+                             '12345', '54321', 'true', '1', 'true', '2'])
 
     def tearDown(self):
         pass

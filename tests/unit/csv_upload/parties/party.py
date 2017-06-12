@@ -20,8 +20,10 @@ class PartyUploaderTest(unittest.TestCase):
         with open(self.csvfile, 'w+', newline='') as writefile:
             writer = csv.writer(writefile)
             writer.writerow(header)
-            writer.writerow(['Party', self.party_ids[0], 'Active', 'SGD', '', '', '', ''])
-            writer.writerow(['Party', self.party_ids[1], 'Active', 'SGD', '', '', '', ''])
+            writer.writerow(['Party', self.party_ids[0], 'Active', 'SGD', 'description',
+                             '12345', 'Singapore', 'SGD', '123', '6789', 'true', '1', 'true', '2', 'false'])
+            writer.writerow(['Party', self.party_ids[1], 'Active', 'SGD', 'description',
+                             '12345', 'Singapore', 'SGD', '123', '6789', 'true', '1', 'true', '2', 'false'])
 
     def tearDown(self):
         pass

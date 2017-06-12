@@ -22,10 +22,12 @@ class AutomobileUploaderTest(unittest.TestCase):
             writer.writerow(header)
             writer.writerow(['Automobile', self.asset_ids[0], '123', 'USA', '123', '123', '123', '01/05/09', '01/05/09', 'USD',
                              'Active', '01/05/09', '0', '1900', '01/05/09', '123', '123', '123', 'McLaren', 'amaas_super_car',
-                             'White', 'R', 'M', 'super rare', 'DC', '1', 'GBR', '123', '123LHD'])
+                             'White', 'R', 'M', 'super rare', 'DC', '1', 'GBR', '123', '123', 'LHD', '', '', '', '', '', '', '', '', '',
+                             '12345', '54321', 'true', '1', 'true', '2'])
             writer.writerow(['Automobile', self.asset_ids[1], '123', 'USA', '123', '123', '123', '01/05/09', '01/05/09', 'USD',
                              'Active', '01/05/09', '0', '1900', '01/05/09', '123', '123', '123', 'McLaren', 'amaas_super_car',
-                             'White', 'R', 'M', 'super rare', 'DC', '1', 'GBR', '123', '123LHD'])        
+                             'White', 'R', 'M', 'super rare', 'DC', '1', 'GBR', '123', '123', 'LHD', '', '', '', '', '', '', '', '', '',
+                             '12345', '54321', 'true', '1', 'true', '2'])
     def tearDown(self):
         pass
 

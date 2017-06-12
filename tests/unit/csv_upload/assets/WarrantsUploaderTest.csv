@@ -1,3 +1,3 @@
-amaasclass,asset_id,asset_issuer_id,asset_status,description,country_id,venue_id,currency,issue_date,share_class,display_name,roll_price,underlying_price,strike_price,cv_ratio,exercise_type,expiration_date,first_exercise_date,last_trade_date,issue_price,issued_quant,outstanding,issuer,settlement_type,warrant_type
-Warrant,9DIC581M,123,Active,123,USA,123,USD,01/05/09,Warrant,123,123,123,123,1,E,01/05/09,01/05/09,01/05/09,123,123,123,123,C,C
-Warrant,M8B5Y9SR,123,Active,123,USA,123,USD,01/05/09,Warrant,123,123,123,123,1,E,01/05/09,01/05/09,01/05/09,123,123,123,123,C,C
+amaasclass,asset_id,asset_issuer_id,asset_status,description,country_id,venue_id,currency,issue_date,share_class,display_name,roll_price,underlying_price,strike_price,cv_ratio,exercise_type,expiration_date,first_exercise_date,last_trade_date,issue_price,issued_quant,outstanding,issuer,settlement_type,warrant_type,links.link1.0.linked_asset_id,links.link1.1.linked_asset_id,links.link1.1.active,references.ref1.reference_value,references.ref1.active,references.ref2.reference_value
+Warrant,M4T10RSY,123,Active,123,USA,123,USD,01/05/09,Warrant,123,123,123,123,1,E,01/05/09,01/05/09,01/05/09,123,123,123,123,C,C,12345,54321,true,1,true,2
+Warrant,SDZPQK0U,123,Active,123,USA,123,USD,01/05/09,Warrant,123,123,123,123,1,E,01/05/09,01/05/09,01/05/09,123,123,123,123,C,C,12345,54321,true,1,true,2

@@ -52,10 +52,12 @@ class TransactionsInterface(Interface):
             self.logger.error(response.text)
             response.raise_for_status()
 
-    def retrieve(self, asset_manager_id, transaction_id):
+    def retrieve(self, asset_manager_id, transaction_id, version=None):
         self.logger.info('Retrieve Transaction - Asset Manager: %s - Transaction ID: %s', asset_manager_id,
                          transaction_id)
         url = '%s/transactions/%s/%s' % (self.endpoint, asset_manager_id, transaction_id)
+        if version:
+            url += '?version=%d' % int(version)
         response = self.session.get(url)
         if response.ok:
             return json_to_transaction(response.json())

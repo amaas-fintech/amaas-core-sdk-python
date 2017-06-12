@@ -43,10 +43,12 @@ class CorporateActionsInterface(Interface):
             self.logger.error(response.text)
             response.raise_for_status()
 
-    def retrieve(self, asset_manager_id, corporate_action_id):
+    def retrieve(self, asset_manager_id, corporate_action_id, version=None):
         self.logger.info('Retrieve Corporate Action - Asset Manager: %s - Corporate Action ID: %s', asset_manager_id,
                          corporate_action_id)
         url = '%s/corporate-actions/%s/%s' % (self.endpoint, asset_manager_id, corporate_action_id)
+        if version:
+            url += '?version=%d' % int(version)
         response = self.session.get(url)
         if response.ok:
             self.logger.info('Successfully Retrieved Corporate Action - Asset Manager: %s - Corporate Action ID: %s',

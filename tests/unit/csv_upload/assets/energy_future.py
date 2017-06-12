@@ -21,9 +21,11 @@ class EnergyFutureUploaderTest(unittest.TestCase):
             writer = csv.writer(writefile)
             writer.writerow(header)
             writer.writerow(['EnergyFuture', self.asset_ids[0], 'Cash', '123', '123', '123', '123', '123', '09/01/01', 
-                            '09/01/01', 'SGD', 'mirror', '123', 'USA', '123'])
+                            '09/01/01', 'SGD', 'mirror', '123', 'USA', '123',
+                            '12345', '54321', 'true', '1', 'true', '2'])
             writer.writerow(['EnergyFuture', self.asset_ids[1], 'Cash', '123', '123', '123', '123', '123', '09/01/01', 
-                            '09/01/01', 'SGD', 'mirror', '123', 'USA', '123'])
+                            '09/01/01', 'SGD', 'mirror', '123', 'USA', '123',
+                            '12345', '54321', 'true', '1', 'true', '2'])
 
     def tearDown(self):
         pass

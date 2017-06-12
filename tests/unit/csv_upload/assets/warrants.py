@@ -22,10 +22,12 @@ class WarrantUploaderTest(unittest.TestCase):
             writer.writerow(header)
             writer.writerow(['Warrant', self.asset_ids[0], '123', 'Active', '123', 'USA', '123', 'USD', '01/05/09',
                             'Warrant', '123', '123', '123', '123', '1', 'E', '01/05/09', '01/05/09', '01/05/09', '123',
-                            '123', '123', '123', 'C', 'C'])
+                            '123', '123', '123', 'C', 'C',
+                            '12345', '54321', 'true', '1', 'true', '2'])
             writer.writerow(['Warrant', self.asset_ids[1], '123', 'Active', '123', 'USA', '123', 'USD', '01/05/09',
                             'Warrant', '123', '123', '123', '123', '1', 'E', '01/05/09', '01/05/09', '01/05/09', '123',
-                            '123', '123', '123', 'C', 'C'])
+                            '123', '123', '123', 'C', 'C',
+                            '12345', '54321', 'true', '1', 'true', '2'])
 
     def tearDown(self):
         pass

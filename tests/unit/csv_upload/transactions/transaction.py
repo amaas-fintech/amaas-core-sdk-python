@@ -20,8 +20,10 @@ class TransactionUploaderTest(unittest.TestCase):
         with open(self.csvfile, 'w+', newline='') as writefile:
             writer = csv.writer(writefile)
             writer.writerow(header)
-            writer.writerow(['Transaction', self.transaction_ids[0], '1', '2', 'Buy', '3', '10', '09/01/01', '09/01/01', '1', 'SGD', 'USD', 'DSC', '09/01/01', 'Allocation', 'New'])
-            writer.writerow(['Transaction', self.transaction_ids[1], '1', '2', 'Buy', '3', '10', '09/01/01', '09/01/01', '1', 'SGD', 'USD', 'DSC', '09/01/01', 'Allocation', 'New'])
+            writer.writerow(['Transaction', self.transaction_ids[0], '1', '2', 'Buy', '3', '10', '09/01/01', '09/01/01', '1', 
+                             'SGD', 'USD', 'DSC', '09/01/01', 'Allocation', 'New', '10', 'SGD'])
+            writer.writerow(['Transaction', self.transaction_ids[1], '1', '2', 'Buy', '3', '10', '09/01/01', '09/01/01', '1', 
+                             'SGD', 'USD', 'DSC', '09/01/01', 'Allocation', 'New', '10', 'SGD'])
 
     def tearDown(self):
         pass

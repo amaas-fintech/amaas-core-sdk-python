@@ -63,3 +63,11 @@ class Party(AMaaSModel):
         self.active = active
         self.version = version
         super(Party, self).__init__(*args, **kwargs)
+
+class Reference(AMaaSModel):
+    
+    def __init__(self, reference_value, active=True, *args, **kwargs):
+        self.reference_value = reference_value
+        self.active = active
+        super(Reference, self).__init__(*args, **kwargs)
+

@@ -21,9 +21,12 @@ class BondFutureOptionUploaderTest(unittest.TestCase):
             writer = csv.writer(writefile)
             writer.writerow(header)
             writer.writerow(['BondFutureOption', self.asset_ids[0], 'Put', 'European', '1', '', 'Cash', '', '1', '1', '', 'SGD',
-                             '', 'Active', '09/01/01', '09/01/01', '', '', '', ''])
+                             '', 'Active', '09/01/01', '09/01/01', '', '', '', '',
+                             '12345', '54321', 'true', '1', 'true', '2'])
             writer.writerow(['BondFutureOption', self.asset_ids[1], 'Call', 'European', '1', '', 'Cash', '', '1', '1', '', 'SGD',
-                             '', 'Active', '09/01/01', '09/01/01', '', '', '', ''])   
+                             '', 'Active', '09/01/01', '09/01/01', '', '', '', '',
+                             '12345', '54321', 'true', '1', 'true', '2'])
+
     def tearDown(self):
         pass
 
