@@ -57,7 +57,7 @@ class TransactionsInterface(Interface):
                          transaction_id)
         url = '%s/transactions/%s/%s' % (self.endpoint, asset_manager_id, transaction_id)
         if version:
-            url += '?version=%s' % (version)
+            url += '?version=%d' % int(version)
         response = self.session.get(url)
         if response.ok:
             return json_to_transaction(response.json())

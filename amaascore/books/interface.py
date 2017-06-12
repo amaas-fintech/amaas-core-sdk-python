@@ -44,7 +44,7 @@ class BooksInterface(Interface):
         self.logger.info('Retrieve Book - Asset Manager: %s - Book ID: %s', asset_manager_id, book_id)
         url = '%s/books/%s/%s' % (self.endpoint, asset_manager_id, book_id)
         if version:
-            url += '?version=%s' % (version)
+            url += '?version=%d' % int(version)
         response = self.session.get(url)
         if response.ok:
             self.logger.info('Successfully Retrieved Book - Asset Manager: %s - Book ID: %s', asset_manager_id,
