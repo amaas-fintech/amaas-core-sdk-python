@@ -11,7 +11,7 @@ class Derivative(Asset):
 
     def __init__(self, asset_manager_id, asset_id, asset_issuer_id=None,
                  asset_status='Active', display_name='', description='', country_id=None, venue_id=None,
-                 issue_date=None, currency=None, fungible=False,
+                 issue_date=None, currency=None,
                  comments=None, links=None, references=None,
                  *args, **kwargs):
         if not hasattr(self, 'asset_class'):  # A more specific child class may have already set this

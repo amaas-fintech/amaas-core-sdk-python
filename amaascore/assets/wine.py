@@ -17,7 +17,7 @@ class Wine(RealAsset):
                  bottle_in_cellar=None, bottle_location=None, storage_cost=None, rating_type=None,
                  rating_value=None, packing_type=None, to_drink_start=None, to_drink_end=None,
                  asset_issuer_id=None, asset_status='Active', display_name='', description='',
-                 country_id=None, venue_id=None, currency=None, issue_date=date.min,
+                 country_id=None, venue_id=None, currency=None, issue_date=date.min, ownership=None,
                  comments=None, links=None, references=None, *args, **kwargs):
         self.year = year
         self.producer = producer
@@ -36,9 +36,9 @@ class Wine(RealAsset):
         self.to_drink_end = to_drink_end
         super(Wine, self).__init__(asset_manager_id=asset_manager_id, asset_id=asset_id,
                                    asset_issuer_id=asset_issuer_id, asset_status=asset_status,
-                                   display_name=display_name,
-                                   description=description, country_id=country_id, venue_id=venue_id,
-                                   issue_date=issue_date, currency=currency,
+                                   display_name=display_name, description=description,
+                                   country_id=country_id, venue_id=venue_id, issue_date=issue_date,
+                                   currency=currency, ownership=ownership,
                                    comments=comments, links=links, references=references,
                                    *args, **kwargs)
 
