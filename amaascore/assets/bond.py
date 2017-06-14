@@ -3,8 +3,12 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 from datetime import date
 from dateutil.parser import parse
 from decimal import Decimal
+import sys
 
 from amaascore.assets.asset import Asset
+
+# This extremely ugly hack is due to the whole Python 2 vs 3 debacle.
+type_check = str if sys.version_info >= (3, 0, 0) else (str, unicode)
 
 
 class BondBase(Asset):
@@ -55,6 +59,16 @@ class BondBase(Asset):
         """
         if par is not None:
             self._par = Decimal(par)
+
+    @property
+    def maturity_date(self):
+        return self._maturity_date
+
+    @maturity_date.setter
+    def maturity_date(self, maturity_date):
+        if maturity_date:
+            self._maturity_date = parse(maturity_date).date() if isinstance(maturity_date, type_check) \
+                else maturity_date
 
 
 class BondGovernment(BondBase):

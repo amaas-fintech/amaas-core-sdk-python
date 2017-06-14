@@ -4,22 +4,14 @@ from dateutil.parser import parse
 from amaascore.assets.real_asset import RealAsset
 from amaascore.assets.enums import *
 
+
 class Automobile(RealAsset):
-
-    @staticmethod
-    def mandatory_attributes():
-        return set()
-
-    @staticmethod
-    def additional_attributes():
-        return set()
 
     def __init__(self, asset_manager_id, asset_id, client_id, asset_issuer_id=None,
                  country_id=None, display_name='', description='',
                  venue_id=None, issue_date=None, maturity_date=date.max, comments=None,
                  links=None, references=None, additional=None, currency=None,
                  asset_status='Active', model_year=None,
-                 value_date=None, value=None, account_id=None,
                  vehicle_id=None, make=None, model=None, color=None,
                  style=None, genre=None, rarity=None,
                  condition=None, imported=None, imported_country_id=None,
@@ -37,9 +29,6 @@ class Automobile(RealAsset):
                                          additional=additional,
                                          *args, **kwargs)
         self.model_year = model_year
-        self.value_date = value_date
-        self.value = value
-        self.account_id = account_id
         self.vehicle_id = vehicle_id
         self.make = make
         self.model = model
@@ -74,40 +63,6 @@ class Automobile(RealAsset):
         self._model_year = model_year
 
     @property
-    def value_date(self):
-        return self._value_date
-
-    @value_date.setter
-    def value_date(self, value_date):
-        if isinstance(value_date, str):
-            value_date = parse(value_date).date()
-        self._value_date = value_date
-
-    @property
-    def value(self):
-        return self._value
-
-    @value.setter
-    def value(self, value):
-        self._value = value
-
-    @property
-    def account_id(self):
-        return self._account_id
-
-    @account_id.setter
-    def account_id(self, account_id):
-        self._account_id = account_id
-
-    @property
-    def vehicle_id(self):
-        return self._vehicle_id
-
-    @vehicle_id.setter
-    def vehicle_id(self, vehicle_id):
-        self._vehicle_id = vehicle_id
-
-    @property
     def make(self):
         return self._make
 
@@ -119,15 +74,6 @@ class Automobile(RealAsset):
             self._make = make
         else:
             raise ValueError("Invalid input for car make: %s" % make)
-    
-    @property
-    def model(self):
-        return self._model
-
-    @model.setter
-    def model(self, model):
-        """too many car models, accept any inputs for now"""
-        self._model = model
 
     @property
     def color(self):
@@ -214,30 +160,6 @@ class Automobile(RealAsset):
             self._imported = imported
 
     @property
-    def imported_country_id(self):
-        return self._imported_country_id
-
-    @imported_country_id.setter
-    def imported_country_id(self, imported_country_id):
-        self._imported_country_id = imported_country_id
-
-    @property
-    def engine_id(self):
-        return self._engine_id
-
-    @engine_id.setter
-    def engine_id(self, engine_id):
-        self._engine_id = engine_id
-
-    @property
-    def chassis_id(self):
-        return self._chassis_id
-
-    @chassis_id.setter
-    def chassis_id(self, chassis_id):
-        self._chassis_id = chassis_id
-
-    @property
     def steering(self):
         return self._steering
 
@@ -264,14 +186,6 @@ class Automobile(RealAsset):
             self._gearbox = gearbox
 
     @property
-    def gears(self):
-        return self._gears
-
-    @gears.setter
-    def gears(self, gears):
-        self._gears = gears
-
-    @property
     def drive(self):
         return self._drive
 
@@ -283,38 +197,6 @@ class Automobile(RealAsset):
             if drive not in ['RWD', 'FWD', 'AWD']:
                 raise ValueError("Invalid drive RWD/FWD/AWD: %s" % drive)
             self._drive = drive
-
-    @property
-    def engine_cap(self):
-        return self._engine_cap
-
-    @engine_cap.setter
-    def engine_cap(self, engine_cap):
-        self._engine_cap = engine_cap
-
-    @property
-    def power(self):
-        return self._power
-
-    @power.setter
-    def power(self, power):
-        self._power = power
-
-    @property
-    def weight(self):
-        return self._weight
-
-    @weight.setter
-    def weight(self, weight):
-        self._weight = weight
-
-    @property
-    def speed(self):
-        return self._speed
-
-    @speed.setter
-    def speed(self, speed):
-        self._speed = speed
 
     @property
     def fuel_type(self):

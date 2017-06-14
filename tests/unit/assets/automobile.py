@@ -6,7 +6,7 @@ from amaascore.assets.automobile import Automobile
 from amaascore.tools.generate_asset import generate_automobile
 
 
-class PrivateInvestmentTest(unittest.TestCase):
+class AutomobileTest(unittest.TestCase):
 
     def setUp(self):
         self.longMessage = True  # Print complete error message on failure
@@ -16,7 +16,7 @@ class PrivateInvestmentTest(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def test_PrivateInvestment(self):
+    def test_Automobile(self):
         self.assertEqual(type(self.automobile), Automobile)
 
 if __name__ == '__main__':

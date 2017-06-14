@@ -22,8 +22,9 @@ class AssetManagersInterface(Interface):
         url = '%s/asset-managers' % self.endpoint
         response = self.session.post(url, json=asset_manager.to_interface())
         if response.ok:
+            asset_manager = json_to_asset_manager(response.json())
             self.logger.info('Successfully Created Asset Manager: %s', asset_manager.asset_manager_id)
-            return json_to_asset_manager(response.json())
+            return asset_manager
         else:
             self.logger.error(response.text)
             response.raise_for_status()
