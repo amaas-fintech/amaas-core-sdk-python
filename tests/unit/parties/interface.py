@@ -35,6 +35,7 @@ class PartiesInterfaceTest(unittest.TestCase):
         party = self.parties_interface.new(self.party)
         # TODO - this should be populated by the New call.
         #self.assertIsNotNone(party.created_time)
+        self.assertEqual(party.display_name, self.party.display_name)
         self.assertEqual(party.party_id, self.party_id)
 
     def test_Amend(self):

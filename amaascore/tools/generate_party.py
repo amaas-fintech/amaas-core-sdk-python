@@ -14,7 +14,10 @@ from amaascore.parties.party import Party
 def generate_common(asset_manager_id, party_id, party_status):
     common = {'asset_manager_id': asset_manager_id or random.randint(1, 1000),
               'party_id': party_id or str(random.randint(1, 1000)),
-              'party_status': party_status or 'Active'
+              'party_status': party_status or 'Active',
+              'display_name': random_string(10),
+              'legal_name': random_string(10),
+              'url': random_string(10)
               }
 
     return common
