@@ -8,7 +8,8 @@ from os.path import expanduser, join
 import requests
 from warrant.aws_srp import AWSSRP
 
-from amaascore.config import COGNITO_REGION, COGNITO_CLIENT_ID, COGNITO_POOL, ENDPOINTS, LOCAL_ENDPOINT, ENVIRONMENT
+from amaascore.config import COGNITO_REGION, COGNITO_CLIENT_ID, COGNITO_POOL, ENDPOINTS, LOCAL_ENDPOINT,\
+    NON_PROD_URL, PROD_URL, ENVIRONMENT
 from amaascore.exceptions import AMaaSException
 
 
@@ -110,10 +111,11 @@ class Interface(object):
     def get_endpoint(self):
         if self.environment == 'local':
             return LOCAL_ENDPOINT
+        url = PROD_URL if self.environment == 'production' else NON_PROD_URL % self.environment
         endpoint = ENDPOINTS.get(self.endpoint_type)
         if not endpoint:
             raise KeyError('Cannot find endpoint')
-        endpoint = endpoint % self.environment
+        endpoint = endpoint % url
         self.logger.info("Using Endpoint: %s", endpoint)
         return endpoint
 
