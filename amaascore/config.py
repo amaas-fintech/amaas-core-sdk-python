@@ -3,11 +3,12 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 envs = {'local', 'dev', 'staging', 'production'}
 
-ENVIRONMENT = 'staging'
+ENVIRONMENT = 'production'
+API_VERSION = 'v1.0'
 
 LOCAL_ENDPOINT = 'http://localhost:8000'
 NON_PROD_URL = 'https://iwe48ph25i.execute-api.ap-southeast-1.amazonaws.com/%s'
-PROD_URL = 'https://api.amaas.com'
+PROD_URL = 'https://api.amaas.com/%s'
 
 ENDPOINTS = {
     'asset_managers': '%s/assetmanager',
