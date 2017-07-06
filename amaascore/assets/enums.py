@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 WINE_CLASSIFICATIONS = {'1er Cru', '1er Cru Classé', '1er Grand Cru', '2ème Cru Classé', '2ème Vin',

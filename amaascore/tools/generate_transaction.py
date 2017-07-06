@@ -5,9 +5,8 @@ import datetime
 from decimal import Decimal
 import random
 
-from amaascore.core.reference import Reference
 from amaascore.transactions.cash_transaction import CashTransaction
-from amaascore.transactions.children import Charge, Code, Comment, Link, Party
+from amaascore.transactions.children import Charge, Code, Comment, Link, Party, Rate, Reference
 from amaascore.transactions.enums import TRANSACTION_ACTIONS, CASH_TRANSACTION_TYPES
 from amaascore.transactions.position import Position
 from amaascore.transactions.transaction import Transaction
@@ -16,6 +15,7 @@ CHARGE_TYPES = ['Tax', 'Commission']
 CODE_TYPES = ['Settle Code', 'Client Classifier']
 COMMENT_TYPES = ['Trader']
 PARTY_TYPES = ['Prime Broker']
+RATE_TYPES = ['Tax', 'Commission']
 REFERENCE_TYPES = ['External']
 
 
@@ -66,6 +66,9 @@ def generate_transaction(asset_manager_id=None, asset_book_id=None, counterparty
     codes = {code_type: Code(code_value=random_string(8)) for code_type in CODE_TYPES}
     comments = {comment_type: Comment(comment_value=random_string(8)) for comment_type in COMMENT_TYPES}
     parties = {party_type: Party(party_id=random_string(8)) for party_type in PARTY_TYPES}
+    rates = {rate_type:
+             Rate(rate_value=Decimal(random.uniform(1.0, 100.0)).quantize(Decimal('0.01')))
+             for rate_type in RATE_TYPES}
     references = {ref_type: Reference(reference_value=random_string(10)) for ref_type in REFERENCE_TYPES}
 
     transaction.charges.update(charges)
@@ -73,6 +76,7 @@ def generate_transaction(asset_manager_id=None, asset_book_id=None, counterparty
     transaction.comments.update(comments)
     transaction.links.update(links)
     transaction.parties.update(parties)
+    transaction.rates.update(rates)
     transaction.references.update(references)
     return transaction
 
