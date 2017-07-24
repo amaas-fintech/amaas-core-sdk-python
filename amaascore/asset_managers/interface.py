@@ -122,7 +122,7 @@ class AssetManagersInterface(Interface):
             search_params['asset_manager_id'] = asset_manager_id
         if book_id:
             search_params['book_id'] = book_id
-        url = self.endpoint + '/eod_books'
+        url = self.endpoint + '/eod-books'
         response = self.session.get(url, params=search_params)
         if response.ok:
             eod_books = [json_to_eod_book(json_eod_book) for json_eod_book in response.json()]
