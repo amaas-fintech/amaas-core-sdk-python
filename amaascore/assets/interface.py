@@ -28,6 +28,24 @@ class AssetsInterface(Interface):
             self.logger.error(response.text)
             response.raise_for_status()
 
+    def create_many(self, assets):
+        if not assets or not isinstance(assets, list):
+            raise ValueError('Invalid argument. Argument must be a non-empty list.')
+
+        self.logger.info('New Assets - Asset Manager: %s', assets[0].asset_manager_id)
+        url = '%s/assets/%s' % (self.endpoint, assets[0].asset_manager_id)
+        json_body = [asset.to_interface() for asset in assets]
+        response = self.session.post(url, json=json_body)
+
+        if response.ok:
+            self.logger.info('Successfully Created Assets - Asset Manager: %s', assets[0].asset_manager_id)
+            t = response.json()
+            assets = [asset for asset in response.json()]
+            return assets
+        else:
+            self.logger.error(response.text)
+            response.raise_for_status()
+
     def amend(self, asset):
         self.logger.info('Amend Asset - Asset Manager: %s - Asset ID: %s', asset.asset_manager_id, asset.asset_id)
         url = '%s/assets/%s/%s' % (self.endpoint, asset.asset_manager_id, asset.asset_id)
