@@ -8,8 +8,8 @@ class CashTransaction(Transaction):
     def __init__(self, asset_manager_id, asset_book_id, counterparty_book_id, transaction_action,
                  asset_id, quantity, transaction_date, settlement_date, asset=None, execution_time=None,
                  transaction_type='Trade', transaction_id=None, transaction_status='New',
-                 charges=None, codes=None, comments=None, links=None, parties=None, references=None,
-                 *args, **kwargs):
+                 charges=None, codes=None, comments=None, links=None, parties=None,
+                 rates=None, references=None, *args, **kwargs):
         """
 
         :param asset_manager_id:
@@ -34,6 +34,7 @@ class CashTransaction(Transaction):
         :param comments:
         :param links:
         :param parties:
+        :param rates:
         :param references:
         :param args:
         :param kwargs:
@@ -60,5 +61,6 @@ class CashTransaction(Transaction):
                                               comments=comments,
                                               links=links,
                                               parties=parties,
+                                              rates=rates,
                                               references=references,
                                               *args, **kwargs)

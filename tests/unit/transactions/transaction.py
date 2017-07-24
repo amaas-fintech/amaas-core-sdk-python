@@ -31,19 +31,9 @@ class TransactionTest(unittest.TestCase):
         """
         total = 0
         for charge in self.transaction.charges.values():
-            if charge.net_affecting and charge.active:
+            if charge.net_affecting:
                 total += charge.charge_value
         self.assertEqual(self.transaction.charges_net_effect(), total)
-
-    def test_ChargesNetEffectWithInactiveCharge(self):
-        # Set one of the charges to Inactive
-        original_total = self.transaction.charges_net_effect()
-        tax = self.transaction.charges.get('Tax')
-        tax_value = tax.charge_value
-        tax.active = False
-        new_total = self.transaction.charges_net_effect()
-        self.assertNotEqual(original_total, new_total)
-        self.assertEqual(original_total-tax_value, new_total)
 
     def test_TransactionNetSettlement(self):
         """
@@ -52,7 +42,7 @@ class TransactionTest(unittest.TestCase):
         """
         total = 0
         for charge in self.transaction.charges.values():
-            if charge.net_affecting and charge.active:
+            if charge.net_affecting:
                 total += charge.charge_value
         self.assertEqual(self.transaction.net_settlement, self.transaction.gross_settlement - total)
 

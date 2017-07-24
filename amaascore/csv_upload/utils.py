@@ -21,7 +21,7 @@ from amaascore import transactions
 
 from amaascore.assets.children import Link, Reference
 from amaascore.parties.children import Address, Email, Link, Reference, Comment
-from amaascore.transactions.children import Charge, Code, Comment, Link, Party, Reference
+from amaascore.transactions.children import Charge, Code, Comment, Link, Party, Rate, Reference
 
 CHILDREN_CLASS = {'asset': {'links': assets.children.Link, 'references': assets.children.Reference},
                   'party': {'addresses': parties.children.Address, 'emails': parties.children.Email,
@@ -29,7 +29,8 @@ CHILDREN_CLASS = {'asset': {'links': assets.children.Link, 'references': assets.
                             'comments': parties.children.Comment},
                   'transaction': {'charges': transactions.children.Charge, 'codes': transactions.children.Code,
                                   'comments': transactions.children.Comment, 'links': transactions.children.Link,
-                                  'references': transactions.children.Reference, 'parties': transactions.children.Party},
+                                  'rates': transactions.children.Rate, 'parties': transactions.children.Party,
+                                  'references': transactions.children.Reference},
                   'asset_manager': {},
                   'book': {},
                   'corporate_action': {'references': assets.children.Reference}} #no Reference class found in corporate_actions

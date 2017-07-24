@@ -10,8 +10,7 @@ import uuid
 from amaascore.error_messages import ERROR_LOOKUP
 from amaascore.exceptions import TransactionNeedsSaving
 from amaascore.core.amaas_model import AMaaSModel
-from amaascore.core.reference import Reference
-from amaascore.transactions.children import Charge, Code, Comment, Link, Party
+from amaascore.transactions.children import Charge, Code, Comment, Link, Party, Rate, Reference
 from amaascore.transactions.enums import TRANSACTION_ACTIONS, TRANSACTION_STATUSES, TRANSACTION_TYPES
 
 # This extremely ugly hack is due to the whole Python 2 vs 3 debacle.
@@ -24,13 +23,13 @@ class Transaction(AMaaSModel):
     def children():
         """ A dict of which of the attributes are collections of other objects, and what type """
         return {'charges': Charge, 'codes': Code, 'comments': Comment, 'links': Link, 'parties': Party,
-                'references': Reference}
+                'rates': Rate, 'references': Reference}
 
     def __init__(self, asset_manager_id, asset_book_id, counterparty_book_id, transaction_action, asset_id, quantity,
                  transaction_date, settlement_date, price, transaction_currency, settlement_currency=None,
                  asset=None, execution_time=None, transaction_type='Trade', transaction_id=None,
                  transaction_status='New', charges=None, codes=None, comments=None, links=None, parties=None,
-                 references=None, *args, **kwargs):
+                 rates=None, references=None, *args, **kwargs):
         """
 
         :param asset_manager_id:
@@ -55,6 +54,7 @@ class Transaction(AMaaSModel):
         :param comments:
         :param links:
         :param parties:
+        :param rates:
         :param references:
         :param args:
         :param kwargs:
@@ -84,6 +84,7 @@ class Transaction(AMaaSModel):
         self.comments = comments.copy() if comments else {}
         self.links = links.copy() if links else {}
         self.parties = parties.copy() if parties else {}
+        self.rates = rates.copy() if rates else {}
         self.references = references.copy() if references else {}
         self.references['AMaaS'] = Reference(reference_value=self.transaction_id)  # Upserts the AMaaS Reference
 
@@ -282,7 +283,7 @@ class Transaction(AMaaSModel):
         :return:
         """
         return Decimal(sum([charge.charge_value for charge in self.charges.values()
-                            if charge.active and charge.net_affecting]))
+                            if charge.net_affecting]))
 
     def charge_types(self):
         """
@@ -298,6 +299,13 @@ class Transaction(AMaaSModel):
         """
         return self.codes.keys()
 
+    def rate_types(self):
+        """
+        TODO - are these helper functions useful?
+        :return:
+        """
+        return self.rates.keys()
+    
     def reference_types(self):
         """
         TODO - are these helper functions useful?
