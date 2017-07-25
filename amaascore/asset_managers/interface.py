@@ -2,7 +2,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import logging
 
-from amaascore.asset_managers.utils import json_to_asset_manager, json_to_relationship
+from amaascore.asset_managers.utils import json_to_asset_manager, json_to_relationship, json_to_eod_book
 from amaascore.config import ENVIRONMENT
 from amaascore.core.interface import Interface
 
@@ -110,6 +110,24 @@ class AssetManagersInterface(Interface):
         if response.ok:
             self.logger.info('Successfully Amended Asset Manager Relationship: %s', asset_manager_id)
             return [json_to_relationship(json_relationship) for json_relationship in response.json()]
+        else:
+            self.logger.error(response.text)
+            response.raise_for_status()
+
+    def retrieve_eod_books(self, asset_manager_id=None, book_id=None):
+        self.logger.info('Search for EOD Books. asset_manager_id: %s, book_id: %s', asset_manager_id, book_id)
+        search_params = {}
+        # Potentially roll this into a loop through args rather than explicitly named - depends on additional validation
+        if asset_manager_id:
+            search_params['asset_manager_id'] = asset_manager_id
+        if book_id:
+            search_params['book_id'] = book_id
+        url = self.endpoint + '/eod-books'
+        response = self.session.get(url, params=search_params)
+        if response.ok:
+            eod_books = [json_to_eod_book(json_eod_book) for json_eod_book in response.json()]
+            self.logger.info('Returned %s EOD Books.', len(eod_books))
+            return eod_books
         else:
             self.logger.error(response.text)
             response.raise_for_status()

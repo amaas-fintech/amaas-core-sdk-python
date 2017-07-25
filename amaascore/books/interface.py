@@ -83,8 +83,9 @@ class BooksInterface(Interface):
         url = self.endpoint + '/books'
         response = self.session.get(url, params=search_params)
         if response.ok:
-            books = [json_to_book(json_book) for json_book in response.json()]
-            self.logger.info('Returned %s Books.', len(books))
+            books = [json_to_book(json_book)
+                     for json_book in response.json()] if response.json() else None
+            self.logger.info('Returned %s Books.', len(books) if books else 0)
             return books
         else:
             self.logger.error(response.text)
