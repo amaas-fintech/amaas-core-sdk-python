@@ -77,10 +77,6 @@ class Comment(AMaaSModel):
     A free text comment about the party
     """
     @staticmethod
-    def stored_attributes():
-        return {'comment_value', 'active', 'version'}
-
-    @staticmethod
     def party_key():
         return 'comment_type'
 
