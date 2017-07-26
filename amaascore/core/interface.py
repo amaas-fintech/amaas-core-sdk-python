@@ -5,6 +5,7 @@ from configparser import ConfigParser, NoSectionError
 from datetime import datetime
 import logging
 from os.path import expanduser, join
+from os import environ
 import requests
 from warrant.aws_srp import AWSSRP
 
@@ -103,8 +104,8 @@ class Interface(object):
         self.environment = environment
         self.endpoint = endpoint or self.get_endpoint()
         self.json_header = {'Content-Type': 'application/json'}
-        username = username or self.read_config('username')
-        password = password or self.read_config('password')
+        username = username or environ.get('AMAAS_USERNAME') or self.read_config('username')
+        password = password or environ.get('AMAAS_PASSWORD') or self.read_config('password')
         self.session = AMaaSSession(username, password, self.logger)
         self.logger.info('Interface Created')
 

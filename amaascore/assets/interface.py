@@ -11,9 +11,10 @@ from amaascore.core.amaas_model import json_handler
 
 class AssetsInterface(Interface):
 
-    def __init__(self, environment=ENVIRONMENT, endpoint=None, logger=None):
+    def __init__(self, environment=ENVIRONMENT, endpoint=None, logger=None, username=None, password=None):
         self.logger = logger or logging.getLogger(__name__)
-        super(AssetsInterface, self).__init__(endpoint=endpoint, endpoint_type='assets', environment=environment)
+        super(AssetsInterface, self).__init__(endpoint=endpoint, endpoint_type='assets',
+                                              environment=environment, username=username, password=password)
 
     def new(self, asset):
         self.logger.info('New Asset - Asset Manager: %s - Asset ID: %s', asset.asset_manager_id, asset.asset_id)

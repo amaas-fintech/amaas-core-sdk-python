@@ -11,10 +11,10 @@ from amaascore.transactions.utils import json_to_transaction, json_to_position
 
 class TransactionsInterface(Interface):
 
-    def __init__(self, environment=ENVIRONMENT, logger=None, endpoint=None):
+    def __init__(self, environment=ENVIRONMENT, logger=None, endpoint=None, username=None, password=None):
         self.logger = logger or logging.getLogger(__name__)
         super(TransactionsInterface, self).__init__(endpoint=endpoint, endpoint_type='transactions',
-                                                    environment=environment)
+                                                    environment=environment, username=None, password=None)
 
     def new(self, transaction):
         self.logger.info('New Transaction - Asset Manager: %s - Transaction ID: %s', transaction.asset_manager_id,
