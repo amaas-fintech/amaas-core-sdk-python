@@ -117,6 +117,27 @@ class AssetsInterface(Interface):
         else:
             self.logger.error(response.text)
             response.raise_for_status()
+    
+    def fields_search(self, asset_manager_ids=None, asset_ids=None, fields=None):
+        self.logger.info('Search for Assets - Asset Manager(s): %s', asset_manager_ids)
+        search_params = {}
+
+        if asset_manager_ids:
+            search_params['asset_manager_ids'] = ','.join([str(amid) for amid in asset_manager_ids])
+        if asset_ids:
+            search_params['asset_ids'] = ','.join(asset_ids)
+        if fields:
+            search_params['fields'] = ','.join(fields)
+
+        url = self.endpoint + '/assets'
+        response = self.session.get(url, params=search_params)
+        if response.ok:
+            asset_dicts = response.json()
+            self.logger.info('Returned %s Assets.', len(asset_dicts))
+            return asset_dicts
+        else:
+            self.logger.error(response.text)
+            response.raise_for_status()
 
     def assets_by_asset_manager(self, asset_manager_id):
         self.logger.info('Retrieve Assets By Asset Manager: %s', asset_manager_id)
