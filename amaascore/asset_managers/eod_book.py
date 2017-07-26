@@ -2,10 +2,6 @@ import datetime
 from amaascore.core.amaas_model import AMaaSModel
 
 class EODBook(AMaaSModel):
-    
-    @staticmethod
-    def stored_attributes():
-        return ['asset_manager_id', 'book_id', 'utc_close_time', 'eod_book_status']
 
     def __init__(self, asset_manager_id, book_id, utc_close_time,
                  eod_book_status='Active', *args, **kwargs):
