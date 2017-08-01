@@ -29,7 +29,28 @@ Once you have your credentials, generate your API key by following these instruc
 
 * Currently this can only be done with help from support@amaas.com
 
-Create a file called .amaas.cfg in your homedir, with the following:
+Configuring Credentials
+-----------------------
+When calling the AMaaS APIs, the AMaaS Core library will search for your credentials from different locations.  The order in which credentials are searched are as follows:
+
+1. Credentials passed in the AMaaS API Interface constructors
+2. Environment variables
+3. AMaaS configuration file (~/.amaas.cfg) [Recommended]
+
+Constructor Parameter
+---------------------
+.. code-block:: python
+
+    assets_interface = AssetsInterface(username='myusername', password='mypassword')
+Environment Variables
+---------------------
+The AMaaS Core library will check these environment variables for your credentials
+
+- AMAAS_USERNAME
+- AMAAS_PASSWORD
+AMaaS configuration file
+------------------------
+This is the recommended way of configuring your credentials. Create a file called .amaas.cfg in your homedir, with the following:
 
 .. code-block:: none
 
