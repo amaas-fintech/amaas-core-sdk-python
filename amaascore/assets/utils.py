@@ -9,6 +9,7 @@ from amaascore.assets.bond import BondCorporate, BondGovernment, BondMortgage
 from amaascore.assets.bond_future import BondFuture
 from amaascore.assets.bond_future_option import BondFutureOption
 from amaascore.assets.bond_option import BondOption
+from amaascore.assets.commodity_future import CommodityFuture
 from amaascore.assets.cfd import ContractForDifference
 from amaascore.assets.currency import Currency
 from amaascore.assets.custom_asset import CustomAsset
@@ -20,6 +21,7 @@ from amaascore.assets.foreign_exchange import ForeignExchange, NonDeliverableFor
 from amaascore.assets.fund import Fund
 from amaascore.assets.future import Future
 from amaascore.assets.future_option import FutureOption
+from amaascore.assets.fx_future import ForeignExchangeFuture
 from amaascore.assets.fx_option import ForeignExchangeOption
 from amaascore.assets.index import Index
 from amaascore.assets.index_future import IndexFuture
