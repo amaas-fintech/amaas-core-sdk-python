@@ -126,9 +126,9 @@ class AssetsInterface(Interface):
             search_params['asset_manager_ids'] = ','.join([str(amid) for amid in asset_manager_ids])
         if asset_ids:
             search_params['asset_ids'] = ','.join(asset_ids)
-        if asset_ids:
+        if asset_classes:
             search_params['asset_classes'] = ','.join(asset_classes)
-        if asset_ids:
+        if asset_types:
             search_params['asset_types'] = ','.join(asset_types)
         if fields:
             search_params['fields'] = ','.join(fields)
