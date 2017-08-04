@@ -2,6 +2,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import datetime
 import uuid
+import pytz
 
 from amaascore.error_messages import ERROR_LOOKUP
 from amaascore.books.enums import BOOK_TYPES
@@ -55,3 +56,12 @@ class Book(AMaaSModel):
             raise ValueError(ERROR_LOOKUP.get('book_type_invalid') % (book_type, self.book_id, self.asset_manager_id))
         else:
             self._book_type = book_type
+
+    def utc_book_close_time(self):
+        """
+        The book close time in utc.
+        """
+        tz = pytz.timezone(self.timezone)
+        close_time = datetime.datetime.strptime(self.close_time, '%H:%M:%S').time()
+        close_time = tz.localize(datetime.datetime.combine(datetime.datetime.now(tz), close_time))
+        return close_time.astimezone(pytz.utc).time()
