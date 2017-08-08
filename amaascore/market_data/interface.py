@@ -116,6 +116,27 @@ class MarketDataInterface(Interface):
             response.raise_for_status()
 
 
+    def persist_curves(self, asset_manager_id, business_date, curves, update_existing_curves=True):
+        """
+        :param asset_manager_id:
+        :param business_date: 
+        :param curves:
+        :param update_existing_rates:
+        :return:
+        """
+        self.logger.info('Persist curves - Asset Manager: %s - Business Date: %s', asset_manager_id, business_date)
+        url = '%s/curves/%s/%s' % (self.endpoint, asset_manager_id, business_date.isoformat())
+        params = {'update_existing_curves': update_existing_curves}
+        curves_json = [curve.to_interface() for curve in curves]
+        response = self.session.post(url, params = params, json=curves_json)
+        if response.ok:
+            curves = [json_to_curve(curve) for curve in response.json()]
+            return curves
+        else:
+            self.logger.error(response.text)
+            response.raise_for_status()
+
+
     def clear(self, asset_manager_id):
         """ This method deletes all the data for an asset_manager_id.
             It should be used with extreme caution.  In production it
@@ -162,9 +183,19 @@ if __name__ == '__main__':
     print(interface.get_brokendate_fx_forward_rate(asset_manager_id='573242005',
                         asset_id='KRWUSD',price_date='2017-04-28',value_date='2017-05-11'))
     '''
-    print(interface.retrieve_curve(asset_manager_id = '573242005',business_date = datetime.date(2017,4,28)))
+    asset_manager_id = '573242005'
 
+    '''
+    from datetime import date
+    print(interface.retrieve_curve(asset_manager_id = asset_manager_id,business_date = date(2017,4,28)))
+    '''
 
+    import amaascore.market_data.Curve
 
+    curve1 = Curve(asset_manager_id, asset_id = 'JPYSGD', fixing_type='New York',curve_timestamp='2015-01-03 00:00:00+00:00',
+                curve_rates={'ON':100,'1W':200},client_id = 1)
+    curve2 = Curve(asset_manager_id, asset_id = 'JPYSGD', fixing_type='New York',curve_timestamp='2015-01-03 00:00:00+00:00',
+                curve_rates={'ON':1020,'1W':1200},client_id = 1)
 
-
+    curves = [curve1,curve2]
+    interface.persist_curves(asset_manager_id, business_date, curves, True)
