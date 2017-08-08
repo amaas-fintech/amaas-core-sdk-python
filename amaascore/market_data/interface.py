@@ -3,10 +3,10 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import json
 import logging
 
-from amaascore.config import ENVIRONMENT
+from amaascore.config import ENVIRONMENT, LOCAL_ENDPOINT
 from amaascore.core.amaas_model import json_handler
 from amaascore.core.interface import Interface
-from amaascore.market_data.utils import json_to_eod_price, json_to_fx_rate
+from amaascore.market_data.utils import json_to_eod_price, json_to_fx_rate, json_to_curve
 
 
 class MarketDataInterface(Interface):
@@ -65,6 +65,7 @@ class MarketDataInterface(Interface):
             self.logger.error(response.text)
             response.raise_for_status()
 
+
     def persist_fx_rates(self, asset_manager_id, business_date, fx_rates, update_existing_rates=True):
         """
 
@@ -86,6 +87,7 @@ class MarketDataInterface(Interface):
             self.logger.error(response.text)
             response.raise_for_status()
 
+
     def retrieve_fx_rates(self, asset_manager_id, business_date, asset_ids=None):
         self.logger.info('Retrieve FX Rates - Asset Manager: %s - Business Date: %s', asset_manager_id, business_date)
         url = '%s/fx-rates/%s/%s' % (self.endpoint, asset_manager_id, business_date.isoformat())
@@ -98,6 +100,21 @@ class MarketDataInterface(Interface):
         else:
             self.logger.error(response.text)
             response.raise_for_status()
+
+
+    def retrieve_curve(self, asset_manager_id, business_date, asset_ids = None):
+        self.logger.info('Retrieve curve - Asset Manager: %s - Business Date: %s', asset_manager_id, business_date)
+        url = '%s/curves/%s/%s' % (self.endpoint, asset_manager_id, business_date.isoformat())
+        params = {'asset_ids': ','.join(asset_ids)} if asset_ids else {}
+        response = self.session.get(url = url, params = params)
+        if response.ok:
+            curves = [json_to_curve(curve) for curve in response.json() ]
+            self.logger.info('Returned %s curves.', len(curves))
+            return curves
+        else:
+            self.logger.error(response.text)
+            response.raise_for_status()
+
 
     def clear(self, asset_manager_id):
         """ This method deletes all the data for an asset_manager_id.
@@ -134,9 +151,18 @@ class MarketDataInterface(Interface):
             response.raise_for_status()
 
 
-
-
-
+'''
+code below is for testing purpose, to be removed afterwards
+'''
+if __name__ == '__main__':
+    interface = MarketDataInterface(endpoint=LOCAL_ENDPOINT)
+    '''
+    print(interface.get_brokendate_fx_forward_rate(asset_manager_id='573242005',
+                        asset_id='MYRUSD',price_date='2017-04-26',value_date='2017-04-28'))
+    print(interface.get_brokendate_fx_forward_rate(asset_manager_id='573242005',
+                        asset_id='KRWUSD',price_date='2017-04-28',value_date='2017-05-11'))
+    '''
+    print(interface.retrieve_curve(asset_manager_id = '573242005',business_date = datetime.date(2017,4,28)))
 
 
 
