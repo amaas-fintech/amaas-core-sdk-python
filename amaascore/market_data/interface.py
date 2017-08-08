@@ -171,31 +171,3 @@ class MarketDataInterface(Interface):
             self.logger.error(response.text)
             response.raise_for_status()
 
-
-'''
-code below is for testing purpose, to be removed afterwards
-'''
-if __name__ == '__main__':
-    interface = MarketDataInterface(endpoint=LOCAL_ENDPOINT)
-    '''
-    print(interface.get_brokendate_fx_forward_rate(asset_manager_id='573242005',
-                        asset_id='MYRUSD',price_date='2017-04-26',value_date='2017-04-28'))
-    print(interface.get_brokendate_fx_forward_rate(asset_manager_id='573242005',
-                        asset_id='KRWUSD',price_date='2017-04-28',value_date='2017-05-11'))
-    '''
-    asset_manager_id = '573242005'
-
-    '''
-    from datetime import date
-    print(interface.retrieve_curve(asset_manager_id = asset_manager_id,business_date = date(2017,4,28)))
-    '''
-
-    import amaascore.market_data.Curve
-
-    curve1 = Curve(asset_manager_id, asset_id = 'JPYSGD', fixing_type='New York',curve_timestamp='2015-01-03 00:00:00+00:00',
-                curve_rates={'ON':100,'1W':200},client_id = 1)
-    curve2 = Curve(asset_manager_id, asset_id = 'JPYSGD', fixing_type='New York',curve_timestamp='2015-01-03 00:00:00+00:00',
-                curve_rates={'ON':1020,'1W':1200},client_id = 1)
-
-    curves = [curve1,curve2]
-    interface.persist_curves(asset_manager_id, business_date, curves, True)
