@@ -3,7 +3,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import json
 import logging
 
-from amaascore.config import ENVIRONMENT, LOCAL_ENDPOINT
+from amaascore.config import ENVIRONMENT
 from amaascore.core.amaas_model import json_handler
 from amaascore.core.interface import Interface
 from amaascore.market_data.utils import json_to_eod_price, json_to_fx_rate
@@ -118,12 +118,15 @@ class MarketDataInterface(Interface):
     
     
     def get_brokendate_fx_forward_rate(self, asset_manager_id,  asset_id, price_date, value_date):
+        """
+        This method takes calculates broken date forward FX rate based on the passed in parameters
+        """                
         self.logger.info('Calculate broken date FX Forward - Asset Manager: %s - Asset (currency): %s - Price Date: %s - Value Date: %s', asset_manager_id, asset_id, price_date, value_date)
         url = '%s/brokendateforward/%s' % (self.endpoint, asset_manager_id)
         params = {'value_date': value_date, 'asset_id':asset_id, 'price_date': price_date}
         response = self.session.get(url=url, params = params)
         if response.ok:
-            forward_rate = response.json()
+            forward_rate = response.json().get('forward_rate')
             self.logger.info('Retrieved broken date FX forward rate %f', forward_rate)
             return forward_rate
         else:
@@ -132,10 +135,6 @@ class MarketDataInterface(Interface):
 
 
 
-if __name__ == '__main__':
-    interface = MarketDataInterface(endpoint=LOCAL_ENDPOINT)
-    print(interface.get_brokendate_fx_forward_rate(asset_manager_id='573242005',
-                        asset_id='MYRUSD',price_date='2017-02-08',value_date='2017-05-05'))
 
 
 
