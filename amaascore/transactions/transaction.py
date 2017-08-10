@@ -10,7 +10,9 @@ import uuid
 from amaascore.error_messages import ERROR_LOOKUP
 from amaascore.exceptions import TransactionNeedsSaving
 from amaascore.core.amaas_model import AMaaSModel
-from amaascore.transactions.children import Charge, Code, Comment, Link, Party, Rate, Reference
+from amaascore.core.comment import Comment
+from amaascore.core.reference import Reference
+from amaascore.transactions.children import Charge, Code, Link, Party, Rate
 from amaascore.transactions.enums import TRANSACTION_ACTIONS, TRANSACTION_STATUSES, TRANSACTION_TYPES
 
 # This extremely ugly hack is due to the whole Python 2 vs 3 debacle.

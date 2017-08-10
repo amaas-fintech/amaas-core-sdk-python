@@ -10,8 +10,8 @@ import random
 import requests_mock
 import unittest
 
+from amaascore.core.comment import Comment
 from amaascore.transactions.cash_transaction import CashTransaction
-from amaascore.transactions.children import Comment
 from amaascore.transactions.transaction import Transaction
 from amaascore.transactions.interface import TransactionsInterface
 from amaascore.tools.generate_asset import generate_asset

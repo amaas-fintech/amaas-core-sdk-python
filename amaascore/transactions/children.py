@@ -36,14 +36,6 @@ class Code(AMaaSModel):
         super(Code, self).__init__(*args, **kwargs)
 
 
-class Comment(AMaaSModel):
-
-    def __init__(self, comment_value, version=1, *args, **kwargs):
-        self.comment_value = comment_value
-        self.version = version
-        super(Comment, self).__init__(*args, **kwargs)
-
-
 class Link(AMaaSModel):
 
     def __init__(self, linked_transaction_id, version=1, *args, **kwargs):
@@ -79,11 +71,3 @@ class Rate(AMaaSModel):
         :return:
         """
         self._rate_value = Decimal(value)
-
-
-class Reference(AMaaSModel):
-    
-    def __init__(self, reference_value, *args, **kwargs):
-        self.reference_value = reference_value
-        super(Reference, self).__init__(*args, **kwargs)
-
