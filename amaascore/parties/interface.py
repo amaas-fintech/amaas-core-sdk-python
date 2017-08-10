@@ -77,7 +77,7 @@ class PartiesInterface(Interface):
             self.logger.error(response.text)
             response.raise_for_status()
 
-    def search(self, asset_manager_ids=None, party_ids=None):
+    def search(self, asset_manager_ids=None, party_ids=None, party_classes=None, party_types=None, country_ids=None):
         self.logger.info('Search Parties - Asset Manager(s): %s', asset_manager_ids)
         search_params = {}
         # Potentially roll this into a loop through args rather than explicitly named - depends on additional validation
@@ -85,6 +85,12 @@ class PartiesInterface(Interface):
             search_params['asset_manager_ids'] = ','.join([str(amid) for amid in asset_manager_ids])
         if party_ids:
             search_params['party_ids'] = ','.join(party_ids)
+        if party_classes:
+            search_params['party_classes'] = ','.join(party_classes)
+        if party_types:
+            search_params['party_types'] = ','.join(party_types)
+        if country_ids:
+            search_params['country_ids'] = ','.join(country_ids)
         url = self.endpoint + '/parties'
         response = self.session.get(url, params=search_params)
         if response.ok:
