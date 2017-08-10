@@ -3,10 +3,10 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import json
 import logging
 
-from amaascore.config import ENVIRONMENT
+from amaascore.config import ENVIRONMENT, LOCAL_ENDPOINT
 from amaascore.core.amaas_model import json_handler
 from amaascore.core.interface import Interface
-from amaascore.market_data.utils import json_to_eod_price, json_to_fx_rate
+from amaascore.market_data.utils import json_to_eod_price, json_to_fx_rate, json_to_curve
 
 
 class MarketDataInterface(Interface):
@@ -50,6 +50,7 @@ class MarketDataInterface(Interface):
             self.logger.error(response.text)
             response.raise_for_status()
 
+
     def roll_prices(self, asset_manager_id, previous_date, asset_ids, update_existing_prices=False):
         url = '%s/roll-prices/%s' % (self.endpoint, asset_manager_id)
         params = {'update_existing_prices': update_existing_prices}
@@ -63,6 +64,7 @@ class MarketDataInterface(Interface):
         else:
             self.logger.error(response.text)
             response.raise_for_status()
+
 
     def persist_fx_rates(self, asset_manager_id, business_date, fx_rates, update_existing_rates=True):
         """
@@ -85,6 +87,7 @@ class MarketDataInterface(Interface):
             self.logger.error(response.text)
             response.raise_for_status()
 
+
     def retrieve_fx_rates(self, asset_manager_id, business_date, asset_ids=None):
         self.logger.info('Retrieve FX Rates - Asset Manager: %s - Business Date: %s', asset_manager_id, business_date)
         url = '%s/fx-rates/%s/%s' % (self.endpoint, asset_manager_id, business_date.isoformat())
@@ -97,6 +100,42 @@ class MarketDataInterface(Interface):
         else:
             self.logger.error(response.text)
             response.raise_for_status()
+
+
+    def retrieve_curve(self, asset_manager_id, business_date, asset_ids = None):
+        self.logger.info('Retrieve curve - Asset Manager: %s - Business Date: %s', asset_manager_id, business_date)
+        url = '%s/curves/%s/%s' % (self.endpoint, asset_manager_id, business_date.isoformat())
+        params = {'asset_ids': ','.join(asset_ids)} if asset_ids else {}
+        response = self.session.get(url = url, params = params)
+        if response.ok:
+            curves = [json_to_curve(curve) for curve in response.json() ]
+            self.logger.info('Returned %s curves.', len(curves))
+            return curves
+        else:
+            self.logger.error(response.text)
+            response.raise_for_status()
+
+
+    def persist_curves(self, asset_manager_id, business_date, curves, update_existing_curves=True):
+        """
+        :param asset_manager_id:
+        :param business_date: 
+        :param curves:
+        :param update_existing_rates:
+        :return:
+        """
+        self.logger.info('Persist curves - Asset Manager: %s - Business Date: %s', asset_manager_id, business_date)
+        url = '%s/curves/%s/%s' % (self.endpoint, asset_manager_id, business_date.isoformat())
+        params = {'update_existing_curves': update_existing_curves}
+        curves_json = [curve.to_interface() for curve in curves]
+        response = self.session.post(url, params = params, json=curves_json)
+        if response.ok:
+            curves = [json_to_curve(curve) for curve in response.json()]
+            return curves
+        else:
+            self.logger.error(response.text)
+            response.raise_for_status()
+
 
     def clear(self, asset_manager_id):
         """ This method deletes all the data for an asset_manager_id.
@@ -114,3 +153,21 @@ class MarketDataInterface(Interface):
         else:
             self.logger.error(response.text)
             response.raise_for_status()
+    
+    
+    def get_brokendate_fx_forward_rate(self, asset_manager_id,  asset_id, price_date, value_date):
+        """
+        This method takes calculates broken date forward FX rate based on the passed in parameters
+        """                
+        self.logger.info('Calculate broken date FX Forward - Asset Manager: %s - Asset (currency): %s - Price Date: %s - Value Date: %s', asset_manager_id, asset_id, price_date, value_date)
+        url = '%s/brokendateforward/%s' % (self.endpoint, asset_manager_id)
+        params = {'value_date': value_date, 'asset_id':asset_id, 'price_date': price_date}
+        response = self.session.get(url=url, params = params)
+        if response.ok:
+            forward_rate = response.json().get('forward_rate')
+            self.logger.info('Retrieved broken date FX forward rate %f', forward_rate)
+            return forward_rate
+        else:
+            self.logger.error(response.text)
+            response.raise_for_status()
+
