@@ -5,8 +5,10 @@ import datetime
 from decimal import Decimal
 import random
 
+from amaascore.core.comment import Comment
+from amaascore.core.reference import Reference
 from amaascore.transactions.cash_transaction import CashTransaction
-from amaascore.transactions.children import Charge, Code, Comment, Link, Party, Rate, Reference
+from amaascore.transactions.children import Charge, Code, Link, Party, Rate
 from amaascore.transactions.enums import TRANSACTION_ACTIONS, CASH_TRANSACTION_TYPES
 from amaascore.transactions.position import Position
 from amaascore.transactions.transaction import Transaction

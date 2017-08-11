@@ -23,10 +23,10 @@ class ForeignExchangeBase(Asset):
 
     def get_country_codes(self):
         return self.country_codes
-    
+
     def get_currencies(self):
         return [self.base_currency(), self.counter_currency()]
-        
+
     @property
     def major(self):
         return self._major
