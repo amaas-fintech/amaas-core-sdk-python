@@ -100,7 +100,8 @@ class AssetsInterface(Interface):
             self.logger.error(response.text)
             response.raise_for_status()
 
-    def search(self, asset_manager_ids=None, asset_ids=None):
+    def search(self, asset_manager_ids=None, asset_ids=None, asset_classes=None, asset_types=None, 
+               page_no=None, page_size=None):
         self.logger.info('Search for Assets - Asset Manager(s): %s', asset_manager_ids)
         search_params = {}
         # Potentially roll this into a loop through args rather than explicitly named - depends on additional validation
@@ -108,6 +109,14 @@ class AssetsInterface(Interface):
             search_params['asset_manager_ids'] = ','.join([str(amid) for amid in asset_manager_ids])
         if asset_ids:
             search_params['asset_ids'] = ','.join(asset_ids)
+        if asset_classes:
+            search_params['asset_classes'] = ','.join(asset_classes)
+        if asset_types:
+            search_params['asset_types'] = ','.join(asset_types)
+        if page_no is not None:
+            search_params['page_no'] = page_no
+        if page_size:
+            search_params['page_size'] = page_size
         url = self.endpoint + '/assets'
         response = self.session.get(url, params=search_params)
         if response.ok:
@@ -118,7 +127,8 @@ class AssetsInterface(Interface):
             self.logger.error(response.text)
             response.raise_for_status()
     
-    def fields_search(self, asset_manager_ids=None, asset_ids=None, asset_classes=None, asset_types=None, fields=None):
+    def fields_search(self, asset_manager_ids=None, asset_ids=None, asset_classes=None, asset_types=None,
+                      fields=None, page_no=None, page_size=None):
         self.logger.info('Search for Assets - Asset Manager(s): %s', asset_manager_ids)
         search_params = {}
 
@@ -132,6 +142,10 @@ class AssetsInterface(Interface):
             search_params['asset_types'] = ','.join(asset_types)
         if fields:
             search_params['fields'] = ','.join(fields)
+        if page_no is not None:
+            search_params['page_no'] = page_no
+        if page_size:
+            search_params['page_size'] = page_size
 
         url = self.endpoint + '/assets'
         response = self.session.get(url, params=search_params)
