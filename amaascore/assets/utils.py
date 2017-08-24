@@ -17,7 +17,7 @@ from amaascore.assets.derivative import Derivative
 from amaascore.assets.energy_future import EnergyFuture
 from amaascore.assets.equity import Equity
 from amaascore.assets.etf import ExchangeTradedFund
-from amaascore.assets.foreign_exchange import ForeignExchange, NonDeliverableForward
+from amaascore.assets.foreign_exchange import ForeignExchange, ForeignExchangeForward
 from amaascore.assets.fund import Fund
 from amaascore.assets.future import Future
 from amaascore.assets.future_option import FutureOption

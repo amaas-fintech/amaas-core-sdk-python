@@ -7,11 +7,10 @@ from amaascore.core.amaas_model import AMaaSModel
 
 class Charge(AMaaSModel):
 
-    def __init__(self, charge_value, currency, net_affecting=True, version=1, *args, **kwargs):
+    def __init__(self, charge_value, currency, net_affecting=True, *args, **kwargs):
         self.charge_value = charge_value
         self.currency = currency
         self.net_affecting = net_affecting
-        self.version = version
         super(Charge, self).__init__(*args, **kwargs)
 
     @property
@@ -30,33 +29,29 @@ class Charge(AMaaSModel):
 
 class Code(AMaaSModel):
 
-    def __init__(self, code_value, version=1, *args, **kwargs):
+    def __init__(self, code_value, *args, **kwargs):
         self.code_value = code_value
-        self.version = version
         super(Code, self).__init__(*args, **kwargs)
 
 
 class Link(AMaaSModel):
 
-    def __init__(self, linked_transaction_id, version=1, *args, **kwargs):
+    def __init__(self, linked_transaction_id, *args, **kwargs):
         self.linked_transaction_id = linked_transaction_id
-        self.version = version
         super(Link, self).__init__(*args, **kwargs)
 
 
 class Party(AMaaSModel):
 
-    def __init__(self, party_id, version=1, *args, **kwargs):
+    def __init__(self, party_id, *args, **kwargs):
         self.party_id = party_id
-        self.version = version
         super(Party, self).__init__(*args, **kwargs)
 
 
 class Rate(AMaaSModel):
     
-    def __init__(self, rate_value, version=1, *args, **kwargs):
+    def __init__(self, rate_value, *args, **kwargs):
         self.rate_value = rate_value
-        self.version = version
         super(Rate, self).__init__(*args, **kwargs)
 
     @property
