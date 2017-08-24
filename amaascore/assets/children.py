@@ -5,8 +5,6 @@ from amaascore.core.amaas_model import AMaaSModel
 
 class Link(AMaaSModel):
 
-    def __init__(self, linked_asset_id, active=True, version=1, *args, **kwargs):
+    def __init__(self, linked_asset_id, *args, **kwargs):
         self.linked_asset_id = linked_asset_id
-        self.active = active
-        self.version = version
         super(Link, self).__init__(*args, **kwargs)

@@ -48,7 +48,7 @@ class Asset(AMaaSModel):
         self.comments = comments.copy() if comments else {}
         self.links = links.copy() if links else {}
         self.references = references.copy() if references else {}
-        self.references['AMaaS'] = Reference(reference_value=self.asset_id)  # Upserts the AMaaS Reference
+        self.references['Argomi'] = Reference(reference_value=self.asset_id)  # Upserts the Argomi Reference
         super(Asset, self).__init__(*args, **kwargs)
 
     def reference_types(self):
@@ -70,8 +70,7 @@ class Asset(AMaaSModel):
         :param value:
         :return:
         """
-        if value:
-            self._issue_date = parse(value).date() if isinstance(value, type_check) else value
+        self._issue_date = parse(value).date() if isinstance(value, type_check) else value
 
     @property
     def maturity_date(self):
@@ -85,8 +84,7 @@ class Asset(AMaaSModel):
         :param value:
         :return:
         """
-        if value:
-            self._maturity_date = parse(value).date() if isinstance(value, type_check) else value
+        self._maturity_date = parse(value).date() if isinstance(value, type_check) else value
 
     def __str__(self):
         return "Asset object - ID: %s" % self.asset_id
@@ -103,7 +101,6 @@ class Asset(AMaaSModel):
         """
         codes = {'country_codes': self.get_country_codes(), 'venue_id': [self.venue_id]}
         return codes
-        
+
     def get_currencies(self):
         return [self.currency]
-

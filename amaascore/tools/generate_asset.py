@@ -9,7 +9,7 @@ import random
 from amaascore.assets.asset import Asset
 from amaascore.assets.bond import BondGovernment
 from amaascore.assets.bond_option import BondOption
-from amaascore.assets.foreign_exchange import ForeignExchange
+from amaascore.assets.foreign_exchange import ForeignExchange, ForeignExchangeForward
 from amaascore.assets.fund import Fund
 from amaascore.assets.future import Future
 from amaascore.assets.fx_option import ForeignExchangeOption
@@ -23,13 +23,13 @@ from amaascore.core.reference import Reference
 REFERENCE_TYPES = ['External']
 
 
-def generate_common(asset_manager_id=None, asset_id=None):
+def generate_common(asset_manager_id=None, asset_id=None, display_name=None):
 
     common = {'asset_manager_id': asset_manager_id or random.randint(1, 1000),
               'asset_id': asset_id or str(random.randint(1, 1000)),
               'currency': random.choice(['SGD', 'USD']),
-              'display_name': random_string(10)
-              }
+              'display_name': display_name or random_string(10)
+             }
     return common
 
 
@@ -88,6 +88,14 @@ def generate_future(asset_manager_id=None, asset_id=None):
                    tick_size=Decimal('0.01'),
                    expiry_date=random_date(start_year=date.today().year+1),
                    **props)
+    return asset
+
+
+def generate_fx_forward(asset_manager_id=None, asset_id=None, settlement_date=None):
+    props = generate_common(asset_manager_id=asset_manager_id, asset_id=asset_id, display_name=asset_id)
+    asset = ForeignExchangeForward(forward_rate=random_decimal(),
+                                   settlement_date=settlement_date or random_date(start_year=2017),
+                                   **props)
     return asset
 
 
