@@ -164,7 +164,7 @@ class MarketDataInterface(Interface):
         params = {'value_date': value_date, 'asset_id':asset_id, 'price_date': price_date}
         response = self.session.get(url=url, params = params)
         if response.ok:
-            forward_rate = response.json().get('forward_rate')
+            forward_rate = response.json()
             self.logger.info('Retrieved broken date FX forward rate %f', forward_rate)
             return forward_rate
         else:
