@@ -12,7 +12,7 @@ type_check = str if sys.version_info >= (3, 0, 0) else (str, unicode)
 class ForeignExchangeBase(Asset):
     """ This class should never be instantiated """
 
-    def __init__(self, asset_id, asset_status, description, major, country_codes, display_name,
+    def __init__(self, asset_id, asset_status, description, major, country_codes, display_name=None,
                  asset_manager_id=0, *args, **kwargs):
         self.asset_class = 'ForeignExchange'
         self.country_codes = country_codes
