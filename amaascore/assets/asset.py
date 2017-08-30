@@ -54,10 +54,6 @@ class Asset(AMaaSModel):
         self.references['Argomi'] = Reference(reference_value=self.asset_id)  # Upserts the Argomi Reference
         super(Asset, self).__init__(*args, **kwargs)
 
-    @staticmethod
-    def amaas_model_attributes():
-        return ['created_by', 'updated_by', 'created_time', 'updated_time', 'version']
-
     def reference_types(self):
         """
         TODO - are these helper functions useful?
