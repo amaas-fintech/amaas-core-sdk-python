@@ -24,7 +24,7 @@ class Asset(AMaaSModel):
     def __init__(self, asset_manager_id, fungible, asset_issuer_id=None, asset_id=None, asset_status='Active',
                  country_id=None, venue_id=None, currency=None, issue_date=date.min,
                  roll_price=True, display_name='', description='',
-                 comments=None, links=None, references=None, client_additional=None,
+                 comments=None, links=None, references=None, client_additional=None, hashcode=None,
                  *args, **kwargs):
         self.asset_manager_id = asset_manager_id
         self.asset_id = asset_id or uuid.uuid4().hex
@@ -49,7 +49,12 @@ class Asset(AMaaSModel):
         self.links = links.copy() if links else {}
         self.references = references.copy() if references else {}
         self.references['Argomi'] = Reference(reference_value=self.asset_id)  # Upserts the Argomi Reference
+        self.hashcode = hashcode
         super(Asset, self).__init__(*args, **kwargs)
+
+    @staticmethod
+    def amaas_model_attributes():
+        return ['created_by', 'updated_by', 'created_time', 'updated_time', 'version', 'hashcode']
 
     def reference_types(self):
         """
@@ -104,3 +109,5 @@ class Asset(AMaaSModel):
 
     def get_currencies(self):
         return [self.currency]
+
+    

@@ -7,19 +7,22 @@ ENVIRONMENT = 'production'
 API_VERSION = 'v1.0'
 
 LOCAL_ENDPOINT = 'http://localhost:8000'
-NON_PROD_URL = 'https://iwe48ph25i.execute-api.ap-southeast-1.amazonaws.com/%s'
-PROD_URL = 'https://api.amaas.com/%s'
+BASE_URLS = {
+    'production': 'https://api.amaas.com',
+    'staging': 'https://api-staging.amaas.com',
+    'dev': 'https://api-dev.amaas.com'
+}
 
 ENDPOINTS = {
-    'asset_managers': '%s/assetmanager',
-    'assets': '%s/asset',
-    'books': '%s/book',
-    'corporate_actions': '%s/corporateaction',
-    'fundamentals': '%s/fundamental',
-    'market_data': '%s/marketdata',
-    'monitor': '%s/monitor',
-    'parties': '%s/party',
-    'transactions': '%s/transaction'
+    'asset_managers': 'assetmanager',
+    'assets': 'asset',
+    'books': 'book',
+    'corporate_actions': 'corporateaction',
+    'fundamentals': 'fundamental',
+    'market_data': 'marketdata',
+    'monitor': 'monitor',
+    'parties': 'party',
+    'transactions': 'transaction'
 }
 
 COGNITO_CLIENT_ID = '55n70ns9u5stie272e1tl7v32v'  # This is not secret - it is just an identifier
