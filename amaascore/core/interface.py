@@ -10,7 +10,7 @@ import requests
 from warrant.aws_srp import AWSSRP
 
 from amaascore.config import COGNITO_REGION, COGNITO_CLIENT_ID, COGNITO_POOL, ENDPOINTS, LOCAL_ENDPOINT,\
-    NON_PROD_URL, PROD_URL, ENVIRONMENT, API_VERSION
+    BASE_URLS, ENVIRONMENT, API_VERSION
 from amaascore.exceptions import AMaaSException
 
 
@@ -112,11 +112,14 @@ class Interface(object):
     def get_endpoint(self):
         if self.environment == 'local':
             return LOCAL_ENDPOINT
-        url = PROD_URL % API_VERSION if self.environment == 'production' else NON_PROD_URL % self.environment
+        if self.environment not in BASE_URLS:
+            raise KeyError('Invalid environment specified.')
+
+        base_url = BASE_URLS[self.environment]
         endpoint = ENDPOINTS.get(self.endpoint_type)
         if not endpoint:
             raise KeyError('Cannot find endpoint')
-        endpoint = endpoint % url
+        endpoint = '/'.join([base_url, API_VERSION, endpoint])
         self.logger.info("Using Endpoint: %s", endpoint)
         return endpoint
 

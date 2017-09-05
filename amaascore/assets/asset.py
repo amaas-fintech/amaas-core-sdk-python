@@ -5,11 +5,14 @@ from dateutil.parser import parse
 import re
 import sys
 import uuid
+import pickle
 
 from amaascore.assets.children import Link
 from amaascore.core.amaas_model import AMaaSModel
 from amaascore.core.comment import Comment
 from amaascore.core.reference import Reference
+from amaasutils.hash import compute_hash
+
 
 # This extremely ugly hack is due to the whole Python 2 vs 3 debacle.
 type_check = str if sys.version_info >= (3, 0, 0) else (str, unicode)
@@ -104,3 +107,21 @@ class Asset(AMaaSModel):
 
     def get_currencies(self):
         return [self.currency]
+
+    @property
+    def hashcode(self):
+        ignored_attributes = ['version']
+        boolean_attributes = ['fungible', 'roll_price']
+        attributes = {attr: getattr(self, attr) for attr in self.to_dict()
+                      if attr not in boolean_attributes}
+
+        for boolean_attr in boolean_attributes:
+            attributes[boolean_attr] = int(getattr(self, boolean_attr))
+
+        for attr in ['client_additional']:
+            value = getattr(self, attr)
+            if value:
+                dict_value = pickle.loads(value)
+                if dict_value and isinstance(dict_value, dict):
+                    attributes[attr] = dict_value
+        return compute_hash(attributes, ignored_attributes=ignored_attributes)

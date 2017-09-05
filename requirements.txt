@@ -1,4 +1,4 @@
-amaasutils
+amaasutils>=1.2.8
 boto3
 #  This isn't needed in Python 3, but is provided for backwards compatibility with Python 2
 configparser
