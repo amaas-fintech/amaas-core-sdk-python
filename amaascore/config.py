@@ -25,8 +25,8 @@ ENDPOINTS = {
     'transactions': 'transaction'
 }
 
-COGNITO_CLIENT_ID = '55n70ns9u5stie272e1tl7v32v'  # This is not secret - it is just an identifier
-
 # Do not change this
-COGNITO_REGION = 'us-west-2'
-COGNITO_POOL = 'us-west-2_wKa82vECF'
+COGNITO_REGION = 'ap-southeast-1'
+COGNITO_POOL = 'ap-southeast-1_De6j7TWIB'
+# This is not secret - it is just an identifier
+COGNITO_CLIENT_ID = '2qk35mhjjpk165vssuqhqoi1lk'
