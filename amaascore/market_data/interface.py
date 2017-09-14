@@ -37,10 +37,15 @@ class MarketDataInterface(Interface):
             self.logger.error(response.text)
             response.raise_for_status()
 
-    def retrieve_eod_prices(self, asset_manager_id, business_date, asset_ids=None):
+
+    def retrieve_eod_prices(self, asset_manager_id, business_date, asset_ids=None, last_available=False):
         self.logger.info('Retrieve EOD Prices - Asset Manager: %s - Business Date: %s', asset_manager_id, business_date)
         url = '%s/eod-prices/%s/%s' % (self.endpoint, asset_manager_id, business_date.isoformat())
         params = {'asset_ids': ','.join(asset_ids)} if asset_ids else {}
+        # setting last_available to True will return the latest price of the asset as of business 
+        # date (or latest prior price if price found on the date)
+        if last_available:  
+            params.update({'last_available':True})
         response = self.session.get(url=url, params=params)
         if response.ok:
             eod_prices = [json_to_eod_price(eod_price) for eod_price in response.json()]
