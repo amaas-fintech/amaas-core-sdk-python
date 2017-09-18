@@ -387,12 +387,3 @@ class TransactionsInterface(Interface):
         else:
             self.logger.error(response.text)
             response.raise_for_status()
-
-
-if __name__ == "__main__":
-    interface = TransactionsInterface()
-    endpoint = "http://localhost:8000"
-    from amaascore.tools.generate_transaction import generate_transaction as gen
-    transactions = [gen(asset_id='000000000', asset_manager_id=127),gen(asset_id='000000000', asset_manager_id=127)]
-    asset_manager_ids=[127]
-    interface.create_many(endpoint=endpoint, transactions=transactions)
