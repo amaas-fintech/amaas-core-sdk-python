@@ -28,6 +28,28 @@ class TransactionsInterface(Interface):
             self.logger.error(response.text)
             response.raise_for_status()
 
+    def create_many(self, transactions):
+        if type(transactions) is not list:
+            raise ValueError('Error - create_many takes in a list of transactions instead of single transaction')
+        transactions_json = []        
+        # check to ensure all transactions have the same asset_manager_id
+        asset_manager_id = transactions[0].asset_manager_id
+        for transaction in transactions:
+            transactions_json.append(transaction.to_interface())
+            if transaction.asset_manager_id != asset_manager_id:
+                raise AttributeError('Check failed - Not all transactions have the same asset manager ID.')
+        self.logger.info('Multple new Transactions - Asset Manager: %s', asset_manager_id)
+        url = '%s/transactions/%s' % (self.endpoint, asset_manager_id)
+        response = self.session.post(url, json=transactions_json)
+        if response.ok:
+            transactions = []
+            for transaction_json in response.json():
+                transactions.append(json_to_transaction(transaction_json))
+            return transactions
+        else:
+            self.logger.error(response.text)
+            response.raise_for_status()
+
     def amend(self, transaction):
         self.logger.info('Amend Transaction - Asset Manager: %s - Transaction ID: %s', transaction.asset_manager_id,
                          transaction.transaction_id)
@@ -365,3 +387,12 @@ class TransactionsInterface(Interface):
         else:
             self.logger.error(response.text)
             response.raise_for_status()
+
+
+if __name__ == "__main__":
+    interface = TransactionsInterface()
+    endpoint = "http://localhost:8000"
+    from amaascore.tools.generate_transaction import generate_transaction as gen
+    transactions = [gen(asset_id='000000000', asset_manager_id=127),gen(asset_id='000000000', asset_manager_id=127)]
+    asset_manager_ids=[127]
+    interface.create_many(endpoint=endpoint, transactions=transactions)
