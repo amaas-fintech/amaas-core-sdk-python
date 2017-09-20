@@ -13,26 +13,19 @@ type_check = str if sys.version_info >= (3, 0, 0) else (str, unicode)
 
 class PrivateInvestment(Asset):
 
-    def __init__(self, asset_manager_id, asset_id, client_id, asset_issuer_id=None, asset_status='Active',
-                 display_name='', roll_price=True,
+    def __init__(self, asset_manager_id, asset_id, client_id, asset_issuer_id=None,
+                 asset_status='Active', display_name='', roll_price=True,
                  description='', country_id=None, venue_id=None, currency=None, additional=None,
                  comments=None, links=None, references=None,
                  category=None, sub_category=None, investment_date=None, num_shares=None,
-                 price_share=None, share_class=None, series=None, share_type=None, coupon=None, coupon_freq=None,
+                 price_share=None, share_class=None, series=None, share_type=None, coupon=None,
+                 coupon_freq=None,
                  upfront_fee=None, exit_fee=None, management_fee=None, performance_fee=None,
                  hurdle=None, margin=None, high_water_mark=None, maturity_date=None,
                  lock_up_period=None, investment_term=None,
                  *args, **kwargs):
-        if not hasattr(self, 'asset_class'):  # A more specific child class may have already set this
+        if not hasattr(self, 'asset_class'):  # More specific child class may have already set this
             self.asset_class = 'PrivateInvestment'
-        super(PrivateInvestment, self).__init__(asset_manager_id=asset_manager_id, asset_id=asset_id,
-                                                fungible=False, asset_issuer_id=asset_issuer_id,
-                                                asset_status=asset_status, display_name=display_name,
-                                                roll_price=roll_price, description=description,
-                                                country_id=country_id, venue_id=venue_id,
-                                                currency=currency,
-                                                comments=comments, links=links, references=references,
-                                                client_id=client_id, additional=additional, *args, **kwargs)
         self.category = category
         self.sub_category = sub_category
         self.investment_date = investment_date
@@ -53,6 +46,14 @@ class PrivateInvestment(Asset):
         self.maturity_date = maturity_date
         self.lock_up_period = lock_up_period
         self.investment_term = investment_term
+        super(PrivateInvestment, self).__init__(asset_manager_id=asset_manager_id, asset_id=asset_id,
+                                                fungible=False, asset_issuer_id=asset_issuer_id,
+                                                asset_status=asset_status, display_name=display_name,
+                                                roll_price=roll_price, description=description,
+                                                country_id=country_id, venue_id=venue_id,
+                                                currency=currency,
+                                                comments=comments, links=links, references=references,
+                                                client_id=client_id, additional=additional, *args, **kwargs)
 
     @property
     def category(self):
@@ -165,4 +166,3 @@ class PrivateInvestment(Asset):
         except Exception:
             raise ValueError('invalid input of investment type %s, cannot be converted to an int' %
                              investment_term)
-
