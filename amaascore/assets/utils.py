@@ -16,6 +16,7 @@ from amaascore.assets.custom_asset import CustomAsset
 from amaascore.assets.derivative import Derivative
 from amaascore.assets.energy_future import EnergyFuture
 from amaascore.assets.equity import Equity
+from amaascore.assets.equity_future import EquityFuture
 from amaascore.assets.etf import ExchangeTradedFund
 from amaascore.assets.foreign_exchange import ForeignExchange, ForeignExchangeForward
 from amaascore.assets.fund import Fund
