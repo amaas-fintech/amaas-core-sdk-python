@@ -111,16 +111,14 @@ class TransactionsInterface(Interface):
             self.logger.error(response.text)
             response.raise_for_status()
 
-    def search(self, asset_manager_ids=[], transaction_ids=[], transaction_statuses=[],
+    def search(self, asset_manager_id, transaction_ids=[], transaction_statuses=[],
                asset_book_ids=[], counterparty_book_ids=[], asset_ids=[], transaction_date_start=None,
                transaction_date_end=None, code_types=[], code_values=[], link_types=[], linked_transaction_ids=[],
                party_types=[], party_ids=[], reference_types=[], reference_values=[], client_ids=[],
                page_no=None, page_size=None):
-        self.logger.info('Search Transactions - Asset Manager(s): %s', asset_manager_ids)
+        self.logger.info('Search Transactions - Asset Manager: %s', asset_manager_id)
         search_params = {}
         # Potentially roll this into a loop through args rather than explicitly named - depends on additional validation
-        if asset_manager_ids:
-            search_params['asset_manager_ids'] = ','.join([str(amid) for amid in asset_manager_ids])
         if transaction_ids:
             search_params['transaction_ids'] = ','.join(transaction_ids)
         if transaction_statuses:
@@ -157,7 +155,7 @@ class TransactionsInterface(Interface):
             search_params['page_no'] = page_no
         if page_size:
             search_params['page_size'] = page_size
-        url = self.endpoint + '/transactions'
+        url = '%s/transactions/%s' % (self.endpoint, asset_manager_id)
         response = self.session.get(url, params=search_params)
         if response.ok:
             transactions = [json_to_transaction(json_transaction) for json_transaction in response.json()]
@@ -167,14 +165,11 @@ class TransactionsInterface(Interface):
             self.logger.error(response.text)
             response.raise_for_status()
 
-    def position_search(self, asset_manager_ids=None, book_ids=None, account_ids=None,
+    def position_search(self, asset_manager_id, book_ids=None, account_ids=None,
                         accounting_types=['Transaction Date'], asset_ids=None, position_date=None):
-        self.logger.info('Search Positions - Asset Manager(s): %s', asset_manager_ids)
-        url = self.endpoint + '/positions'
+        self.logger.info('Search Positions - Asset Manager: %s', asset_manager_id)
         search_params = {}
         # Potentially roll into a loop
-        if asset_manager_ids:
-            search_params['asset_manager_ids'] = ','.join([str(amid) for amid in asset_manager_ids])
         if book_ids:
             search_params['book_ids'] = ','.join(book_ids)
         if account_ids:
@@ -185,6 +180,7 @@ class TransactionsInterface(Interface):
             search_params['asset_ids'] = ','.join(asset_ids)
         if position_date:
             search_params['position_date'] = position_date
+        url = '%s/positions/%s' % (self.endpoint, asset_manager_id)
         response = self.session.get(url, params=search_params)
         if response.ok:
             positions = [json_to_position(json_position) for json_position in response.json()]

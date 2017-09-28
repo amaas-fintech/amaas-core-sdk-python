@@ -66,13 +66,11 @@ class BooksInterface(Interface):
             self.logger.error(response.text)
             response.raise_for_status()
 
-    def search(self, asset_manager_ids=None, book_ids=None, business_units=None, 
+    def search(self, asset_manager_id, book_ids=None, business_units=None, 
                      owner_ids=None, party_ids=None, book_statuses=None):
-        self.logger.info('Search Books - Asset Manager(s): %s', asset_manager_ids)
+        self.logger.info('Search Books - Asset Manager: %s', asset_manager_id)
         search_params = {}
         # Potentially roll this into a loop through args rather than explicitly named - depends on additional validation
-        if asset_manager_ids:
-            search_params['asset_manager_ids'] = ','.join([str(amid) for amid in asset_manager_ids])
         if book_ids:
             search_params['book_ids'] = ','.join(book_ids)
         if business_units:
@@ -83,7 +81,7 @@ class BooksInterface(Interface):
             search_params['party_ids'] = ','.join(party_ids)
         if book_statuses:
             search_params['book_statuses'] = ','.join(book_statuses)
-        url = self.endpoint + '/books'
+        url = '%s/books/%s' % (self.endpoint, asset_manager_id)
         response = self.session.get(url, params=search_params)
         if response.ok:
             books = [json_to_book(json_book)

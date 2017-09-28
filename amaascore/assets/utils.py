@@ -11,6 +11,7 @@ from amaascore.assets.bond_future_option import BondFutureOption
 from amaascore.assets.bond_option import BondOption
 from amaascore.assets.commodity_future import CommodityFuture
 from amaascore.assets.cfd import ContractForDifference
+from amaascore.assets.cryptocurrency import Cryptocurrency
 from amaascore.assets.currency import Currency
 from amaascore.assets.custom_asset import CustomAsset
 from amaascore.assets.derivative import Derivative
@@ -18,7 +19,7 @@ from amaascore.assets.energy_future import EnergyFuture
 from amaascore.assets.equity import Equity
 from amaascore.assets.equity_future import EquityFuture
 from amaascore.assets.etf import ExchangeTradedFund
-from amaascore.assets.foreign_exchange import ForeignExchange, ForeignExchangeForward
+from amaascore.assets.foreign_exchange import ForeignExchange, ForeignExchangeForward, ForeignExchangeSpot
 from amaascore.assets.fund import Fund
 from amaascore.assets.future import Future
 from amaascore.assets.future_option import FutureOption
