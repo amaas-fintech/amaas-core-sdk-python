@@ -77,7 +77,7 @@ class PartiesInterfaceTest(unittest.TestCase):
         endpoint = '%s/parties' % self.parties_interface.endpoint
         parties = generate_parties(asset_manager_ids=[self.asset_manager_id, self.asset_manager_id+1])
         mocker.get(endpoint, json=[party.to_json() for party in parties])
-        all_parties = self.parties_interface.search()
+        all_parties = self.parties_interface.search(self.asset_manager_id)
         self.assertEqual(parties, all_parties)
 
     @requests_mock.Mocker()
@@ -110,7 +110,7 @@ class PartiesInterfaceTest(unittest.TestCase):
         self.parties_interface.new(self.party)
         count = self.parties_interface.clear(self.asset_manager_id)
         self.assertEqual(count, 1)
-        results = self.parties_interface.search(asset_manager_ids=[self.asset_manager_id])
+        results = self.parties_interface.search(asset_manager_id=self.asset_manager_id)
         # Strip out the 'shared' parties
         results = [result for result in results if result.asset_manager_id == self.asset_manager_id]
         self.assertEqual(len(results), 0)

@@ -63,9 +63,9 @@ class CorporateActionsInterfaceTest(unittest.TestCase):
     def test_Search(self, mocker):
         # This test is somewhat fake - but the integration tests are for the bigger picture
         endpoint = '%s/corporate-actions' % self.corporate_actions_interface.endpoint
-        corporate_actions = generate_corporate_actions(asset_manager_ids=[self.asset_manager_id, self.asset_manager_id+1])
+        corporate_actions = generate_corporate_actions(asset_manager_ids=[self.asset_manager_id])
         mocker.get(endpoint, json=[corporate_action.to_json() for corporate_action in corporate_actions])
-        all_corporate_actions = self.corporate_actions_interface.search()
+        all_corporate_actions = self.corporate_actions_interface.search(self.asset_manager_id)
         self.assertEqual(corporate_actions, all_corporate_actions)
 
     @requests_mock.Mocker()
@@ -87,7 +87,7 @@ class CorporateActionsInterfaceTest(unittest.TestCase):
         self.corporate_actions_interface.new(self.corporate_action)
         count = self.corporate_actions_interface.clear(self.asset_manager_id)
         self.assertEqual(count, 1)
-        results = self.corporate_actions_interface.search(asset_manager_ids=[self.asset_manager_id])
+        results = self.corporate_actions_interface.search(asset_manager_id=self.asset_manager_id)
         # Strip out the 'shared' corporate actions
         results = [result for result in results if result.asset_manager_id == self.asset_manager_id]
         self.assertEqual(len(results), 0)

@@ -2,14 +2,17 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 
 from amaasutils.random_utils import random_string, random_decimal, random_date
-from datetime import date
+from datetime import date, timedelta
 from decimal import Decimal
 import random
 
 from amaascore.assets.asset import Asset
 from amaascore.assets.bond import BondGovernment
 from amaascore.assets.bond_option import BondOption
-from amaascore.assets.foreign_exchange import ForeignExchange, ForeignExchangeForward
+from amaascore.assets.currency import Currency
+from amaascore.assets.cryptocurrency import Cryptocurrency
+from amaascore.assets.enums import CRYPTOCURRENCY_PROOF_TYPES
+from amaascore.assets.foreign_exchange import ForeignExchange, ForeignExchangeForward, ForeignExchangeSpot
 from amaascore.assets.fund import Fund
 from amaascore.assets.future import Future
 from amaascore.assets.fx_option import ForeignExchangeOption
@@ -65,6 +68,16 @@ def generate_bond_option(asset_manager_id=None, asset_id=None, option_type=None,
     return asset
 
 
+def generate_currency(asset_id=None):
+    asset = Currency(asset_id=asset_id or random_string(3))
+    return asset
+
+
+def generate_cryptocurrency(asset_id=None):
+    asset = Cryptocurrency(asset_id=asset_id or random_string(3),
+                           proof_type=random.choice(list(CRYPTOCURRENCY_PROOF_TYPES)))
+    return asset
+
 def generate_foreignexchange(asset_id=None):
     asset = ForeignExchange(asset_id=asset_id)
     return asset
@@ -95,7 +108,17 @@ def generate_fx_forward(asset_manager_id=None, asset_id=None, settlement_date=No
     props = generate_common(asset_manager_id=asset_manager_id, asset_id=asset_id, display_name=asset_id)
     asset = ForeignExchangeForward(forward_rate=random_decimal(),
                                    settlement_date=settlement_date or random_date(start_year=2017),
+                                   underlying='USDJPY',
                                    **props)
+    return asset
+
+
+def generate_fx_spot(asset_manager_id=None, asset_id=None, settlement_date=None):
+    props = generate_common(asset_manager_id=asset_manager_id, asset_id=asset_id, display_name=asset_id)
+    tomorrow = date.today() + timedelta(days=1)
+    asset = ForeignExchangeSpot(settlement_date=settlement_date or tomorrow,
+                                underlying='USDJPY',
+                                **props)
     return asset
 
 
@@ -130,7 +153,7 @@ def generate_assets(asset_manager_ids=[], number=5):
     return assets
 
 def generate_private_investment(asset_manager_id=None, asset_id=None, client_id=None):
-    attributes = generate_common(asset_manager_id=None, asset_id=None)
+    attributes = generate_common(asset_manager_id=asset_manager_id, asset_id=asset_id)
     """currency, display_name"""
     private_investment = PrivateInvestment(client_id=client_id or random_string(5),
                                            asset_issuer_id=random_string(8),
@@ -146,11 +169,11 @@ def generate_private_investment(asset_manager_id=None, asset_id=None, client_id=
     return private_investment
 
 def generate_automobile(asset_manager_id=None, asset_id=None, client_id=None):
-    attributes = generate_common(asset_manager_id=None, asset_id=None)
+    attributes = generate_common(asset_manager_id=asset_manager_id, asset_id=asset_id)
     automobile = Automobile(client_id=1, **attributes)
     return automobile
 
 def generate_warrant(asset_manager_id=None, asset_id=None, client_id=None):
-    attributes = generate_common(asset_manager_id=None, asset_id=None)
+    attributes = generate_common(asset_manager_id=asset_manager_id, asset_id=asset_id)
     warrant = Warrant(client_id=1, **attributes)
     return warrant

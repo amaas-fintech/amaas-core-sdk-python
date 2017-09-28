@@ -59,9 +59,9 @@ class MonitorInterfaceTest(unittest.TestCase):
     def test_Search(self, mocker):
         # This test is somewhat fake - but the integration tests are for the bigger picture
         endpoint = '%s/items' % self.monitor_interface.endpoint
-        items = generate_items(asset_manager_ids=[self.asset_manager_id, self.asset_manager_id+1])
+        items = generate_items(asset_manager_ids=[self.asset_manager_id])
         mocker.get(endpoint, json=[item.to_json() for item in items])
-        all_items = self.monitor_interface.search_items()
+        all_items = self.monitor_interface.search_items(self.asset_manager_id)
         self.assertEqual(items, all_items)
 
     @requests_mock.Mocker()
@@ -83,7 +83,7 @@ class MonitorInterfaceTest(unittest.TestCase):
         self.monitor_interface.new_item(self.item)
         count = self.monitor_interface.clear(self.asset_manager_id)
         self.assertEqual(count, 1)
-        results = self.monitor_interface.search_items(asset_manager_ids=[self.asset_manager_id])
+        results = self.monitor_interface.search_items(asset_manager_id=self.asset_manager_id)
         self.assertEqual(len(results), 0)
 
 if __name__ == '__main__':

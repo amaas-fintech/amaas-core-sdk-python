@@ -80,9 +80,9 @@ class AssetsInterfaceTest(unittest.TestCase):
     def test_Search(self, mocker):
         # This test is somewhat fake - but the integration tests are for the bigger picture
         endpoint = '%s/assets' % self.assets_interface.endpoint
-        assets = generate_assets(asset_manager_ids=[self.asset_manager_id, self.asset_manager_id+1])
+        assets = generate_assets(asset_manager_ids=[self.asset_manager_id])
         mocker.get(endpoint, json=[asset.to_json() for asset in assets])
-        all_assets = self.assets_interface.search()
+        all_assets = self.assets_interface.search(self.asset_manager_id)
         self.assertEqual(assets, all_assets)
 
     @requests_mock.Mocker()
@@ -111,7 +111,7 @@ class AssetsInterfaceTest(unittest.TestCase):
         self.assets_interface.new(self.asset)
         count = self.assets_interface.clear(self.asset_manager_id)
         self.assertEqual(count, 1)
-        results = self.assets_interface.search(asset_manager_ids=[self.asset_manager_id])
+        results = self.assets_interface.search(asset_manager_id=self.asset_manager_id)
         # Strip out the 'shared' assets
         results = [result for result in results if result.asset_manager_id == self.asset_manager_id]
         self.assertEqual(len(results), 0)

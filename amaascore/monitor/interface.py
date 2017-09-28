@@ -52,15 +52,13 @@ class MonitorInterface(Interface):
             self.logger.error(response.text)
             response.raise_for_status()
 
-    def search_items(self, asset_manager_ids=None, item_ids=None):
-        self.logger.info('Search Items - Asset Manager(s): %s', asset_manager_ids)
+    def search_items(self, asset_manager_id, item_ids=None):
+        self.logger.info('Search Items - Asset Manager: %s', asset_manager_id)
         search_params = {}
         # Potentially roll this into a loop through args rather than explicitly named - depends on additional validation
-        if asset_manager_ids:
-            search_params['asset_manager_ids'] = ','.join([str(amid) for amid in asset_manager_ids])
         if item_ids:
             search_params['item_ids'] = ','.join(item_ids)
-        url = self.endpoint + '/items'
+        url = '%s/items/%s' % (self.endpoint, asset_manager_id)
         response = self.session.get(url, params=search_params)
         if response.ok:
             items = [json_to_item(json_item) for json_item in response.json()]

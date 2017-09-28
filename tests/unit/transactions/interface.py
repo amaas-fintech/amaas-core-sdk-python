@@ -109,7 +109,7 @@ class TransactionsInterfaceTest(unittest.TestCase):
         asset_manager_ids = [self.asset_manager_id, self.asset_manager_id+1]
         transactions = generate_transactions(asset_manager_ids=asset_manager_ids)
         mocker.get(endpoint, json=[transaction.to_json() for transaction in transactions])
-        all_transactions = self.transactions_interface.search()
+        all_transactions = self.transactions_interface.search(self.asset_manager_id)
         self.assertEqual(all_transactions, transactions)
 
     @requests_mock.Mocker()
@@ -126,10 +126,9 @@ class TransactionsInterfaceTest(unittest.TestCase):
     def test_PositionSearch(self, mocker):
         # This test is somewhat fake - but the integration tests are for the bigger picture
         endpoint = '%s/positions' % self.transactions_interface.endpoint
-        asset_manager_ids = [self.asset_manager_id, self.asset_manager_id+1]
-        positions = generate_positions(asset_manager_ids=asset_manager_ids)
+        positions = generate_positions(asset_manager_ids=[self.asset_manager_id])
         mocker.get(endpoint, json=[position.to_json() for position in positions])
-        all_positions = self.transactions_interface.position_search()
+        all_positions = self.transactions_interface.position_search(self.asset_manager_id)
         self.assertEqual(all_positions, positions)
 
     @requests_mock.Mocker()
@@ -203,7 +202,7 @@ class TransactionsInterfaceTest(unittest.TestCase):
         count = self.transactions_interface.clear(self.asset_manager_id)
         self.assertEqual(count['transaction_count'], 1)
         self.assertGreater(count['position_count'], 0)
-        results = self.transactions_interface.search(asset_manager_ids=[self.asset_manager_id])
+        results = self.transactions_interface.search(asset_manager_id=self.asset_manager_id)
         self.assertEqual(len(results), 0)
 
     def test_CashTransaction(self):
