@@ -17,7 +17,7 @@ class Book(AMaaSModel):
 
     def __init__(self, asset_manager_id, book_id=None, book_type='Trading', book_status='Active', owner_id=None,
                  party_id=None, close_time=datetime.timedelta(hours=18), timezone='UTC', base_currency='USD',
-                 business_unit='', description='', positions=None,
+                 business_unit='', reference='', description='', positions=None,
                  *args, **kwargs):
         self.asset_manager_id = asset_manager_id
         self.book_id = book_id or uuid.uuid4().hex
@@ -29,6 +29,7 @@ class Book(AMaaSModel):
         self.timezone = timezone
         self.base_currency = base_currency
         self.business_unit = business_unit
+        self.reference = reference
         self.description = description
         self.positions = positions
         super(Book, self).__init__(*args, **kwargs)

@@ -11,7 +11,7 @@ from amaascore.error_messages import ERROR_LOOKUP
 class AssetManager(AMaaSModel):
 
     def __init__(self, asset_manager_type, asset_manager_id=None, asset_manager_status='Active', party_id=None,
-                 account_type='Basic', default_book_owner_id=None, default_timezone='UTC',
+                 account_type='Basic', default_book_owner_id='', default_timezone='UTC',
                  default_book_close_time=timedelta(hours=18),
                  *args, **kwargs):
         self.asset_manager_id = asset_manager_id
