@@ -50,9 +50,11 @@ class ForeignExchange(ForeignExchangeBase):
     """
     The underlying FX pair used in an FX spot/forward asset
     """
-    def __init__(self, asset_id, asset_status='Active', country_codes=[], major=False, description='', *args, **kwargs):
+    def __init__(self, asset_id, asset_manager_id=0, asset_status='Active', country_codes=[], major=False,
+                 description='', *args, **kwargs):
         self.major = major
-        super(ForeignExchange, self).__init__(asset_id=asset_id, asset_status=asset_status, description=description,
+        super(ForeignExchange, self).__init__(asset_manager_id=asset_manager_id, asset_id=asset_id,
+                                              asset_status=asset_status, description=description,
                                               country_codes=country_codes,
                                               *args, **kwargs)
 
@@ -78,12 +80,13 @@ class ForeignExchangeSpot(ForeignExchangeBase):
     Spot FX (Settles as soon as possible).
     """
 
-    def __init__(self, asset_id, asset_status='Active', description='', country_codes=[],
+    def __init__(self, asset_manager_id, asset_id, asset_status='Active', description='', country_codes=[],
                  underlying=None, settlement_date=None,
                  display_name=None, *args, **kwargs):
         self.underlying = underlying
         self.settlement_date = settlement_date
-        super(ForeignExchangeSpot, self).__init__(asset_id=asset_id, asset_status=asset_status,
+        super(ForeignExchangeSpot, self).__init__(asset_manager_id=asset_manager_id, asset_id=asset_id,
+                                                  asset_status=asset_status,
                                                   country_codes=country_codes, display_name=display_name,
                                                   description=description, *args, **kwargs)
 
@@ -102,12 +105,13 @@ class ForeignExchangeForward(ForeignExchangeSpot):
     A forward-dated FX.  If there is a fixing_date, it is an NDF.
     """
 
-    def __init__(self, asset_id, asset_status='Active', description='', country_codes=[],
+    def __init__(self, asset_manager_id, asset_id, asset_status='Active', description='', country_codes=[],
                  forward_rate=None, underlying=None, settlement_date=None, fixing_date=None,
                  display_name=None, *args, **kwargs):
         self.forward_rate = forward_rate
         self.fixing_date = fixing_date
-        super(ForeignExchangeForward, self).__init__(asset_id=asset_id, asset_status=asset_status,
+        super(ForeignExchangeForward, self).__init__(asset_manager_id=asset_manager_id, asset_id=asset_id,
+                                                     asset_status=asset_status,
                                                      underlying=underlying, settlement_date=settlement_date,
                                                      country_codes=country_codes, display_name=display_name,
                                                      description=description, *args, **kwargs)

@@ -6,11 +6,13 @@ from amaascore.assets.enums import CRYPTOCURRENCY_PROOF_TYPES
 
 class Cryptocurrency(CurrencyBase):
 
-    def __init__(self, asset_id, asset_status='Active', proof_type='Proof of Work', max_supply=None, display_name='',
-                 minor_unit_places=8, description='', country_id=None, *args, **kwargs):
+    def __init__(self, asset_id, asset_manager_id=0, asset_status='Active', proof_type='Proof of Work',
+                 max_supply=None, display_name='', minor_unit_places=8, description='', country_id=None,
+                 *args, **kwargs):
         self.proof_type = proof_type
         self.max_supply = max_supply
-        super(Cryptocurrency, self).__init__(asset_id=asset_id, display_name=display_name,
+        super(Cryptocurrency, self).__init__(asset_manager_id=asset_manager_id, asset_id=asset_id,
+                                             display_name=display_name,
                                              minor_unit_places=minor_unit_places,
                                              asset_status=asset_status, description=description,
                                              country_id=country_id, *args, **kwargs)
