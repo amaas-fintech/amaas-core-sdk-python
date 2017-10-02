@@ -12,7 +12,7 @@ class AssetManager(AMaaSModel):
 
     def __init__(self, asset_manager_type, asset_manager_id=None, asset_manager_status='Active', party_id=None,
                  account_type='Basic', default_book_owner_id='', default_timezone='UTC',
-                 default_book_close_time=timedelta(hours=18),
+                 default_book_close_time=timedelta(hours=18), language_code='en-US',
                  *args, **kwargs):
         self.asset_manager_id = asset_manager_id
         self.asset_manager_type = asset_manager_type
@@ -22,6 +22,7 @@ class AssetManager(AMaaSModel):
         self.default_timezone = default_timezone
         self.default_book_close_time = default_book_close_time
         self.account_type = account_type
+        self.language_code = language_code
         super(AssetManager, self).__init__(*args, **kwargs)
 
     @property

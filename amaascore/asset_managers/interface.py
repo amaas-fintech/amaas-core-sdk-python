@@ -2,7 +2,8 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import logging
 
-from amaascore.asset_managers.utils import json_to_asset_manager, json_to_relationship, json_to_eod_book
+from amaascore.asset_managers.utils import json_to_asset_manager, json_to_relationship,\
+                                           json_to_domain
 from amaascore.config import ENVIRONMENT
 from amaascore.core.interface import Interface
 
@@ -108,26 +109,58 @@ class AssetManagersInterface(Interface):
             params['related_id'] = related_id
         response = self.session.get(url, params=params)
         if response.ok:
-            self.logger.info('Successfully Amended Asset Manager Relationship: %s', asset_manager_id)
+            self.logger.info('Successfully Retrieved Asset Manager Relationship: %s', asset_manager_id)
             return [json_to_relationship(json_relationship) for json_relationship in response.json()]
         else:
             self.logger.error(response.text)
             response.raise_for_status()
 
-    def retrieve_eod_books(self, asset_manager_id=None, book_id=None):
-        self.logger.info('Search for EOD Books. asset_manager_id: %s, book_id: %s', asset_manager_id, book_id)
-        search_params = {}
-        # Potentially roll this into a loop through args rather than explicitly named - depends on additional validation
-        if asset_manager_id:
-            search_params['asset_manager_id'] = asset_manager_id
-        if book_id:
-            search_params['book_id'] = book_id
-        url = self.endpoint + '/eod-books'
-        response = self.session.get(url, params=search_params)
+    def new_domain(self, domain):
+        self.logger.info('New Asset Manager Domain: %s for ID %s', domain.domain,
+                         domain.asset_manager_id)
+        url = '%s/domains/%s' % (self.endpoint, domain.asset_manager_id)
+        response = self.session.post(url, json=domain.to_interface())
         if response.ok:
-            eod_books = [json_to_eod_book(json_eod_book) for json_eod_book in response.json()]
-            self.logger.info('Returned %s EOD Books.', len(eod_books))
-            return eod_books
+            self.logger.info('Successfully Created Asset Manager Domain for: %s', domain.asset_manager_id)
+            return json_to_domain(response.json())
+        else:
+            self.logger.error(response.text)
+            response.raise_for_status()
+
+    def deactivate_domain(self, asset_manager_id, domain):
+        self.logger.info('Deactivate Domain: %s for Asset Manager: %s', domain, asset_manager_id)
+        url = '%s/domains/%s' % (self.endpoint, asset_manager_id)
+        params = {'domain': domain}
+        response = self.session.delete(url, params=params)
+        if response.ok:
+            self.logger.info('Successfully Deactivated Asset Manager Domain: %s', asset_manager_id)
+        else:
+            self.logger.error(response.text)
+            response.raise_for_status()
+
+    def retrieve_domains(self, asset_manager_id, domain_statuses=['Active'], fields=None):
+        self.logger.info('Retrieve Asset Manager Domains: %s', asset_manager_id)
+        url = '%s/domains/%s' % (self.endpoint, asset_manager_id)
+        params = {'domain_statuses': ','.join(domain_statuses)}
+        if fields:
+            params['fields'] = ','.join(fields)
+        response = self.session.get(url, params=params)
+        if response.ok:
+            self.logger.info('Successfully Retrieved Domains: %s', asset_manager_id)
+            return [json_to_domain(json_domain) for json_domain in response.json()]
+        else:
+            self.logger.error(response.text)
+            response.raise_for_status()
+
+    def check_domains(self, domain):
+        self.logger.info('Checking domain: %s', domain)
+        url = '%s/domains' % self.endpoint
+        params = {'domain': 'domain',
+                  'is_primary': True}
+        response = self.session.get(url, params=params)
+        if response.ok:
+            self.logger.info('Successfully Checked Domain: %s', domain)
+            return [json_to_domain(json_domain) for json_domain in response.json()]
         else:
             self.logger.error(response.text)
             response.raise_for_status()
