@@ -10,6 +10,7 @@ from amaascore.core.reference import Reference
 from amaascore.transactions.cash_transaction import CashTransaction
 from amaascore.transactions.children import Charge, Code, Link, Party, Rate
 from amaascore.transactions.enums import TRANSACTION_ACTIONS, CASH_TRANSACTION_TYPES
+from amaascore.transactions.MTMResult import MTMResult
 from amaascore.transactions.position import Position
 from amaascore.transactions.transaction import Transaction
 
@@ -38,6 +39,19 @@ def generate_common(asset_manager_id, asset_book_id, counterparty_book_id, asset
 
     common['settlement_date'] = (datetime.timedelta(days=2) + common['transaction_date'])
     return common
+
+def generate_mtm_result(asset_manager_id=None, book_id=None, mtm_value=None, business_date=None, mtm_timestamp=None,
+                        asset_id=None, message=None, client_id=None, mtm_status=None):
+    mtm_result = MTMResult(asset_manager_id=asset_manager_id or random.randint(1, 10000), 
+                           book_id=book_id or random_string(8),
+                           business_date=business_date or datetime.date.today(),
+                           mtm_timestamp=mtm_timestamp or datetime.datetime.now(),
+                           mtm_value=mtm_value or str(random.random()*100000),
+                           asset_id=asset_id or random_string(8),
+                           message=message or random_string(80),
+                           client_id=client_id or 1,
+                           mtm_status=mtm_status or 'Active')
+    return mtm_result
 
 
 def generate_transaction(asset_manager_id=None, asset_book_id=None, counterparty_book_id=None,

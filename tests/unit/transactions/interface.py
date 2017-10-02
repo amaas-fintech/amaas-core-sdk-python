@@ -14,10 +14,11 @@ from amaascore.core.comment import Comment
 from amaascore.transactions.cash_transaction import CashTransaction
 from amaascore.transactions.transaction import Transaction
 from amaascore.transactions.interface import TransactionsInterface
+from amaascore.transactions.mtm_result import MTMResult
 from amaascore.tools.generate_asset import generate_asset
 from amaascore.tools.generate_book import generate_book
 from amaascore.tools.generate_transaction import generate_transaction, generate_transactions,\
-    generate_positions, generate_position, generate_cash_transaction
+    generate_positions, generate_position, generate_cash_transaction, generate_mtm_result
 
 logging.config.dictConfig(DEFAULT_LOGGING)
 
@@ -26,8 +27,10 @@ class TransactionsInterfaceTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.transactions_interface = TransactionsInterface()
-
+        cls.transactions_interface = TransactionsInterface(username='amaas_system', 
+                                                           password='amaaswelcome', 
+                                                           environment='dev')
+        
     def setUp(self):
         self.longMessage = True  # Print complete error message on failure
         self.maxDiff = None  # View the complete diff when there is a mismatch in a test
@@ -39,10 +42,38 @@ class TransactionsInterfaceTest(unittest.TestCase):
                                                 asset_book_id=self.asset_book.book_id,
                                                 counterparty_book_id=self.counterparty_book.book_id)
         self.transaction_id = self.transaction.transaction_id
-        self.setup_cache()
+        #self.setup_cache()
 
     def tearDown(self):
         pass
+
+    def test_New_MTM(self):
+        mtm_result = generate_mtm_result()
+        result = self.transactions_interface.new_mtm_result(mtm_results=mtm_result, asset_manager_id=mtm_result.asset_manager_id)
+        self.assertEqual(mtm_result.asset_id, result[0].asset_id)
+        self.assertEqual(mtm_result.mtm_value, result[0].mtm_value)
+
+    def test_Amend_MTM(self):
+        mtm_result = generate_mtm_result()
+        result = self.transactions_interface.new_mtm_result(mtm_results=mtm_result, asset_manager_id=mtm_result.asset_manager_id)
+        self.assertEqual(mtm_result.asset_id, result[0].asset_id)
+        self.assertEqual(mtm_result.mtm_value, result[0].mtm_value)
+        mtm_result.mtm_value = Decimal(random.random() * 10000)
+        amended = self.transactions_interface.amend_mtm_result(mtm_results=mtm_result, asset_manager_id=mtm_result.asset_manager_id)
+        self.assertEqual(amended[0].mtm_value, mtm_result.mtm_value)
+
+    def test_Retrieve_MTM(self):
+        mtm_result = generate_mtm_result(asset_manager_id=1)
+        result = self.transactions_interface.new_mtm_result(mtm_results=mtm_result, asset_manager_id=mtm_result.asset_manager_id)
+        self.assertEqual(mtm_result.asset_id, result[0].asset_id)
+        self.assertEqual(mtm_result.mtm_value, result[0].mtm_value)
+        parameters = {'book_id': mtm_result.book_id,
+                      'asset_id': mtm_result.asset_id}
+        result = self.transactions_interface.retrieve_mtm_result(asset_manager_id=mtm_result.asset_manager_id,
+                                                                 book_id=mtm_result.book_id,
+                                                                 paramaters=parameters)
+        self.assertEqual(len(result), 1)
+        self.assertEqual(result[0].asset_id, mtm_result.asset_id)
 
     def create_transaction_asset(self):
         transaction_asset_fields = ['asset_manager_id', 'asset_id', 'asset_status', 'asset_class', 'asset_type',
