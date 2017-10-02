@@ -27,9 +27,7 @@ class TransactionsInterfaceTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.transactions_interface = TransactionsInterface(username='amaas_system', 
-                                                           password='amaaswelcome', 
-                                                           environment='dev')
+        cls.transactions_interface = TransactionsInterface()
         
     def setUp(self):
         self.longMessage = True  # Print complete error message on failure
@@ -42,7 +40,7 @@ class TransactionsInterfaceTest(unittest.TestCase):
                                                 asset_book_id=self.asset_book.book_id,
                                                 counterparty_book_id=self.counterparty_book.book_id)
         self.transaction_id = self.transaction.transaction_id
-        #self.setup_cache()
+        self.setup_cache()
 
     def tearDown(self):
         pass

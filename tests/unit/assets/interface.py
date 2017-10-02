@@ -51,13 +51,18 @@ class AssetsInterfaceTest(unittest.TestCase):
         self.assertEqual(asset.description, 'TEST')
         self.assertEqual(asset.version, 2)
 
-    def test_Upsert(self):
+    def test_Upsert_Amend(self):
         asset = self.assets_interface.new(self.asset)
         self.assertEqual(asset.version, 1)
         asset.description = 'TEST'
         asset = self.assets_interface.upsert(asset)
         self.assertEqual(asset.description, 'TEST')
         self.assertEqual(asset.version, 2)
+
+    def test_Upsert_New(self):
+        asset = self.assets_interface.upsert(self.asset)
+        self.assertEqual(asset.version, 1)
+        self.assertEqual(asset.asset_id, self.asset.asset_id)
 
     def test_Partial(self):
         self.assets_interface.new(self.asset)
