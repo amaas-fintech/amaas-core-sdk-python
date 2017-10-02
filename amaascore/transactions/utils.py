@@ -1,11 +1,13 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
+import inspect
 
 from amaascore.transactions.cash_transaction import CashTransaction
 from amaascore.transactions.enums import CASH_TRANSACTION_TYPES
 from amaascore.transactions.position import Position
 from amaascore.transactions.transaction import Transaction
+from amaascore.transactions.MTMResult import MTMResult
 
-import inspect
+
 
 def json_to_position(json_position):
     position = Position(**json_position)
@@ -37,3 +39,13 @@ def json_to_transaction(json_transaction):
                         if json_transaction.get(arg) is not None and arg != 'self'}
     transaction = clazz(**constructor_dict)
     return transaction
+
+
+def json_to_mtm_result(mtm_result_json):
+    args = inspect.getfullargspec(MTMResult.__init__)
+    mandatory = set(args.args[1:len(args.args)-len(args.defaults)])
+    missing = mandatory - set([attr for attr in mandatory if mtm_result_json.get(attr) is not None])
+    if not missing:
+        return MTMResult(**mtm_result_json)
+    else:
+        raise ValueError("Missing Fields: %s in class: MTMResult" % ",".join(missing))

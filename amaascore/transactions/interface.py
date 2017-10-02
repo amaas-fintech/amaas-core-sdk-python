@@ -6,7 +6,7 @@ import json
 from amaascore.config import ENVIRONMENT
 from amaascore.core.amaas_model import json_handler
 from amaascore.core.interface import Interface
-from amaascore.transactions.utils import json_to_transaction, json_to_position
+from amaascore.transactions.utils import json_to_transaction, json_to_position, json_to_mtm_result
 
 
 class TransactionsInterface(Interface):
@@ -161,6 +161,58 @@ class TransactionsInterface(Interface):
             transactions = [json_to_transaction(json_transaction) for json_transaction in response.json()]
             self.logger.info('Returned %s Transactions.', len(transactions))
             return transactions
+        else:
+            self.logger.error(response.text)
+            response.raise_for_status()
+
+    def new_mtm_result(self, asset_manager_id, mtm_results):
+        self.logger.info('Marking to market Positions - Asset Manager: %s', asset_manager_id)
+        if not isinstance(mtm_results, list):
+            mtm_results = [mtm_results]
+        mtm_result_json = []
+        for mtm_result in mtm_results:
+            mtm_result_json.append(mtm_result.to_interface())
+        url = '%s/mtm/%s' % (self.endpoint, asset_manager_id)
+        response = self.session.post(url, json=mtm_result_json)
+        if response.ok:
+            mtm_results = []
+            for mtm_result_json in response.json():
+                mtm_results.append(json_to_mtm_result(mtm_result_json))
+            return mtm_results
+        else:
+            self.logger.error(response.text)
+            response.raise_for_status()
+
+    def amend_mtm_result(self, asset_manager_id, mtm_results):
+        self.logger.info('Amending mtm Positions - Asset Manager: %s', asset_manager_id)
+        if not isinstance(mtm_results, list):
+            mtm_results = [mtm_results]
+        mtm_result_json = []
+        for mtm_result in mtm_results:
+            mtm_result_json.append(mtm_result.to_interface())
+        url = '%s/mtm/%s' % (self.endpoint, asset_manager_id)
+        response = self.session.put(url, json=mtm_result_json)
+        if response.ok:
+            mtm_results = []
+            for mtm_result_json in response.json():
+                mtm_results.append(json_to_mtm_result(mtm_result_json))
+            return mtm_results
+        else:
+            self.logger.error(response.text)
+            response.raise_for_status()
+
+    def retrieve_mtm_result(self, book_id, asset_manager_id, paramaters):
+        """
+        parameters is a dictionary of all the mtm result filter parameters
+        """
+        self.logger.info('Retrieving mtm Positions - Asset Manager: %s', asset_manager_id)
+        url = '%s/mtm/%s' % (self.endpoint, asset_manager_id)       
+        paramaters.update({'book_id': book_id})  
+        response = self.session.get(url, params = paramaters)
+        if response.ok:
+            mtm_results = [json_to_mtm_result(json_mtm_result) for json_mtm_result in response.json()]
+            self.logger.info('Returned %s mtm results.', len(mtm_results))
+            return mtm_results
         else:
             self.logger.error(response.text)
             response.raise_for_status()
