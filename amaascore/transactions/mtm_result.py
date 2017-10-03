@@ -24,8 +24,8 @@ class MTMResult(AMaaSModel):
         return {'client_id', 'created_by', 'updated_by'}
 
 
-    def __init__(self, asset_manager_id, book_id, mtm_value, business_date, mtm_timestamp, asset_id, 
-                 message='', client_id=None, mtm_status='Active', *args, **kwargs):
+    def __init__(self, asset_manager_id, book_id, business_date, mtm_timestamp, asset_id, 
+                 message='', client_id=None, mtm_value=None, mtm_status='Active', *args, **kwargs):
         self.client_id=client_id
         self.asset_manager_id=asset_manager_id 
         self.asset_id=asset_id
