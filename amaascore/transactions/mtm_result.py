@@ -55,7 +55,7 @@ class MTMResult(AMaaSModel):
 
     @mtm_value.setter
     def mtm_value(self, val):
-        if not isinstance(val, Decimal):
+        if not isinstance(val, Decimal) and val is not None:
             self._mtm_value = Decimal(val)
         else:
             self._mtm_value = val
