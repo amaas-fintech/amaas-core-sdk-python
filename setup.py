@@ -11,7 +11,7 @@ requires = [
 
 setup(
     name='amaascore',
-    version='0.5.22',
+    version='0.5.23',
     description='Asset Management as a Service - Core SDK',
     license='Apache License 2.0',
     url='https://github.com/amaas-fintech/amaas-core-sdk-python',
@@ -29,5 +29,3 @@ setup(
     packages=find_packages(exclude=['tests']),  # Very annoying that this doesnt work - I have to include a MANIFEST
     install_requires=requires,
 )
-
-
