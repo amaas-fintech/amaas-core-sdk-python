@@ -5,7 +5,7 @@ from amaascore.transactions.cash_transaction import CashTransaction
 from amaascore.transactions.enums import CASH_TRANSACTION_TYPES
 from amaascore.transactions.position import Position
 from amaascore.transactions.transaction import Transaction
-from amaascore.transactions.MTMResult import MTMResult
+from amaascore.transactions.mtm_result import MTMResult
 
 
 
