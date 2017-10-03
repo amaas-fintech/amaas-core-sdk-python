@@ -155,8 +155,7 @@ class AssetManagersInterface(Interface):
     def check_domains(self, domain):
         self.logger.info('Checking domain: %s', domain)
         url = '%s/domains' % self.endpoint
-        params = {'domain': 'domain',
-                  'is_primary': True}
+        params = {'domains': domain}
         response = self.session.get(url, params=params)
         if response.ok:
             self.logger.info('Successfully Checked Domain: %s', domain)

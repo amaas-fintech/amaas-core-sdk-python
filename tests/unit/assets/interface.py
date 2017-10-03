@@ -37,7 +37,7 @@ class AssetsInterfaceTest(unittest.TestCase):
         # TODO - this should be populated by the New call.
         #self.assertIsNotNone(asset.created_time)
         self.assertEqual(asset.asset_id, self.asset_id)
-    
+
     def test_CreateMany(self):
         assets = [generate_asset(asset_manager_id=self.asset_manager_id) for _ in range(random.randint(1,5))]
         results = self.assets_interface.create_many(assets)

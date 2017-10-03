@@ -113,7 +113,7 @@ class AssetsInterface(Interface):
             self.logger.error(response.text)
             response.raise_for_status()
 
-    def search(self, asset_manager_id, asset_ids=None, asset_classes=None, asset_types=None, 
+    def search(self, asset_manager_id, asset_ids=None, asset_classes=None, asset_types=None,
                page_no=None, page_size=None):
         self.logger.info('Search for Assets - Asset Manager: %s', asset_manager_id)
         search_params = {}
@@ -137,7 +137,7 @@ class AssetsInterface(Interface):
         else:
             self.logger.error(response.text)
             response.raise_for_status()
-    
+
     def fields_search(self, asset_manager_ids=None, asset_ids=None, asset_classes=None, asset_types=None,
                       fields=None, page_no=None, page_size=None):
         self.logger.info('Search for Assets - Asset Manager(s): %s', asset_manager_ids)
