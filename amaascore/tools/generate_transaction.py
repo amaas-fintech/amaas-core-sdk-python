@@ -10,7 +10,7 @@ from amaascore.core.reference import Reference
 from amaascore.transactions.cash_transaction import CashTransaction
 from amaascore.transactions.children import Charge, Code, Link, Party, Rate
 from amaascore.transactions.enums import TRANSACTION_ACTIONS, CASH_TRANSACTION_TYPES
-from amaascore.transactions.MTMResult import MTMResult
+from amaascore.transactions.mtm_result import MTMResult
 from amaascore.transactions.position import Position
 from amaascore.transactions.transaction import Transaction
 
