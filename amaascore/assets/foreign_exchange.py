@@ -12,13 +12,13 @@ type_check = str if sys.version_info >= (3, 0, 0) else (str, unicode)
 class ForeignExchangeBase(Asset):
     """ This class should never be instantiated """
 
-    def __init__(self, asset_id, asset_status, description, country_codes, display_name=None,
+    def __init__(self, asset_id, asset_status, description, country_codes, display_name=None, currency=None,
                  asset_manager_id=0, *args, **kwargs):
         self.asset_class = 'ForeignExchange'
         self.country_codes = country_codes
         super(ForeignExchangeBase, self).__init__(asset_manager_id=asset_manager_id, asset_id=asset_id, fungible=True,
                                                   display_name=display_name or asset_id, roll_price=False,
-                                                  asset_status=asset_status, description=description,
+                                                  asset_status=asset_status, description=description, currency=currency,
                                                   *args, **kwargs)
 
     def base_currency(self):
@@ -81,12 +81,12 @@ class ForeignExchangeSpot(ForeignExchangeBase):
     """
 
     def __init__(self, asset_manager_id, asset_id, asset_status='Active', description='', country_codes=[],
-                 underlying=None, settlement_date=None,
+                 underlying=None, settlement_date=None, currency=None,
                  display_name=None, *args, **kwargs):
         self.underlying = underlying
         self.settlement_date = settlement_date
         super(ForeignExchangeSpot, self).__init__(asset_manager_id=asset_manager_id, asset_id=asset_id,
-                                                  asset_status=asset_status,
+                                                  asset_status=asset_status, currency=currency,
                                                   country_codes=country_codes, display_name=display_name,
                                                   description=description, *args, **kwargs)
 
@@ -106,12 +106,12 @@ class ForeignExchangeForward(ForeignExchangeSpot):
     """
 
     def __init__(self, asset_manager_id, asset_id, asset_status='Active', description='', country_codes=[],
-                 forward_rate=None, underlying=None, settlement_date=None, fixing_date=None,
+                 forward_rate=None, underlying=None, settlement_date=None, fixing_date=None, currency=None,
                  display_name=None, *args, **kwargs):
         self.forward_rate = forward_rate
         self.fixing_date = fixing_date
         super(ForeignExchangeForward, self).__init__(asset_manager_id=asset_manager_id, asset_id=asset_id,
-                                                     asset_status=asset_status,
+                                                     asset_status=asset_status, currency=currency,
                                                      underlying=underlying, settlement_date=settlement_date,
                                                      country_codes=country_codes, display_name=display_name,
                                                      description=description, *args, **kwargs)
