@@ -19,6 +19,8 @@ class AssetTest(unittest.TestCase):
         bond = generate_bond()
         self.assertEqual(asset.asset_type_display, 'Asset')
         self.assertEqual(bond.asset_type_display, 'Bond Government')
+        self.assertEqual(asset.pricing_method(), 'Derived')
+        self.assertEqual(bond.pricing_method(), 'Derived')
 
 if __name__ == '__main__':
     unittest.main()

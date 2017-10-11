@@ -13,6 +13,10 @@ type_check = str if sys.version_info >= (3, 0, 0) else (str, unicode)
 
 class Future(ListedDerivative):
 
+    @staticmethod
+    def pricing_method():
+        return 'Market'
+
     def __init__(self, asset_manager_id, asset_id, settlement_type, contract_size, point_value, tick_size,
                  underlying_asset_id=None, quote_unit=None, asset_issuer_id=None, asset_status='Active',
                  currency=None, issue_date=date.min, expiry_date=None, display_name='', description='',

@@ -5,6 +5,10 @@ from amaascore.assets.asset import Asset
 
 class CurrencyBase(Asset):
 
+    @staticmethod
+    def pricing_method():
+        return 'Market'
+
     def __init__(self, asset_id, minor_unit_places, asset_manager_id=0, asset_status='Active', display_name='',
                  description='', country_id=None, *args, **kwargs):
         self.asset_class = 'Currency'
