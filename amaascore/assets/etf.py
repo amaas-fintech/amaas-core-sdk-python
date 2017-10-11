@@ -8,6 +8,10 @@ from amaascore.assets.fund import Fund
 
 class ExchangeTradedFund(Fund):
 
+    @staticmethod
+    def pricing_method():  # Only ETF is market priced, other funds default to derived type (most likely user manually key in price)
+        return 'Market'   
+
     def __init__(self, asset_manager_id, asset_id, nav=None, expense_ratio=None, net_assets=None,
                  asset_issuer_id=None, asset_status='Active', description='', display_name='', roll_price=False,
                  country_id=None, venue_id=None, currency=None, creation_date=None,
