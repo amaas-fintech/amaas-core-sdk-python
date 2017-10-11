@@ -5,6 +5,11 @@ from amaascore.assets.asset import Asset
 
 class Equity(Asset):
 
+
+    @staticmethod
+    def pricing_method():
+        return 'Market'
+
     def __init__(self, asset_manager_id, asset_id, share_class='Common', asset_issuer_id=None, asset_status='Active',
                  issue_date=None, display_name='', description='', country_id=None, venue_id=None, roll_price=False,
                  currency=None, links=None, references=None, *args, **kwargs):

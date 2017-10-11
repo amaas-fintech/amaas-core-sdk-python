@@ -19,6 +19,7 @@ class CurrencyTest(unittest.TestCase):
 
     def test_Currency(self):
         self.assertEqual(type(self.currency), Currency)
+        self.assertEqual(self.currency.pricing_method(), 'Market')
 
 if __name__ == '__main__':
     unittest.main()

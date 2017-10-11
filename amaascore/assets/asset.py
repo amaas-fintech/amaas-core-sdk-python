@@ -21,6 +21,10 @@ type_check = str if sys.version_info >= (3, 0, 0) else (str, unicode)
 class Asset(AMaaSModel):
 
     @staticmethod
+    def pricing_method():
+        return 'Derived'
+
+    @staticmethod
     def children():
         return {'comments': Comment, 'links': Link, 'references': Reference}
 

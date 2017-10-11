@@ -23,6 +23,7 @@ class FutureTest(unittest.TestCase):
 
     def test_Future(self):
         self.assertEqual(type(self.future), Future)
+        self.assertEqual(self.future.pricing_method(), 'Market')
 
     def test_Persistence(self):
         self.assets_interface.new(self.future)

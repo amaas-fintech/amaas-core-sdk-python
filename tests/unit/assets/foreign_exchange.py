@@ -24,6 +24,7 @@ class ForeignExchangeTest(unittest.TestCase):
     def test_ForeignExchange(self):
         fx = generate_foreignexchange(asset_id='USDJPY')
         self.assertEqual(type(fx), ForeignExchange)
+        self.assertEqual(self.fx_forward.pricing_method(), 'Derived')
 
     def test_ForeignExchangeForward(self):
         self.assertEqual(type(self.fx_forward), ForeignExchangeForward)
