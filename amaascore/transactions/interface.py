@@ -217,6 +217,22 @@ class TransactionsInterface(Interface):
             self.logger.error(response.text)
             response.raise_for_status()
 
+    def get_pnl_transactions(self, book_id, asset_manager_id, start_date, end_date):
+        self.logger.info('Retrieving transactions for PnL - Asset Manager: %s - Book ID: %s'%(asset_manager_id, book_id))
+        url = '%s/pnl_transactions/%s' % (self.endpoint, asset_manager_id)
+        search_params = {'asset_manager_id': asset_manager_id,
+                         'start_date': start_date,
+                         'book_id': book_id,
+                         'end_date': end_date}
+        response = self.session.get(url, params=search_params)
+        if response.ok:
+            transactions = [json_to_transaction(json_transaction) for json_transaction in response.json()]
+            self.logger.info('Returned %s Transactions.', len(transactions))
+            return transactions
+        else:
+            self.logger.error(response.text)
+            response.raise_for_status()        
+
     def position_search(self, asset_manager_id, book_ids=None, account_ids=None,
                         accounting_types=['Transaction Date'], asset_ids=None, position_date=None):
         self.logger.info('Search Positions - Asset Manager: %s', asset_manager_id)
