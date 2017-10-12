@@ -10,6 +10,8 @@ import random
 import requests_mock
 import unittest
 
+from amaascore.assets.interface import AssetsInterface
+from amaascore.books.interface import BooksInterface
 from amaascore.core.comment import Comment
 from amaascore.transactions.cash_transaction import CashTransaction
 from amaascore.transactions.transaction import Transaction
@@ -34,6 +36,8 @@ class TransactionsInterfaceTest(unittest.TestCase):
         self.longMessage = True  # Print complete error message on failure
         self.maxDiff = None  # View the complete diff when there is a mismatch in a test
         self.asset_manager_id = random.randint(1, 2**31-1)
+        self.assets_interface = AssetsInterface(environment=ENVIRONMENT)
+        self.books_interface = BooksInterface(environment=ENVIRONMENT)
         self.asset = generate_asset(asset_manager_id=self.asset_manager_id)
         self.asset_book = generate_book(asset_manager_id=self.asset_manager_id)
         self.counterparty_book = generate_book(asset_manager_id=self.asset_manager_id)
@@ -75,11 +79,7 @@ class TransactionsInterfaceTest(unittest.TestCase):
         self.assertEqual(result[0].asset_id, mtm_result.asset_id)
 
     def create_transaction_asset(self):
-        transaction_asset_fields = ['asset_manager_id', 'asset_id', 'asset_status', 'asset_class', 'asset_type',
-                                    'fungible']
-        asset_json = self.asset.to_json()
-        transaction_asset_json = {attr: asset_json.get(attr) for attr in transaction_asset_fields}
-        self.transactions_interface.upsert_transaction_asset(transaction_asset_json=transaction_asset_json)
+        self.assets_interface.upsert(asset)
 
     def setup_cache(self):
         self.create_transaction_asset()
@@ -87,10 +87,7 @@ class TransactionsInterfaceTest(unittest.TestCase):
         self.create_transaction_book(self.counterparty_book)
 
     def create_transaction_book(self, book):
-        transaction_book_fields = ['asset_manager_id', 'book_id', 'party_id', 'book_status']
-        book_json = book.to_json()
-        transaction_book_json = {attr: book_json.get(attr) for attr in transaction_book_fields}
-        self.transactions_interface.upsert_transaction_book(transaction_book_json=transaction_book_json)
+        self.books_interface.new(book)
 
     def test_New(self):
         self.assertIsNone(self.transaction.created_time)
