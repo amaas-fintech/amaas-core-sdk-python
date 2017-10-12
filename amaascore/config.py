@@ -1,18 +1,8 @@
 # POTENTIALLY SUPPORT MULTIPLE ENVIRONMENTS
 from __future__ import absolute_import, division, print_function, unicode_literals
-
-envs = {'local', 'dev', 'staging', 'production'}
+from collections import namedtuple
 
 ENVIRONMENT = 'production'
-API_VERSION = 'v1.0'
-
-LOCAL_ENDPOINT = 'http://localhost:8000'
-BASE_URLS = {
-    'production': 'https://api.amaas.com',
-    'staging': 'https://api-staging.amaas.com',
-    'dev': 'https://api-dev.amaas.com'
-}
-
 ENDPOINTS = {
     'asset_managers': 'assetmanager',
     'assets': 'asset',
@@ -25,8 +15,30 @@ ENDPOINTS = {
     'transactions': 'transaction'
 }
 
-# Do not change this
-COGNITO_REGION = 'ap-southeast-1'
-COGNITO_POOL = 'ap-southeast-1_De6j7TWIB'
-# This is not secret - it is just an identifier
-COGNITO_CLIENT_ID = '2qk35mhjjpk165vssuqhqoi1lk'
+EnvironmentConfig = namedtuple('EnvironmentConfig',
+                               'environment base_url api_version cognito_region cognito_pool cognito_client_id')
+CONFIGURATIONS = {'production': EnvironmentConfig(environment='production',
+                                                  base_url='https://api.amaas.com',
+                                                  api_version='sg1.0',
+                                                  cognito_region='ap-southeast-1',
+                                                  cognito_pool='ap-southeast-1_0LilJdUR3',
+                                                  cognito_client_id='7b7kt883veb7rr2toolj1ukp6j'),
+                  'staging': EnvironmentConfig(environment='staging',
+                                               base_url='https://api-staging.amaas.com',
+                                               api_version='v1.0',
+                                               cognito_region='ap-southeast-1',
+                                               cognito_pool='ap-southeast-1_De6j7TWIB',
+                                               cognito_client_id='2qk35mhjjpk165vssuqhqoi1lk'),
+                  'dev': EnvironmentConfig(environment='dev',
+                                           base_url='https://api-dev.amaas.com',
+                                           api_version='v1.0',
+                                           cognito_region='ap-southeast-1',
+                                           cognito_pool='ap-southeast-1_De6j7TWIB',
+                                           cognito_client_id='2qk35mhjjpk165vssuqhqoi1lk'),
+                  'local': EnvironmentConfig(environment='local',
+                                             base_url='http://localhost:8000',
+                                             api_version='',
+                                             cognito_region='ap-southeast-1',
+                                             cognito_pool='ap-southeast-1_De6j7TWIB',
+                                             cognito_client_id='2qk35mhjjpk165vssuqhqoi1lk')}
+

@@ -9,8 +9,7 @@ from os import environ
 import requests
 from warrant.aws_srp import AWSSRP
 
-from amaascore.config import COGNITO_REGION, COGNITO_CLIENT_ID, COGNITO_POOL, ENDPOINTS, LOCAL_ENDPOINT,\
-    BASE_URLS, ENVIRONMENT, API_VERSION
+from amaascore.config import ENVIRONMENT, ENDPOINTS, CONFIGURATIONS
 from amaascore.exceptions import AMaaSException
 
 
@@ -18,7 +17,7 @@ class AMaaSSession(object):
 
     __shared_state = {}
 
-    def __init__(self, username, password, logger):
+    def __init__(self, username, password, environment_config, logger):
         if not AMaaSSession.__shared_state:
             AMaaSSession.__shared_state = self.__dict__
             self.refresh_period = 45 * 60  # minutes * seconds
@@ -27,9 +26,9 @@ class AMaaSSession(object):
             self.tokens = None
             self.last_authenticated = None
             self.session = requests.Session()
-            self.client = boto3.client('cognito-idp', COGNITO_REGION)
-            self.aws = AWSSRP(username=self.username, password=self.password, pool_id=COGNITO_POOL,
-                              client_id=COGNITO_CLIENT_ID, client=self.client)
+            self.client = boto3.client('cognito-idp', environment_config.cognito_region)
+            self.aws = AWSSRP(username=self.username, password=self.password, pool_id=environment_config.cognito_pool,
+                              client_id=environment_config.cognito_client_id, client=self.client)
             self.logger = logger
         else:
             self.__dict__ = AMaaSSession.__shared_state
@@ -102,24 +101,26 @@ class Interface(object):
         self.config_filename = config_filename
         self.endpoint_type = endpoint_type
         self.environment = environment
+        self.environment_config = CONFIGURATIONS.get(environment)
         self.endpoint = endpoint or self.get_endpoint()
         self.json_header = {'Content-Type': 'application/json'}
         username = username or environ.get('AMAAS_USERNAME') or self.read_config('username')
         password = password or environ.get('AMAAS_PASSWORD') or self.read_config('password')
-        self.session = AMaaSSession(username, password, self.logger)
+        self.session = AMaaSSession(username, password, self.environment_config, self.logger)
         self.logger.info('Interface Created')
 
     def get_endpoint(self):
         if self.environment == 'local':
-            return LOCAL_ENDPOINT
-        if self.environment not in BASE_URLS:
+            return self.environment_config.base_url
+        if self.environment not in CONFIGURATIONS:
             raise KeyError('Invalid environment specified.')
 
-        base_url = BASE_URLS[self.environment]
+        base_url = self.environment_config.base_url
         endpoint = ENDPOINTS.get(self.endpoint_type)
+        api_version = self.environment_config.api_version
         if not endpoint:
             raise KeyError('Cannot find endpoint')
-        endpoint = '/'.join([base_url, API_VERSION, endpoint])
+        endpoint = '/'.join([base_url, api_version, endpoint])
         self.logger.info("Using Endpoint: %s", endpoint)
         return endpoint
 
