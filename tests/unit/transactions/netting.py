@@ -9,6 +9,7 @@ from amaascore.transactions.transaction import Transaction
 from amaascore.tools.generate_asset import generate_asset
 from amaascore.tools.generate_book import generate_book
 from amaascore.tools.generate_transaction import generate_transaction
+from unit.config import ENVIRONMENT
 
 
 class NettingTest(unittest.TestCase):
@@ -16,7 +17,7 @@ class NettingTest(unittest.TestCase):
     def setUp(self):
         self.longMessage = True  # Print complete error message on failure
         self.maxDiff = None  # View the complete diff when there is a mismatch in a test
-        self.interface = TransactionsInterface()
+        self.interface = TransactionsInterface(environment=ENVIRONMENT)
         self.asset_manager_id = 1
         self.asset = generate_asset(asset_manager_id=self.asset_manager_id, fungible=True)
         self.asset_book = generate_book(asset_manager_id=self.asset_manager_id)

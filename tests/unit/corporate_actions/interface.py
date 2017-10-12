@@ -8,6 +8,7 @@ import unittest
 
 from amaascore.corporate_actions.interface import CorporateActionsInterface
 from amaascore.tools.generate_corporate_action import generate_corporate_action, generate_corporate_actions
+from unit.config import ENVIRONMENT
 
 import logging.config
 logging.config.dictConfig(DEFAULT_LOGGING)
@@ -17,7 +18,7 @@ class CorporateActionsInterfaceTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.corporate_actions_interface = CorporateActionsInterface()
+        cls.corporate_actions_interface = CorporateActionsInterface(environment=ENVIRONMENT)
 
     def setUp(self):
         self.maxDiff = None

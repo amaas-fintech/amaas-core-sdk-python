@@ -7,6 +7,7 @@ import unittest
 from amaascore.assets.fx_option import ForeignExchangeOption
 from amaascore.assets.interface import AssetsInterface
 from amaascore.tools.generate_asset import generate_fx_option
+from unit.config import ENVIRONMENT
 
 
 class ForeignExchangeOptionTest(unittest.TestCase):
@@ -16,7 +17,7 @@ class ForeignExchangeOptionTest(unittest.TestCase):
         self.asset_manager_id = random.randint(1, 2**31-1)
         self.fx_option = generate_fx_option(asset_manager_id=self.asset_manager_id)
         self.asset_id = self.fx_option.asset_id
-        self.assets_interface = AssetsInterface()
+        self.assets_interface = AssetsInterface(environment=ENVIRONMENT)
 
     def tearDown(self):
         pass

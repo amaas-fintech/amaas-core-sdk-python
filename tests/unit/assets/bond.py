@@ -6,7 +6,7 @@ import unittest
 from amaascore.assets.bond import BondGovernment
 from amaascore.assets.interface import AssetsInterface
 from amaascore.tools.generate_asset import generate_bond
-
+from unit.config import ENVIRONMENT
 
 class BondTest(unittest.TestCase):
 
@@ -15,7 +15,7 @@ class BondTest(unittest.TestCase):
         self.asset_manager_id = random.randint(1, 2**31-1)
         self.bond = generate_bond(asset_manager_id=self.asset_manager_id)
         self.asset_id = self.bond.asset_id
-        self.assets_interface = AssetsInterface()
+        self.assets_interface = AssetsInterface(environment=ENVIRONMENT)
 
     def tearDown(self):
         pass

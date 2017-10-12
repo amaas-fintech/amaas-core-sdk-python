@@ -6,7 +6,7 @@ import unittest
 
 from amaascore.assets.custom_asset import CustomAsset
 from amaascore.assets.interface import AssetsInterface
-
+from unit.config import ENVIRONMENT
 
 class Pizza(CustomAsset):
 
@@ -25,7 +25,7 @@ class CustomAssetTest(unittest.TestCase):
         asset_manager_id = random.randint(1, 2**31-1)
         self.pizza = Pizza(asset_id='pizza1', asset_manager_id=asset_manager_id,
                            size='Large', toppings=['pineapple', 'corn', 'garlic'])
-        self.assets_interface = AssetsInterface()
+        self.assets_interface = AssetsInterface(environment=ENVIRONMENT)
 
     def tearDown(self):
         pass

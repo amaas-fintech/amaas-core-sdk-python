@@ -10,6 +10,7 @@ from amaascore.transactions.interface import TransactionsInterface
 from amaascore.tools.generate_asset import generate_asset
 from amaascore.tools.generate_book import generate_book
 from amaascore.tools.generate_transaction import generate_transaction
+from unit.config import ENVIRONMENT
 
 import logging.config
 logging.config.dictConfig(DEFAULT_LOGGING)
@@ -20,7 +21,7 @@ class AllocationTest(unittest.TestCase):
     def setUp(self):
         self.longMessage = True  # Print complete error message on failure
         self.maxDiff = None  # View the complete diff when there is a mismatch in a test
-        self.transactions_interface = TransactionsInterface()
+        self.transactions_interface = TransactionsInterface(environment=ENVIRONMENT)
         self.asset_manager_id = 1
         self.asset = generate_asset(asset_manager_id=self.asset_manager_id)
         self.asset_book = generate_book(asset_manager_id=self.asset_manager_id)
