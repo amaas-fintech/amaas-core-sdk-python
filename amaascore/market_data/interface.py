@@ -3,7 +3,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import json
 import logging
 
-from amaascore.config import ENVIRONMENT, LOCAL_ENDPOINT
+from amaascore.config import ENVIRONMENT
 from amaascore.core.amaas_model import json_handler
 from amaascore.core.interface import Interface
 from amaascore.market_data.utils import json_to_eod_price, json_to_fx_rate, json_to_curve

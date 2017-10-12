@@ -353,36 +353,6 @@ class TransactionsInterface(Interface):
             self.logger.error(response.text)
             response.raise_for_status()
 
-    def upsert_transaction_asset(self, transaction_asset_json):
-        """
-        This API should not be called in normal circumstances as the asset cache will populate itself from the assets
-        which are created via the Assets API.  However, it can be useful for certain testing scenarios.
-        :param transaction_asset_json:
-        :return:
-        """
-        url = self.endpoint + '/assets'
-        response = self.session.post(url, json=transaction_asset_json)
-        if response.ok:
-            return response.json()
-        else:
-            self.logger.error(response.text)
-            response.raise_for_status()
-
-    def upsert_transaction_book(self, transaction_book_json):
-        """
-        This API should not be called in normal circumstances as the book cache will populate itself from the book
-        which are created via the Books API.  However, it can be useful for certain testing scenarios.
-        :param transaction_book_json:
-        :return:
-        """
-        url = self.endpoint + '/books'
-        response = self.session.post(url, json=transaction_book_json)
-        if response.ok:
-            return response.json()
-        else:
-            self.logger.error(response.text)
-            response.raise_for_status()
-
     def book_transfer(self, asset_manager_id, asset_id, source_book_id, target_book_id, wash_book_id, quantity, price,
                       currency):
         """
