@@ -7,6 +7,7 @@ import unittest
 
 from amaascore.books.interface import BooksInterface
 from amaascore.tools.generate_book import generate_book
+from unit.config import ENVIRONMENT
 
 import logging.config
 logging.config.dictConfig(DEFAULT_LOGGING)
@@ -16,7 +17,7 @@ class BooksInterfaceTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.books_interface = BooksInterface()
+        cls.books_interface = BooksInterface(environment=ENVIRONMENT)
         cls.asset_manager_id = random.randint(1, 2**31-1)
 
     def setUp(self):
