@@ -99,6 +99,12 @@ class ForeignExchangeSpot(ForeignExchangeBase):
         self._settlement_date = parse(settlement_date).date() if isinstance(settlement_date, type_check) \
             else settlement_date
 
+    def base_currency(self):
+        return self.underlying[0:3] if self.underlying else None
+
+    def counter_currency(self):
+        return self.underlying[3:6] if self.underlying else None
+
 
 class ForeignExchangeForward(ForeignExchangeSpot):
     """
