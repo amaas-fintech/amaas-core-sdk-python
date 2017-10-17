@@ -79,7 +79,7 @@ class TransactionsInterfaceTest(unittest.TestCase):
         self.assertEqual(result[0].asset_id, mtm_result.asset_id)
 
     def create_transaction_asset(self):
-        self.assets_interface.upsert(asset)
+        self.assets_interface.upsert(self.asset)
 
     def setup_cache(self):
         self.create_transaction_asset()
