@@ -48,7 +48,7 @@ class AssetsInterface(Interface):
     def upsert(self, asset):
         ''' upsert only support upserting one asset at a time'''
         self.logger.info('Upsert Asset - Asset Manager: %s - Asset ID: %s', asset.asset_manager_id, asset.asset_id)
-        url = '%s/assets/%s/%s' % (self.endpoint, asset.asset_manager_id, asset.asset_id)
+        url = '%s/assets/%s' % (self.endpoint, asset.asset_manager_id)
         response = self.session.post(url, json=asset.to_interface(), params={'upsert': True})
         if response.ok:
             self.logger.info('Successfully Upserted Asset - Asset Manager: %s - Asset ID: %s', asset.asset_manager_id,
