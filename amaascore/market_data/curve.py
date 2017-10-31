@@ -15,7 +15,7 @@ type_check = str if sys.version_info >= (3, 0, 0) else (str, unicode)
 
 class Curve(AMaaSModel):
 
-    def __init__(self, asset_manager_id, asset_id, fixing_type, business_date, curve_timestamp, curve_rates, client_id, curve_type, additional, active=True,
+    def __init__(self, asset_manager_id, asset_id, fixing_type, business_date, curve_timestamp, tenor_dates, curve_rates, client_id, curve_type, additional, active=True,
                   *args, **kwargs):
         """
 
@@ -39,8 +39,27 @@ class Curve(AMaaSModel):
         self.active = active
         self.client_id = client_id
         self.additional = additional
+        self.tenor_dates = tenor_dates
         super(Curve, self).__init__(*args, **kwargs)
 
+    @property
+    def tenor_dates(self):
+        additional = json.loads(self._additional)
+        td = additional.get('tenor_dates')
+        tenor_dates = {}
+        for tenor, date in td.items():
+            tenor_dates[tenor] = parse(date).date()
+        return tenor_dates
+
+    @tenor_dates.setter
+    def tenor_dates(self, tenor_dates):
+        if tenor_dates is not None:
+            td = {}
+            for tenor, date in tenor_dates.items():  # converting dates into str for json serialization
+                td[tenor] = str(date)
+            additional = json.loads(self._additional)
+            additional['tenor_dates'] = td
+            self.additional = additional
 
     @property
     def curve_rates(self):
