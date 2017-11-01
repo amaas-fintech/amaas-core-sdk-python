@@ -23,7 +23,7 @@ REFERENCE_TYPES = ['External']
 
 
 def generate_common(asset_manager_id, asset_book_id, counterparty_book_id, asset_id, quantity, transaction_date,
-                    transaction_id, transaction_action, transaction_type, transaction_status):
+                    settlement_date, transaction_id, transaction_action, transaction_type, transaction_status):
 
     common = {'asset_manager_id': asset_manager_id or random.randint(1, 1000),
               'asset_book_id': asset_book_id or random_string(8),
@@ -37,7 +37,7 @@ def generate_common(asset_manager_id, asset_book_id, counterparty_book_id, asset
               'transaction_type': transaction_type or 'Trade'
               }
 
-    common['settlement_date'] = (datetime.timedelta(days=2) + common['transaction_date'])
+    common['settlement_date'] = settlement_date or (datetime.timedelta(days=2) + common['transaction_date'])
     return common
 
 def generate_mtm_result(asset_manager_id=None, book_id=None, mtm_value=None, business_date=None, mtm_timestamp=None,
@@ -56,7 +56,7 @@ def generate_mtm_result(asset_manager_id=None, book_id=None, mtm_value=None, bus
 
 def generate_transaction(asset_manager_id=None, asset_book_id=None, counterparty_book_id=None,
                          asset_id=None, quantity=None, transaction_date=None, transaction_id=None,
-                         price=None, transaction_action=None, transaction_type=None,
+                         price=None, transaction_action=None, transaction_type=None, settlement_date=None,
                          transaction_status=None, transaction_currency=None, settlement_currency=None,
                          net_affecting_charges=None, charge_currency=None):
     # Explicitly handle price is None (in case price is 0)
@@ -65,9 +65,9 @@ def generate_transaction(asset_manager_id=None, asset_book_id=None, counterparty
     settlement_currency = settlement_currency or transaction_currency or random.choice(['SGD', 'USD'])
     common = generate_common(asset_manager_id=asset_manager_id, asset_book_id=asset_book_id,
                              counterparty_book_id=counterparty_book_id, asset_id=asset_id, quantity=quantity,
-                             transaction_date=transaction_date, transaction_id=transaction_id,
+                             transaction_date=transaction_date, transaction_id=transaction_id, 
                              transaction_action=transaction_action, transaction_status=transaction_status,
-                             transaction_type=transaction_type)
+                             transaction_type=transaction_type, settlement_date=settlement_date)
 
     transaction = Transaction(price=price, transaction_currency=transaction_currency,
                               settlement_currency=settlement_currency, **common)
