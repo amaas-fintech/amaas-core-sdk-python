@@ -1,12 +1,13 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 from amaasutils.random_utils import random_string, random_decimal
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 import pytz
 import random
 
 from amaascore.market_data.eod_price import EODPrice
 from amaascore.market_data.fx_rate import FXRate
+from amaascore.market_data.curve import Curve
 from amaascore.market_data.quote import Quote
 
 

@@ -11,6 +11,7 @@ from amaascore.transactions.cash_transaction import CashTransaction
 from amaascore.transactions.children import Charge, Code, Link, Party, Rate
 from amaascore.transactions.enums import TRANSACTION_ACTIONS, CASH_TRANSACTION_TYPES
 from amaascore.transactions.mtm_result import MTMResult
+from amaascore.transactions.pnl_result import PNLResult
 from amaascore.transactions.position import Position
 from amaascore.transactions.transaction import Transaction
 
@@ -39,6 +40,28 @@ def generate_common(asset_manager_id, asset_book_id, counterparty_book_id, asset
 
     common['settlement_date'] = settlement_date or (datetime.timedelta(days=2) + common['transaction_date'])
     return common
+
+def generate_pnl_result(asset_manager_id=None, book_id=None, asset_id=None, period=None,
+                        business_date=None, version=None, total_pnl=None, asset_pnl=None, fx_pnl=None,
+                        unrealised_pnl=None, realised_pnl=None, message=None, client_id=None,
+                        pnl_status='Active'):
+    total_pnl = random.randrange(-100000000, 2000000000)
+    asset_pnl = random.randrange(-100000000, 1000000000)
+    fx_pnl = total_pnl - asset_pnl
+    pnl_result = PNLResult(asset_manager_id=asset_manager_id or random.randint(1, 10000),
+                           book_id=book_id or random_string(8),
+                           asset_id=asset_id or random_string(10),
+                           period=period or random.choice(['YTD', 'MTD', 'DTD']),
+                           business_date=business_date or datetime.date.today(),
+                           version=version or 1,
+                           total_pnl=total_pnl or str(total_pnl),
+                           fx_pnl=fx_pnl or str(fx_pnl),
+                           asset_pnl=asset_pnl or (asset_pnl),
+                           unrealised_pnl=unrealised_pnl,
+                           realised_pnl=realised_pnl,
+                           message=message or '',
+                           client_id=client_id or 1)
+    return pnl_result
 
 def generate_mtm_result(asset_manager_id=None, book_id=None, mtm_value=None, business_date=None, mtm_timestamp=None,
                         asset_id=None, message=None, client_id=None, mtm_status=None):
