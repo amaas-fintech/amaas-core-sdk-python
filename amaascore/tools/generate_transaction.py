@@ -44,7 +44,7 @@ def generate_common(asset_manager_id, asset_book_id, counterparty_book_id, asset
 def generate_pnl_result(asset_manager_id=None, book_id=None, asset_id=None, period=None,
                         business_date=None, version=None, total_pnl=None, asset_pnl=None, fx_pnl=None,
                         unrealised_pnl=None, realised_pnl=None, message=None, client_id=None,
-                        pnl_status='Active'):
+                        transaction_id=None, pnl_status='Active'):
     total_pnl = random.randrange(-100000000, 2000000000)
     asset_pnl = random.randrange(-100000000, 1000000000)
     fx_pnl = total_pnl - asset_pnl
@@ -60,6 +60,7 @@ def generate_pnl_result(asset_manager_id=None, book_id=None, asset_id=None, peri
                            unrealised_pnl=unrealised_pnl,
                            realised_pnl=realised_pnl,
                            message=message or '',
+                           transaction_id=transaction_id,
                            client_id=client_id or 1)
     return pnl_result
 

@@ -11,7 +11,7 @@ class PNLResult(AMaaSModel):
     def stored_attributes():
         return {'asset_manager_id', 'book_id', 'asset_id', 'period',
                 'business_date', 'message', 'version', 'total_pnl',
-                'asset_pnl', 'fx_pnl', 'unrealised_pnl',
+                'asset_pnl', 'fx_pnl', 'unrealised_pnl', 'transaction_id'
                 'realised_pnl', 'message', 'pnl_status'}
 
     @staticmethod
@@ -27,8 +27,8 @@ class PNLResult(AMaaSModel):
 
     def __init__(self, asset_manager_id, book_id, asset_id, period,
                  business_date, version, total_pnl, asset_pnl, fx_pnl,
-                 unrealised_pnl, realised_pnl, message='', client_id=None,
-                 pnl_status='Active', *args, **kwargs):
+                 unrealised_pnl, realised_pnl, transaction_id, message='',
+                 client_id=None, pnl_status='Active', *args, **kwargs):
         self.client_id = client_id
         self.asset_manager_id = asset_manager_id
         self.asset_id = asset_id
@@ -42,6 +42,7 @@ class PNLResult(AMaaSModel):
         self.fx_pnl = fx_pnl
         self.pnl_status = pnl_status
         self.message = message
+        self.transaction_id = transaction_id
         self.version = version
 
         super(PNLResult, self).__init__(*args, **kwargs)
