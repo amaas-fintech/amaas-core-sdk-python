@@ -7,29 +7,10 @@ from amaascore.core.amaas_model import AMaaSModel
 
 class PNLResult(AMaaSModel):
 
-    @staticmethod
-    def stored_attributes():
-        return {'asset_manager_id', 'book_id', 'asset_id', 'period',
-                'business_date', 'message', 'version', 'total_pnl',
-                'asset_pnl', 'fx_pnl', 'unrealised_pnl', 'transaction_id',
-                'pnl_timestamp', 'realised_pnl', 'message', 'pnl_status'}
-
-    @staticmethod
-    def lambda_calculated_attributes():
-        """
-        These fields are calculated internally.  Do not set manually.
-        If set manually they will be overridden when the transaction
-        is persisted.
-        :return:
-        """
-        return {'client_id', 'created_by', 'updated_by'}
-
-
     def __init__(self, asset_manager_id, book_id, asset_id, period,
                  business_date, version, total_pnl, asset_pnl, fx_pnl,
                  unrealised_pnl, realised_pnl, transaction_id, pnl_timestamp, 
-                 message='', client_id=None, pnl_status='Active', *args, **kwargs):
-        self.client_id = client_id
+                 message='', pnl_status='Active', *args, **kwargs):
         self.asset_manager_id = asset_manager_id
         self.asset_id = asset_id
         self.book_id = book_id

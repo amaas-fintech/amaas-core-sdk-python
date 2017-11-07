@@ -47,17 +47,12 @@ class Curve(AMaaSModel):
         td = additional.get('tenor_dates')
         if td is None:
             raise ValueError("Error in retrieving tenor dates from database for %s on %s" %(self.asset_id, self.business_date))
-        tenor_dates = {}
-        try:
-            for tenor, date_str in td.items():
-                date_elements = date_str.split('-')
-                tenor_dates[tenor] = date(int(date_elements[0]), int(date_elements[1]), int(date_elements[2]))
-            return tenor_dates
-        except Exception:
-            # NOTE: The above TRY block works under the assumption that our tenor_dates uses the format 'YYYY-MM-DD'
-            # This optimization is important because it is more efficient than dateutil.parser when this method is called
-            # many times during curve interpolation.
-            raise
+        tenor_dates = {}     
+        for tenor, date_str in td.items():
+            date_elements = date_str.split('-')
+            tenor_dates[tenor] = date(int(date_elements[0]), int(date_elements[1]), int(date_elements[2]))
+        return tenor_dates
+
 
     @property
     def curve_rates(self):
