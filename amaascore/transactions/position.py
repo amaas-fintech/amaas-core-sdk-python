@@ -10,8 +10,7 @@ class Position(AMaaSModel):
 
     def __init__(self, asset_manager_id, book_id, account_id, accounting_type,
                  asset_id, quantity, client_id=None, *args, **kwargs):
-
-        self.client_id = client_id or 1  # Read this from the logged in user so no chance of shenanigans
+                 
         self.asset_manager_id = asset_manager_id
         self.book_id = book_id
         self.account_id = account_id

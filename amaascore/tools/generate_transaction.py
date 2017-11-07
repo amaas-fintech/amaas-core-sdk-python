@@ -138,13 +138,12 @@ def generate_cash_transaction(asset_manager_id=None, asset_book_id=None, counter
 
 
 def generate_position(asset_manager_id=None, book_id=None, asset_id=None, account_id=None, 
-                      accounting_type=None, client_id=None, quantity=None):
+                      accounting_type=None, quantity=None):
     position = Position(asset_manager_id=asset_manager_id or random.randint(1, 1000),
                         book_id=book_id or random_string(8),
                         asset_id=asset_id or str(random.randint(1, 1000)),
                         account_id=random.choice(['Cash', 'Asset']),
                         accounting_type=random.choice(['Transaction Date', 'Settlement Date']),
-                        client_id=random.randint(1, 1000),
                         quantity=quantity or Decimal(random.randint(1, 50000)))
     return position
 
