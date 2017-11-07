@@ -11,6 +11,7 @@ from amaascore.transactions.cash_transaction import CashTransaction
 from amaascore.transactions.children import Charge, Code, Link, Party, Rate
 from amaascore.transactions.enums import TRANSACTION_ACTIONS, CASH_TRANSACTION_TYPES
 from amaascore.transactions.mtm_result import MTMResult
+from amaascore.transactions.pnl_result import PNLResult
 from amaascore.transactions.position import Position
 from amaascore.transactions.transaction import Transaction
 
@@ -23,7 +24,7 @@ REFERENCE_TYPES = ['External']
 
 
 def generate_common(asset_manager_id, asset_book_id, counterparty_book_id, asset_id, quantity, transaction_date,
-                    transaction_id, transaction_action, transaction_type, transaction_status):
+                    settlement_date, transaction_id, transaction_action, transaction_type, transaction_status):
 
     common = {'asset_manager_id': asset_manager_id or random.randint(1, 1000),
               'asset_book_id': asset_book_id or random_string(8),
@@ -37,8 +38,32 @@ def generate_common(asset_manager_id, asset_book_id, counterparty_book_id, asset
               'transaction_type': transaction_type or 'Trade'
               }
 
-    common['settlement_date'] = (datetime.timedelta(days=2) + common['transaction_date'])
+    common['settlement_date'] = settlement_date or (datetime.timedelta(days=2) + common['transaction_date'])
     return common
+
+def generate_pnl_result(asset_manager_id=None, book_id=None, asset_id=None, period=None,
+                        business_date=None, version=None, total_pnl=None, asset_pnl=None, fx_pnl=None,
+                        unrealised_pnl=None, realised_pnl=None, message=None, client_id=None,
+                        transaction_id=None, pnl_timestamp=None, pnl_status='Active'):
+    total_pnl = random.randrange(-100000000, 2000000000)
+    asset_pnl = random.randrange(-100000000, 1000000000)
+    fx_pnl = total_pnl - asset_pnl
+    pnl_result = PNLResult(asset_manager_id=asset_manager_id or random.randint(1, 10000),
+                           book_id=book_id or random_string(8),
+                           asset_id=asset_id or random_string(10),
+                           period=period or random.choice(['YTD', 'MTD', 'DTD']),
+                           business_date=business_date or datetime.date.today(),
+                           version=version or 1,
+                           total_pnl=total_pnl or str(total_pnl),
+                           fx_pnl=fx_pnl or str(fx_pnl),
+                           asset_pnl=asset_pnl or (asset_pnl),
+                           unrealised_pnl=unrealised_pnl,
+                           realised_pnl=realised_pnl,
+                           message=message or '',
+                           transaction_id=transaction_id or random_string(16),
+                           pnl_timestamp=pnl_timestamp or datetime.datetime.utcnow(),
+                           client_id=client_id or 1)
+    return pnl_result
 
 def generate_mtm_result(asset_manager_id=None, book_id=None, mtm_value=None, business_date=None, mtm_timestamp=None,
                         asset_id=None, message=None, client_id=None, mtm_status=None):
@@ -56,7 +81,7 @@ def generate_mtm_result(asset_manager_id=None, book_id=None, mtm_value=None, bus
 
 def generate_transaction(asset_manager_id=None, asset_book_id=None, counterparty_book_id=None,
                          asset_id=None, quantity=None, transaction_date=None, transaction_id=None,
-                         price=None, transaction_action=None, transaction_type=None,
+                         price=None, transaction_action=None, transaction_type=None, settlement_date=None,
                          transaction_status=None, transaction_currency=None, settlement_currency=None,
                          net_affecting_charges=None, charge_currency=None):
     # Explicitly handle price is None (in case price is 0)
@@ -65,9 +90,9 @@ def generate_transaction(asset_manager_id=None, asset_book_id=None, counterparty
     settlement_currency = settlement_currency or transaction_currency or random.choice(['SGD', 'USD'])
     common = generate_common(asset_manager_id=asset_manager_id, asset_book_id=asset_book_id,
                              counterparty_book_id=counterparty_book_id, asset_id=asset_id, quantity=quantity,
-                             transaction_date=transaction_date, transaction_id=transaction_id,
+                             transaction_date=transaction_date, transaction_id=transaction_id, 
                              transaction_action=transaction_action, transaction_status=transaction_status,
-                             transaction_type=transaction_type)
+                             transaction_type=transaction_type, settlement_date=settlement_date)
 
     transaction = Transaction(price=price, transaction_currency=transaction_currency,
                               settlement_currency=settlement_currency, **common)
@@ -112,10 +137,13 @@ def generate_cash_transaction(asset_manager_id=None, asset_book_id=None, counter
     return transaction
 
 
-def generate_position(asset_manager_id=None, book_id=None, asset_id=None, quantity=None):
+def generate_position(asset_manager_id=None, book_id=None, asset_id=None, account_id=None, 
+                      accounting_type=None, quantity=None):
     position = Position(asset_manager_id=asset_manager_id or random.randint(1, 1000),
                         book_id=book_id or random_string(8),
                         asset_id=asset_id or str(random.randint(1, 1000)),
+                        account_id=random.choice(['Cash', 'Asset']),
+                        accounting_type=random.choice(['Transaction Date', 'Settlement Date']),
                         quantity=quantity or Decimal(random.randint(1, 50000)))
     return position
 
