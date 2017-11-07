@@ -6,7 +6,7 @@ import json
 from amaascore.config import ENVIRONMENT
 from amaascore.core.amaas_model import json_handler
 from amaascore.core.interface import Interface
-from amaascore.transactions.utils import json_to_transaction, json_to_position, json_to_mtm_result
+from amaascore.transactions.utils import json_to_transaction, json_to_position, json_to_mtm_result, json_to_pnl_result
 
 
 class TransactionsInterface(Interface):
@@ -165,6 +165,24 @@ class TransactionsInterface(Interface):
             self.logger.error(response.text)
             response.raise_for_status()
 
+    def new_pnl_results(self, asset_manager_id, pnl_results):
+        self.logger.info('PnL results for - Asset Manager: %s', asset_manager_id)
+        if not isinstance(pnl_results, list):
+            pnl_results = [pnl_results]
+        pnl_result_json = []
+        for pnl_result in pnl_results:
+            pnl_result_json.append(pnl_result.to_interface())
+        url = '%s/pnl/%s' % (self.endpoint, asset_manager_id)
+        response = self.session.post(url, json=pnl_result_json)
+        if response.ok:
+            pnl_results = []
+            for pnl_result_json in response.json():
+                pnl_results.append(json_to_pnl_result(pnl_result_json))
+            return pnl_results
+        else:
+            self.logger.error(response.text)
+            response.raise_for_status()
+
     def new_mtm_result(self, asset_manager_id, mtm_results):
         self.logger.info('Marking to market Positions - Asset Manager: %s', asset_manager_id)
         if not isinstance(mtm_results, list):
@@ -213,6 +231,23 @@ class TransactionsInterface(Interface):
             mtm_results = [json_to_mtm_result(json_mtm_result) for json_mtm_result in response.json()]
             self.logger.info('Returned %s mtm results.', len(mtm_results))
             return mtm_results
+        else:
+            self.logger.error(response.text)
+            response.raise_for_status()
+
+    def retrieve_pnl_result(self, book_ids, asset_manager_id, business_date, periods=None):
+        self.logger.info('Retrieving PnL result - Asset Manager: %s - Book IDs: (%s) - Business Date: %s' % \
+                        (asset_manager_id, ', '.join(book_ids), business_date))
+        url = '%s/pnl/%s' % (self.endpoint, asset_manager_id)
+        search_params = {'business_date': business_date,
+                         'book_ids': book_ids}
+        if periods:
+            search_params['periods'] = periods
+        response = self.session.get(url, params=search_params)
+        if response.ok:
+            pnl_results = [json_to_pnl_result(json_pnl_result) for json_pnl_result in response.json()]
+            self.logger.info('Returned %s PnL results.', len(pnl_results))
+            return pnl_results
         else:
             self.logger.error(response.text)
             response.raise_for_status()
