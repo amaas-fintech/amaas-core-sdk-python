@@ -269,7 +269,8 @@ class TransactionsInterface(Interface):
             response.raise_for_status()        
 
     def position_search(self, asset_manager_id, book_ids=None, account_ids=None,
-                        accounting_types=['Transaction Date'], asset_ids=None, position_date=None):
+                        accounting_types=['Transaction Date'], asset_ids=None,
+                        position_date=None, include_cash=False):
         self.logger.info('Search Positions - Asset Manager: %s', asset_manager_id)
         search_params = {}
         # Potentially roll into a loop
@@ -283,6 +284,8 @@ class TransactionsInterface(Interface):
             search_params['asset_ids'] = ','.join(asset_ids)
         if position_date:
             search_params['position_date'] = position_date
+        if include_cash:
+            search_params['include_cash'] = include_cash
         url = '%s/positions/%s' % (self.endpoint, asset_manager_id)
         response = self.session.get(url, params=search_params)
         if response.ok:

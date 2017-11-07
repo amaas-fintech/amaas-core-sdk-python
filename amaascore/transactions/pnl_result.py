@@ -11,8 +11,8 @@ class PNLResult(AMaaSModel):
     def stored_attributes():
         return {'asset_manager_id', 'book_id', 'asset_id', 'period',
                 'business_date', 'message', 'version', 'total_pnl',
-                'asset_pnl', 'fx_pnl', 'unrealised_pnl', 'transaction_id'
-                'realised_pnl', 'message', 'pnl_status'}
+                'asset_pnl', 'fx_pnl', 'unrealised_pnl', 'transaction_id',
+                'pnl_timestamp', 'realised_pnl', 'message', 'pnl_status'}
 
     @staticmethod
     def lambda_calculated_attributes():
@@ -27,8 +27,8 @@ class PNLResult(AMaaSModel):
 
     def __init__(self, asset_manager_id, book_id, asset_id, period,
                  business_date, version, total_pnl, asset_pnl, fx_pnl,
-                 unrealised_pnl, realised_pnl, transaction_id, message='',
-                 client_id=None, pnl_status='Active', *args, **kwargs):
+                 unrealised_pnl, realised_pnl, transaction_id, pnl_timestamp, 
+                 message='', client_id=None, pnl_status='Active', *args, **kwargs):
         self.client_id = client_id
         self.asset_manager_id = asset_manager_id
         self.asset_id = asset_id
@@ -44,6 +44,7 @@ class PNLResult(AMaaSModel):
         self.message = message
         self.transaction_id = transaction_id
         self.version = version
+        self.pnl_timestamp = pnl_timestamp
 
         super(PNLResult, self).__init__(*args, **kwargs)
 
@@ -64,7 +65,7 @@ class PNLResult(AMaaSModel):
 
     @total_pnl.setter
     def total_pnl(self, val):
-        if not isinstance(val, Decimal) and val is not None:
+        if not isinstance(val, Decimal) and not isinstance(val, str) and val is not None:
             self._total_pnl = Decimal(val)
         else:
             self._total_pnl = val
@@ -75,7 +76,7 @@ class PNLResult(AMaaSModel):
 
     @fx_pnl.setter
     def fx_pnl(self, val):
-        if not isinstance(val, Decimal) and val is not None:
+        if not isinstance(val, Decimal) and not isinstance(val, str) and val is not None:
             self._fx_pnl = Decimal(val)
         else:
             self._fx_pnl = val
@@ -86,7 +87,10 @@ class PNLResult(AMaaSModel):
 
     @asset_pnl.setter
     def asset_pnl(self, val):
-        if not isinstance(val, Decimal) and val is not None:
+        if not isinstance(val, Decimal) and not isinstance(val, str) and val is not None:
             self._asset_pnl = Decimal(val)
         else:
             self._asset_pnl = val
+
+    
+    # NOTE: add more getter and setters for other attributes that may be needed
