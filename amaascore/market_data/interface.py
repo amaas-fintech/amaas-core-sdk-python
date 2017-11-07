@@ -170,7 +170,7 @@ class MarketDataInterface(Interface):
         response = self.session.get(url=url, params = params)
         if response.ok:
             forward_rate = response.json()
-            self.logger.info('Retrieved broken date FX forward rate %f', forward_rate)
+            self.logger.info('Retrieved broken date FX forward rate %s - %s: %s', asset_id, price_date, value_date)
             return forward_rate
         else:
             self.logger.error(response.text)

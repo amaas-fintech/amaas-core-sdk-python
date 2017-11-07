@@ -115,6 +115,20 @@ class AssetManagersInterface(Interface):
             self.logger.error(response.text)
             response.raise_for_status()
 
+    def retrieve_user_relationships(self, user_asset_manager_id, relationship_types=None, include_inactive=False):
+        self.logger.info('Retrieve User Relationships: %s', user_asset_manager_id)
+        url = '%s/asset-manager-related-amid/%s' % (self.endpoint, user_asset_manager_id)
+        params = {'include_inactive': include_inactive}
+        if relationship_types:
+            params['relationship_type'] = ','.join(relationship_types)
+        response = self.session.get(url, params=params)
+        if response.ok:
+            self.logger.info('Successfully Retrieved User Relationships: %s', user_asset_manager_id)
+            return [json_to_relationship(json_relationship) for json_relationship in response.json()]
+        else:
+            self.logger.error(response.text)
+            response.raise_for_status()
+
     def new_domain(self, domain):
         self.logger.info('New Asset Manager Domain: %s for ID %s', domain.domain,
                          domain.asset_manager_id)
