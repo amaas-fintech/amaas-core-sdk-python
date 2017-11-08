@@ -5,8 +5,8 @@ from amaascore.core.amaas_model import AMaaSModel
 class PNLResult(AMaaSModel):
 
     def __init__(self, asset_manager_id, book_id, asset_id, period,
-                 business_date, total_pnl, asset_pnl, fx_pnl,
-                 pnl_timestamp, transaction_id, pnl_status='Active',
+                 business_date, pnl_timestamp, transaction_id, pnl_status='Active',
+                 total_pnl=None, asset_pnl=None, fx_pnl=None, 
                  unrealised_pnl=None, realised_pnl=None,
                  message=None, *args, **kwargs):
         self.asset_manager_id = asset_manager_id
