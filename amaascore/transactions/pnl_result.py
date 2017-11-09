@@ -4,7 +4,7 @@ from amaascore.core.amaas_model import AMaaSModel
 
 class PNLResult(AMaaSModel):
 
-    def __init__(self, asset_manager_id, book_id, asset_id, period,
+    def __init__(self, asset_manager_id, book_id, asset_id, period, quantity,
                  business_date, pnl_timestamp, transaction_id, pnl_status='Active',
                  total_pnl=None, asset_pnl=None, fx_pnl=None, 
                  unrealised_pnl=None, realised_pnl=None,
@@ -20,11 +20,23 @@ class PNLResult(AMaaSModel):
         self.asset_pnl = asset_pnl
         self.fx_pnl = fx_pnl
         self.pnl_status = pnl_status
+        self.quantity = quantity
         self.message = message
         self.transaction_id = transaction_id
         self.pnl_timestamp = pnl_timestamp
 
         super(PNLResult, self).__init__(*args, **kwargs)
+
+    @property
+    def quantity(self):
+        return self._quantity
+
+    @quantity.setter
+    def quantity(self, val):
+        if not isinstance(val, Decimal) and val is not None:
+            self._quantity = Decimal(val)
+        else:
+            self._quantity = val        
 
     @property
     def period(self):
@@ -43,7 +55,7 @@ class PNLResult(AMaaSModel):
 
     @total_pnl.setter
     def total_pnl(self, val):
-        if not isinstance(val, Decimal) and not isinstance(val, str) and val is not None:
+        if not isinstance(val, Decimal) and val is not None:
             self._total_pnl = Decimal(val)
         else:
             self._total_pnl = val
@@ -54,7 +66,7 @@ class PNLResult(AMaaSModel):
 
     @fx_pnl.setter
     def fx_pnl(self, val):
-        if not isinstance(val, Decimal) and not isinstance(val, str) and val is not None:
+        if not isinstance(val, Decimal) and val is not None:
             self._fx_pnl = Decimal(val)
         else:
             self._fx_pnl = val
@@ -65,7 +77,7 @@ class PNLResult(AMaaSModel):
 
     @asset_pnl.setter
     def asset_pnl(self, val):
-        if not isinstance(val, Decimal) and not isinstance(val, str) and val is not None:
+        if not isinstance(val, Decimal) and val is not None:
             self._asset_pnl = Decimal(val)
         else:
             self._asset_pnl = val
