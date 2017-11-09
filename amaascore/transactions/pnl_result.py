@@ -1,16 +1,14 @@
 from decimal import Decimal
-from dateutil.parser import parse
-
-import pytz
 from amaascore.core.amaas_model import AMaaSModel
 
 
 class PNLResult(AMaaSModel):
 
     def __init__(self, asset_manager_id, book_id, asset_id, period,
-                 business_date, version, total_pnl, asset_pnl, fx_pnl,
-                 unrealised_pnl, realised_pnl, transaction_id, pnl_timestamp, 
-                 message='', pnl_status='Active', *args, **kwargs):
+                 business_date, pnl_timestamp, transaction_id, pnl_status='Active',
+                 total_pnl=None, asset_pnl=None, fx_pnl=None, 
+                 unrealised_pnl=None, realised_pnl=None,
+                 message=None, *args, **kwargs):
         self.asset_manager_id = asset_manager_id
         self.asset_id = asset_id
         self.book_id = book_id
@@ -24,7 +22,6 @@ class PNLResult(AMaaSModel):
         self.pnl_status = pnl_status
         self.message = message
         self.transaction_id = transaction_id
-        self.version = version
         self.pnl_timestamp = pnl_timestamp
 
         super(PNLResult, self).__init__(*args, **kwargs)
@@ -36,7 +33,7 @@ class PNLResult(AMaaSModel):
     @period.setter
     def period(self, val):
         if val not in ['YTD', 'MTD', 'DTD']:
-            raise ValueError("""Unrecognized PnL period %s, expect 
+            raise ValueError("""Unrecognized PnL period %s, expect
                     period to be one of the following: 'YTD', 'MTD', 'DTD'""" % str(val))
         self._period = val
 
@@ -72,6 +69,3 @@ class PNLResult(AMaaSModel):
             self._asset_pnl = Decimal(val)
         else:
             self._asset_pnl = val
-
-    
-    # NOTE: add more getter and setters for other attributes that may be needed
