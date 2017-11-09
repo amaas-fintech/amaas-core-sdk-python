@@ -11,7 +11,7 @@ from amaascore.transactions.cash_transaction import CashTransaction
 from amaascore.transactions.children import Charge, Code, Link, Party, Rate
 from amaascore.transactions.enums import TRANSACTION_ACTIONS, CASH_TRANSACTION_TYPES
 from amaascore.transactions.mtm_result import MTMResult
-from amaascore.transactions.pnl_result import PNLResult
+from amaascore.transactions.transaction_pnl import TransactionPNL
 from amaascore.transactions.position import Position
 from amaascore.transactions.transaction import Transaction
 
@@ -41,14 +41,14 @@ def generate_common(asset_manager_id, asset_book_id, counterparty_book_id, asset
     common['settlement_date'] = settlement_date or (datetime.timedelta(days=2) + common['transaction_date'])
     return common
 
-def generate_pnl_result(asset_manager_id=None, book_id=None, asset_id=None, period=None, quantity=None,
+def generate_transaction_pnl(asset_manager_id=None, book_id=None, asset_id=None, period=None, quantity=None,
                         business_date=None, version=None, total_pnl=None, asset_pnl=None, fx_pnl=None,
                         unrealised_pnl=None, realised_pnl=None, message=None, client_id=None,
                         transaction_id=None, pnl_timestamp=None, pnl_status='Active'):
     total_pnl = random.randrange(-100000000, 2000000000)
     asset_pnl = random.randrange(-100000000, 1000000000)
     fx_pnl = total_pnl - asset_pnl
-    pnl_result = PNLResult(asset_manager_id=asset_manager_id or random.randint(1, 10000),
+    transaction_pnl = TransactionPNL(asset_manager_id=asset_manager_id or random.randint(1, 10000),
                            book_id=book_id or random_string(8),
                            asset_id=asset_id or random_string(10),
                            period=period or random.choice(['YTD', 'MTD', 'DTD']),
@@ -58,14 +58,14 @@ def generate_pnl_result(asset_manager_id=None, book_id=None, asset_id=None, peri
                            fx_pnl=fx_pnl or str(fx_pnl),
                            asset_pnl=asset_pnl or (asset_pnl),
                            unrealised_pnl=unrealised_pnl,
-                           quantity=quantity or str(random.randrange(1, 10000000)),
+                           quantity=quantity,
                            realised_pnl=realised_pnl,
                            message=message or '',
                            transaction_id=transaction_id or random_string(16),
                            pnl_timestamp=pnl_timestamp or datetime.datetime.utcnow(),
                            client_id=client_id or 1,
                            pnl_status=pnl_status)
-    return pnl_result
+    return transaction_pnl
 
 def generate_mtm_result(asset_manager_id=None, book_id=None, mtm_value=None, business_date=None, mtm_timestamp=None,
                         asset_id=None, message=None, client_id=None, mtm_status=None):

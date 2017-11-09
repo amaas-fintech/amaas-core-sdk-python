@@ -6,7 +6,7 @@ from amaascore.transactions.enums import CASH_TRANSACTION_TYPES
 from amaascore.transactions.position import Position
 from amaascore.transactions.transaction import Transaction
 from amaascore.transactions.mtm_result import MTMResult
-from amaascore.transactions.pnl_result import PNLResult
+from amaascore.transactions.transaction_pnl import TransactionPNL
 
 
 def json_to_position(json_position):
@@ -53,13 +53,13 @@ def json_to_mtm_result(mtm_result_json):
                          ",".join(missing))
 
     
-def json_to_pnl_result(pnl_result_json):
-    args = inspect.getfullargspec(PNLResult.__init__)
+def json_to_transaction_pnl(transaction_pnl_json):
+    args = inspect.getfullargspec(TransactionPNL.__init__)
     mandatory = set(args.args[1:len(args.args) - len(args.defaults)])
     missing = mandatory - \
-        set([attr for attr in mandatory if pnl_result_json.get(attr) is not None])
+        set([attr for attr in mandatory if transaction_pnl_json.get(attr) is not None])
     if not missing:
-        return PNLResult(**pnl_result_json)
+        return TransactionPNL(**transaction_pnl_json)
     else:
-        raise ValueError("Missing Fields: %s in class: PNLResult" %
+        raise ValueError("Missing Fields: %s in class: TransactionPNL" %
                          ",".join(missing))

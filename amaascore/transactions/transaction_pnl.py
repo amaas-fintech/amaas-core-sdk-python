@@ -2,7 +2,7 @@ from decimal import Decimal
 from amaascore.core.amaas_model import AMaaSModel
 
 
-class PNLResult(AMaaSModel):
+class TransactionPNL(AMaaSModel):
 
     def __init__(self, asset_manager_id, book_id, asset_id, period, quantity,
                  business_date, pnl_timestamp, transaction_id, pnl_status='Active',
@@ -25,7 +25,7 @@ class PNLResult(AMaaSModel):
         self.transaction_id = transaction_id
         self.pnl_timestamp = pnl_timestamp
 
-        super(PNLResult, self).__init__(*args, **kwargs)
+        super(TransactionPNL, self).__init__(*args, **kwargs)
 
     @property
     def quantity(self):
