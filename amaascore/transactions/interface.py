@@ -218,7 +218,7 @@ class TransactionsInterface(Interface):
             response.raise_for_status()
 
     def new_pnl_results(self, asset_manager_id, pnl_results):
-        self.logger.info('PnL results for - Asset Manager: %s', asset_manager_id)
+        self.logger.info('Insert PnL results for - Asset Manager: %s', asset_manager_id)
         if not isinstance(pnl_results, list):
             pnl_results = [pnl_results]
         pnl_result_json = []
@@ -226,6 +226,24 @@ class TransactionsInterface(Interface):
             pnl_result_json.append(pnl_result.to_interface())
         url = '%s/pnl/%s' % (self.endpoint, asset_manager_id)
         response = self.session.post(url, json=pnl_result_json)
+        if response.ok:
+            pnl_results = []
+            for pnl_result_json in response.json():
+                pnl_results.append(json_to_pnl_result(pnl_result_json))
+            return pnl_results
+        else:
+            self.logger.error(response.text)
+            response.raise_for_status()
+
+    def amend_pnl_results(self, asset_manager_id, pnl_results):
+        self.logger.info('Amend PnL results for - Asset Manager: %s', asset_manager_id)
+        if not isinstance(pnl_results, list):
+            pnl_results = [pnl_results]
+        pnl_result_json = []
+        for pnl_result in pnl_results:
+            pnl_result_json.append(pnl_result.to_interface())
+        url = '%s/pnl/%s' % (self.endpoint, asset_manager_id)
+        response = self.session.put(url, json=pnl_result_json)
         if response.ok:
             pnl_results = []
             for pnl_result_json in response.json():

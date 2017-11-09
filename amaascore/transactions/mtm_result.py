@@ -6,7 +6,7 @@ from amaascore.core.amaas_model import AMaaSModel
 
 class MTMResult(AMaaSModel):
     def __init__(self, asset_manager_id, book_id, business_date, asset_id,
-                 mtm_timestamp, mtm_value, mtm_status='Active', message=None,
+                 mtm_timestamp, mtm_value=None, mtm_status='Active', message=None,
                  *args, **kwargs):
         self.asset_manager_id = asset_manager_id
         self.asset_id = asset_id
