@@ -4,10 +4,10 @@ from amaascore.core.amaas_model import AMaaSModel
 
 class PositionPNL(AMaaSModel):
 
-    def __init__(self, asset_manager_id, book_id, asset_id, period, quantity,
+    def __init__(self, asset_manager_id, book_id, asset_id, period, 
                  business_date, pnl_timestamp, pnl_status='Active',
                  total_pnl=None, asset_pnl=None, fx_pnl=None, 
-                 unrealised_pnl=None, realised_pnl=None,
+                 unrealised_pnl=None, realised_pnl=None, quantity=None,
                  message=None, *args, **kwargs):
         self.asset_manager_id = asset_manager_id
         self.asset_id = asset_id
