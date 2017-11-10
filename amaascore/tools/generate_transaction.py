@@ -13,6 +13,7 @@ from amaascore.transactions.enums import TRANSACTION_ACTIONS, CASH_TRANSACTION_T
 from amaascore.transactions.mtm_result import MTMResult
 from amaascore.transactions.transaction_pnl import TransactionPNL
 from amaascore.transactions.position import Position
+from amaascore.transactions.position_pnl import PositionPNL
 from amaascore.transactions.transaction import Transaction
 
 CHARGE_TYPES = ['Tax', 'Commission']
@@ -41,6 +42,31 @@ def generate_common(asset_manager_id, asset_book_id, counterparty_book_id, asset
     common['settlement_date'] = settlement_date or (datetime.timedelta(days=2) + common['transaction_date'])
     return common
 
+def generate_position_pnl(asset_manager_id=None, book_id=None, asset_id=None, period=None, quantity=None,
+                        business_date=None, version=None, total_pnl=None, asset_pnl=None, fx_pnl=None,
+                        unrealised_pnl=None, realised_pnl=None, message=None, client_id=None,
+                        pnl_timestamp=None, pnl_status='Active'):
+    total_pnl = random.randrange(-100000000, 2000000000)
+    asset_pnl = random.randrange(-100000000, 1000000000)
+    fx_pnl = total_pnl - asset_pnl
+    position_pnl = PositionPNL(asset_manager_id=asset_manager_id or random.randint(1, 10000),
+                           book_id=book_id or random_string(8),
+                           asset_id=asset_id or random_string(10),
+                           period=period or random.choice(['YTD', 'MTD', 'DTD']),
+                           business_date=business_date or datetime.date.today(),
+                           version=version or 1,
+                           total_pnl=total_pnl or str(total_pnl),
+                           fx_pnl=fx_pnl or str(fx_pnl),
+                           asset_pnl=asset_pnl or str(asset_pnl),
+                           unrealised_pnl=unrealised_pnl,
+                           quantity=quantity,
+                           realised_pnl=realised_pnl,
+                           message=message or '',
+                           pnl_timestamp=pnl_timestamp or datetime.datetime.utcnow(),
+                           client_id=client_id or 1,
+                           pnl_status=pnl_status)
+    return position_pnl
+
 def generate_transaction_pnl(asset_manager_id=None, book_id=None, asset_id=None, period=None, quantity=None,
                         business_date=None, version=None, total_pnl=None, asset_pnl=None, fx_pnl=None,
                         unrealised_pnl=None, realised_pnl=None, message=None, client_id=None,
@@ -56,7 +82,7 @@ def generate_transaction_pnl(asset_manager_id=None, book_id=None, asset_id=None,
                            version=version or 1,
                            total_pnl=total_pnl or str(total_pnl),
                            fx_pnl=fx_pnl or str(fx_pnl),
-                           asset_pnl=asset_pnl or (asset_pnl),
+                           asset_pnl=asset_pnl or str(asset_pnl),
                            unrealised_pnl=unrealised_pnl,
                            quantity=quantity,
                            realised_pnl=realised_pnl,
