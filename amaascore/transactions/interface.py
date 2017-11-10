@@ -217,6 +217,24 @@ class TransactionsInterface(Interface):
             self.logger.error(response.text)
             response.raise_for_status()
 
+    def retrieve_aggregate_pnls(self, asset_manager_id, book_ids, business_date, currency):
+        self.logger.info('Retrieving Aggregate PnL result - Asset Manager: %s - Book IDs: (%s) - Business Date: %s - Currency: %s' % \
+                        (asset_manager_id, ', '.join(book_ids), business_date, currency))
+        url = '%s/aggregate_pnls/%s' % (self.endpoint, asset_manager_id)
+        search_params = {'business_date': business_date,
+                         'book_ids': book_ids,
+                         'currency': currency}
+        response = self.session.get(url, params=search_params)
+        if response.ok:
+
+            # TODO: figure out the returned result body structure
+
+            self.logger.info('Returned %s Position PnL results.', len(position_pnls))
+            return position_pnls
+        else:
+            self.logger.error(response.text)
+            response.raise_for_status()    
+
     def new_transaction_pnls(self, asset_manager_id, transaction_pnls):
         self.logger.info('Insert Transaction PnL results for - Asset Manager: %s', asset_manager_id)
         if not isinstance(transaction_pnls, list):
