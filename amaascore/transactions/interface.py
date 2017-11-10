@@ -218,13 +218,13 @@ class TransactionsInterface(Interface):
             response.raise_for_status()
 
     def new_transaction_pnls(self, asset_manager_id, transaction_pnls):
-        self.logger.info('Insert PnL results for - Asset Manager: %s', asset_manager_id)
+        self.logger.info('Insert Transaction PnL results for - Asset Manager: %s', asset_manager_id)
         if not isinstance(transaction_pnls, list):
             transaction_pnls = [transaction_pnls]
         transaction_pnl_json = []
         for transaction_pnl in transaction_pnls:
             transaction_pnl_json.append(transaction_pnl.to_interface())
-        url = '%s/transaction_pnl/%s' % (self.endpoint, asset_manager_id)
+        url = '%s/transaction_pnls/%s' % (self.endpoint, asset_manager_id)
         response = self.session.post(url, json=transaction_pnl_json)
         if response.ok:
             transaction_pnls = []
@@ -236,13 +236,13 @@ class TransactionsInterface(Interface):
             response.raise_for_status()
 
     def amend_transaction_pnls(self, asset_manager_id, transaction_pnls):
-        self.logger.info('Amend PnL results for - Asset Manager: %s', asset_manager_id)
+        self.logger.info('Amend Transaction PnL results for - Asset Manager: %s', asset_manager_id)
         if not isinstance(transaction_pnls, list):
             transaction_pnls = [transaction_pnls]
         transaction_pnl_json = []
         for transaction_pnl in transaction_pnls:
             transaction_pnl_json.append(transaction_pnl.to_interface())
-        url = '%s/transaction_pnl/%s' % (self.endpoint, asset_manager_id)
+        url = '%s/transaction_pnls/%s' % (self.endpoint, asset_manager_id)
         response = self.session.put(url, json=transaction_pnl_json)
         if response.ok:
             transaction_pnls = []
@@ -254,9 +254,9 @@ class TransactionsInterface(Interface):
             response.raise_for_status()
 
     def retrieve_transaction_pnls(self, book_ids, asset_manager_id, business_date, periods=None):
-        self.logger.info('Retrieving PnL result - Asset Manager: %s - Book IDs: (%s) - Business Date: %s' % \
+        self.logger.info('Retrieving Transaction PnL result - Asset Manager: %s - Book IDs: (%s) - Business Date: %s' % \
                         (asset_manager_id, ', '.join(book_ids), business_date))
-        url = '%s/transaction_pnl/%s' % (self.endpoint, asset_manager_id)
+        url = '%s/transaction_pnls/%s' % (self.endpoint, asset_manager_id)
         search_params = {'business_date': business_date,
                          'book_ids': book_ids}
         if periods:
@@ -264,20 +264,20 @@ class TransactionsInterface(Interface):
         response = self.session.get(url, params=search_params)
         if response.ok:
             transaction_pnls = [json_to_transaction_pnl(json_transaction_pnl) for json_transaction_pnl in response.json()]
-            self.logger.info('Returned %s PnL results.', len(transaction_pnls))
+            self.logger.info('Returned %s Transaction PnL results.', len(transaction_pnls))
             return transaction_pnls
         else:
             self.logger.error(response.text)
             response.raise_for_status()
 
     def new_position_pnls(self, asset_manager_id, position_pnls):
-        self.logger.info('Insert PnL results for - Asset Manager: %s', asset_manager_id)
+        self.logger.info('Insert Position PnL results for - Asset Manager: %s', asset_manager_id)
         if not isinstance(position_pnls, list):
             position_pnls = [position_pnls]
         position_pnl_json = []
         for position_pnl in position_pnls:
             position_pnl_json.append(position_pnl.to_interface())
-        url = '%s/position_pnl/%s' % (self.endpoint, asset_manager_id)
+        url = '%s/position_pnls/%s' % (self.endpoint, asset_manager_id)
         response = self.session.post(url, json=position_pnl_json)
         if response.ok:
             position_pnls = []
@@ -289,13 +289,13 @@ class TransactionsInterface(Interface):
             response.raise_for_status() 
 
     def amend_position_pnls(self, asset_manager_id, position_pnls):
-        self.logger.info('Amend PnL results for - Asset Manager: %s', asset_manager_id)
+        self.logger.info('Amend Position PnL results for - Asset Manager: %s', asset_manager_id)
         if not isinstance(position_pnls, list):
             position_pnls = [position_pnls]
         position_pnl_json = []
         for position_pnl in position_pnls:
             position_pnl_json.append(position_pnl.to_interface())
-        url = '%s/position_pnl/%s' % (self.endpoint, asset_manager_id)
+        url = '%s/position_pnls/%s' % (self.endpoint, asset_manager_id)
         response = self.session.put(url, json=position_pnl_json)
         if response.ok:
             position_pnls = []
@@ -307,9 +307,9 @@ class TransactionsInterface(Interface):
             response.raise_for_status()
 
     def retrieve_position_pnls(self, book_ids, asset_manager_id, business_date, periods=None):
-        self.logger.info('Retrieving PnL result - Asset Manager: %s - Book IDs: (%s) - Business Date: %s' % \
+        self.logger.info('Retrieving Position PnL result - Asset Manager: %s - Book IDs: (%s) - Business Date: %s' % \
                         (asset_manager_id, ', '.join(book_ids), business_date))
-        url = '%s/position_pnl/%s' % (self.endpoint, asset_manager_id)
+        url = '%s/position_pnls/%s' % (self.endpoint, asset_manager_id)
         search_params = {'business_date': business_date,
                          'book_ids': book_ids}
         if periods:
@@ -317,7 +317,7 @@ class TransactionsInterface(Interface):
         response = self.session.get(url, params=search_params)
         if response.ok:
             position_pnls = [json_to_position_pnl(json_position_pnl) for json_position_pnl in response.json()]
-            self.logger.info('Returned %s PnL results.', len(position_pnls))
+            self.logger.info('Returned %s Position PnL results.', len(position_pnls))
             return position_pnls
         else:
             self.logger.error(response.text)
