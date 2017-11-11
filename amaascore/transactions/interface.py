@@ -6,7 +6,8 @@ import json
 from amaascore.config import ENVIRONMENT
 from amaascore.core.amaas_model import json_handler
 from amaascore.core.interface import Interface
-from amaascore.transactions.utils import json_to_transaction, json_to_position, json_to_mtm_result, json_to_transaction_pnl, json_to_position_pnl
+from amaascore.transactions.utils import json_to_transaction, json_to_position, \
+    json_to_mtm_result, json_to_transaction_pnl, json_to_position_pnl
 
 
 class TransactionsInterface(Interface):
