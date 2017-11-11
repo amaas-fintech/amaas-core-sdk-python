@@ -340,7 +340,7 @@ class TransactionsInterface(Interface):
             response.raise_for_status()        
 
     def position_search(self, asset_manager_id, book_ids=None, account_ids=None,
-                        accounting_types=['Transaction Date'], asset_ids=None,
+                        accounting_types=None, asset_ids=None,
                         position_date=None, include_cash=False, 
                         page_no=None, page_size=None):
         self.logger.info('Search Positions - Asset Manager: %s', asset_manager_id)
