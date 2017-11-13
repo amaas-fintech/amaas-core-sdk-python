@@ -226,11 +226,8 @@ class TransactionsInterface(Interface):
                          'currency': currency}
         response = self.session.get(url, params=search_params)
         if response.ok:
-
-            # TODO: figure out the returned result body structure
-
-            self.logger.info('Returned %s Position PnL results.', len(position_pnls))
-            return position_pnls
+            self.logger.info('Returned %s Aggregate PnL results.')
+            return response.json()
         else:
             self.logger.error(response.text)
             response.raise_for_status()    
