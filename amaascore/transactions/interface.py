@@ -226,7 +226,6 @@ class TransactionsInterface(Interface):
                          'currency': currency}
         response = self.session.get(url, params=search_params)
         if response.ok:
-            self.logger.info('Returned %s Aggregate PnL results.')
             return response.json()
         else:
             self.logger.error(response.text)
@@ -245,6 +244,26 @@ class TransactionsInterface(Interface):
             transaction_pnls = []
             for transaction_pnl_json in response.json():
                 transaction_pnls.append(json_to_transaction_pnl(transaction_pnl_json))
+            self.logger.info('Created %s Transaction PnL records', len(transaction_pnls))
+            return transaction_pnls
+        else:
+            self.logger.error(response.text)
+            response.raise_for_status()
+
+    def upsert_transaction_pnls(self, asset_manager_id, transaction_pnls):
+        self.logger.info('Upsert Transaction PnL results for - Asset Manager: %s', asset_manager_id)
+        if not isinstance(transaction_pnls, list):
+            transaction_pnls = [transaction_pnls]
+        transaction_pnl_json = []
+        for transaction_pnl in transaction_pnls:
+            transaction_pnl_json.append(transaction_pnl.to_interface())
+        url = '%s/transaction_pnls/%s' % (self.endpoint, asset_manager_id)
+        response = self.session.post(url, json=transaction_pnl_json, params={'upsert': True})
+        if response.ok:
+            transaction_pnls = []
+            for transaction_pnl_json in response.json():
+                transaction_pnls.append(json_to_transaction_pnl(transaction_pnl_json))
+            self.logger.info('Upserted %s Transaction PnL records', len(transaction_pnls))
             return transaction_pnls
         else:
             self.logger.error(response.text)
@@ -263,6 +282,7 @@ class TransactionsInterface(Interface):
             transaction_pnls = []
             for transaction_pnl_json in response.json():
                 transaction_pnls.append(json_to_transaction_pnl(transaction_pnl_json))
+            self.logger.info('Amended %s Transaction PnL records', len(transaction_pnls))
             return transaction_pnls
         else:
             self.logger.error(response.text)
@@ -284,7 +304,7 @@ class TransactionsInterface(Interface):
         else:
             self.logger.error(response.text)
             response.raise_for_status()
-
+    
     def new_position_pnls(self, asset_manager_id, position_pnls):
         self.logger.info('Insert Position PnL results for - Asset Manager: %s', asset_manager_id)
         if not isinstance(position_pnls, list):
@@ -298,6 +318,26 @@ class TransactionsInterface(Interface):
             position_pnls = []
             for position_pnl_json in response.json():
                 position_pnls.append(json_to_position_pnl(position_pnl_json))
+            self.logger.info('Created %s Position PnL records', len(position_pnls))
+            return position_pnls
+        else:
+            self.logger.error(response.text)
+            response.raise_for_status() 
+
+    def upsert_position_pnls(self, asset_manager_id, position_pnls):
+        self.logger.info('Upsert Position PnL results for - Asset Manager: %s', asset_manager_id)
+        if not isinstance(position_pnls, list):
+            position_pnls = [position_pnls]
+        position_pnl_json = []
+        for position_pnl in position_pnls:
+            position_pnl_json.append(position_pnl.to_interface())
+        url = '%s/position_pnls/%s' % (self.endpoint, asset_manager_id)
+        response = self.session.post(url, json=position_pnl_json, params={'upsert': True})
+        if response.ok:
+            position_pnls = []
+            for position_pnl_json in response.json():
+                position_pnls.append(json_to_position_pnl(position_pnl_json))
+            self.logger.info('Upserted %s Position PnL records', len(position_pnls))
             return position_pnls
         else:
             self.logger.error(response.text)
@@ -316,6 +356,7 @@ class TransactionsInterface(Interface):
             position_pnls = []
             for position_pnl_json in response.json():
                 position_pnls.append(json_to_position_pnl(position_pnl_json))
+            self.logger.info('Amended %s Position PnL records', len(position_pnls))
             return position_pnls
         else:
             self.logger.error(response.text)
@@ -332,7 +373,7 @@ class TransactionsInterface(Interface):
         response = self.session.get(url, params=search_params)
         if response.ok:
             position_pnls = [json_to_position_pnl(json_position_pnl) for json_position_pnl in response.json()]
-            self.logger.info('Returned %s Position PnL results.', len(position_pnls))
+            self.logger.info('Retrieved %s Position PnL results.', len(position_pnls))
             return position_pnls
         else:
             self.logger.error(response.text)
