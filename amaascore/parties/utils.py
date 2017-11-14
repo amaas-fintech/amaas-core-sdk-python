@@ -6,6 +6,7 @@ import inspect
 #  If there is a better way of doing this, please suggest!
 from amaascore.parties.broker import Broker
 from amaascore.parties.company import Company
+from amaascore.parties.asset_manager import AssetManager
 from amaascore.parties.exchange import Exchange
 from amaascore.parties.fund import Fund
 from amaascore.parties.government_agency import GovernmentAgency

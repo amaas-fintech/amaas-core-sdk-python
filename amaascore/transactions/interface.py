@@ -6,7 +6,8 @@ import json
 from amaascore.config import ENVIRONMENT
 from amaascore.core.amaas_model import json_handler
 from amaascore.core.interface import Interface
-from amaascore.transactions.utils import json_to_transaction, json_to_position, json_to_mtm_result, json_to_transaction_pnl, json_to_position_pnl
+from amaascore.transactions.utils import json_to_transaction, json_to_position, \
+    json_to_mtm_result, json_to_transaction_pnl, json_to_position_pnl
 
 
 class TransactionsInterface(Interface):
@@ -396,8 +397,9 @@ class TransactionsInterface(Interface):
             response.raise_for_status()        
 
     def position_search(self, asset_manager_id, book_ids=None, account_ids=None,
-                        accounting_types=['Transaction Date'], asset_ids=None,
-                        position_date=None, include_cash=False):
+                        accounting_types=None, asset_ids=None,
+                        position_date=None, include_cash=False, 
+                        page_no=None, page_size=None):
         self.logger.info('Search Positions - Asset Manager: %s', asset_manager_id)
         search_params = {}
         # Potentially roll into a loop
@@ -413,6 +415,10 @@ class TransactionsInterface(Interface):
             search_params['position_date'] = position_date
         if include_cash:
             search_params['include_cash'] = include_cash
+        if page_no is not None:
+            search_params['page_no'] = page_no
+        if page_size:
+            search_params['page_size'] = page_size
         url = '%s/positions/%s' % (self.endpoint, asset_manager_id)
         response = self.session.get(url, params=search_params)
         if response.ok:
