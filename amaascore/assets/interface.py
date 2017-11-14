@@ -138,13 +138,12 @@ class AssetsInterface(Interface):
             self.logger.error(response.text)
             response.raise_for_status()
 
-    def fields_search(self, asset_manager_ids=None, asset_ids=None, asset_classes=None, asset_types=None,
+    def fields_search(self, asset_manager_id, asset_ids=None,
+                      asset_classes=None, asset_types=None,
                       fields=None, page_no=None, page_size=None):
-        self.logger.info('Search for Assets - Asset Manager(s): %s', asset_manager_ids)
+        self.logger.info('Search for Assets - Asset Manager: %s', asset_manager_id)
         search_params = {}
 
-        if asset_manager_ids:
-            search_params['asset_manager_ids'] = ','.join([str(amid) for amid in asset_manager_ids])
         if asset_ids:
             search_params['asset_ids'] = ','.join(asset_ids)
         if asset_classes:
@@ -158,7 +157,7 @@ class AssetsInterface(Interface):
         if page_size:
             search_params['page_size'] = page_size
 
-        url = self.endpoint + '/assets'
+        url = '%s/assets/%s' % (self.endpoint, asset_manager_id)
         response = self.session.get(url, params=search_params)
         if response.ok:
             asset_dicts = response.json()
