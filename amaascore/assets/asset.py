@@ -93,6 +93,32 @@ class Asset(AMaaSModel):
         """
         self._maturity_date = parse(value).date() if isinstance(value, type_check) else value
 
+    @property
+    def roll_price(self):
+        if hasattr(self, '_roll_price'):
+            return self._roll_price
+
+    @roll_price.setter
+    def roll_price(self, value):
+        """
+        Always convert to bool if the service/database returns 0 or 1
+        """
+        if value is not None:
+            self._roll_price = True if value else False
+
+    @property
+    def fungible(self):
+        if hasattr(self, '_fungible'):
+            return self._fungible
+
+    @fungible.setter
+    def fungible(self, value):
+        """
+        Always convert to bool if the service/database returns 0 or 1
+        """
+        if value is not None:
+            self._fungible = True if value else False
+
     def __str__(self):
         return "Asset object - ID: %s" % self.asset_id
 
@@ -101,9 +127,9 @@ class Asset(AMaaSModel):
 
     def country_and_venue_codes(self):
         """
-        This function returns dictionary in the format of {"country_codes": [XYZ, ABC], "venue_id": [ABC]} 
+        This function returns dictionary in the format of {"country_codes": [XYZ, ABC], "venue_id": [ABC]}
         Where country_codes = self.country_id and venue_id = self.venue_id
-        except for FX where we also return the country_ids associated with the legs of the FX transaction 
+        except for FX where we also return the country_ids associated with the legs of the FX transaction
         (e.g. USDJPY returns USA + JPN).
         """
         codes = {'country_codes': self.get_country_codes(), 'venue_id': [self.venue_id]}
