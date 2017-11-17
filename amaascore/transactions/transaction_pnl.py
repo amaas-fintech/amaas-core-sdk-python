@@ -6,7 +6,7 @@ class TransactionPNL(AMaaSModel):
 
     def __init__(self, asset_manager_id, book_id, asset_id, period,
                  business_date, pnl_timestamp, transaction_id, pnl_status='Active',
-                 quantity=None, total_pnl=None, asset_pnl=None, fx_pnl=None, 
+                 currency=None, quantity=None, total_pnl=None, asset_pnl=None, fx_pnl=None, 
                  unrealised_pnl=None, realised_pnl=None,
                  message=None, *args, **kwargs):
         self.asset_manager_id = asset_manager_id
@@ -14,6 +14,7 @@ class TransactionPNL(AMaaSModel):
         self.book_id = book_id
         self.period = period
         self.business_date = business_date
+        self.currency = currency
         self.realised_pnl = realised_pnl
         self.unrealised_pnl = unrealised_pnl
         self.total_pnl = total_pnl

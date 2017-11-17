@@ -44,7 +44,7 @@ def generate_common(asset_manager_id, asset_book_id, counterparty_book_id, asset
 
 def generate_position_pnl(asset_manager_id=None, book_id=None, asset_id=None, period=None, quantity=None,
                         business_date=None, version=None, total_pnl=None, asset_pnl=None, fx_pnl=None,
-                        unrealised_pnl=None, realised_pnl=None, message=None, client_id=None,
+                        unrealised_pnl=None, realised_pnl=None, message=None, client_id=None, currency=None,
                         pnl_timestamp=None, pnl_status='Active'):
     total_pnl = random.randrange(-100000000, 2000000000)
     asset_pnl = random.randrange(-100000000, 1000000000)
@@ -62,6 +62,7 @@ def generate_position_pnl(asset_manager_id=None, book_id=None, asset_id=None, pe
                            quantity=quantity,
                            realised_pnl=realised_pnl,
                            message=message or '',
+                           currency=currency or 'USD',
                            pnl_timestamp=pnl_timestamp or datetime.datetime.utcnow(),
                            client_id=client_id or 1,
                            pnl_status=pnl_status)
@@ -70,7 +71,7 @@ def generate_position_pnl(asset_manager_id=None, book_id=None, asset_id=None, pe
 def generate_transaction_pnl(asset_manager_id=None, book_id=None, asset_id=None, period=None, quantity=None,
                         business_date=None, version=None, total_pnl=None, asset_pnl=None, fx_pnl=None,
                         unrealised_pnl=None, realised_pnl=None, message=None, client_id=None,
-                        transaction_id=None, pnl_timestamp=None, pnl_status='Active'):
+                        transaction_id=None, pnl_timestamp=None, pnl_status='Active', currency=None):
     total_pnl = random.randrange(-100000000, 2000000000)
     asset_pnl = random.randrange(-100000000, 1000000000)
     fx_pnl = total_pnl - asset_pnl
@@ -87,6 +88,7 @@ def generate_transaction_pnl(asset_manager_id=None, book_id=None, asset_id=None,
                            quantity=quantity,
                            realised_pnl=realised_pnl,
                            message=message or '',
+                           currency=currency or 'USD',
                            transaction_id=transaction_id or random_string(16),
                            pnl_timestamp=pnl_timestamp or datetime.datetime.utcnow(),
                            client_id=client_id or 1,
