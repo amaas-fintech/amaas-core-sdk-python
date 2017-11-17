@@ -103,13 +103,13 @@ def generate_fund(asset_manager_id=None, asset_id=None):
     return asset
 
 
-def generate_future(asset_manager_id=None, asset_id=None, point_value=None):
+def generate_future(asset_manager_id=None, asset_id=None, point_value=None, expiry_date=None):
     props = generate_common(asset_manager_id=asset_manager_id, asset_id=asset_id)
     asset = Future(settlement_type=random.choice(['Cash', 'Physical']),
                    contract_size=10000,
                    point_value=point_value or Decimal('50'),
                    tick_size=Decimal('0.01'),
-                   expiry_date=random_date(start_year=date.today().year+1),
+                   expiry_date=expiry_date or random_date(start_year=date.today().year+1),
                    **props)
     return asset
 
