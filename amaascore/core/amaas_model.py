@@ -42,6 +42,7 @@ class AMaaSModel(object):
     def amaas_model_attributes():
         return ['created_by', 'updated_by', 'created_time', 'updated_time', 'version']
 
+
     def __init__(self, *args, **kwargs):
         self.version = kwargs.get('version') or 1
         self.created_by = kwargs.get('created_by')
@@ -97,11 +98,12 @@ class AMaaSModel(object):
     def __eq__(self, other):
         """Override the default Equals behavior"""
         if isinstance(other, self.__class__):
-            my_dict = self.__dict__
-            other_dict = other.__dict__
+            my_dict = self.to_dict()
+            other_dict = other.to_dict()
             # Strip out the database generated fields:
             [my_dict.pop(attr, None) for attr in self.amaas_model_attributes()]
             [other_dict.pop(attr, None) for attr in self.amaas_model_attributes()]
+
             return my_dict == other_dict
         return NotImplemented
 
@@ -113,7 +115,7 @@ class AMaaSModel(object):
     def __hash__(self):
         """Override the default hash behavior (that returns the id or the object)"""
         output = []
-        for (key, value) in self.__dict__.items():
+        for (key, value) in self.to_dict().items():
             # Remove the internal attributes since they shouldn't be used for ordering etc
             if key not in self.amaas_model_attributes():
                 output_value = hash(tuple(sorted(value))) if isinstance(value, dict) else value

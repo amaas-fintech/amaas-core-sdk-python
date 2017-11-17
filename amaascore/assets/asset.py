@@ -6,7 +6,9 @@ import re
 import sys
 import uuid
 import pickle
+import json
 
+from amaascore.core.amaas_model import to_json_string
 from amaascore.assets.children import Link
 from amaascore.core.amaas_model import AMaaSModel
 from amaascore.core.comment import Comment
@@ -93,6 +95,32 @@ class Asset(AMaaSModel):
         """
         self._maturity_date = parse(value).date() if isinstance(value, type_check) else value
 
+    @property
+    def roll_price(self):
+        if hasattr(self, '_roll_price'):
+            return self._roll_price
+
+    @roll_price.setter
+    def roll_price(self, value):
+        """
+        Always convert to bool if the service/database returns 0 or 1
+        """
+        if value is not None:
+            self._roll_price = True if value else False
+
+    @property
+    def fungible(self):
+        if hasattr(self, '_fungible'):
+            return self._fungible
+
+    @fungible.setter
+    def fungible(self, value):
+        """
+        Always convert to bool if the service/database returns 0 or 1
+        """
+        if value is not None:
+            self._fungible = True if value else False
+
     def __str__(self):
         return "Asset object - ID: %s" % self.asset_id
 
@@ -101,9 +129,9 @@ class Asset(AMaaSModel):
 
     def country_and_venue_codes(self):
         """
-        This function returns dictionary in the format of {"country_codes": [XYZ, ABC], "venue_id": [ABC]} 
+        This function returns dictionary in the format of {"country_codes": [XYZ, ABC], "venue_id": [ABC]}
         Where country_codes = self.country_id and venue_id = self.venue_id
-        except for FX where we also return the country_ids associated with the legs of the FX transaction 
+        except for FX where we also return the country_ids associated with the legs of the FX transaction
         (e.g. USDJPY returns USA + JPN).
         """
         codes = {'country_codes': self.get_country_codes(), 'venue_id': [self.venue_id]}
@@ -114,18 +142,23 @@ class Asset(AMaaSModel):
 
     @property
     def hashcode(self):
-        ignored_attributes = ['version']
-        boolean_attributes = ['fungible', 'roll_price']
-        attributes = {attr: getattr(self, attr) for attr in self.to_dict()
-                      if attr not in boolean_attributes}
+        asset_dict = {key: getattr(self, key) for key in self.to_dict() if key != 'hashcode'}
+        ignored_attributes = self.amaas_model_attributes() + ['asset_type_display']
+        data = json.loads(to_json_string(asset_dict))
+        tuple_attributes = self._convert(data.copy(), ignored_attributes)
+        return hash(tuple_attributes)
+    
+    def _convert(self, dictionary, ignored_attributes=None):
+        """
+        Converts nested dictionaries into sorted tuples
+        """
+        ignored_attributes = ignored_attributes or []
+        [dictionary.pop(k, None) for k in ignored_attributes]
 
-        for boolean_attr in boolean_attributes:
-            attributes[boolean_attr] = int(getattr(self, boolean_attr))
-
-        for attr in ['client_additional']:
-            value = getattr(self, attr)
-            if value:
-                dict_value = pickle.loads(value)
-                if dict_value and isinstance(dict_value, dict):
-                    attributes[attr] = dict_value
-        return compute_hash(attributes, ignored_attributes=ignored_attributes)
+        for key, value in dictionary.items():
+            if isinstance(value, dict):
+                dictionary[key] = self._convert(value, ignored_attributes)
+            elif isinstance(value, list) or isinstance(value, set):
+                dictionary[key] = tuple(sorted([self._convert(v, ignored_attributes)
+                                                if isinstance(v, dict) else v for v in value]))
+        return tuple(sorted([(k, str(v)) for k, v in dictionary.items()]))
