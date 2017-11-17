@@ -114,11 +114,12 @@ def generate_future(asset_manager_id=None, asset_id=None, point_value=None, expi
     return asset
 
 
-def generate_fx_forward(asset_manager_id=None, asset_id=None, settlement_date=None):
+def generate_fx_forward(asset_manager_id=None, asset_id=None, settlement_date=None, fixing_date=None):
     props = generate_common(asset_manager_id=asset_manager_id, asset_id=asset_id, display_name=asset_id)
     asset = ForeignExchangeForward(forward_rate=random_decimal(),
                                    settlement_date=settlement_date or random_date(start_year=2017),
                                    underlying='USDJPY',
+                                   fixing_date=fixing_date,
                                    **props)
     return asset
 
