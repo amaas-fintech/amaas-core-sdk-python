@@ -44,8 +44,7 @@ class Fund(Asset):
         :param creation_date:
         :return:
         """
-        if value:
-            self._creation_date = parse(value).date() if isinstance(value, type_check) else value
+        self._creation_date = parse(value).date() if isinstance(value, type_check) else value
 
     @property
     def nav(self):
@@ -59,8 +58,7 @@ class Fund(Asset):
         :param nav:
         :return:
         """
-        if nav is not None:
-            self._nav = Decimal(nav)
+        self._nav = Decimal(nav) if nav else None
 
     @property
     def expense_ratio(self):
@@ -74,8 +72,7 @@ class Fund(Asset):
         :param expense_ratio:
         :return:
         """
-        if expense_ratio is not None:
-            self._expense_ratio = Decimal(expense_ratio)
+        self._expense_ratio = Decimal(expense_ratio) if expense_ratio else None
 
     @property
     def net_assets(self):
@@ -89,8 +86,7 @@ class Fund(Asset):
         :param net_assets: An integer representing the net assets of the fund
         :return:
         """
-        if net_assets is not None:
-            self._net_assets = net_assets
+        self._net_assets = net_assets
 
     @property
     def fund_type(self):
