@@ -15,7 +15,7 @@ class ExchangeTradedFund(Fund):
     def __init__(self, asset_manager_id, asset_id, nav=None, expense_ratio=None, net_assets=None,
                  asset_issuer_id=None, asset_status='Active', description='', display_name='', roll_price=False,
                  country_id=None, venue_id=None, currency=None, creation_date=None, issue_date=date.min,
-                 comments=None, links=None, references=None,
+                 fund_type=None, comments=None, links=None, references=None,
                  *args, **kwargs):
         super(ExchangeTradedFund, self).__init__(asset_manager_id=asset_manager_id, asset_id=asset_id,
                                                  asset_issuer_id=asset_issuer_id,
