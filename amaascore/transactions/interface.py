@@ -184,6 +184,24 @@ class TransactionsInterface(Interface):
             self.logger.error(response.text)
             response.raise_for_status()
 
+    def upsert_mtm_results(self, asset_manager_id, mtm_results):
+        self.logger.info('Upserting Marking to market Positions - Asset Manager: %s', asset_manager_id)
+        if not isinstance(mtm_results, list):
+            mtm_results = [mtm_results]
+        mtm_result_json = []
+        for mtm_result in mtm_results:
+            mtm_result_json.append(mtm_result.to_interface())
+        url = '%s/mtm/%s' % (self.endpoint, asset_manager_id)
+        response = self.session.post(url, json=mtm_result_json, params={'upsert': True})
+        if response.ok:
+            mtm_results = []
+            for mtm_result_json in response.json():
+                mtm_results.append(json_to_mtm_result(mtm_result_json))
+            return mtm_results
+        else:
+            self.logger.error(response.text)
+            response.raise_for_status()
+
     def amend_mtm_results(self, asset_manager_id, mtm_results):
         self.logger.info('Amending mtm Positions - Asset Manager: %s', asset_manager_id)
         if not isinstance(mtm_results, list):
