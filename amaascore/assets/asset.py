@@ -5,7 +5,7 @@ from dateutil.parser import parse
 import re
 import sys
 import uuid
-import pickle
+import inspect
 import json
 
 from amaascore.core.amaas_model import to_json_string
@@ -32,7 +32,7 @@ class Asset(AMaaSModel):
 
     def __init__(self, asset_manager_id, fungible, asset_issuer_id=None, asset_id=None, asset_status='Active',
                  country_id=None, venue_id=None, currency=None, issue_date=date.min,
-                 roll_price=True, display_name='', description='',
+                 roll_price=True, display_name='', description='', maturity_date=date.max,
                  comments=None, links=None, references=None, client_additional=None,
                  *args, **kwargs):
         self.asset_manager_id = asset_manager_id
@@ -49,6 +49,7 @@ class Asset(AMaaSModel):
         self.venue_id = venue_id
         self.currency = currency
         self.issue_date = issue_date
+        self.maturity_date = maturity_date
         self.roll_price = roll_price
         self.display_name = display_name
         self.description = description
@@ -143,22 +144,7 @@ class Asset(AMaaSModel):
     @property
     def hashcode(self):
         asset_dict = {key: getattr(self, key) for key in self.to_dict() if key != 'hashcode'}
-        ignored_attributes = self.amaas_model_attributes() + ['asset_type_display']
+        type_args = inspect.signature(self.__init__).parameters.keys()
+        ignored_attributes = [key for key in asset_dict if key not in type_args]
         data = json.loads(to_json_string(asset_dict))
-        tuple_attributes = self._convert(data.copy(), ignored_attributes)
-        return hash(tuple_attributes)
-    
-    def _convert(self, dictionary, ignored_attributes=None):
-        """
-        Converts nested dictionaries into sorted tuples
-        """
-        ignored_attributes = ignored_attributes or []
-        [dictionary.pop(k, None) for k in ignored_attributes]
-
-        for key, value in dictionary.items():
-            if isinstance(value, dict):
-                dictionary[key] = self._convert(value, ignored_attributes)
-            elif isinstance(value, list) or isinstance(value, set):
-                dictionary[key] = tuple(sorted([self._convert(v, ignored_attributes)
-                                                if isinstance(v, dict) else v for v in value]))
-        return tuple(sorted([(k, str(v)) for k, v in dictionary.items()]))
+        return compute_hash(data, ignored_attributes=ignored_attributes)

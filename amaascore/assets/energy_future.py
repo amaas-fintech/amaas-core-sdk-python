@@ -12,7 +12,7 @@ class EnergyFuture(Future):
                  quote_unit=None, asset_issuer_id=None, asset_status='Active', issue_date=date.min,
                  expiry_date=date.max, currency=None, underlying_asset_id=None,
                  display_name='', description='', country_id=None, venue_id=None,
-                 links=None, references=None, *args, **kwargs):
+                 comments=None, links=None, references=None, *args, **kwargs):
         """
 
         :param asset_manager_id: The asset manager who owns the data for this EnergyFuture
@@ -37,5 +37,5 @@ class EnergyFuture(Future):
                                            underlying_asset_id=underlying_asset_id,
                                            description=description, country_id=country_id, venue_id=venue_id,
                                            links=links, references=references, issue_date=issue_date,
-                                           expiry_date=expiry_date,
+                                           comments=comments, expiry_date=expiry_date,
                                            *args, **kwargs)
