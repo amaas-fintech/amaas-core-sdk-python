@@ -177,9 +177,9 @@ class MarketDataInterface(Interface):
             response.raise_for_status()
 
 
-    def custom_market_data_retrieve(self, asset_manager_id, market_data_set):
+    def market_data_retrieve(self, asset_manager_id, market_data_set):
         self.logger.info('Retrieving custom market data set')
-        url = '%s/custom_market_data/%s' % (self.endpoint, asset_manager_id)
+        url = '%s/market-data/%s' % (self.endpoint, asset_manager_id)
         response = self.session.post(url, json=market_data_set)
         if response.ok:
             self.logger.info('Recieved %s custom market data points', str(len(response.json())))

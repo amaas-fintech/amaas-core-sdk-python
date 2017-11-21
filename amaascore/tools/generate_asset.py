@@ -12,6 +12,7 @@ from amaascore.assets.bond_option import BondOption
 from amaascore.assets.currency import Currency
 from amaascore.assets.cryptocurrency import Cryptocurrency
 from amaascore.assets.enums import CRYPTOCURRENCY_PROOF_TYPES
+from amaascore.assets.equity import Equity
 from amaascore.assets.foreign_exchange import ForeignExchange, ForeignExchangeForward, ForeignExchangeSpot
 from amaascore.assets.fund import Fund
 from amaascore.assets.future import Future
@@ -47,6 +48,15 @@ def generate_asset(asset_manager_id=None, asset_id=None, fungible=None, roll_pri
 
     asset.references.update(references)
     return asset
+
+
+def generate_equity(asset_manager_id, asset_id, share_class='Common', currency='USD'):
+    equity = Equity(asset_manager_id=asset_manager_id or random.randint(1, 1000),
+                    asset_id=asset_id or random_string(5),
+                    share_class=share_class, 
+                    asset_status='Active',
+                    currency=currency or 'USD')
+    return equity
 
 
 def generate_bond(asset_manager_id=None, asset_id=None):
@@ -93,22 +103,23 @@ def generate_fund(asset_manager_id=None, asset_id=None):
     return asset
 
 
-def generate_future(asset_manager_id=None, asset_id=None):
+def generate_future(asset_manager_id=None, asset_id=None, point_value=None, expiry_date=None):
     props = generate_common(asset_manager_id=asset_manager_id, asset_id=asset_id)
     asset = Future(settlement_type=random.choice(['Cash', 'Physical']),
                    contract_size=10000,
-                   point_value=Decimal('50'),
+                   point_value=point_value or Decimal('50'),
                    tick_size=Decimal('0.01'),
-                   expiry_date=random_date(start_year=date.today().year+1),
+                   expiry_date=expiry_date or random_date(start_year=date.today().year+1),
                    **props)
     return asset
 
 
-def generate_fx_forward(asset_manager_id=None, asset_id=None, settlement_date=None):
+def generate_fx_forward(asset_manager_id=None, asset_id=None, underlying=None, settlement_date=None, fixing_date=None):
     props = generate_common(asset_manager_id=asset_manager_id, asset_id=asset_id, display_name=asset_id)
     asset = ForeignExchangeForward(forward_rate=random_decimal(),
                                    settlement_date=settlement_date or random_date(start_year=2017),
-                                   underlying='USDJPY',
+                                   underlying=underlying or 'USDJPY',
+                                   fixing_date=fixing_date,
                                    **props)
     return asset
 
