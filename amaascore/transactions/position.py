@@ -9,7 +9,7 @@ from amaascore.core.amaas_model import AMaaSModel
 class Position(AMaaSModel):
 
     def __init__(self, asset_manager_id, book_id, account_id, accounting_type,
-                 asset_id, quantity, average_price, client_id=None, *args, **kwargs):
+                 asset_id, quantity, average_price=None, client_id=None, *args, **kwargs):
         self.client_id = client_id
         self.asset_manager_id = asset_manager_id
         self.book_id = book_id
@@ -44,4 +44,5 @@ class Position(AMaaSModel):
         :param value:
         :return:
         """
-        self._average_price = Decimal(value)
+        if value is not None:
+            self._average_price = Decimal(value)
