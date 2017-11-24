@@ -66,6 +66,18 @@ class BooksInterface(Interface):
             self.logger.error(response.text)
             response.raise_for_status()
 
+    def reactivate(self, asset_manager_id, book_id):
+        self.logger.info('Reactivate Book - Asset Manager: %s - Book ID: %s', asset_manager_id, book_id)
+        url = '%s/books/%s/%s' % (self.endpoint, asset_manager_id, book_id)
+        json = {'book_status': 'Active'}
+        response = self.session.patch(url, json=json)
+        if response.ok:
+            self.logger.info('Successfully Reactivated Book - Asset Manager: %s - Book ID: %s', asset_manager_id, book_id)
+            return json_to_book(response.json())
+        else:
+            self.logger.error(response.text)
+            response.raise_for_status()
+
     def search(self, asset_manager_id, book_ids=None, business_units=None, 
                      owner_ids=None, party_ids=None, book_statuses=None):
         self.logger.info('Search Books - Asset Manager: %s', asset_manager_id)
