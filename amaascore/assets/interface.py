@@ -178,6 +178,20 @@ class AssetsInterface(Interface):
         else:
             self.logger.error(response.text)
             response.raise_for_status()
+    
+    def assets_lifecycle(self, asset_manager_id, business_date, asset_ids):
+        self.logger.info('Retrieve Assets Lifecycle. Asset Manager: %s', asset_manager_id)
+        url = '%s/asset-lifecycle/%s' % (self.endpoint, asset_manager_id)
+        params = {'business_date': business_date.isoformat(),
+                  'asset_ids': ','.join(asset_ids)}
+        response = self.session.get(url, params=params)
+        if response.ok:
+            asset_lifecycles = response.json()
+            self.logger.info('Returned %s Asset Lifecycles.', len(asset_lifecycles))
+            return asset_lifecycles
+        else:
+            self.logger.error(response.text)
+            response.raise_for_status()
 
     def clear(self, asset_manager_id):
         """ This method deletes all the data for an asset_manager_id.

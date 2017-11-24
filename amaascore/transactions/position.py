@@ -9,14 +9,15 @@ from amaascore.core.amaas_model import AMaaSModel
 class Position(AMaaSModel):
 
     def __init__(self, asset_manager_id, book_id, account_id, accounting_type,
-                 asset_id, quantity, client_id=None, *args, **kwargs):
-                 
+                 asset_id, quantity, average_price, client_id=None, *args, **kwargs):
+        self.client_id = client_id
         self.asset_manager_id = asset_manager_id
         self.book_id = book_id
         self.account_id = account_id
         self.accounting_type = accounting_type
         self.asset_id = asset_id
         self.quantity = quantity
+        self.average_price = average_price
         super(Position, self).__init__(*args, **kwargs)
 
     @property
@@ -31,3 +32,16 @@ class Position(AMaaSModel):
         :return:
         """
         self._quantity = Decimal(value)
+
+    @property
+    def average_price(self):
+        return self._average_price
+
+    @average_price.setter
+    def average_price(self, value):
+        """
+        Force the average_price to always be a decimal
+        :param value:
+        :return:
+        """
+        self._average_price = Decimal(value)

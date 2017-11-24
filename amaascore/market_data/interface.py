@@ -42,9 +42,9 @@ class MarketDataInterface(Interface):
         self.logger.info('Retrieve EOD Prices - Asset Manager: %s - Business Date: %s', asset_manager_id, business_date)
         url = '%s/eod-prices/%s/%s' % (self.endpoint, asset_manager_id, business_date.isoformat())
         params = {'asset_ids': ','.join(asset_ids)} if asset_ids else {}
-        # setting last_available to True will return the latest price of the asset as of business 
+        # setting last_available to True will return the latest price of the asset as of business
         # date (or latest prior price if price found on the date)
-        if last_available:  
+        if last_available:
             params.update({'last_available':True})
         response = self.session.get(url=url, params=params)
         if response.ok:
@@ -106,6 +106,39 @@ class MarketDataInterface(Interface):
             self.logger.error(response.text)
             response.raise_for_status()
 
+    def search_fx_rates(self, asset_manager_id, client_ids=None,
+                        asset_ids=None, rate_types=None, rate_statuses=None,
+                        business_date_start=None, business_date_end=None,
+                        rate_timestamp_start=None, rate_timestamp_end=None):
+        self.logger.info('Search FX Rates - Asset Manager: %s', asset_manager_id)
+        url = '%s/fx-rates/%s' % (self.endpoint, asset_manager_id)
+
+        params = {}
+        if client_ids:
+            params['client_ids'] = ','.join(client_ids)
+        if asset_ids:
+            params['asset_ids'] = ','.join(asset_ids)
+        if rate_types:
+            params['rate_types'] = ','.join(rate_types)
+        if rate_statuses:
+            params['rate_statuses'] = ','.join(rate_statuses)
+        if business_date_start:
+            params['business_date_start'] = business_date_start.date().isoformat()
+        if business_date_end:
+            params['business_date_end'] = business_date_end.date().isoformat()
+        if rate_timestamp_start:
+            params['rate_timestamp_start'] = rate_timestamp_start.isoformat()
+        if rate_timestamp_end:
+            params['rate_timestamp_end'] = rate_timestamp_end.isoformat()
+
+        response = self.session.get(url=url, params=params)
+        if response.ok:
+            fx_rates = [json_to_fx_rate(fx_rate) for fx_rate in response.json()]
+            self.logger.info('Returned %s FX Rates.', len(fx_rates))
+            return fx_rates
+        else:
+            self.logger.error(response.text)
+            response.raise_for_status()
 
     def retrieve_curve(self, asset_manager_id, business_date, asset_ids = None):
         self.logger.info('Retrieve curve - Asset Manager: %s - Business Date: %s', asset_manager_id, business_date)
@@ -124,7 +157,7 @@ class MarketDataInterface(Interface):
     def persist_curves(self, asset_manager_id, business_date, curves, update_existing_curves=True):
         """
         :param asset_manager_id:
-        :param business_date: 
+        :param business_date:
         :param curves:
         :param update_existing_rates:
         :return:
@@ -158,12 +191,12 @@ class MarketDataInterface(Interface):
         else:
             self.logger.error(response.text)
             response.raise_for_status()
-    
-    
+
+
     def get_brokendate_fx_forward_rate(self, asset_manager_id,  asset_id, price_date, value_date):
         """
         This method takes calculates broken date forward FX rate based on the passed in parameters
-        """                
+        """
         self.logger.info('Calculate broken date FX Forward - Asset Manager: %s - Asset (currency): %s - Price Date: %s - Value Date: %s', asset_manager_id, asset_id, price_date, value_date)
         url = '%s/brokendateforward/%s' % (self.endpoint, asset_manager_id)
         params = {'value_date': value_date, 'asset_id':asset_id, 'price_date': price_date}
