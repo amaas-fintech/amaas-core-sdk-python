@@ -35,7 +35,8 @@ class Position(AMaaSModel):
 
     @property
     def average_price(self):
-        return self._average_price
+        if hasattr(self, '_average_price'):
+            return self._average_price
 
     @average_price.setter
     def average_price(self, value):
