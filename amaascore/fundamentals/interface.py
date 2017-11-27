@@ -9,13 +9,15 @@ from amaascore.core.interface import Interface
 
 class FundamentalsInterface(Interface):
 
-    def __init__(self, environment=ENVIRONMENT, logger=None, endpoint=None, username=None, password=None):
+    def __init__(self, environment=ENVIRONMENT, logger=None, endpoint=None, username=None, 
+                       password=None, session_token=None):
         logger = logger or logging.getLogger(__name__)
         super(FundamentalsInterface, self).__init__(endpoint=endpoint,
                                                     endpoint_type='fundamentals',
                                                     environment=environment,
-                                                    username=None, 
+                                                    username=None,
                                                     password=None,
+                                                    session_token=session_token,
                                                     logger=logger)
 
     def countries(self, country_code=None):

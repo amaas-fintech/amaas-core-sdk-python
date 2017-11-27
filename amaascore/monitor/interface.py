@@ -9,9 +9,10 @@ from amaascore.monitor.utils import json_to_item
 
 class MonitorInterface(Interface):
 
-    def __init__(self, environment=ENVIRONMENT, logger=None, endpoint=None, username=None, password=None):
+    def __init__(self, environment=ENVIRONMENT, logger=None, endpoint=None, username=None, 
+                       password=None, session_token=None):
         self.logger = logger or logging.getLogger(__name__)
-        super(MonitorInterface, self).__init__(endpoint=endpoint, endpoint_type='monitor', 
+        super(MonitorInterface, self).__init__(endpoint=endpoint, endpoint_type='monitor', session_token=session_token,
                                                environment=environment, username=None, password=None)
 
     def new_item(self, item):

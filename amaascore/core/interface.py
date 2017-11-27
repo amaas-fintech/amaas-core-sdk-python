@@ -47,6 +47,7 @@ class AMaaSSession(object):
         if self.session_token:
             self.logger.info("Skipping login since session token is provided.")
             self.session.headers.update({'Authorization': self.session_token})
+            self.last_authenticated = datetime.utcnow()
         else:
             try:
                 self.logger.info("Attempting login for: %s", self.username)

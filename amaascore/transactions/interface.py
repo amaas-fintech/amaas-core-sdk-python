@@ -12,9 +12,10 @@ from amaascore.transactions.utils import json_to_transaction, json_to_position, 
 
 class TransactionsInterface(Interface):
 
-    def __init__(self, environment=ENVIRONMENT, logger=None, endpoint=None, username=None, password=None):
+    def __init__(self, environment=ENVIRONMENT, logger=None, endpoint=None, username=None, 
+                       password=None, session_token=None):
         self.logger = logger or logging.getLogger(__name__)
-        super(TransactionsInterface, self).__init__(endpoint=endpoint, endpoint_type='transactions',
+        super(TransactionsInterface, self).__init__(endpoint=endpoint, endpoint_type='transactions', session_token=session_token,
                                                     environment=environment, username=None, password=None)
 
     def new(self, transaction):
