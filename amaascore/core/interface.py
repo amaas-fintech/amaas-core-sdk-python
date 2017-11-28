@@ -17,7 +17,7 @@ class AMaaSSession(object):
 
     __shared_state = {}
 
-    def __init__(self, username, password, environment_config, logger, session_token=None):
+    def __init__(self, environment_config, logger, username=None, password=None, session_token=None):
         if not AMaaSSession.__shared_state:
             AMaaSSession.__shared_state = self.__dict__
             self.refresh_period = 45 * 60  # minutes * seconds
@@ -25,12 +25,14 @@ class AMaaSSession(object):
             self.password = password
             self.tokens = None
             self.session_token = session_token
+            self.logger = logger
             self.last_authenticated = None
             self.session = requests.Session()
-            self.client = boto3.client('cognito-idp', environment_config.cognito_region)
-            self.aws = AWSSRP(username=self.username, password=self.password, pool_id=environment_config.cognito_pool,
-                              client_id=environment_config.cognito_client_id, client=self.client)
-            self.logger = logger
+            if not self.session_token:
+                self.client = boto3.client('cognito-idp', environment_config.cognito_region)
+                self.aws = AWSSRP(username=self.username, password=self.password, 
+                                  pool_id=environment_config.cognito_pool,
+                                  client_id=environment_config.cognito_client_id, client=self.client)
         else:
             self.__dict__ = AMaaSSession.__shared_state
         if self.needs_refresh():
@@ -112,7 +114,9 @@ class Interface(object):
         self.json_header = {'Content-Type': 'application/json'}
         username = username or environ.get('AMAAS_USERNAME') or self.read_config('username')
         password = password or environ.get('AMAAS_PASSWORD') or self.read_config('password')
-        self.session = AMaaSSession(username, password, self.environment_config, self.logger, session_token)
+        self.session = AMaaSSession(username=username, password=password,
+                                    environment_config=self.environment_config,
+                                    logger=self.logger, session_token=session_token)
         self.logger.info('Interface Created')
 
     def get_endpoint(self):
