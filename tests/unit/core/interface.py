@@ -31,5 +31,9 @@ class InterfaceTest(unittest.TestCase):
         interface1.session.last_authenticated = datetime.utcnow() - timedelta(hours=1)
         self.assertEqual(interface1.session.needs_refresh(), True)
 
+    def test_ClientCognitoToken(self):
+        interface1 = Interface(endpoint_type='DUMMY', endpoint='DUMMY', logger=logger, session_token='DUMMY_TOKEN')
+        self.assertEqual(interface1.session.session.headers.get('Authorization'), 'DUMMY_TOKEN')
+
 if __name__ == '__main__':
     unittest.main()

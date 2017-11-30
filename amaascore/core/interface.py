@@ -17,19 +17,22 @@ class AMaaSSession(object):
 
     __shared_state = {}
 
-    def __init__(self, username, password, environment_config, logger):
+    def __init__(self, environment_config, logger, username=None, password=None, session_token=None):
         if not AMaaSSession.__shared_state:
             AMaaSSession.__shared_state = self.__dict__
             self.refresh_period = 45 * 60  # minutes * seconds
             self.username = username
             self.password = password
             self.tokens = None
+            self.session_token = session_token
+            self.logger = logger
             self.last_authenticated = None
             self.session = requests.Session()
-            self.client = boto3.client('cognito-idp', environment_config.cognito_region)
-            self.aws = AWSSRP(username=self.username, password=self.password, pool_id=environment_config.cognito_pool,
-                              client_id=environment_config.cognito_client_id, client=self.client)
-            self.logger = logger
+            if not self.session_token:
+                self.client = boto3.client('cognito-idp', environment_config.cognito_region)
+                self.aws = AWSSRP(username=self.username, password=self.password, 
+                                  pool_id=environment_config.cognito_pool,
+                                  client_id=environment_config.cognito_client_id, client=self.client)
         else:
             self.__dict__ = AMaaSSession.__shared_state
         if self.needs_refresh():
@@ -43,16 +46,21 @@ class AMaaSSession(object):
             return False
 
     def login(self):
-        self.logger.info("Attempting login for: %s", self.username)
-        try:
-            self.tokens = self.aws.authenticate_user().get('AuthenticationResult')
-            self.logger.info("Login successful")
+        if self.session_token:
+            self.logger.info("Skipping login since session token is provided.")
+            self.session.headers.update({'Authorization': self.session_token})
             self.last_authenticated = datetime.utcnow()
-            self.session.headers.update({'Authorization': self.tokens.get('IdToken')})
-        except self.client.exceptions.NotAuthorizedException as e:
-            self.logger.info("Login failed")
-            self.logger.error(e.response.get('Error'))
-            self.last_authenticated = None
+        else:
+            try:
+                self.logger.info("Attempting login for: %s", self.username)
+                self.tokens = self.aws.authenticate_user().get('AuthenticationResult')
+                self.logger.info("Login successful")
+                self.last_authenticated = datetime.utcnow()
+                self.session.headers.update({'Authorization': self.tokens.get('IdToken')})
+            except self.client.exceptions.NotAuthorizedException as e:
+                self.logger.info("Login failed")
+                self.logger.error(e.response.get('Error'))
+                self.last_authenticated = None
 
     def put(self, url, data=None, **kwargs):
         # Add a refresh
@@ -96,7 +104,7 @@ class Interface(object):
     """
 
     def __init__(self, endpoint_type, endpoint=None, environment=ENVIRONMENT, username=None, password=None,
-                 config_filename=None, logger=None):
+                 config_filename=None, logger=None, session_token=None):
         self.logger = logger or logging.getLogger(__name__)
         self.config_filename = config_filename
         self.endpoint_type = endpoint_type
@@ -106,7 +114,9 @@ class Interface(object):
         self.json_header = {'Content-Type': 'application/json'}
         username = username or environ.get('AMAAS_USERNAME') or self.read_config('username')
         password = password or environ.get('AMAAS_PASSWORD') or self.read_config('password')
-        self.session = AMaaSSession(username, password, self.environment_config, self.logger)
+        self.session = AMaaSSession(username=username, password=password,
+                                    environment_config=self.environment_config,
+                                    logger=self.logger, session_token=session_token)
         self.logger.info('Interface Created')
 
     def get_endpoint(self):

@@ -11,13 +11,15 @@ from amaascore.parties.utils import json_to_party
 
 class PartiesInterface(Interface):
 
-    def __init__(self, environment=ENVIRONMENT, logger=None, endpoint=None, username=None, password=None):
+    def __init__(self, environment=ENVIRONMENT, logger=None, endpoint=None, username=None, 
+                       password=None, session_token=None):
         self.logger = logger or logging.getLogger(__name__)
-        super(PartiesInterface, self).__init__(endpoint=endpoint, 
-                                               endpoint_type='parties', 
+        super(PartiesInterface, self).__init__(endpoint=endpoint,
+                                               endpoint_type='parties',
                                                environment=environment, 
-                                               username=None, 
-                                               password=None)
+                                               username=None,
+                                               password=None,
+                                               session_token=session_token)
 
     def new(self, party):
         self.logger.info('New Party - Asset Manager: %s - Party ID: %s', party.asset_manager_id, party.party_id)

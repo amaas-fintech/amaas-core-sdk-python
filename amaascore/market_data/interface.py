@@ -11,9 +11,10 @@ from amaascore.market_data.utils import json_to_eod_price, json_to_fx_rate, json
 
 class MarketDataInterface(Interface):
 
-    def __init__(self, environment=ENVIRONMENT, logger=None, endpoint=None, username=None, password=None):
+    def __init__(self, environment=ENVIRONMENT, logger=None, endpoint=None, username=None, 
+                 password=None, session_token=None):
         self.logger = logger or logging.getLogger(__name__)
-        super(MarketDataInterface, self).__init__(endpoint=endpoint, endpoint_type='market_data',
+        super(MarketDataInterface, self).__init__(endpoint=endpoint, endpoint_type='market_data', session_token=session_token,
                                                   environment=environment, username=username, password=password)
 
     def persist_eod_prices(self, asset_manager_id, business_date, eod_prices, update_existing_prices=True):
