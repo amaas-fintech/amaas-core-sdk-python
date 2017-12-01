@@ -80,10 +80,13 @@ class Curve(AMaaSModel):
     @additional.setter
     def additional(self, additional):
         if additional is not None:
-            try:
-                self._additional = json.dumps(additional)
-            except TypeError:
-                raise TypeError('The passed in "Additional" field is not json serializable.')
+            if isinstance(additional, str):
+                self._additional = additional
+            else:
+                try:
+                    self._additional = json.dumps(additional)
+                except TypeError:
+                    raise TypeError('The passed in "Additional" field is not json serializable.')
     @property
     def curve_timestamp(self):
         return self._curve_timestamp
