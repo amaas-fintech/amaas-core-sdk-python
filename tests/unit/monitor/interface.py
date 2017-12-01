@@ -8,7 +8,7 @@ import unittest
 
 from amaascore.monitor.interface import MonitorInterface
 from amaascore.tools.generate_monitor_item import generate_item, generate_items
-from unit.config import ENVIRONMENT
+from tests.unit.config import ENVIRONMENT
 
 import logging.config
 logging.config.dictConfig(DEFAULT_LOGGING)

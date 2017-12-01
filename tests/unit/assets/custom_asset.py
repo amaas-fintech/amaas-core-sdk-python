@@ -6,7 +6,7 @@ import unittest
 
 from amaascore.assets.custom_asset import CustomAsset
 from amaascore.assets.interface import AssetsInterface
-from unit.config import ENVIRONMENT
+from tests.unit.config import ENVIRONMENT
 
 class Pizza(CustomAsset):
 

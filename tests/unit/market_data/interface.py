@@ -9,7 +9,7 @@ import unittest
 
 from amaascore.market_data.interface import MarketDataInterface
 from amaascore.tools.generate_market_data import generate_eod_price, generate_fx_rate
-from unit.config import ENVIRONMENT
+from tests.unit.config import ENVIRONMENT
 
 import logging.config
 logging.config.dictConfig(DEFAULT_LOGGING)

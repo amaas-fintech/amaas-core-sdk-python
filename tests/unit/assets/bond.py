@@ -6,7 +6,7 @@ import unittest
 from amaascore.assets.bond import BondGovernment
 from amaascore.assets.interface import AssetsInterface
 from amaascore.tools.generate_asset import generate_bond
-from unit.config import ENVIRONMENT
+from tests.unit.config import ENVIRONMENT
 
 class BondTest(unittest.TestCase):
 

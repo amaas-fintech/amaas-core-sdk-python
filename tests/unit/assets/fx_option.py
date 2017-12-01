@@ -7,7 +7,7 @@ import unittest
 from amaascore.assets.fx_option import ForeignExchangeOption
 from amaascore.assets.interface import AssetsInterface
 from amaascore.tools.generate_asset import generate_fx_option
-from unit.config import ENVIRONMENT
+from tests.unit.config import ENVIRONMENT
 
 
 class ForeignExchangeOptionTest(unittest.TestCase):

@@ -11,7 +11,7 @@ from amaascore.assets.bond_option import BondOption
 from amaascore.assets.foreign_exchange import ForeignExchange
 from amaascore.assets.interface import AssetsInterface
 from amaascore.tools.generate_asset import generate_asset, generate_foreignexchange, generate_assets
-from unit.config import ENVIRONMENT
+from tests.unit.config import ENVIRONMENT
 
 import logging.config
 logging.config.dictConfig(DEFAULT_LOGGING)

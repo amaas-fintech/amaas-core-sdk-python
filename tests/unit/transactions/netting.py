@@ -11,7 +11,7 @@ from amaascore.transactions.transaction import Transaction
 from amaascore.tools.generate_asset import generate_asset
 from amaascore.tools.generate_book import generate_book
 from amaascore.tools.generate_transaction import generate_transaction
-from unit.config import ENVIRONMENT
+from tests.unit.config import ENVIRONMENT
 
 
 class NettingTest(unittest.TestCase):
