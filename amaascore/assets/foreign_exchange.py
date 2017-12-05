@@ -92,11 +92,11 @@ class ForeignExchangeSpot(ForeignExchangeBase):
 
     @property
     def settlement_date(self):
-        return self._settlement_date
+        return self._maturity_date
 
     @settlement_date.setter
     def settlement_date(self, settlement_date):
-        self._settlement_date = parse(settlement_date).date() if isinstance(settlement_date, type_check) \
+        self._maturity_date = parse(settlement_date).date() if isinstance(settlement_date, type_check) \
             else settlement_date
 
     def base_currency(self):
@@ -123,6 +123,15 @@ class ForeignExchangeForward(ForeignExchangeSpot):
                                                      description=description, *args, **kwargs)
 
     @property
+    def settlement_date(self):
+        return self._maturity_date
+
+    @settlement_date.setter
+    def settlement_date(self, settlement_date):
+        self._maturity_date = parse(settlement_date).date() if isinstance(settlement_date, type_check) \
+            else settlement_date
+
+    @property
     def fixing_date(self):
         return self._fixing_date
 
@@ -130,4 +139,3 @@ class ForeignExchangeForward(ForeignExchangeSpot):
     def fixing_date(self, fixing_date):
         self._fixing_date = parse(fixing_date).date() if isinstance(fixing_date, type_check) \
             else fixing_date
-        
