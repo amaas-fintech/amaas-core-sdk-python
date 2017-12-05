@@ -12,7 +12,7 @@ from amaascore.transactions.transaction import Transaction
 from amaascore.tools.generate_asset import generate_asset
 from amaascore.tools.generate_book import generate_book
 from amaascore.tools.generate_transaction import generate_transaction
-from unit.config import ENVIRONMENT
+from tests.unit.config import ENVIRONMENT
 
 
 class TransferTest(unittest.TestCase):
@@ -43,7 +43,7 @@ class TransferTest(unittest.TestCase):
         self.assets_interface.upsert(self.asset)
 
     def create_transaction_book(self, book):
-        self.assets_interface.new(book)
+        self.books_interface.new(book)
 
     def test_BookTransfer(self):
         deliver, receive = self.interface.book_transfer(asset_manager_id=self.asset_manager_id,

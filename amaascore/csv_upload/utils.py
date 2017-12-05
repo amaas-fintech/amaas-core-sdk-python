@@ -1,11 +1,4 @@
 import csv
-from datetime import date, datetime
-from dateutil.parser import parse
-from decimal import Decimal
-from amaasutils.csv_upload_utils import *
-
-from amaascore.tools.csv_tools import csv_stream_to_objects
-from amaasutils.logging_utils import DEFAULT_LOGGING
 
 from amaascore.assets.interface import AssetsInterface
 from amaascore.parties.interface import PartiesInterface
@@ -14,26 +7,23 @@ from amaascore.corporate_actions.interface import CorporateActionsInterface
 from amaascore.market_data.interface import MarketDataInterface
 from amaascore.transactions.interface import TransactionsInterface
 from amaascore.asset_managers.interface import AssetManagersInterface
-
+from amaascore import core
 from amaascore import parties
 from amaascore import assets
 from amaascore import transactions
 
-from amaascore.assets.children import Link, Reference
-from amaascore.parties.children import Address, Email, Link, Reference, Comment
-from amaascore.transactions.children import Charge, Code, Comment, Link, Party, Rate, Reference
 
-CHILDREN_CLASS = {'asset': {'links': assets.children.Link, 'references': assets.children.Reference},
+CHILDREN_CLASS = {'asset': {'links': assets.children.Link, 'references': core.reference.Reference},
                   'party': {'addresses': parties.children.Address, 'emails': parties.children.Email,
-                            'links': parties.children.Link, 'references': parties.children.Reference,
-                            'comments': parties.children.Comment},
+                            'links': parties.children.Link, 'references': core.reference.Reference,
+                            'comments': core.comment.Comment},
                   'transaction': {'charges': transactions.children.Charge, 'codes': transactions.children.Code,
-                                  'comments': transactions.children.Comment, 'links': transactions.children.Link,
+                                  'comments': core.comment.Comment, 'links': transactions.children.Link,
                                   'rates': transactions.children.Rate, 'parties': transactions.children.Party,
-                                  'references': transactions.children.Reference},
+                                  'references': core.reference.Reference},
                   'asset_manager': {},
                   'book': {},
-                  'corporate_action': {'references': assets.children.Reference}} #no Reference class found in corporate_actions
+                  'corporate_action': {'references': core.reference.Reference}}
 
 def direct_to_class(amaasclass):
     """direct from amaasclass (first params given in the row) to the dictionary of the children class"""

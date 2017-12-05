@@ -21,7 +21,7 @@ from amaascore.tools.generate_asset import generate_asset
 from amaascore.tools.generate_book import generate_book
 from amaascore.tools.generate_transaction import generate_transaction, generate_transactions,\
     generate_positions, generate_position, generate_cash_transaction, generate_mtm_result
-from unit.config import ENVIRONMENT
+from tests.unit.config import ENVIRONMENT
 
 logging.config.dictConfig(DEFAULT_LOGGING)
 

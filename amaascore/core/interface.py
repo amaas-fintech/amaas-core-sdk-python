@@ -1,11 +1,11 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-import boto3
 from configparser import ConfigParser, NoSectionError
 from datetime import datetime
 import logging
 from os.path import expanduser, join
 from os import environ
+
 import requests
 from warrant.aws_srp import AWSSRP
 
@@ -15,28 +15,11 @@ from amaascore.exceptions import AMaaSException
 
 class AMaaSSession(object):
 
-    __shared_state = {}
-
-    def __init__(self, environment_config, logger, username=None, password=None, session_token=None):
-        if not AMaaSSession.__shared_state:
-            AMaaSSession.__shared_state = self.__dict__
-            self.refresh_period = 45 * 60  # minutes * seconds
-            self.username = username
-            self.password = password
-            self.tokens = None
-            self.session_token = session_token
-            self.logger = logger
-            self.last_authenticated = None
-            self.session = requests.Session()
-            if not self.session_token:
-                self.client = boto3.client('cognito-idp', environment_config.cognito_region)
-                self.aws = AWSSRP(username=self.username, password=self.password, 
-                                  pool_id=environment_config.cognito_pool,
-                                  client_id=environment_config.cognito_client_id, client=self.client)
-        else:
-            self.__dict__ = AMaaSSession.__shared_state
-        if self.needs_refresh():
-            self.login()
+    def __init__(self, logger=None):
+        self.logger = logger or logging.getLogger(__name__)
+        self.refresh_period = 45 * 60  # minutes * seconds
+        self.last_authenticated = None
+        self.session = requests.Session()
 
     def needs_refresh(self):
         if not (self.last_authenticated and
@@ -44,23 +27,6 @@ class AMaaSSession(object):
             return True
         else:
             return False
-
-    def login(self):
-        if self.session_token:
-            self.logger.info("Skipping login since session token is provided.")
-            self.session.headers.update({'Authorization': self.session_token})
-            self.last_authenticated = datetime.utcnow()
-        else:
-            try:
-                self.logger.info("Attempting login for: %s", self.username)
-                self.tokens = self.aws.authenticate_user().get('AuthenticationResult')
-                self.logger.info("Login successful")
-                self.last_authenticated = datetime.utcnow()
-                self.session.headers.update({'Authorization': self.tokens.get('IdToken')})
-            except self.client.exceptions.NotAuthorizedException as e:
-                self.logger.info("Login failed")
-                self.logger.error(e.response.get('Error'))
-                self.last_authenticated = None
 
     def put(self, url, data=None, **kwargs):
         # Add a refresh
@@ -98,6 +64,55 @@ class AMaaSSession(object):
             raise AMaaSException('Not Authenticated')
 
 
+class AMaaSPasswordSession(AMaaSSession):
+
+    __session_cache = {}
+
+    def __new__(cls, environment_config, username=None, password=None, logger=None):
+        cache_key = (environment_config, username, password)
+        cached = cls.__session_cache.get(cache_key)
+        if not cached:
+            cached = super(AMaaSPasswordSession, cls).__new__(cls)
+            cls.__session_cache[cache_key] = cached
+
+        return cached
+
+    def __init__(self, environment_config, username=None, password=None, logger=None):
+        super(AMaaSPasswordSession, self).__init__(logger)
+        self.username = username
+        self.password = password
+        self.aws = AWSSRP(
+            username=self.username, password=self.password,
+            pool_id=environment_config.cognito_pool,
+            client_id=environment_config.cognito_client_id,
+            pool_region=environment_config.cognito_region,
+        )
+
+        if self.needs_refresh():
+            self.login()
+
+    def login(self):
+        try:
+            self.logger.info("Attempting login for: %s", self.username)
+            tokens = self.aws.authenticate_user().get('AuthenticationResult')
+            self.logger.info("Login successful")
+            self.last_authenticated = datetime.utcnow()
+            self.session.headers.update({'Authorization': tokens.get('IdToken')})
+        except self.aws.client.exceptions.NotAuthorizedException:
+            self.logger.exception("Login failed")
+            self.last_authenticated = None
+
+
+class AMaaSTokenSession(AMaaSSession):
+
+    def __init__(self, session_token, logger=None):
+        super(AMaaSTokenSession, self).__init__(logger)
+        self.session_token = session_token
+        self.logger.info("Skipping login since session token is provided.")
+        self.session.headers.update({'Authorization': self.session_token})
+        self.last_authenticated = datetime.utcnow()
+
+
 class Interface(object):
     """
     Currently this class doesn't do anything - but I anticipate it will be needed in the future.
@@ -112,11 +127,17 @@ class Interface(object):
         self.environment_config = CONFIGURATIONS.get(environment)
         self.endpoint = endpoint or self.get_endpoint()
         self.json_header = {'Content-Type': 'application/json'}
-        username = username or environ.get('AMAAS_USERNAME') or self.read_config('username')
-        password = password or environ.get('AMAAS_PASSWORD') or self.read_config('password')
-        self.session = AMaaSSession(username=username, password=password,
-                                    environment_config=self.environment_config,
-                                    logger=self.logger, session_token=session_token)
+        if session_token:
+            self.session = AMaaSTokenSession(session_token, logger=self.logger)
+        else:
+            username = username or environ.get('AMAAS_USERNAME') or self.read_config('username')
+            password = password or environ.get('AMAAS_PASSWORD') or self.read_config('password')
+            self.session = AMaaSPasswordSession(
+                environment_config=self.environment_config,
+                username=username, password=password,
+                logger=self.logger,
+            )
+
         self.logger.info('Interface Created')
 
     def get_endpoint(self):

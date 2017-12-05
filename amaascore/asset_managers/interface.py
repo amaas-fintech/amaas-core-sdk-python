@@ -13,10 +13,14 @@ class AssetManagersInterface(Interface):
     The interface to the Asset Managers service for reading Asset Manager information.
     """
 
-    def __init__(self, environment=ENVIRONMENT, logger=None, endpoint=None, username=None, password=None):
+    def __init__(self, environment=ENVIRONMENT, logger=None, endpoint=None, username=None, password=None, session_token=None):
         self.logger = logger or logging.getLogger(__name__)
-        super(AssetManagersInterface, self).__init__(endpoint=endpoint, endpoint_type='asset_managers',
-                                                     environment=environment, username=username, password=password)
+        super(AssetManagersInterface, self).__init__(
+            endpoint=endpoint, endpoint_type='asset_managers',
+            environment=environment,
+            username=username, password=password,
+            session_token=session_token,
+        )
 
     def new(self, asset_manager):
         self.logger.info('New Asset Manager: %s', asset_manager.asset_manager_id)

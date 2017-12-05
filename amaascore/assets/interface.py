@@ -1,5 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+from collections import Iterable
 import json
 import logging
 
@@ -11,7 +12,7 @@ from amaascore.core.amaas_model import json_handler
 
 class AssetsInterface(Interface):
 
-    def __init__(self, environment=ENVIRONMENT, endpoint=None, logger=None, username=None, 
+    def __init__(self, environment=ENVIRONMENT, endpoint=None, logger=None, username=None,
                        password=None, session_token=None):
         self.logger = logger or logging.getLogger(__name__)
         super(AssetsInterface, self).__init__(endpoint=endpoint, endpoint_type='assets', session_token=session_token,
@@ -114,21 +115,72 @@ class AssetsInterface(Interface):
             self.logger.error(response.text)
             response.raise_for_status()
 
-    def search(self, asset_manager_id, asset_ids=None, asset_classes=None, asset_types=None,
-               page_no=None, page_size=None):
+    def loose_search(self, asset_manager_id, query='', **kwargs):
+        """
+        Asset search API.
+
+        Possible kwargs:
+           * threshold: int (default = 0)
+           * page_no: int (default = 1)
+           * page_size: int (default = 100)
+           * sort_fields: list (default = [])
+           * asset_types: list (default = [])
+           * include_public: bool (default = True)
+           * include_data_sources: bool (default = True)
+        """
+        self.logger.info('Asset Search - Asset Manager: %s', asset_manager_id)
+        url = '{endpoint}/assets/search/{asset_manager_id}'.format(
+            asset_manager_id=asset_manager_id,
+            endpoint=self.endpoint,
+        )
+        params = {'query': query}
+        for k, v in kwargs.items():
+            if not isinstance(v, str) and isinstance(v, Iterable):
+                v = ','.join(str(i) for i in v)
+
+            params[k] = v
+
+        response = self.session.get(url, params=params)
+        if response.ok:
+            data = response.json()
+            assets = [json_to_asset(json_asset) for json_asset in data.get('hits', [])]
+            self.logger.info('Returned %s Assets.', len(assets))
+            return assets
+        else:
+            self.logger.error(response.text)
+            response.raise_for_status()
+
+    def search(self, asset_manager_id, **kwargs):
+        """
+            Search for assets.
+
+            Possible kwargs:
+             * client_ids: list[int]
+             * asset_statuses: list
+             * asset_ids: list
+             * reference_types: list
+             * reference_values: list
+             * asset_issuer_ids: list[int]
+             * asset_classes: list
+             * asset_types: list
+             * country_ids: list
+             * currencies: list
+
+             * include_public: bool (default = True)
+             * include_data_sources: bool (default = True)
+
+             * page_no = int(query_params.get('page_no', '1')) if query_params else None
+             * page_size = int(query_params.get('page_size', '100')) if query_params else None
+
+        """
         self.logger.info('Search for Assets - Asset Manager: %s', asset_manager_id)
         search_params = {}
-        # Potentially roll this into a loop through args rather than explicitly named - depends on additional validation
-        if asset_ids:
-            search_params['asset_ids'] = ','.join(asset_ids)
-        if asset_classes:
-            search_params['asset_classes'] = ','.join(asset_classes)
-        if asset_types:
-            search_params['asset_types'] = ','.join(asset_types)
-        if page_no is not None:
-            search_params['page_no'] = page_no
-        if page_size:
-            search_params['page_size'] = page_size
+        for k, v in kwargs.items():
+            if not isinstance(v, str) and isinstance(v, Iterable):
+                v = ','.join(str(i) for i in v)
+
+            search_params[k] = v
+
         url = '%s/assets/%s' % (self.endpoint, asset_manager_id)
         response = self.session.get(url, params=search_params)
         if response.ok:
@@ -179,7 +231,7 @@ class AssetsInterface(Interface):
         else:
             self.logger.error(response.text)
             response.raise_for_status()
-    
+
     def assets_lifecycle(self, asset_manager_id, business_date, asset_ids):
         self.logger.info('Retrieve Assets Lifecycle. Asset Manager: %s', asset_manager_id)
         url = '%s/asset-lifecycle/%s' % (self.endpoint, asset_manager_id)

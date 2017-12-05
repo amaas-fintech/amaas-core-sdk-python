@@ -6,7 +6,7 @@ import unittest
 from amaascore.assets.future import Future
 from amaascore.assets.interface import AssetsInterface
 from amaascore.tools.generate_asset import generate_future
-from unit.config import ENVIRONMENT
+from tests.unit.config import ENVIRONMENT
 
 class FutureTest(unittest.TestCase):
 

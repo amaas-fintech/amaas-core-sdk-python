@@ -10,7 +10,7 @@ from amaascore.parties.broker import Broker
 from amaascore.parties.party import Party
 from amaascore.parties.interface import PartiesInterface
 from amaascore.tools.generate_party import generate_party, generate_broker, generate_parties
-from unit.config import ENVIRONMENT
+from tests.unit.config import ENVIRONMENT
 
 import logging.config
 logging.config.dictConfig(DEFAULT_LOGGING)
