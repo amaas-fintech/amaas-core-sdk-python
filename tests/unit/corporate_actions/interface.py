@@ -8,7 +8,7 @@ import unittest
 
 from amaascore.corporate_actions.interface import CorporateActionsInterface
 from amaascore.tools.generate_corporate_action import generate_corporate_action, generate_corporate_actions
-from unit.config import ENVIRONMENT
+from tests.unit.config import ENVIRONMENT
 
 import logging.config
 logging.config.dictConfig(DEFAULT_LOGGING)

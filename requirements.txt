@@ -1,10 +1,13 @@
+## Production requirements (same as in setup.py)
 amaasutils>=1.2.8
-boto3
 #  This isn't needed in Python 3, but is provided for backwards compatibility with Python 2
 configparser
-coverage
 python-dateutil
 pytz
 requests
-requests-mock
 warrant
+
+## Dev requirements
+pytest
+pytest-cov
+requests-mock

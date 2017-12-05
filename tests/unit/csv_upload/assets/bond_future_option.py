@@ -3,7 +3,7 @@ import csv
 import random
 
 from amaasutils.random_utils import random_string
-from amaascore.csv_upload.data import Uploader
+from amaascore.csv_upload import Uploader
 
 class BondFutureOptionUploaderTest(unittest.TestCase):
 

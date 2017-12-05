@@ -7,7 +7,7 @@ import unittest
 
 from amaascore.books.interface import BooksInterface
 from amaascore.tools.generate_book import generate_book
-from unit.config import ENVIRONMENT
+from tests.unit.config import ENVIRONMENT
 
 import logging.config
 logging.config.dictConfig(DEFAULT_LOGGING)

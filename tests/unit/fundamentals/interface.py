@@ -7,7 +7,7 @@ import random
 import unittest
 
 from amaascore.fundamentals.interface import FundamentalsInterface
-from unit.config import ENVIRONMENT
+from tests.unit.config import ENVIRONMENT
 
 import logging.config
 logging.config.dictConfig(DEFAULT_LOGGING)

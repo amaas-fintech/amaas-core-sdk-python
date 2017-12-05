@@ -7,7 +7,7 @@ import unittest
 from amaascore.assets.foreign_exchange import ForeignExchange, ForeignExchangeForward, ForeignExchangeSpot
 from amaascore.assets.interface import AssetsInterface
 from amaascore.tools.generate_asset import generate_foreignexchange, generate_fx_forward, generate_fx_spot
-from unit.config import ENVIRONMENT
+from tests.unit.config import ENVIRONMENT
 
 
 class ForeignExchangeTest(unittest.TestCase):
