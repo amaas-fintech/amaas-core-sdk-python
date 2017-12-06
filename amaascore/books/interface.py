@@ -115,10 +115,34 @@ class BooksInterface(Interface):
         else:
             self.logger.error(response.text)
             response.raise_for_status()
+    
+    def execute_book_eod(self, asset_manager_id, book_id, business_date):
+        self.logger.info('Execute book eod. Asset Manager: %s Book: %s', asset_manager_id, book_id)
+        url = '%s/book-eod/%s/%s' % (self.endpoint, asset_manager_id, book_id)
+        params = {'business_date': business_date}
+        response = self.session.post(url, params=params)
+        if response.ok:
+            execution_id = response.json()
+            return execution_id
+        else:
+            self.logger.error(response.text)
+            response.raise_for_status()
+    
+    def retrieve_book_eod_status(self, asset_manager_id, book_id, execution_id):
+        self.logger.info('Retrieve book eod status. Asset Manager: %s Book: %s ExecutionId: %s',
+                         asset_manager_id, book_id, execution_id)
+        url = '%s/book-eod/%s/%s/%s' % (self.endpoint, asset_manager_id, book_id, execution_id)
+        response = self.session.get(url)
+        if response.ok:
+            execution_status = response.json()
+            return execution_status
+        else:
+            self.logger.error(response.text)
+            response.raise_for_status()
 
     def book_config(self, asset_manager_id):
         self.logger.info('Retrieve Book Config by Asset Manager: %s', asset_manager_id)
-        url = '%s/book_config/%s' % (self.endpoint, asset_manager_id)
+        url = '%s/book-config/%s' % (self.endpoint, asset_manager_id)
         response = self.session.get(url)
         if response.ok:
             book_config = response.json()
