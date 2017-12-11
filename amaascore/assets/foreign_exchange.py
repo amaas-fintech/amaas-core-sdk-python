@@ -121,17 +121,6 @@ class ForeignExchangeForward(ForeignExchangeSpot):
                                                      description=description, *args, **kwargs)
         self.forward_rate = forward_rate
         self.fixing_date = fixing_date
-        self.settlement_date = settlement_date
-
-
-    @property
-    def settlement_date(self):
-        return self._maturity_date
-
-    @settlement_date.setter
-    def settlement_date(self, settlement_date):
-        self._maturity_date = parse(settlement_date).date() if isinstance(settlement_date, type_check) \
-            else settlement_date
 
     @property
     def fixing_date(self):
