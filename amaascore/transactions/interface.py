@@ -117,7 +117,7 @@ class TransactionsInterface(Interface):
                asset_book_ids=[], counterparty_book_ids=[], asset_ids=[], transaction_date_start=None,
                transaction_date_end=None, code_types=[], code_values=[], link_types=[], linked_transaction_ids=[],
                party_types=[], party_ids=[], reference_types=[], reference_values=[], client_ids=[],
-               page_no=None, page_size=None):
+               child_types=[], page_no=None, page_size=None):
         self.logger.info('Search Transactions - Asset Manager: %s', asset_manager_id)
         search_params = {}
         # Potentially roll this into a loop through args rather than explicitly named - depends on additional validation
@@ -153,6 +153,8 @@ class TransactionsInterface(Interface):
             search_params['reference_values'] = ','.join(reference_values)
         if client_ids:
             search_params['client_ids'] = ','.join(client_ids)
+        if child_types:
+            search_params['child_types'] = ','.join(child_types)
         if page_no is not None:
             search_params['page_no'] = page_no
         if page_size:
