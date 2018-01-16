@@ -130,3 +130,39 @@ class ForeignExchangeForward(ForeignExchangeSpot):
     def fixing_date(self, fixing_date):
         self._fixing_date = parse(fixing_date).date() if isinstance(fixing_date, type_check) \
             else fixing_date
+
+
+DIVISOR_TABLE = {
+    'JPY': 100,
+    'IDR': 1,
+    'KRW': 1,
+    'INR': 100,
+    'THB': 100,
+    'PHP': 1,
+    'TWD': 1,
+}
+DEFAULT_DIVISOR = 10000
+
+
+def calculate_rates(base_currency, counter_currency, forward_rate=None, fwd_points=None, spot_reference=None):
+    """Calculate rates for Fx Forward based on others."""
+    if base_currency not in DIVISOR_TABLE:
+        divisor = DIVISOR_TABLE.get(counter_currency, DEFAULT_DIVISOR)
+        if forward_rate is None and fwd_points is not None and spot_reference is not None:
+            forward_rate = spot_reference + fwd_points / divisor
+        elif forward_rate is not None and fwd_points is None and spot_reference is not None:
+            fwd_points = (forward_rate - spot_reference) * divisor
+        elif forward_rate is not None and fwd_points is not None and spot_reference is None:
+            spot_reference = forward_rate - fwd_points / divisor
+
+    rates = {}
+    if forward_rate is not None:
+        rates['forward_rate'] = forward_rate
+
+    if fwd_points is not None:
+        rates['fwd_points'] = fwd_points
+
+    if spot_reference is not None:
+        rates['spot_reference'] = spot_reference
+
+    return rates
