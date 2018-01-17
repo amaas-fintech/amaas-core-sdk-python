@@ -116,14 +116,16 @@ class BooksInterface(Interface):
             self.logger.error(response.text)
             response.raise_for_status()
     
-    def execute_book_eod(self, asset_manager_id, book_id, business_date):
+    def execute_book_eod(self, asset_manager_id, book_id,
+                         business_date, close_time=None, timezone=None):
         self.logger.info('Execute book eod. Asset Manager: %s Book: %s', asset_manager_id, book_id)
         url = '%s/book-eod/%s/%s' % (self.endpoint, asset_manager_id, book_id)
-        params = {'business_date': business_date}
+        params = {'business_date': business_date,
+                  'close_time': close_time,
+                  'timezone': timezone}
         response = self.session.post(url, params=params)
         if response.ok:
-            execution_id = response.json()
-            return execution_id
+            return response.json()
         else:
             self.logger.error(response.text)
             response.raise_for_status()
@@ -134,8 +136,7 @@ class BooksInterface(Interface):
         url = '%s/book-eod/%s/%s/%s' % (self.endpoint, asset_manager_id, book_id, execution_id)
         response = self.session.get(url)
         if response.ok:
-            execution_status = response.json()
-            return execution_status
+            return response.json()
         else:
             self.logger.error(response.text)
             response.raise_for_status()
