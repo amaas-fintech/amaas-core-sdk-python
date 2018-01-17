@@ -310,7 +310,9 @@ class TransactionsInterface(Interface):
             self.logger.error(response.text)
             response.raise_for_status()
 
-    def retrieve_transaction_pnls(self, book_ids, asset_manager_id, business_date, periods=None):
+    def retrieve_transaction_pnls(self, book_ids, asset_manager_id,
+                                  business_date, periods=None,
+                                  page_no=None, page_size=None):
         self.logger.info('Retrieving Transaction PnL result - Asset Manager: %s - Book IDs: (%s) - Business Date: %s' % \
                         (asset_manager_id, ', '.join(book_ids), business_date))
         url = '%s/transaction_pnls/%s' % (self.endpoint, asset_manager_id)
@@ -318,6 +320,11 @@ class TransactionsInterface(Interface):
                          'book_ids': book_ids}
         if periods:
             search_params['periods'] = periods
+        if page_no:
+            search_params['page_no'] = page_no
+        if page_size:
+            search_params['page_size'] = page_size
+
         response = self.session.get(url, params=search_params)
         if response.ok:
             transaction_pnls = [json_to_transaction_pnl(json_transaction_pnl) for json_transaction_pnl in response.json()]
@@ -384,7 +391,9 @@ class TransactionsInterface(Interface):
             self.logger.error(response.text)
             response.raise_for_status()
 
-    def retrieve_position_pnls(self, book_ids, asset_manager_id, business_date, periods=None):
+    def retrieve_position_pnls(self, book_ids, asset_manager_id,
+                               business_date, periods=None,
+                               page_no=None, page_size=None):
         self.logger.info('Retrieving Position PnL result - Asset Manager: %s - Book IDs: (%s) - Business Date: %s' % \
                         (asset_manager_id, ', '.join(book_ids), business_date))
         url = '%s/position_pnls/%s' % (self.endpoint, asset_manager_id)
@@ -392,6 +401,11 @@ class TransactionsInterface(Interface):
                          'book_ids': book_ids}
         if periods:
             search_params['periods'] = periods
+        if page_no:
+            search_params['page_no'] = page_no
+        if page_size:
+            search_params['page_size'] = page_size
+
         response = self.session.get(url, params=search_params)
         if response.ok:
             position_pnls = [json_to_position_pnl(json_position_pnl) for json_position_pnl in response.json()]
