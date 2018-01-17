@@ -4,7 +4,10 @@ from decimal import Decimal
 import random
 import unittest
 
-from amaascore.assets.foreign_exchange import ForeignExchange, ForeignExchangeForward, ForeignExchangeSpot
+from amaascore.assets.foreign_exchange import (
+    ForeignExchange, ForeignExchangeForward, ForeignExchangeSpot,
+    calculate_rates,
+)
 from amaascore.assets.interface import AssetsInterface
 from amaascore.tools.generate_asset import generate_foreignexchange, generate_fx_forward, generate_fx_spot
 from tests.unit.config import ENVIRONMENT
@@ -38,6 +41,24 @@ class ForeignExchangeTest(unittest.TestCase):
         self.assets_interface.new(self.fx_forward)
         fx_forward = self.assets_interface.retrieve(asset_manager_id=self.asset_manager_id, asset_id=self.asset_id)
         self.assertEqual(fx_forward, self.fx_forward)
+
+    def test_rates(self):
+        examples = [
+            (('SGD', 'USD'),
+             {'forward_rate': Decimal('1.354'), 'spot_reference': Decimal('1.356')},
+             {'fwd_points': Decimal('-20')}),
+            (('SGD', 'USD'),
+             {'spot_reference': Decimal('1.356'), 'fwd_points': Decimal('-20')},
+             {'forward_rate': Decimal('1.354')}),
+            (('SGD', 'USD'),
+             {'forward_rate': Decimal('1.354'), 'fwd_points': Decimal('-20')},
+             {'spot_reference': Decimal('1.356')}),
+        ]
+        for a, kw, expect in examples:
+            expect.update(kw)
+            result = calculate_rates(*a, **kw)
+            self.assertEqual(result, expect)
+
 
 if __name__ == '__main__':
     unittest.main()
