@@ -34,6 +34,12 @@ class TransactionPNLTest(unittest.TestCase):
         json_total_pnl = Decimal(json.loads(json.dumps(transaction_pnl_json, ensure_ascii=False)).get('total_pnl'))
         self.assertEqual(json_total_pnl, self.transaction_pnl.total_pnl)
 
+    def test_TransactionPNLAdditional(self):
+        test_dict = {'a': 1, 'b': '2'}
+        pnl = generate_transaction_pnl(additional=test_dict, error_message='[Error]')
+        self.assertDictEqual(pnl.additional, test_dict)
+        self.assertEqual(pnl.error_message, '[Error]')
+
 
 if __name__ == '__main__':
     unittest.main()
