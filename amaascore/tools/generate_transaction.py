@@ -44,7 +44,7 @@ def generate_common(asset_manager_id, asset_book_id, counterparty_book_id, asset
 
 def generate_position_pnl(asset_manager_id=None, book_id=None, asset_id=None, period=None, quantity=None,
                         business_date=None, version=None, total_pnl=None, asset_pnl=None, fx_pnl=None,
-                        unrealised_pnl=None, realised_pnl=None, message=None, client_id=None, currency=None,
+                        unrealised_pnl=None, realised_pnl=None, error_message=None, client_id=None, currency=None,
                         pnl_timestamp=None, pnl_status='Active'):
     total_pnl = random.randrange(-100000000, 2000000000)
     asset_pnl = random.randrange(-100000000, 1000000000)
@@ -61,7 +61,7 @@ def generate_position_pnl(asset_manager_id=None, book_id=None, asset_id=None, pe
                            unrealised_pnl=unrealised_pnl,
                            quantity=quantity,
                            realised_pnl=realised_pnl,
-                           message=message or '',
+                           error_message=error_message or '',
                            currency=currency or 'USD',
                            pnl_timestamp=pnl_timestamp or datetime.datetime.utcnow(),
                            client_id=client_id or 1,
@@ -69,8 +69,8 @@ def generate_position_pnl(asset_manager_id=None, book_id=None, asset_id=None, pe
     return position_pnl
 
 def generate_transaction_pnl(asset_manager_id=None, book_id=None, asset_id=None, period=None, quantity=None,
-                        business_date=None, version=None, total_pnl=None, asset_pnl=None, fx_pnl=None,
-                        unrealised_pnl=None, realised_pnl=None, message=None, client_id=None,
+                        business_date=None, version=None, total_pnl=None, asset_pnl=None, fx_pnl=None, additional=None,
+                        unrealised_pnl=None, realised_pnl=None, error_message=None, client_id=None, transaction_date=None,
                         transaction_id=None, pnl_timestamp=None, pnl_status='Active', currency=None):
     total_pnl = random.randrange(-100000000, 2000000000)
     asset_pnl = random.randrange(-100000000, 1000000000)
@@ -79,7 +79,9 @@ def generate_transaction_pnl(asset_manager_id=None, book_id=None, asset_id=None,
                            book_id=book_id or random_string(8),
                            asset_id=asset_id or random_string(10),
                            period=period or random.choice(['YTD', 'MTD', 'DTD']),
+                           transaction_date=transaction_date or datetime.date.today() + datetime.timedelta(days=-7),
                            business_date=business_date or datetime.date.today(),
+                           additional=additional,
                            version=version or 1,
                            total_pnl=total_pnl or str(total_pnl),
                            fx_pnl=fx_pnl or str(fx_pnl),
@@ -87,7 +89,7 @@ def generate_transaction_pnl(asset_manager_id=None, book_id=None, asset_id=None,
                            unrealised_pnl=unrealised_pnl,
                            quantity=quantity,
                            realised_pnl=realised_pnl,
-                           message=message or '',
+                           error_message=error_message or '',
                            currency=currency or 'USD',
                            transaction_id=transaction_id or random_string(16),
                            pnl_timestamp=pnl_timestamp or datetime.datetime.utcnow(),
