@@ -253,15 +253,15 @@ class TransactionsInterface(Interface):
             self.logger.error(response.text)
             response.raise_for_status()
 
-    def new_book_reports(self, asset_manager_id, book_reports, report_type):
+    def upsert_book_reports(self, asset_manager_id, book_reports, report_type):
         self.logger.info('Insert book report for -Asset Manager: %s', asset_manager_id)
-        if not isinstance(book_reports, list)
-            book_reports = [book_report]
+        if not isinstance(book_reports, list):
+            book_reports = [book_reports]
         book_report_json = []
         for book_report in book_reports:
-            book_report_json.append(book_reports.to_interface())
+            book_report_json.append(book_report.to_interface())
         url = '%s/book-report/%s/%s' % (self.endpoint, asset_manager_id, report_type)
-        response = self.session.post(url, json=book_report_json)
+        response = self.session.post(url, json=book_report_json, params={'upsert': True})
         if response.ok:
             book_reports = []
             for book_report_json in response.json():

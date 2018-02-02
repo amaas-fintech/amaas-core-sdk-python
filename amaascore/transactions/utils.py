@@ -82,9 +82,9 @@ def json_to_book_report(book_report_json):
     args = inspect.getfullargspec(BookReport.__init__)
     mandatory = set(args.args[1:len(args.args) - len(args.defaults)])
     missing = mandatory - \
-        set([attr for attr in mandatory if position_pnl_json.get(attr) is not None])
+        set([attr for attr in mandatory if book_report_json.get(attr) is not None])
     if not missing:
-        return PositionPNL(**book_report_json)
+        return BookReport(**book_report_json)
     else:
         raise ValueError("Missing Fields: %s in class: BookReport" %
                          ",".join(missing))
