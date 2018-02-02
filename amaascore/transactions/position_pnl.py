@@ -8,7 +8,7 @@ class PositionPNL(AMaaSModel):
                  business_date, pnl_timestamp, pnl_status='Active',
                  total_pnl=None, asset_pnl=None, fx_pnl=None, 
                  unrealised_pnl=None, realised_pnl=None, quantity=None,
-                 currency=None, message=None, *args, **kwargs):
+                 currency=None, error_message=None, *args, **kwargs):
         self.asset_manager_id = asset_manager_id
         self.asset_id = asset_id
         self.book_id = book_id
@@ -21,7 +21,7 @@ class PositionPNL(AMaaSModel):
         self.fx_pnl = fx_pnl
         self.pnl_status = pnl_status
         self.quantity = quantity
-        self.message = message
+        self.error_message = error_message
         self.currency = currency
         self.pnl_timestamp = pnl_timestamp
 
