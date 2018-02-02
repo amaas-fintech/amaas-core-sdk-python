@@ -3,7 +3,6 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging
 import json
 
-from amaascore.config import ENVIRONMENT
 from amaascore.core.amaas_model import json_handler
 from amaascore.core.interface import Interface
 from amaascore.transactions.utils import json_to_transaction, json_to_position, \
@@ -12,7 +11,7 @@ from amaascore.transactions.utils import json_to_transaction, json_to_position, 
 
 class TransactionsInterface(Interface):
 
-    def __init__(self, environment=ENVIRONMENT, logger=None, endpoint=None, username=None, 
+    def __init__(self, environment=None, logger=None, endpoint=None, username=None, 
                        password=None, session_token=None):
         self.logger = logger or logging.getLogger(__name__)
         super(TransactionsInterface, self).__init__(endpoint=endpoint, endpoint_type='transactions', session_token=session_token,
@@ -33,7 +32,7 @@ class TransactionsInterface(Interface):
     def create_many(self, transactions):
         if type(transactions) is not list:
             raise ValueError('Error - create_many takes in a list of transactions instead of single transaction')
-        transactions_json = []        
+        transactions_json = []
         # check to ensure all transactions have the same asset_manager_id
         asset_manager_id = transactions[0].asset_manager_id
         for transaction in transactions:
@@ -228,8 +227,8 @@ class TransactionsInterface(Interface):
         parameters is a dictionary of all the mtm result filter parameters
         """
         self.logger.info('Retrieving mtm Positions - Asset Manager: %s', asset_manager_id)
-        url = '%s/mtm/%s' % (self.endpoint, asset_manager_id)       
-        paramaters.update({'book_id': book_id})  
+        url = '%s/mtm/%s' % (self.endpoint, asset_manager_id)
+        paramaters.update({'book_id': book_id})
         response = self.session.get(url, params = paramaters)
         if response.ok:
             mtm_results = [json_to_mtm_result(json_mtm_result) for json_mtm_result in response.json()]
@@ -251,7 +250,7 @@ class TransactionsInterface(Interface):
             return response.json()
         else:
             self.logger.error(response.text)
-            response.raise_for_status()    
+            response.raise_for_status()
 
     def new_transaction_pnls(self, asset_manager_id, transaction_pnls):
         self.logger.info('Insert Transaction PnL results for - Asset Manager: %s', asset_manager_id)
@@ -326,7 +325,7 @@ class TransactionsInterface(Interface):
         else:
             self.logger.error(response.text)
             response.raise_for_status()
-    
+
     def new_position_pnls(self, asset_manager_id, position_pnls):
         self.logger.info('Insert Position PnL results for - Asset Manager: %s', asset_manager_id)
         if not isinstance(position_pnls, list):
@@ -344,7 +343,7 @@ class TransactionsInterface(Interface):
             return position_pnls
         else:
             self.logger.error(response.text)
-            response.raise_for_status() 
+            response.raise_for_status()
 
     def upsert_position_pnls(self, asset_manager_id, position_pnls):
         self.logger.info('Upsert Position PnL results for - Asset Manager: %s', asset_manager_id)
@@ -363,7 +362,7 @@ class TransactionsInterface(Interface):
             return position_pnls
         else:
             self.logger.error(response.text)
-            response.raise_for_status() 
+            response.raise_for_status()
 
     def amend_position_pnls(self, asset_manager_id, position_pnls):
         self.logger.info('Amend Position PnL results for - Asset Manager: %s', asset_manager_id)
@@ -415,11 +414,11 @@ class TransactionsInterface(Interface):
             return transactions
         else:
             self.logger.error(response.text)
-            response.raise_for_status()        
+            response.raise_for_status()
 
     def position_search(self, asset_manager_id, book_ids=None, account_ids=None,
                         accounting_types=None, asset_ids=None,
-                        position_date=None, include_cash=False, 
+                        position_date=None, include_cash=False,
                         page_no=None, page_size=None):
         self.logger.info('Search Positions - Asset Manager: %s', asset_manager_id)
         search_params = {}

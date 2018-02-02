@@ -3,13 +3,12 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 from dateutil.parser import parse
 import logging
 
-from amaascore.config import ENVIRONMENT
 from amaascore.core.interface import Interface
 
 
 class FundamentalsInterface(Interface):
 
-    def __init__(self, environment=ENVIRONMENT, logger=None, endpoint=None, username=None, 
+    def __init__(self, environment=None, logger=None, endpoint=None, username=None, 
                        password=None, session_token=None):
         logger = logger or logging.getLogger(__name__)
         super(FundamentalsInterface, self).__init__(endpoint=endpoint,

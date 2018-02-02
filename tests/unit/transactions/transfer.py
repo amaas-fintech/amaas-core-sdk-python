@@ -12,7 +12,7 @@ from amaascore.transactions.transaction import Transaction
 from amaascore.tools.generate_asset import generate_asset
 from amaascore.tools.generate_book import generate_book
 from amaascore.tools.generate_transaction import generate_transaction
-from tests.unit.config import ENVIRONMENT
+from tests.unit.config import STAGE
 
 
 class TransferTest(unittest.TestCase):
@@ -20,9 +20,9 @@ class TransferTest(unittest.TestCase):
     def setUp(self):
         self.longMessage = True  # Print complete error message on failure
         self.maxDiff = None  # View the complete diff when there is a mismatch in a test
-        self.interface = TransactionsInterface(environment=ENVIRONMENT)
-        self.assets_interface = AssetsInterface(environment=ENVIRONMENT)
-        self.books_interface = BooksInterface(environment=ENVIRONMENT)
+        self.interface = TransactionsInterface(environment=STAGE)
+        self.assets_interface = AssetsInterface(environment=STAGE)
+        self.books_interface = BooksInterface(environment=STAGE)
         self.asset_manager_id = random.randint(1, 2**31-1)
         self.asset = generate_asset(asset_manager_id=self.asset_manager_id, fungible=True)
         self.trader_one_book = generate_book(asset_manager_id=self.asset_manager_id)

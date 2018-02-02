@@ -21,7 +21,7 @@ from amaascore.tools.generate_asset import generate_asset
 from amaascore.tools.generate_book import generate_book
 from amaascore.tools.generate_transaction import generate_transaction, generate_transactions,\
     generate_positions, generate_position, generate_cash_transaction, generate_mtm_result
-from tests.unit.config import ENVIRONMENT
+from tests.unit.config import STAGE
 
 logging.config.dictConfig(DEFAULT_LOGGING)
 
@@ -30,14 +30,14 @@ class TransactionsInterfaceTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.transactions_interface = TransactionsInterface(environment=ENVIRONMENT)
+        cls.transactions_interface = TransactionsInterface(environment=STAGE)
         
     def setUp(self):
         self.longMessage = True  # Print complete error message on failure
         self.maxDiff = None  # View the complete diff when there is a mismatch in a test
         self.asset_manager_id = random.randint(1, 2**31-1)
-        self.assets_interface = AssetsInterface(environment=ENVIRONMENT)
-        self.books_interface = BooksInterface(environment=ENVIRONMENT)
+        self.assets_interface = AssetsInterface(environment=STAGE)
+        self.books_interface = BooksInterface(environment=STAGE)
         self.asset = generate_asset(asset_manager_id=self.asset_manager_id)
         self.asset_book = generate_book(asset_manager_id=self.asset_manager_id)
         self.counterparty_book = generate_book(asset_manager_id=self.asset_manager_id)

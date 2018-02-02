@@ -7,7 +7,7 @@ import random
 import unittest
 
 from amaascore.fundamentals.interface import FundamentalsInterface
-from tests.unit.config import ENVIRONMENT
+from tests.unit.config import STAGE
 
 import logging.config
 logging.config.dictConfig(DEFAULT_LOGGING)
@@ -17,7 +17,7 @@ class FundamentalsInterfaceTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.fundamentals_interface = FundamentalsInterface(environment=ENVIRONMENT)
+        cls.fundamentals_interface = FundamentalsInterface(environment=STAGE)
         cls.asset_manager_id = random.randint(1, 2**31-1)
 
     def setUp(self):

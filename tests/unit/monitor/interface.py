@@ -8,7 +8,7 @@ import unittest
 
 from amaascore.monitor.interface import MonitorInterface
 from amaascore.tools.generate_monitor_item import generate_item, generate_items
-from tests.unit.config import ENVIRONMENT
+from tests.unit.config import STAGE
 
 import logging.config
 logging.config.dictConfig(DEFAULT_LOGGING)
@@ -18,7 +18,7 @@ class MonitorInterfaceTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.monitor_interface = MonitorInterface(environment=ENVIRONMENT)
+        cls.monitor_interface = MonitorInterface(environment=STAGE)
 
     def setUp(self):
         self.longMessage = True  # Print complete error message on failure

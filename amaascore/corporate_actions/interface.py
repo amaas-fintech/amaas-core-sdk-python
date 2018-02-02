@@ -2,14 +2,13 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import logging
 
-from amaascore.config import ENVIRONMENT
 from amaascore.core.interface import Interface
 from amaascore.corporate_actions.utils import json_to_corporate_action
 
 
 class CorporateActionsInterface(Interface):
 
-    def __init__(self, environment=ENVIRONMENT, logger=None, endpoint=None, username=None, password=None):
+    def __init__(self, environment=None, logger=None, endpoint=None, username=None, password=None):
         self.logger = logger or logging.getLogger(__name__)
         super(CorporateActionsInterface, self).__init__(endpoint=endpoint, endpoint_type='corporate_actions',
                                                         environment=environment, username=username, password=password)

@@ -2,14 +2,13 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import logging
 
-from amaascore.config import ENVIRONMENT
 from amaascore.core.interface import Interface
 from amaascore.monitor.utils import json_to_item
 
 
 class MonitorInterface(Interface):
 
-    def __init__(self, environment=ENVIRONMENT, logger=None, endpoint=None, username=None, 
+    def __init__(self, environment=None, logger=None, endpoint=None, username=None, 
                        password=None, session_token=None):
         self.logger = logger or logging.getLogger(__name__)
         super(MonitorInterface, self).__init__(endpoint=endpoint, endpoint_type='monitor', session_token=session_token,

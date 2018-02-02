@@ -9,7 +9,7 @@ import unittest
 
 from amaascore.market_data.interface import MarketDataInterface
 from amaascore.tools.generate_market_data import generate_eod_price, generate_fx_rate
-from tests.unit.config import ENVIRONMENT
+from tests.unit.config import STAGE
 
 import logging.config
 logging.config.dictConfig(DEFAULT_LOGGING)
@@ -19,7 +19,7 @@ class MarketDataInterfaceTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.interface = MarketDataInterface(environment=ENVIRONMENT)
+        cls.interface = MarketDataInterface(environment=STAGE)
 
     def setUp(self):
         self.longMessage = True  # Print complete error message on failure
