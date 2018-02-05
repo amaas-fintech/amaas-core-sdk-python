@@ -5,13 +5,15 @@ import json
 
 from amaascore.core.amaas_model import json_handler
 from amaascore.core.interface import Interface
-from amaascore.transactions.utils import json_to_transaction, json_to_position, \
-    json_to_mtm_result, json_to_transaction_pnl, json_to_position_pnl
+from amaascore.transactions.utils import (
+    json_to_transaction, json_to_position, json_to_mtm_result,
+    json_to_transaction_pnl, json_to_position_pnl, json_to_book_report,
+)
 
 
 class TransactionsInterface(Interface):
 
-    def __init__(self, environment=None, logger=None, endpoint=None, username=None, 
+    def __init__(self, environment=None, logger=None, endpoint=None, username=None,
                        password=None, session_token=None):
         self.logger = logger or logging.getLogger(__name__)
         super(TransactionsInterface, self).__init__(endpoint=endpoint, endpoint_type='transactions', session_token=session_token,
@@ -252,6 +254,25 @@ class TransactionsInterface(Interface):
             self.logger.error(response.text)
             response.raise_for_status()
 
+    def upsert_book_reports(self, asset_manager_id, book_reports, report_type):
+        self.logger.info('Insert book report for -Asset Manager: %s', asset_manager_id)
+        if not isinstance(book_reports, list):
+            book_reports = [book_reports]
+        book_report_json = []
+        for book_report in book_reports:
+            book_report_json.append(book_report.to_interface())
+        url = '%s/book-report/%s/%s' % (self.endpoint, asset_manager_id, report_type)
+        response = self.session.post(url, json=book_report_json, params={'upsert': True})
+        if response.ok:
+            book_reports = []
+            for book_report_json in response.json():
+                book_reports.append(json_to_book_report(book_report_json))
+            self.logger.info('Created %s Book Report', len(book_reports))
+            return book_reports
+        else:
+            self.logger.error(response.text)
+            response.raise_for_status()
+
     def new_transaction_pnls(self, asset_manager_id, transaction_pnls):
         self.logger.info('Insert Transaction PnL results for - Asset Manager: %s', asset_manager_id)
         if not isinstance(transaction_pnls, list):
@@ -305,6 +326,28 @@ class TransactionsInterface(Interface):
                 transaction_pnls.append(json_to_transaction_pnl(transaction_pnl_json))
             self.logger.info('Amended %s Transaction PnL records', len(transaction_pnls))
             return transaction_pnls
+        else:
+            self.logger.error(response.text)
+            response.raise_for_status()
+
+    def retrieve_book_reports(self, asset_manager_id, book_ids, report_type,
+                              report_date_start=None, report_date_end=None, period=None):
+        self.logger.info("""Retrieve Book %s Reports for - Asset Manager: %s""", \
+                            report_type, asset_manager_id)
+        url = '%s/book-report/%s/%s' % (self.endpoint, asset_manager_id, report_type)
+        params = {'book_ids': book_ids}
+        if period:
+            params['period'] = period
+        if report_date_start:
+            params['report_date_start'] = report_date_start
+        if report_date_end:
+            params['report_date_end'] = report_date_end
+
+        response = self.session.get(url, params=params)
+        if response.ok:
+            book_reports = [json_to_book_report(json_book_report) for json_book_report in response.json()]
+            self.logger.info('Returned %s Book Reports.', len(book_reports))
+            return book_reports
         else:
             self.logger.error(response.text)
             response.raise_for_status()
