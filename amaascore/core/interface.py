@@ -6,7 +6,7 @@ import logging
 import requests
 from warrant.aws_srp import AWSSRP
 
-from amaascore.config import ENDPOINTS, ConfigFactory, get_config
+from amaascore.config import ENDPOINTS, ConfigFactory, get_factory
 from amaascore.exceptions import AMaaSException
 
 
@@ -121,7 +121,7 @@ class Interface(object):
         if config_filename:
             config_factory = ConfigFactory(config_filename)
         else:
-            config_factory = get_config()
+            config_factory = get_factory()
 
         self.api_config = config_factory.api_config(environment)
 

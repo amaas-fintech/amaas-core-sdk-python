@@ -40,39 +40,34 @@ AuthConfig = namedtuple('AuthConfig', [
 class ConfigFactory(object):
     """Factory for building config object."""
 
-    known_configurations = {
-        'prod': {
-            'api': APIConfig(api_url='https://api.amaas.com/sg1.0/'),
-            'auth': dict(
-                cognito_pool_id='ap-southeast-1_0LilJdUR3',
-                cognito_region='ap-southeast-1',
-                cognito_client_id='7b7kt883veb7rr2toolj1ukp6j',
-            ),
-        },
-        'staging': {
-            'api': APIConfig(api_url='https://api-staging.amaas.com/v1.0/'),
-            'auth': dict(
-                cognito_pool_id='ap-southeast-1_De6j7TWIB',
-                cognito_region='ap-southeast-1',
-                cognito_client_id='2qk35mhjjpk165vssuqhqoi1lk',
-            ),
-        },
-        'dev': {
-            'api': APIConfig(api_url='https://api-dev.amaas.com/v1.0/'),
-            'auth': dict(
-                cognito_pool_id='ap-southeast-1_De6j7TWIB',
-                cognito_region='ap-southeast-1',
-                cognito_client_id='2qk35mhjjpk165vssuqhqoi1lk',
-            ),
-        },
-        'local': {
-            'api': APIConfig(api_url='http://localhost:8000/'),
-            'auth': dict(
-                cognito_pool_id='ap-southeast-1_De6j7TWIB',
-                cognito_region='ap-southeast-1',
-                cognito_client_id='2qk35mhjjpk165vssuqhqoi1lk',
-            ),
-        },
+    known_api_configurations = {
+        'prod': APIConfig(api_url='https://api.amaas.com/sg1.0/'),
+        'staging': APIConfig(api_url='https://api-staging.amaas.com/v1.0/'),
+        'dev': APIConfig(api_url='https://api-dev.amaas.com/v1.0/'),
+        'local': APIConfig(api_url='http://localhost:8000/'),
+    }
+
+    known_auth_configurations = {
+        'prod': dict(
+            cognito_pool_id='ap-southeast-1_0LilJdUR3',
+            cognito_region='ap-southeast-1',
+            cognito_client_id='7b7kt883veb7rr2toolj1ukp6j',
+        ),
+        'staging': dict(
+            cognito_pool_id='ap-southeast-1_De6j7TWIB',
+            cognito_region='ap-southeast-1',
+            cognito_client_id='2qk35mhjjpk165vssuqhqoi1lk',
+        ),
+        'dev': dict(
+            cognito_pool_id='ap-southeast-1_De6j7TWIB',
+            cognito_region='ap-southeast-1',
+            cognito_client_id='2qk35mhjjpk165vssuqhqoi1lk',
+        ),
+        'local': dict(
+            cognito_pool_id='ap-southeast-1_De6j7TWIB',
+            cognito_region='ap-southeast-1',
+            cognito_client_id='2qk35mhjjpk165vssuqhqoi1lk',
+        ),
     }
 
     def __init__(self, config_filepath=None):
@@ -81,7 +76,7 @@ class ConfigFactory(object):
         config_files = [config_filepath] if config_filepath else []
         config_files.extend([
             '.amaas.cfg',
-            os.expanduser(os.path.join('~', '.amaas.cfg')),
+            os.path.expanduser(os.path.join('~', '.amaas.cfg')),
             os.path.join('', 'etc', 'amaas.cfg'),
         ])
         parser = ConfigParser()
@@ -106,8 +101,8 @@ class ConfigFactory(object):
 
     def api_config(self, stage=None):
         """Create api config based on stage."""
-        if stage in self.known_configurations:
-            return self.known_configurations[stage]
+        if stage in self.known_api_configurations:
+            return self.known_api_configurations[stage]
 
         if not stage:
             section = 'stages.live'
@@ -135,10 +130,10 @@ class ConfigFactory(object):
             username = self.lookup('auth', 'username')
             password = self.lookup('auth', 'password')
 
-        if stage in self.known_configurations:
+        if stage in self.known_auth_configurations:
             return AuthConfig(
                 username, password,
-                **self.known_configurations[stage]
+                **self.known_auth_configurations[stage]
             )
 
         try:
@@ -153,7 +148,7 @@ class ConfigFactory(object):
             cognito_region = m.group('region')
 
         cognito_client_id = self.lookup(stage, 'cognito_client_id')
-        return APIConfig(
+        return AuthConfig(
             username, password,
             cognito_pool_id, cognito_region, cognito_client_id,
         )
