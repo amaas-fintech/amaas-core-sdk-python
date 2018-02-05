@@ -25,7 +25,7 @@ class NettingTest(unittest.TestCase):
         self.books_interface = BooksInterface(environment=STAGE)
         self.asset = generate_asset(asset_manager_id=self.asset_manager_id, fungible=True)
         self.asset_book = generate_book(asset_manager_id=self.asset_manager_id)
-        self.counterparty_book = generate_book(asset_manager_id=self.asset_manager_id)
+        self.counterparty_book = generate_book(asset_manager_id=self.asset_manager_id, book_type='Counterparty')
         self.transaction1 = generate_transaction(asset_manager_id=self.asset_manager_id, asset_id=self.asset.asset_id,
                                                  asset_book_id=self.asset_book.book_id,
                                                  counterparty_book_id=self.counterparty_book.book_id,

@@ -31,7 +31,7 @@ class TransactionsInterfaceTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.transactions_interface = TransactionsInterface(environment=STAGE)
-        
+
     def setUp(self):
         self.longMessage = True  # Print complete error message on failure
         self.maxDiff = None  # View the complete diff when there is a mismatch in a test
@@ -40,7 +40,10 @@ class TransactionsInterfaceTest(unittest.TestCase):
         self.books_interface = BooksInterface(environment=STAGE)
         self.asset = generate_asset(asset_manager_id=self.asset_manager_id)
         self.asset_book = generate_book(asset_manager_id=self.asset_manager_id)
-        self.counterparty_book = generate_book(asset_manager_id=self.asset_manager_id)
+        self.counterparty_book = generate_book(
+            asset_manager_id=self.asset_manager_id,
+            book_type='Counterparty',
+        )
         self.transaction = generate_transaction(asset_manager_id=self.asset_manager_id, asset_id=self.asset.asset_id,
                                                 asset_book_id=self.asset_book.book_id,
                                                 counterparty_book_id=self.counterparty_book.book_id)
@@ -132,7 +135,9 @@ class TransactionsInterfaceTest(unittest.TestCase):
     @requests_mock.Mocker()
     def test_Search(self, mocker):
         # This test is somewhat fake - but the integration tests are for the bigger picture
-        endpoint = self.transactions_interface.endpoint + '/transactions'
+        endpoint = '{}/transactions/{}'.format(
+            self.transactions_interface.get_endpoint(), self.asset_manager_id,
+        )
         asset_manager_ids = [self.asset_manager_id, self.asset_manager_id+1]
         transactions = generate_transactions(asset_manager_ids=asset_manager_ids)
         mocker.get(endpoint, json=[transaction.to_json() for transaction in transactions])

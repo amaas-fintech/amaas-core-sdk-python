@@ -93,7 +93,7 @@ class AssetsInterfaceTest(unittest.TestCase):
     @requests_mock.Mocker()
     def test_Search(self, mocker):
         # This test is somewhat fake - but the integration tests are for the bigger picture
-        endpoint = '%s/assets' % self.assets_interface.endpoint
+        endpoint = '%s/assets/%s' % (self.assets_interface.endpoint, self.asset_manager_id)
         assets = generate_assets(asset_manager_ids=[self.asset_manager_id])
         mocker.get(endpoint, json=[asset.to_json() for asset in assets])
         all_assets = self.assets_interface.search(self.asset_manager_id)

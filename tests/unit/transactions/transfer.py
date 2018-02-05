@@ -27,7 +27,7 @@ class TransferTest(unittest.TestCase):
         self.asset = generate_asset(asset_manager_id=self.asset_manager_id, fungible=True)
         self.trader_one_book = generate_book(asset_manager_id=self.asset_manager_id)
         self.trader_two_book = generate_book(asset_manager_id=self.asset_manager_id)
-        self.wash_book = generate_book(asset_manager_id=self.asset_manager_id)
+        self.wash_book = generate_book(asset_manager_id=self.asset_manager_id, book_type='Wash')
         self.setup_cache()
 
     def setup_cache(self):

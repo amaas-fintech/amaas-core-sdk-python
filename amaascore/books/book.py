@@ -25,7 +25,7 @@ class Book(AMaaSModel):
         self.book_status = book_status
         self.owner_id = owner_id or party_id  # This could still be None if neither are set, which will raise an error
         self.party_id = party_id
-        self.close_time = close_time
+        self.close_time = close_time or '18:00:00'  # 6PM default
         self.timezone = timezone
         self.base_currency = base_currency
         self.business_unit = business_unit
