@@ -140,15 +140,13 @@ class Interface(object):
         self.logger.info('Interface Created')
 
     def get_endpoint(self, endpoint=None):
+        """Return interface URL endpoint."""
         base_url = self.api_config.api_url
         if not endpoint:
             if 'localhost' in base_url:
                 endpoint = ''
             else:
-                endpoint = ENDPOINTS.get(self.endpoint_type)
-
-        if not endpoint:
-            raise KeyError('Cannot find endpoint')
+                endpoint = ENDPOINTS[self.endpoint_type]
 
         endpoint = '/'.join([p.strip('/') for p in (base_url, endpoint)]).strip('/')
         self.logger.info("Using Endpoint: %s", endpoint)
