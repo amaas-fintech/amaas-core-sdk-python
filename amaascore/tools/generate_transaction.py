@@ -15,6 +15,7 @@ from amaascore.transactions.transaction_pnl import TransactionPNL
 from amaascore.transactions.position import Position
 from amaascore.transactions.position_pnl import PositionPNL
 from amaascore.transactions.transaction import Transaction
+from amaascore.transactions.book_report import BookReport
 
 CHARGE_TYPES = ['Tax', 'Commission']
 CODE_TYPES = ['Settle Code', 'Client Classifier']
@@ -96,6 +97,24 @@ def generate_transaction_pnl(asset_manager_id=None, book_id=None, asset_id=None,
                            client_id=client_id or 1,
                            pnl_status=pnl_status)
     return transaction_pnl
+
+def generate_book_report(asset_manager_id=None, book_id=None, currency=None, report_type=None, business_date=None,
+                         report_timestamp=None, mtm_value=None, total_pnl=None, asset_pnl=None, fx_pnl=None, message='',
+                         report_status=None, period=None):
+    book_report = BookReport(asset_manager_id=asset_manager_id or random.randint(1, 100),
+                             book_id=book_id or random_string(8),
+                             currency=currency or 'USD',
+                             report_type=report_type or 'MTM',
+                             business_date=business_date or datetime.date.today(),
+                             report_timestamp=report_timestamp or datetime.datetime.now(),
+                             mtm_value=mtm_value or random.random() * 100000,
+                             total_pnl=total_pnl,
+                             asset_pnl=asset_pnl,
+                             fx_pnl=fx_pnl,
+                             message=message,
+                             period=period or 'N/A',
+                             report_status=report_status or 'Active')
+    return book_report
 
 def generate_mtm_result(asset_manager_id=None, book_id=None, mtm_value=None, business_date=None, mtm_timestamp=None,
                         asset_id=None, message=None, client_id=None, mtm_status=None):
