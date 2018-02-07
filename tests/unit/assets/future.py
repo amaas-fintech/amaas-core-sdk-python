@@ -6,7 +6,7 @@ import unittest
 from amaascore.assets.future import Future
 from amaascore.assets.interface import AssetsInterface
 from amaascore.tools.generate_asset import generate_future
-from tests.unit.config import ENVIRONMENT
+from tests.unit.config import STAGE
 
 class FutureTest(unittest.TestCase):
 
@@ -16,7 +16,7 @@ class FutureTest(unittest.TestCase):
         self.asset_manager_id = random.randint(1, 2**31-1)
         self.future = generate_future(asset_manager_id=self.asset_manager_id)
         self.asset_id = self.future.asset_id
-        self.assets_interface = AssetsInterface(environment=ENVIRONMENT)
+        self.assets_interface = AssetsInterface(environment=STAGE)
 
     def tearDown(self):
         pass

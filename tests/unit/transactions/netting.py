@@ -11,7 +11,7 @@ from amaascore.transactions.transaction import Transaction
 from amaascore.tools.generate_asset import generate_asset
 from amaascore.tools.generate_book import generate_book
 from amaascore.tools.generate_transaction import generate_transaction
-from tests.unit.config import ENVIRONMENT
+from tests.unit.config import STAGE
 
 
 class NettingTest(unittest.TestCase):
@@ -19,13 +19,13 @@ class NettingTest(unittest.TestCase):
     def setUp(self):
         self.longMessage = True  # Print complete error message on failure
         self.maxDiff = None  # View the complete diff when there is a mismatch in a test
-        self.interface = TransactionsInterface(environment=ENVIRONMENT)
+        self.interface = TransactionsInterface(environment=STAGE)
         self.asset_manager_id = 1
-        self.assets_interface = AssetsInterface(environment=ENVIRONMENT)
-        self.books_interface = BooksInterface(environment=ENVIRONMENT)
+        self.assets_interface = AssetsInterface(environment=STAGE)
+        self.books_interface = BooksInterface(environment=STAGE)
         self.asset = generate_asset(asset_manager_id=self.asset_manager_id, fungible=True)
         self.asset_book = generate_book(asset_manager_id=self.asset_manager_id)
-        self.counterparty_book = generate_book(asset_manager_id=self.asset_manager_id)
+        self.counterparty_book = generate_book(asset_manager_id=self.asset_manager_id, book_type='Counterparty')
         self.transaction1 = generate_transaction(asset_manager_id=self.asset_manager_id, asset_id=self.asset.asset_id,
                                                  asset_book_id=self.asset_book.book_id,
                                                  counterparty_book_id=self.counterparty_book.book_id,

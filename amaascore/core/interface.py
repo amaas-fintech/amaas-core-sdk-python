@@ -1,15 +1,12 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from configparser import ConfigParser, NoSectionError
 from datetime import datetime
 import logging
-from os.path import expanduser, join
-from os import environ
 
 import requests
 from warrant.aws_srp import AWSSRP
 
-from amaascore.config import ENVIRONMENT, ENDPOINTS, CONFIGURATIONS
+from amaascore.config import ENDPOINTS, ConfigFactory, get_factory
 from amaascore.exceptions import AMaaSException
 
 
@@ -68,8 +65,8 @@ class AMaaSPasswordSession(AMaaSSession):
 
     __session_cache = {}
 
-    def __new__(cls, environment_config, username=None, password=None, logger=None):
-        cache_key = (environment_config, username, password)
+    def __new__(cls, config, username=None, password=None, logger=None):
+        cache_key = (config, username, password)
         cached = cls.__session_cache.get(cache_key)
         if not cached:
             cached = super(AMaaSPasswordSession, cls).__new__(cls)
@@ -77,15 +74,15 @@ class AMaaSPasswordSession(AMaaSSession):
 
         return cached
 
-    def __init__(self, environment_config, username=None, password=None, logger=None):
+    def __init__(self, config, username=None, password=None, logger=None):
         super(AMaaSPasswordSession, self).__init__(logger)
-        self.username = username
-        self.password = password
+        self.username = username or config.username
+        self.password = password or config.password
         self.aws = AWSSRP(
             username=self.username, password=self.password,
-            pool_id=environment_config.cognito_pool,
-            client_id=environment_config.cognito_client_id,
-            pool_region=environment_config.cognito_region,
+            pool_id=config.cognito_pool_id,
+            pool_region=config.cognito_region,
+            client_id=config.cognito_client_id,
         )
 
         if self.needs_refresh():
@@ -118,55 +115,39 @@ class Interface(object):
     Currently this class doesn't do anything - but I anticipate it will be needed in the future.
     """
 
-    def __init__(self, endpoint_type, endpoint=None, environment=ENVIRONMENT, username=None, password=None,
+    def __init__(self, endpoint_type, endpoint=None, environment=None, username=None, password=None,
                  config_filename=None, logger=None, session_token=None):
         self.logger = logger or logging.getLogger(__name__)
-        self.config_filename = config_filename
+        if config_filename:
+            config_factory = ConfigFactory(config_filename)
+        else:
+            config_factory = get_factory()
+
+        self.api_config = config_factory.api_config(environment)
+
         self.endpoint_type = endpoint_type
-        self.environment = environment
-        self.environment_config = CONFIGURATIONS.get(environment)
-        self.endpoint = endpoint or self.get_endpoint()
-        self.json_header = {'Content-Type': 'application/json'}
+        self.endpoint = self.get_endpoint(endpoint)
         if session_token:
             self.session = AMaaSTokenSession(session_token, logger=self.logger)
         else:
-            username = username or environ.get('AMAAS_USERNAME') or self.read_config('username')
-            password = password or environ.get('AMAAS_PASSWORD') or self.read_config('password')
             self.session = AMaaSPasswordSession(
-                environment_config=self.environment_config,
+                config_factory.auth_config(environment),
                 username=username, password=password,
                 logger=self.logger,
             )
 
+        self.json_header = {'Content-Type': 'application/json'}
         self.logger.info('Interface Created')
 
-    def get_endpoint(self):
-        if self.environment == 'local':
-            return self.environment_config.base_url
-        if self.environment not in CONFIGURATIONS:
-            raise KeyError('Invalid environment specified.')
-
-        base_url = self.environment_config.base_url
-        endpoint = ENDPOINTS.get(self.endpoint_type)
-        api_version = self.environment_config.api_version
+    def get_endpoint(self, endpoint=None):
+        """Return interface URL endpoint."""
+        base_url = self.api_config.api_url
         if not endpoint:
-            raise KeyError('Cannot find endpoint')
-        endpoint = '/'.join([base_url, api_version, endpoint])
+            if 'localhost' in base_url:
+                endpoint = ''
+            else:
+                endpoint = ENDPOINTS[self.endpoint_type]
+
+        endpoint = '/'.join([p.strip('/') for p in (base_url, endpoint)]).strip('/')
         self.logger.info("Using Endpoint: %s", endpoint)
         return endpoint
-
-    @staticmethod
-    def generate_config_filename():
-        home = expanduser("~")
-        return join(home, '.amaas.cfg')
-
-    def read_config(self, option):
-        if self.config_filename is None:
-            self.config_filename = self.generate_config_filename()
-        parser = ConfigParser()
-        parser.read(self.config_filename)
-        try:
-            option = parser.get(section='auth', option=option)
-        except NoSectionError:
-            raise AMaaSException('Invalid AMaaS config file')
-        return option

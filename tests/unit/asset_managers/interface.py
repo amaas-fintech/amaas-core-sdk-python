@@ -10,7 +10,7 @@ from amaascore.asset_managers.domain import Domain
 from amaascore.asset_managers.interface import AssetManagersInterface
 from amaascore.asset_managers.relationship import Relationship
 from amaascore.tools.generate_asset_manager import generate_asset_manager, generate_relationship, generate_domain
-from tests.unit.config import ENVIRONMENT
+from tests.unit.config import STAGE
 
 import logging.config
 logging.config.dictConfig(DEFAULT_LOGGING)
@@ -20,7 +20,7 @@ class AssetManagersInterfaceTest(unittest.TestCase):
 
     def setUp(self):
         self.longMessage = True  # Print complete error message on failure
-        self.asset_managers_interface = AssetManagersInterface(environment=ENVIRONMENT)
+        self.asset_managers_interface = AssetManagersInterface(environment=STAGE)
         self.asset_manager_id = random.randint(1, 2**31-1)
         self.related_id = random.randint(1, 2**31-1)
 

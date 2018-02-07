@@ -11,7 +11,7 @@ from amaascore.assets.bond_option import BondOption
 from amaascore.assets.foreign_exchange import ForeignExchange
 from amaascore.assets.interface import AssetsInterface
 from amaascore.tools.generate_asset import generate_asset, generate_foreignexchange, generate_assets
-from tests.unit.config import ENVIRONMENT
+from tests.unit.config import STAGE
 
 import logging.config
 logging.config.dictConfig(DEFAULT_LOGGING)
@@ -21,7 +21,7 @@ class AssetsInterfaceTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.assets_interface = AssetsInterface(environment=ENVIRONMENT)
+        cls.assets_interface = AssetsInterface(environment=STAGE)
 
     def setUp(self):
         self.longMessage = True  # Print complete error message on failure
@@ -93,7 +93,7 @@ class AssetsInterfaceTest(unittest.TestCase):
     @requests_mock.Mocker()
     def test_Search(self, mocker):
         # This test is somewhat fake - but the integration tests are for the bigger picture
-        endpoint = '%s/assets' % self.assets_interface.endpoint
+        endpoint = '%s/assets/%s' % (self.assets_interface.endpoint, self.asset_manager_id)
         assets = generate_assets(asset_manager_ids=[self.asset_manager_id])
         mocker.get(endpoint, json=[asset.to_json() for asset in assets])
         all_assets = self.assets_interface.search(self.asset_manager_id)

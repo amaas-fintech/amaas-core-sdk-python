@@ -10,7 +10,7 @@ from amaascore.parties.broker import Broker
 from amaascore.parties.party import Party
 from amaascore.parties.interface import PartiesInterface
 from amaascore.tools.generate_party import generate_party, generate_broker, generate_parties
-from tests.unit.config import ENVIRONMENT
+from tests.unit.config import STAGE
 
 import logging.config
 logging.config.dictConfig(DEFAULT_LOGGING)
@@ -20,7 +20,7 @@ class PartiesInterfaceTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.parties_interface = PartiesInterface(environment=ENVIRONMENT)
+        cls.parties_interface = PartiesInterface(environment=STAGE)
 
     def setUp(self):
         self.longMessage = True  # Print complete error message on failure

@@ -10,7 +10,7 @@ from amaascore.assets.foreign_exchange import (
 )
 from amaascore.assets.interface import AssetsInterface
 from amaascore.tools.generate_asset import generate_foreignexchange, generate_fx_forward, generate_fx_spot
-from tests.unit.config import ENVIRONMENT
+from tests.unit.config import STAGE
 
 
 class ForeignExchangeTest(unittest.TestCase):
@@ -20,7 +20,7 @@ class ForeignExchangeTest(unittest.TestCase):
         self.asset_manager_id = random.randint(1, 2**31-1)
         self.fx_forward = generate_fx_forward(asset_manager_id=self.asset_manager_id)
         self.asset_id = self.fx_forward.asset_id
-        self.assets_interface = AssetsInterface(environment=ENVIRONMENT)
+        self.assets_interface = AssetsInterface(environment=STAGE)
 
     def tearDown(self):
         pass

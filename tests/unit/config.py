@@ -1,1 +1,1 @@
-ENVIRONMENT = 'dev'
+STAGE = 'local'

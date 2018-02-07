@@ -3,13 +3,12 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging
 
 from amaascore.books.utils import json_to_book
-from amaascore.config import ENVIRONMENT
 from amaascore.core.interface import Interface
 
 
 class BooksInterface(Interface):
 
-    def __init__(self, environment=ENVIRONMENT, logger=None, endpoint=None, username=None, password=None):
+    def __init__(self, environment=None, logger=None, endpoint=None, username=None, password=None):
         logger = logger or logging.getLogger(__name__)
         super(BooksInterface, self).__init__(endpoint=endpoint, endpoint_type='books', environment=environment,
                                              username=username, password=password, logger=logger)
@@ -78,7 +77,7 @@ class BooksInterface(Interface):
             self.logger.error(response.text)
             response.raise_for_status()
 
-    def search(self, asset_manager_id, book_ids=None, business_units=None, 
+    def search(self, asset_manager_id, book_ids=None, business_units=None,
                      owner_ids=None, party_ids=None, book_statuses=None):
         self.logger.info('Search Books - Asset Manager: %s', asset_manager_id)
         search_params = {}
@@ -115,7 +114,7 @@ class BooksInterface(Interface):
         else:
             self.logger.error(response.text)
             response.raise_for_status()
-    
+
     def execute_book_eod(self, asset_manager_id, book_id,
                          business_date, close_time=None, timezone=None):
         self.logger.info('Execute book eod. Asset Manager: %s Book: %s', asset_manager_id, book_id)
@@ -129,7 +128,7 @@ class BooksInterface(Interface):
         else:
             self.logger.error(response.text)
             response.raise_for_status()
-    
+
     def retrieve_book_eod_status(self, asset_manager_id, book_id, execution_id):
         self.logger.info('Retrieve book eod status. Asset Manager: %s Book: %s ExecutionId: %s',
                          asset_manager_id, book_id, execution_id)

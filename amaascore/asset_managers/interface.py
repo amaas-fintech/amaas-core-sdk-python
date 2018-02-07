@@ -2,9 +2,11 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import logging
 
-from amaascore.asset_managers.utils import json_to_asset_manager, json_to_relationship,\
-                                           json_to_domain
-from amaascore.config import ENVIRONMENT
+from amaascore.asset_managers.utils import (
+    json_to_asset_manager,
+    json_to_relationship,
+    json_to_domain,
+)
 from amaascore.core.interface import Interface
 
 
@@ -13,7 +15,7 @@ class AssetManagersInterface(Interface):
     The interface to the Asset Managers service for reading Asset Manager information.
     """
 
-    def __init__(self, environment=ENVIRONMENT, logger=None, endpoint=None, username=None, password=None, session_token=None):
+    def __init__(self, environment=None, logger=None, endpoint=None, username=None, password=None, session_token=None):
         self.logger = logger or logging.getLogger(__name__)
         super(AssetManagersInterface, self).__init__(
             endpoint=endpoint, endpoint_type='asset_managers',
