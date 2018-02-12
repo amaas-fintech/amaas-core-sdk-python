@@ -147,7 +147,7 @@ class ConfigFactory(object):
             cognito_pool_id = m.group('resource')
             cognito_region = m.group('region')
 
-        cognito_client_id = self.lookup(stage, 'cognito_client_id')
+        cognito_client_id = self.lookup(section, 'cognito_client_id')
         return AuthConfig(
             username, password,
             cognito_pool_id, cognito_region, cognito_client_id,
