@@ -127,9 +127,9 @@ class MarketDataInterface(Interface):
         if business_date_end:
             params['business_date_end'] = business_date_end.date().isoformat()
         if rate_timestamp_start:
-            params['rate_timestamp_start'] = rate_timestamp_start.isoformat()
+            params['rate_timestamp_start'] = rate_timestamp_start.strftime('%H:%m:%s')
         if rate_timestamp_end:
-            params['rate_timestamp_end'] = rate_timestamp_end.isoformat()
+            params['rate_timestamp_end'] = rate_timestamp_end.strftime('%H:%m:%s')
 
         response = self.session.get(url=url, params=params)
         if response.ok:
