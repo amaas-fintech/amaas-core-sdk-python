@@ -94,7 +94,7 @@ Testing
 -------
 The SDK contains wide-ranging unit tests within the AMaaS Core package itself.
 The easiest way to run the whole suite is to install tox, then run it from the
-root directory (where the tox.ini file resides).
+root directory (where the *tox.ini* file resides).
 
 .. code-block:: sh
 
