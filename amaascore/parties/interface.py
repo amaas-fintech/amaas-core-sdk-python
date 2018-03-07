@@ -126,3 +126,26 @@ class PartiesInterface(Interface):
         else:
             self.logger.error(response.text)
             response.raise_for_status()
+
+    def synch(self, asset_manager_id):
+        """
+        This method invokes a request to synch the parties in
+        elastic search with the SQL parties.
+
+        Args:
+            asset_manager_id (int): The id of the asset manager that owns the parties to be synched
+        
+        Returns:
+            int: the number of parties synched.
+        """
+        self.logger.info('Synching Parties.')
+        url = '%s/synch/%s' % (self.endpoint, asset_manager_id)
+        response = self.session.put(url)
+
+        if response.ok:
+            count = response.json().get('count', 0)
+            self.logger.info('Synched %s Parties.', count)
+            return count
+        else:
+            self.logger.error(response.text)
+            response.raise_for_status()

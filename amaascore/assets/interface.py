@@ -259,3 +259,30 @@ class AssetsInterface(Interface):
         else:
             self.logger.error(response.text)
             response.raise_for_status()
+
+    def synch(self, asset_manager_id, **params):
+        """
+        This method invokes a request to synch the assets in
+        dynamodb and/or elastic search with the SQL assets.
+
+        Args:
+            asset_manager_id (int): The id of the asset manager that owns the assets to be synched
+            cache (bool): Whether to synch the assets in DynamoDB
+            search (bool): Whether to synch the assets in Elasticsearch
+            page_no (int): The current page of assets to be synched.
+            page_size (int): The number of assets to be synched per request.
+        
+        Returns:
+            int: the number of assets synched.
+        """
+        self.logger.info('Synching Assets.')
+        url = '%s/synch/%s' % (self.endpoint, asset_manager_id)
+        response = self.session.put(url, params=params)
+
+        if response.ok:
+            count = response.json().get('count', 0)
+            self.logger.info('Synched %s Assets.', count)
+            return count
+        else:
+            self.logger.error(response.text)
+            response.raise_for_status()
