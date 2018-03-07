@@ -220,3 +220,27 @@ class MarketDataInterface(Interface):
         else:
             self.logger.error(response.text)
             response.raise_for_status()
+
+
+    def last_available_business_date(self, asset_manager_id, asset_ids, page_no=None, page_size=None):
+        """
+        Returns the last available business date for the assets so we know the 
+        starting date for new data which needs to be downloaded from data providers.
+        
+        This method can only be invoked by system user
+        """
+        self.logger.info('Retrieving last available business dates for assets')
+        url = '%s/last-available-business-date' % self.endpoint
+        params = {'asset_manager_ids': [asset_manager_id],
+                  'asset_ids': ','.join(asset_ids)}
+        if page_no:
+            params['page_no'] = page_no
+        if page_size:
+            params['page_size'] = page_size
+        response = self.session.get(url, params=params)
+        if response.ok:
+            self.logger.info("Received %s assets' last available business date", len(response.json()))
+            return response.json()
+        else:
+            self.logger.error(response.text)
+            response.raise_for_status()

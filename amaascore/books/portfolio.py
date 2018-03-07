@@ -20,9 +20,9 @@ class Portfolio(object):
 
     def positions_by_asset(self):
         """
-        A dictionary of Position objects keyed by asset_id.  If an asset position exists in more than one book, they
-         are combined into a single position.
-        :return:
+        A dictionary of Position objects keyed by asset_id.  If an asset
+        position exists in more than one book, they are combined into a single
+        position.
         """
         positions = None
         for book in self.books():
