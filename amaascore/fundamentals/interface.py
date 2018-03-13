@@ -14,8 +14,8 @@ class FundamentalsInterface(Interface):
         super(FundamentalsInterface, self).__init__(endpoint=endpoint,
                                                     endpoint_type='fundamentals',
                                                     environment=environment,
-                                                    username=None,
-                                                    password=None,
+                                                    username=username,
+                                                    password=password,
                                                     session_token=session_token,
                                                     logger=logger)
 
