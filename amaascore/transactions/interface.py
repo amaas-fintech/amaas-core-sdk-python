@@ -17,7 +17,7 @@ class TransactionsInterface(Interface):
                        password=None, session_token=None):
         self.logger = logger or logging.getLogger(__name__)
         super(TransactionsInterface, self).__init__(endpoint=endpoint, endpoint_type='transactions', session_token=session_token,
-                                                    environment=environment, username=None, password=None)
+                                                    environment=environment, username=username, password=password)
 
     def new(self, transaction):
         self.logger.info('New Transaction - Asset Manager: %s - Transaction ID: %s', transaction.asset_manager_id,

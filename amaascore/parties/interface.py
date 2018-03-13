@@ -16,8 +16,8 @@ class PartiesInterface(Interface):
         super(PartiesInterface, self).__init__(endpoint=endpoint,
                                                endpoint_type='parties',
                                                environment=environment,
-                                               username=None,
-                                               password=None,
+                                               username=username,
+                                               password=password,
                                                session_token=session_token)
 
     def new(self, party):

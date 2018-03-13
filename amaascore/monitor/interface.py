@@ -12,7 +12,7 @@ class MonitorInterface(Interface):
                        password=None, session_token=None):
         self.logger = logger or logging.getLogger(__name__)
         super(MonitorInterface, self).__init__(endpoint=endpoint, endpoint_type='monitor', session_token=session_token,
-                                               environment=environment, username=None, password=None)
+                                               environment=environment, username=username, password=password)
 
     def new_item(self, item):
         url = '%s/items/%s' % (self.endpoint, item.asset_manager_id)
