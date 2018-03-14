@@ -7,7 +7,8 @@ from amaascore.core.amaas_model import json_handler
 from amaascore.core.interface import Interface
 from amaascore.transactions.utils import (
     json_to_transaction, json_to_position, json_to_mtm_result,
-    json_to_transaction_pnl, json_to_position_pnl, json_to_book_report,
+    json_to_transaction_pnl, json_to_position_pnl, 
+    json_to_book_report, json_to_pnl
 )
 
 
@@ -528,6 +529,73 @@ class TransactionsInterface(Interface):
             positions = [json_to_position(json_position) for json_position in response.json()]
             self.logger.info('Returned %s Positions.', len(positions))
             return positions
+        else:
+            self.logger.error(response.text)
+            response.raise_for_status()
+
+    def pnl_search(self, asset_manager_id, pnl_type, business_date,
+                #    book_ids=None, asset_ids=None, transaction_ids=None,
+                #    next_hash_key=None, next_range_key=None, page_size=None,
+                   **kwargs):
+        """
+        Search pnl records.
+
+        Args:
+            asset_manager_id (int): id of asset manager owning the pnl records
+            pnl_type (str): either "Position" or "Transaction
+            business_date (date): date of the pnl records to return
+            book_ids (list): book id filter on pnl records
+            asset_ids (list): asset id filter on pnl records
+            transaction_ids (list): transactino id filter on pnl records
+            next_hash_key (str): continuation hash key for paging the results
+            next_range_key (str): continuation range key for paging the results
+            page_size (int): the number of results to return
+        """
+        self.logger.info('Retrieving Pnls - Asset Manager: %s - Business Date: %s' % \
+                        (asset_manager_id, business_date))
+        url = '%s/pnls/%s' % (self.endpoint, asset_manager_id)
+        search_params = {'pnl_type': pnl_type,
+                         'business_date': business_date.isoformat()}
+        
+        for param_key, param_val in kwargs.items():
+            if not param_val:
+                continue
+            search_params[param_key] = ','.join(param_val) if isinstance(param_val, list) else param_val
+
+        response = self.session.get(url, params=search_params)
+        if response.ok:
+            results = response.json.get('items')
+            next_hash_key = response.json.get('next_hash_key')
+            next_range_key = response.json.get('next_range_key')
+            pnls = [json_to_pnl(pnl_json) for pnl_json in results]
+            self.logger.info('Retrieved %s Pnl records.', len(pnls))
+            return next_hash_key, next_range_key, pnls
+        else:
+            self.logger.error(response.text)
+            response.raise_for_status()
+    
+    def pnl_upsert(self, asset_manager_id, pnls):
+        """
+        Upsert a list of pnls. Note: this performs a full update
+        of existing records with matching keys, so the passed in
+        pnl objects should be complete.
+
+        Args:
+            asset_manager_id (int): the id of the asset manager owning the pnl
+            pnls (list): list of pnl objects to upsert
+        """
+        self.logger.info('Upsert PnL for - Asset Manager: %s', asset_manager_id)
+        pnls = [pnls] if not isinstance(pnls, list) else pnls
+        
+        json_pnls = [pnl.to_interface() for pnl in pnls]
+        url = '%s/pnls/%s' % (self.endpoint, asset_manager_id)
+        response = self.session.put(url, json=json_pnls)
+        if response.ok:
+            results = []
+            for pnl_result in response.json():
+                results.append(json_to_pnl(pnl_result))
+            self.logger.info('Upserted %s PnL records', len(results))
+            return results
         else:
             self.logger.error(response.text)
             response.raise_for_status()

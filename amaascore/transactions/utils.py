@@ -9,6 +9,7 @@ from amaascore.transactions.mtm_result import MTMResult
 from amaascore.transactions.transaction_pnl import TransactionPNL
 from amaascore.transactions.position_pnl import PositionPNL
 from amaascore.transactions.book_report import BookReport
+from amaascore.transactions.pnl import Pnl
 
 def json_to_position(json_position):
     position = Position(**json_position)
@@ -77,6 +78,14 @@ def json_to_position_pnl(position_pnl_json):
         raise ValueError("Missing Fields: %s in class: PositionPNL" %
                          ",".join(missing))
 
+def json_to_pnl(pnl_json):
+    args = inspect.getfullargspec(Pnl.__init__)
+    mandatory = set(args.args[1:len(args.args) - len(args.defaults)])
+    missing = mandatory - set([attr for attr in mandatory if pnl_json.get(attr) is not None])
+    if not missing:
+        return Pnl(**pnl_json)
+    else:
+        raise ValueError("Missing Fields: %s in class: Pnl" % ",".join(missing))
 
 def json_to_book_report(book_report_json):
     args = inspect.getfullargspec(BookReport.__init__)
