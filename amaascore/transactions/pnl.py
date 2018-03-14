@@ -1,4 +1,3 @@
-import json
 import pytz
 from copy import copy
 from datetime import datetime, date
@@ -15,7 +14,7 @@ class Pnl(AMaaSModel):
                  book_id, business_date, pnl_timestamp,
                  currency, quantity=None, asset_id=None,
                  transaction_id=None, transaction_date=None,
-                 additional=None, DTD=None, MTD=None, YTD=None,
+                 DTD=None, MTD=None, YTD=None,
                  *args, **kwargs):
         self.asset_manager_id = asset_manager_id
         self.pnl_type = pnl_type
@@ -27,7 +26,6 @@ class Pnl(AMaaSModel):
         self.asset_id = asset_id
         self.transaction_id = transaction_id
         self.transaction_date = transaction_date
-        self.additional = additional
         self.DTD = copy(DTD)
         self.MTD = copy(MTD)
         self.YTD = copy(YTD)
@@ -169,18 +167,3 @@ class Pnl(AMaaSModel):
             self._transaction_date = value
         else:
             raise TypeError('Invalid type for attribute "Transaction Date".')
-
-    @property
-    def additional(self):
-        if hasattr(self, '_additional'):
-            return self._additional
-
-    @additional.setter
-    def additional(self, val):
-        if val:
-            if isinstance(val, str):
-                self._additional = json.loads(val)
-            elif isinstance(val, dict):
-                self._additional = val
-            else:
-                raise TypeError('Unsupported data type for additional.')
