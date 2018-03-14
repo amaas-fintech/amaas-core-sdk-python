@@ -564,9 +564,9 @@ class TransactionsInterface(Interface):
 
         response = self.session.get(url, params=search_params)
         if response.ok:
-            results = response.json.get('items')
-            next_hash_key = response.json.get('next_hash_key')
-            next_range_key = response.json.get('next_range_key')
+            results = response.json().get('items')
+            next_hash_key = response.json().get('next_hash_key')
+            next_range_key = response.json().get('next_range_key')
             pnls = [json_to_pnl(pnl_json) for pnl_json in results]
             self.logger.info('Retrieved %s Pnl records.', len(pnls))
             return next_hash_key, next_range_key, pnls
