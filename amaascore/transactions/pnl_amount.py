@@ -2,7 +2,6 @@ import json
 from decimal import Decimal
 from amaascore.core.amaas_model import AMaaSModel
 
-
 class PnlAmount(AMaaSModel):
 
 
