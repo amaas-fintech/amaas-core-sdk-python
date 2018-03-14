@@ -157,9 +157,8 @@ class Pnl(AMaaSModel):
     @transaction_date.setter
     def transaction_date(self, value):
         if value is None:
-            raise ValueError('Missing required attribute "Transaction Date".')
-
-        if isinstance(value, str):
+            self._transaction_date = None
+        elif isinstance(value, str):
             self._transaction_date = parse(value).date()
         elif isinstance(value, datetime):
             self._transaction_date = value.date()
