@@ -9,6 +9,7 @@ from amaascore.market_data.eod_price import EODPrice
 from amaascore.market_data.fx_rate import FXRate
 from amaascore.market_data.curve import Curve
 from amaascore.market_data.quote import Quote
+from amaascore.market_data.corporate_action import CorporateAction
 
 
 def generate_eod_price(asset_manager_id=0, asset_id=None, business_date=date.today(), price=None):
@@ -58,3 +59,18 @@ def generate_curve(client_id = None, asset_manager_id = 0, asset_id = None, fixi
                   curve_rates = curve_rates or '{"1M": "1.05033", "1W": "1.049202"}'
                  )
     return curve
+
+
+def generate_corporate_action(client_id=None, asset_manager_id=0, asset_id=None, event_type=None, event_detail=None,
+                              business_date=None, active=1):
+    random_event_detail = {'payment_date': date(2013, 3, 2),
+                           'amount_per_share': 2,
+                           'currency': 'USD'}
+    corporate_action = CorporateAction(asset_manager_id=asset_manager_id,
+                                       asset_id=asset_id or random_string(10),
+                                       event_type='dividend',
+                                       business_date=business_date or datetime.utcnow().date(),
+                                       client_id=client_id or random.randint(1, 2**31-1),
+                                       active=active or 1,
+                                       event_detail=event_detail or random_event_detail)
+    return corporate_action
