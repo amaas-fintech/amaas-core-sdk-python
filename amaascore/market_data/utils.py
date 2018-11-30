@@ -3,6 +3,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 from amaascore.market_data.eod_price import EODPrice
 from amaascore.market_data.fx_rate import FXRate
 from amaascore.market_data.curve import Curve
+from amaascore.market_data.corporate_action import CorporateAction
 
 
 def json_to_eod_price(json_eod_price):
@@ -17,3 +18,7 @@ def json_to_fx_rate(json_fx_rate):
 def json_to_curve(json_curve):
     curve = Curve(**json_curve)
     return curve
+
+def json_to_corporate_action(json_corporate_action):
+    corporate_action = CorporateAction(**json_corporate_action)
+    return corporate_action

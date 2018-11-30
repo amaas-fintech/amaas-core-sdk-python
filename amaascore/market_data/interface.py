@@ -5,7 +5,7 @@ import logging
 
 from amaascore.core.amaas_model import json_handler
 from amaascore.core.interface import Interface
-from amaascore.market_data.utils import json_to_eod_price, json_to_fx_rate, json_to_curve
+from amaascore.market_data.utils import json_to_eod_price, json_to_fx_rate, json_to_curve, json_to_corporate_action
 
 
 class MarketDataInterface(Interface):
@@ -139,6 +139,35 @@ class MarketDataInterface(Interface):
         else:
             self.logger.error(response.text)
             response.raise_for_status()
+
+
+    def retrieve_corporate_action(self, asset_manager_id, business_date, asset_ids):
+        self.logger.info('Retrieve corporate action - Asset Manager: %s - Business Date: %s', asset_manager_id, business_date)
+        url = '%s/corporate_actions/%s/%s' % (self.endpoint, asset_manager_id, business_date.isoformat())
+        params = {'asset_ids': ','.join(asset_ids)}
+        response = self.session.get(url=url, params=params)
+        if response.ok:
+            corporate_actions = [json_to_corporate_action(corporate_action) 
+                                 for corporate_action in response.json()]
+            self.logger.info('Returned %s corporate actions.', len(corporate_actions))
+            return corporate_actions
+        else:
+            self.logger.error(response.text)
+            response.raise_for_status()
+
+
+    def persist_corporate_actions(self, asset_manager_id, business_date, corporate_actions):
+        self.logger.info('Persist corporate actions - Asset Manager: %s - Business Date: %s', asset_manager_id, business_date)
+        url = '%s/corporate_actions/%s' % (self.endpoint, asset_manager_id)
+        corporate_action_json = [corporate_action.to_interface() for corporate_action in corporate_actions]
+        response = self.session.post(url, json=corporate_action_json)
+        if response.ok:
+            corporate_actions = [json_to_corporate_action(corporate_action) for corporate_action in response.json()]
+            return corporate_actions
+        else:
+            self.logger.error(response.text)
+            response.raise_for_status()
+
 
     def retrieve_curve(self, asset_manager_id, business_date, asset_ids = None):
         self.logger.info('Retrieve curve - Asset Manager: %s - Business Date: %s', asset_manager_id, business_date)
