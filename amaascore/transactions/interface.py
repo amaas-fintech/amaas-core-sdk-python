@@ -179,7 +179,7 @@ class TransactionsInterface(Interface):
         for mtm_result in mtm_results:
             mtm_result_json.append(mtm_result.to_interface())
         url = '%s/mtm/%s' % (self.endpoint, asset_manager_id)
-        response = self.session.post(url, json=mtm_result_json)
+        response = self.session.post(url, json=mtm_result_json, params={'upsert': False})
         if response.ok:
             mtm_results = []
             for mtm_result_json in response.json():
@@ -282,7 +282,7 @@ class TransactionsInterface(Interface):
         for transaction_pnl in transaction_pnls:
             transaction_pnl_json.append(transaction_pnl.to_interface())
         url = '%s/transaction_pnls/%s' % (self.endpoint, asset_manager_id)
-        response = self.session.post(url, json=transaction_pnl_json)
+        response = self.session.post(url, json=transaction_pnl_json, params={'upsert': False})
         if response.ok:
             transaction_pnls = []
             for transaction_pnl_json in response.json():
@@ -385,7 +385,7 @@ class TransactionsInterface(Interface):
         for position_pnl in position_pnls:
             position_pnl_json.append(position_pnl.to_interface())
         url = '%s/position_pnls/%s' % (self.endpoint, asset_manager_id)
-        response = self.session.post(url, json=position_pnl_json)
+        response = self.session.post(url, json=position_pnl_json, params={'upsert': False})
         if response.ok:
             position_pnls = []
             for position_pnl_json in response.json():
