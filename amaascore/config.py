@@ -7,6 +7,20 @@ import re
 
 from .exceptions import ConfigurationError, MissingConfigurationError
 
+DEFAULT_LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'loggers': {
+        '': {
+            'level': 'INFO',
+        },
+        'another.module': {
+            'level': 'DEBUG',
+        },
+    }
+}
+
+DEFAULT_ENVIRONMENT = "default"
 
 ENDPOINTS = {
     'asset_managers': 'assetmanager',

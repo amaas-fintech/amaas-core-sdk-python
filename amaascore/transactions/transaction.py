@@ -13,25 +13,81 @@ from amaascore.core.amaas_model import AMaaSModel
 from amaascore.core.comment import Comment
 from amaascore.core.reference import Reference
 from amaascore.transactions.children import Charge, Code, Link, Party, Rate
-from amaascore.transactions.enums import TRANSACTION_ACTIONS, TRANSACTION_STATUSES, TRANSACTION_TYPES
+from amaascore.transactions.enums import (
+    TRANSACTION_ACTIONS,
+    TRANSACTION_STATUSES,
+    TRANSACTION_TYPES,
+)
 
 # This extremely ugly hack is due to the whole Python 2 vs 3 debacle.
 type_check = str if sys.version_info >= (3, 0, 0) else (str, unicode)
 
 
 class Transaction(AMaaSModel):
+    @staticmethod
+    def stored_attributes():
+        return {
+            "asset_manager_id",
+            "asset_book_id",
+            "counterparty_book_id",
+            "transaction_action",
+            "asset_id",
+            "quantity",
+            "transaction_date",
+            "settlement_date",
+            "price",
+            "transaction_currency",
+            "settlement_currency",
+            "execution_time",
+            "transaction_type",
+            "transaction_id",
+            "transaction_status",
+            "gross_settlement",
+            "net_settlement",
+            "version",
+        }
 
     @staticmethod
     def children():
         """ A dict of which of the attributes are collections of other objects, and what type """
-        return {'charges': Charge, 'codes': Code, 'comments': Comment, 'links': Link, 'parties': Party,
-                'rates': Rate, 'references': Reference}
+        return {
+            "charges": Charge,
+            "codes": Code,
+            "comments": Comment,
+            "links": Link,
+            "parties": Party,
+            "rates": Rate,
+            "references": Reference,
+        }
 
-    def __init__(self, asset_manager_id, asset_book_id, counterparty_book_id, transaction_action, asset_id, quantity,
-                 transaction_date, settlement_date, price, transaction_currency, settlement_currency=None,
-                 asset=None, execution_time=None, transaction_type='Trade', transaction_id=None,
-                 transaction_status='New', charges=None, codes=None, comments=None, links=None, parties=None,
-                 rates=None, references=None, *args, **kwargs):
+    def __init__(
+        self,
+        asset_manager_id,
+        asset_book_id,
+        counterparty_book_id,
+        transaction_action,
+        asset_id,
+        quantity,
+        transaction_date,
+        settlement_date,
+        price,
+        transaction_currency,
+        settlement_currency=None,
+        asset=None,
+        execution_time=None,
+        transaction_type="Trade",
+        transaction_id=None,
+        transaction_status="New",
+        charges=None,
+        codes=None,
+        comments=None,
+        links=None,
+        parties=None,
+        rates=None,
+        references=None,
+        *args,
+        **kwargs
+    ):
         """
 
         :param asset_manager_id:
@@ -88,7 +144,9 @@ class Transaction(AMaaSModel):
         self.parties = parties.copy() if parties else {}
         self.rates = rates.copy() if rates else {}
         self.references = references.copy() if references else {}
-        self.references['AMaaS'] = Reference(reference_value=self.transaction_id)  # Upserts the AMaaS Reference
+        self.references["AMaaS"] = Reference(
+            reference_value=self.transaction_id
+        )  # Upserts the AMaaS Reference
 
         self.postings = []
         self.asset = asset
@@ -129,9 +187,10 @@ class Transaction(AMaaSModel):
         if transaction_currency and len(transaction_currency) == 3:
             self._transaction_currency = transaction_currency
         else:
-            raise ValueError(ERROR_LOOKUP['currency_invalid'] % (transaction_currency,
-                                                                 self.transaction_id,
-                                                                 self.asset_manager_id))
+            raise ValueError(
+                ERROR_LOOKUP["currency_invalid"]
+                % (transaction_currency, self.transaction_id, self.asset_manager_id)
+            )
 
     @property
     def settlement_currency(self):
@@ -142,9 +201,10 @@ class Transaction(AMaaSModel):
         if settlement_currency and len(settlement_currency) == 3:
             self._settlement_currency = settlement_currency
         else:
-            raise ValueError(ERROR_LOOKUP['currency_invalid'] % (settlement_currency,
-                                                                 self.transaction_id,
-                                                                 self.asset_manager_id))
+            raise ValueError(
+                ERROR_LOOKUP["currency_invalid"]
+                % (settlement_currency, self.transaction_id, self.asset_manager_id)
+            )
 
     @property
     def transaction_date(self):
@@ -158,7 +218,9 @@ class Transaction(AMaaSModel):
         :return:
         """
         if value:
-            self._transaction_date = parse(value).date() if isinstance(value, type_check) else value
+            self._transaction_date = (
+                parse(value).date() if isinstance(value, type_check) else value
+            )
 
     @property
     def settlement_date(self):
@@ -172,7 +234,9 @@ class Transaction(AMaaSModel):
         :return:
         """
         if value:
-            self._settlement_date = parse(value).date() if isinstance(value, type_check) else value
+            self._settlement_date = (
+                parse(value).date() if isinstance(value, type_check) else value
+            )
 
     @property
     def execution_time(self):
@@ -186,11 +250,13 @@ class Transaction(AMaaSModel):
         :return:
         """
         if value:
-            self._execution_time = parse(value) if isinstance(value, type_check) else value
+            self._execution_time = (
+                parse(value) if isinstance(value, type_check) else value
+            )
 
     @property
     def gross_settlement(self):
-        if hasattr(self, '_gross_settlement'):
+        if hasattr(self, "_gross_settlement"):
             return self.__gross_settlement
         return self.quantity * self.price
 
@@ -206,7 +272,7 @@ class Transaction(AMaaSModel):
 
     @property
     def net_settlement(self):
-        if hasattr(self, '_net_settlement'):
+        if hasattr(self, "_net_settlement"):
             return self._net_settlement
         return self.gross_settlement - self.charges_net_effect()
 
@@ -222,7 +288,7 @@ class Transaction(AMaaSModel):
 
     @property
     def transaction_action(self):
-        if hasattr(self, '_transaction_action'):
+        if hasattr(self, "_transaction_action"):
             return self._transaction_action
 
     @transaction_action.setter
@@ -233,14 +299,16 @@ class Transaction(AMaaSModel):
         :return:
         """
         if transaction_action not in TRANSACTION_ACTIONS:
-            raise ValueError(ERROR_LOOKUP.get('transaction_action_invalid') % (transaction_action, self.transaction_id,
-                                                                               self.asset_manager_id))
+            raise ValueError(
+                ERROR_LOOKUP.get("transaction_action_invalid")
+                % (transaction_action, self.transaction_id, self.asset_manager_id)
+            )
         else:
             self._transaction_action = transaction_action
 
     @property
     def transaction_status(self):
-        if hasattr(self, '_transaction_status'):
+        if hasattr(self, "_transaction_status"):
             return self._transaction_status
 
     @transaction_status.setter
@@ -251,14 +319,16 @@ class Transaction(AMaaSModel):
         :return:
         """
         if transaction_status not in TRANSACTION_STATUSES:
-            raise ValueError(ERROR_LOOKUP.get('transaction_status_invalid') % (transaction_status, self.transaction_id,
-                                                                               self.asset_manager_id))
+            raise ValueError(
+                ERROR_LOOKUP.get("transaction_status_invalid")
+                % (transaction_status, self.transaction_id, self.asset_manager_id)
+            )
         else:
             self._transaction_status = transaction_status
 
     @property
     def transaction_type(self):
-        if hasattr(self, '_transaction_type'):
+        if hasattr(self, "_transaction_type"):
             return self._transaction_type
 
     @transaction_type.setter
@@ -269,8 +339,10 @@ class Transaction(AMaaSModel):
         :return:
         """
         if transaction_type not in TRANSACTION_TYPES:
-            raise ValueError(ERROR_LOOKUP.get('transaction_type_invalid') % (transaction_type, self.transaction_id,
-                                                                             self.asset_manager_id))
+            raise ValueError(
+                ERROR_LOOKUP.get("transaction_type_invalid")
+                % (transaction_type, self.transaction_id, self.asset_manager_id)
+            )
         else:
             self._transaction_type = transaction_type
 
@@ -284,8 +356,15 @@ class Transaction(AMaaSModel):
 
         :return:
         """
-        return Decimal(sum([charge.charge_value for charge in self.charges.values()
-                            if charge.net_affecting]))
+        return Decimal(
+            sum(
+                [
+                    charge.charge_value
+                    for charge in self.charges.values()
+                    if charge.net_affecting
+                ]
+            )
+        )
 
     def charge_types(self):
         """
@@ -307,7 +386,7 @@ class Transaction(AMaaSModel):
         :return:
         """
         return self.rates.keys()
-    
+
     def reference_types(self):
         """
         TODO - are these helper functions useful?
@@ -320,7 +399,7 @@ class Transaction(AMaaSModel):
 
     @property
     def postings(self):
-        if hasattr(self, '_postings'):
+        if hasattr(self, "_postings"):
             return self._postings
         else:
             raise TransactionNeedsSaving
@@ -372,16 +451,20 @@ class Transaction(AMaaSModel):
     def remove_link(self, link_type, linked_transaction_id):
         link_set = self.links.get(link_type)
         if not link_set:
-            raise KeyError(ERROR_LOOKUP.get('transaction_link_not_found'))
+            raise KeyError(ERROR_LOOKUP.get("transaction_link_not_found"))
         if isinstance(link_set, Link):
             if link_set.linked_transaction_id == linked_transaction_id:
                 link_set = None
             else:
-                raise KeyError(ERROR_LOOKUP.get('transaction_link_not_found'))
+                raise KeyError(ERROR_LOOKUP.get("transaction_link_not_found"))
         else:
-            output = [link for link in link_set if link.linked_transaction_id == linked_transaction_id]
+            output = [
+                link
+                for link in link_set
+                if link.linked_transaction_id == linked_transaction_id
+            ]
             if output:
                 link_set.remove(output[0])
             else:
-                raise KeyError(ERROR_LOOKUP.get('transaction_link_not_found'))
+                raise KeyError(ERROR_LOOKUP.get("transaction_link_not_found"))
         self.upsert_link_set(link_type=link_type, link_set=link_set)
