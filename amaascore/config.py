@@ -118,7 +118,7 @@ class ConfigFactory(object):
         if stage in self.known_api_configurations:
             return self.known_api_configurations[stage]
 
-        if not stage:
+        if not stage or stage=="live":
             section = 'stages.live'
             api_url = 'https://api.amaas.com/'
         else:
